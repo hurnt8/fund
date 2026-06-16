@@ -41,7 +41,8 @@
             <div class="relative" x-data="{ open: false }">
                 <button @click="open = !open" @click.outside="open = false"
                     class="lang-btn flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-                    <img src="{{ asset('images/' . $locale . '.png') }}" alt="{{ $locale }}" class="w-5 h-auto rounded-sm">
+                    @php $flagExt = fn($l) => $l === 'pl' ? 'svg' : 'png'; @endphp
+                    <img src="{{ asset('images/' . $locale . '.' . $flagExt($locale)) }}" alt="{{ $locale }}" class="w-5 h-auto rounded-sm">
                     <span class="hidden sm:inline">{{ strtoupper($locale) }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transition-transform duration-200" :class="{ 'rotate-180': open }" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -55,7 +56,7 @@
                     @if ($l !== $locale)
                     <a href="{{ route($route ?? 'home', ['locale' => $l]) }}"
                         class="flex items-center gap-2.5 px-3.5 py-2.5 text-sm font-medium text-gray-700 hover:bg-cream hover:text-navy transition-colors duration-150 rounded-lg mx-1">
-                        <img src="{{ asset('images/' . $l . '.png') }}" alt="{{ $l }}" class="w-5 h-auto rounded-sm">
+                        <img src="{{ asset('images/' . $l . '.' . $flagExt($l)) }}" alt="{{ $l }}" class="w-5 h-auto rounded-sm">
                         {{ strtoupper($l) }}
                     </a>
                     @endif
