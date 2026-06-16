@@ -1,0 +1,52 @@
+<?php
+
+return [
+    'title' => 'Pravila o privatnosti',
+    'introduction_title' => '1. Uvod',
+    'introduction_text' => 'U Credixau predani smo zaštiti i poštivanju vaše privatnosti. Ova pravila o privatnosti objašnjavaju kako prikupljamo, koristimo, otkrivamo i štitimo vaše osobne podatke kada koristite našu web stranicu i online usluge posudbe. Korištenjem naše stranice prihvaÄate postupke opisane u ovim pravilima.',
+    'information_collection_title' => '2. Informacije koje prikupljamo',
+    'information_collection_text' => 'MoÅ¾emo prikupljati i obraÄivati ââsljedeÄe informacije o vama:',
+    'information_collection_list' => [
+        'Informacije koje nam dajete izravno, kao što su vaše ime, adresa, adresa e-pošte, telefonski broj, financijski podaci itd.',
+        'Informacije koje se prikupljaju automatski kada koristite našu stranicu, ukljuÄujuÄi vašu IP adresu, vrstu preglednika, stranice koje posjeÄujete i duljinu vašeg posjeta.',
+        'Informacije treÄih strana, kao što su kreditne agencije, poslovni partneri ili javni izvori.',
+    ],
+    'information_use_title' => '3. Korištenje vaših podataka',
+    'information_use_text' => 'Podatke koje prikupljamo koristimo za:',
+    'information_use_list' => [
+        'PruÅ¾ati naše usluge zajma i upravljati njima, ukljuÄujuÄi procjenu prihvatljivosti zajma i upravljanje vašim raÄunom.',
+        'Poboljšajte naše web mjesto i usluge, ukljuÄujuÄi analizu naÄina na koji koristite naše web mjesto i personalizaciju vašeg iskustva.',
+        'Komunicirati s vama, posebno kako bismo vas obavijestili o statusu vašeg zahtjeva za kredit, aÅ¾uriranjima naših usluga i promotivnim ponudama.',
+        'Poštujte naše zakonske i regulatorne obveze.',
+    ],
+    'information_sharing_title' => '4. Dijeljenje vaših podataka',
+    'information_sharing_text' => 'Vaše osobne podatke moÅ¾emo podijeliti s:',
+    'information_sharing_list' => [
+        'Naši partneri i pruÅ¾atelji usluga koji nam pomaÅ¾u u pruÅ¾anju i poboljšanju naših usluga kreditiranja.',
+        'Kreditne agencije i druge financijske institucije za procjenu vaše kreditne sposobnosti i upravljanje financijskim rizicima.',
+        'Regulatorna i drÅ¾avna tijela gdje to zahtijeva zakon.',
+        'TreÄe strane u kontekstu komercijalne transakcije, kao što je spajanje, stjecanje ili prodaja imovine.',
+    ],
+    'information_security_title' => '5. Sigurnost vaših podataka',
+    'information_security_text' => 'Provodimo odgovarajuÄe tehniÄke i organizacijske sigurnosne mjere kako bismo zaštitili vaše osobne podatke od gubitka, zlouporabe, neovlaštenog pristupa, otkrivanja, izmjene i uništenja. MeÄutim, ne moÅ¾e se jamÄiti apsolutna sigurnost informacija koje se prenose putem interneta.',
+    'your_rights_title' => '6. Vaša prava',
+    'your_rights_text' => 'Imate pravo na:',
+    'your_rights_list' => [
+        'Pristup vašim osobnim podacima koje imamo.',
+        'ZatraÅ¾ite ispravak svojih osobnih podataka ako su netoÄni ili nepotpuni.',
+        'ZatraÅ¾ite brisanje svojih osobnih podataka, pod odreÄenim uvjetima.',
+        'Prigovor na obradu vaših osobnih podataka u odreÄenim okolnostima.',
+        'U svakom trenutku povucite svoj pristanak za obradu Vaših osobnih podataka, ako se obrada temelji na Vašem pristanku.',
+    ],
+    'your_rights_contact' => 'Da biste ostvarili svoja prava, kontaktirajte nas na adresu e-pošte navedenu u odjeljku "Kontakt" ispod.',
+    'policy_updates_title' => '7. Promjene ove politike privatnosti',
+    'policy_updates_text' => 'MoÅ¾emo aÅ¾urirati ovu politiku privatnosti s vremena na vrijeme kako bi odraÅ¾avala promjene u našim praksama i uslugama. PotiÄemo vas da redovito provjeravate ovu stranicu radi aÅ¾uriranja. Datum posljednjeg aÅ¾uriranja naveden je na vrhu ove politike.',
+    'contact_title' => '8. Kontakt',
+    'contact_text' => 'Ako imate pitanja, nedoumica ili zahtjeva u vezi s ovom politikom privatnosti ili naÄinom na koji postupamo s vašim osobnim podacima, kontaktirajte nas na:',
+    'contact_details' => [
+        'Credixa',
+        'Adresa: Rua de Santo António 33, 7200-175, Portugal',
+        'E-pošta: contact@credixa.eu',
+        'Telefon: +34 613 85 36 14 ',
+    ],
+];

@@ -1,0 +1,303 @@
+<?php
+
+return [
+    'general_title' => 'Credixa - Os melhores credores online na Alemanha, Espanha, Hungria, etc.',
+    'banner_title' => 'Obtenha o empréstimo perfeito para todas as suas necessidades online.',
+    'banner_text' => 'Milhões de pessoas usam a Credixa para realizar seus projetos.',
+    'get_loan_now' => 'Obtenha um empréstimo agora',
+    'popular_loans' => 'Tipos de empréstimos populares:',
+    'personal_loan' => 'Empréstimo pessoal',
+    'mortgage_loan' => 'Empréstimo hipotecário',
+    'auto_loan' => 'Empréstimo para automóvel',
+    'student_loan' => 'Empréstimo estudantil',
+    'business_loan' => 'Empréstimo profissional',
+    'consumer_loan' => 'Empréstimo ao consumidor',
+    'bridge_loan' => 'Empréstimo ponte',
+    'microcredit' => 'Microcrédito',
+
+    // Novas traduções para a seção
+    'discover_our_loan_services' => 'Descubra nossos serviços de empréstimo',
+    'find_the_right_loan' => 'Encontre o empréstimo adequado às suas necessidades entre nossas diferentes opções',
+    'personal_loan' => 'Empréstimo pessoal',
+    'personal_loan_description' => 'Para seus projetos pessoais',
+    'personal_loan_details' => 'Financiamento rápido e flexível para todas as suas necessidades pessoais.',
+    'mortgage_loan' => 'Empréstimo hipotecário',
+    'mortgage_loan_description' => 'Compre sua casa',
+    'mortgage_loan_details' => 'Encontre a hipoteca perfeita para sua nova casa.',
+    'auto_loan' => 'Empréstimo para carro',
+    'auto_loan_description' => 'Financie seu veículo',
+    'auto_loan_details' => 'Opções de empréstimo para comprar o carro dos seus sonhos.',
+    'student_loan' => 'Empréstimo estudantil',
+    'student_loan_description' => 'Para seus estudos',
+    'student_loan_details' => 'Empréstimos projetados para financiar sua educação e necessidades acadêmicas.',
+    'business_loan' => 'Empréstimo profissional',
+    'business_loan_description' => 'Para seu negócio',
+    'business_loan_details' => 'Financiamento para apoiar e expandir seu negócio.',
+    'consumer_loan' => 'Empréstimo ao consumidor',
+    'consumer_loan_description' => 'Para suas compras',
+    'consumer_loan_details' => 'Empréstimos para financiar suas compras e gastos de consumo.',
+    'bridge_loan' => 'Empréstimo ponte',
+    'bridge_loan_description' => 'Entre duas vendas',
+    'bridge_loan_details' => 'Soluções de empréstimo para cobrir necessidades entre duas transações imobiliárias.',
+    'microcredit' => 'Microcrédito',
+    'microcredit_description' => 'Pequenos empréstimos',
+    'microcredit_details' => 'Pequenos empréstimos para necessidades financeiras imediatas.',
+    'loan' => 'Pronto',
+
+    'notice' => 'aviso',
+    'from' => 'De',
+    'popular_loan_title' => 'Empréstimos Populares',
+    'personal_loan_subtitle' => 'Os empréstimos mais vistos e solicitados',
+
+    'title4' => 'Obtenha seu empréstimo de forma rápida e segura.',
+    'text4' => 'As vantagens de escolher nossos serviços de empréstimo.',
+    'competitive_rates' => 'Taxas competitivas',
+    'competitive_rates_description' => 'Beneficie-se de taxas de juros competitivas para seu empréstimo.',
+    'guaranteed_security' => 'Segurança garantida',
+    'guaranteed_security_description' => 'Suas informações estão seguras e confidenciais.',
+    'quick_turnaround' => 'Respostas rápidas',
+    'quick_turnaround_description' => 'Receba uma resposta rápida e fundos disponíveis rapidamente.',
+    '24/7_support' => 'Suporte 24/7',
+    '24/7_support_description' => 'Nossa equipe está disponível para responder todas as suas perguntas.',
+
+    'custom_loan_services' => 'Aproveite nossos serviços de empréstimo sob medida',
+    'reliability_quality' => 'Transparência e Confiabilidade',
+    'reliability_quality_description' => 'Na Credixa, oferecemos soluções de empréstimo claras e confiáveis, respaldadas por avaliações positivas de clientes e total transparência.',
+    'financial_transparency' => 'Sem Custos Ocultos',
+    'financial_transparency_description' => 'Revise nossos termos, discuta taxas e pague apenas após a aprovação do seu empréstimo.',
+    'optimal_security' => 'Segurança e Privacidade',
+    'optimal_security_description' => 'Seus dados pessoais estão seguros conosco. A Credixa utiliza protocolos de segurança avançados para proteger sua privacidade. Nosso suporte está disponível 24/7 para qualquer assistência.',
+    'apply_loan' => 'Solicitar um empréstimo',
+
+
+    'testimonials_title' => 'Depoimentos',
+    'testimonials_description' => 'Descubra o que nossos clientes dizem sobre nós.',
+    'testimonial_1' => [
+        'quote' => '"Estou muito satisfeita com o serviço. O processo de solicitação de empréstimo foi rápido e fácil. Recebi a aprovação em apenas alguns dias, e as taxas eram competitivas. Muito obrigada!"',
+        'name' => 'Julie B.',
+    ],
+    'testimonial_2' => [
+        'quote' => '"Recomendo muito este serviço de empréstimo. A equipe foi muito profissional e prestativa. Eles responderam todas as minhas perguntas e tornaram o processo sem estresse. Obrigada pelo excelente serviço!"',
+        'name' => 'Pierre L.',
+    ],
+    'testimonial_3' => [
+        'quote' => '"O processo de solicitação de empréstimo foi transparente e eficiente. Recebi conselhos profissionais e personalizados durante todo o processo. Agradeço a toda a equipe pelo excelente trabalho!"',
+        'name' => 'Sophie D.',
+    ],
+    'testimonial_4' => [
+        'quote' => '"Obter um empréstimo com esta empresa foi uma experiência sem complicações. A equipe foi amigável e conhecedora, e o processo foi rápido e eficiente. Recomendo muito!"',
+        'name' => 'Marc F.',
+    ],
+    'testimonial_5' => [
+        'quote' => '"Excelente atendimento ao cliente! Fui guiada em cada etapa do processo de empréstimo e minhas perguntas foram respondidas rapidamente. Estou muito satisfeita com o resultado final."',
+        'name' => 'Nathalie P.',
+    ],
+
+    'testimonial_6' => [
+        'quote' => '"Taxa de juros muito boa e processo rápido. Eu recomendo muito este serviço para quem precisa de um empréstimo rápido e confiável."',
+        'name' => 'Luc M.',
+    ],
+    'testimonial_7' => [
+        'quote' => '"Processo de empréstimo simples e eficiente. Fui agradavelmente surpreendida pela rapidez da aprovação. Obrigada a toda a equipe!"',
+        'name' => 'Marie C.',
+    ],
+    'testimonial_8' => [
+        'quote' => '"Tive uma experiência excelente com este serviço de empréstimo. A equipe foi atenta e profissional. Recomendo sem hesitação!"',
+        'name' => 'Jean L.',
+    ],
+
+    'about_title' => 'Junte-se ao melhor marketplace do mundo para trabalhadores',
+    'about_description' => 'A Credixa é sua plataforma confiável para obtenção de empréstimos com uma experiência excepcional ao cliente. Estamos comprometidos em fornecer soluções financeiras simples, seguras e rápidas.',
+    'rating' => '4.9/5',
+    'rating_description' => 'Os clientes avaliam os profissionais',
+    'projects_completed' => '+12M',
+    'projects_completed_description' => 'Projetos concluídos',
+    'benefits' => [
+        '1' => 'Conecte-se com profissionais experientes na área financeira',
+        '2' => 'Aproveite nosso atendimento ao cliente personalizado para encontrar as melhores ofertas',
+        '3' => 'Acesse empréstimos flexíveis adaptados às suas necessidades',
+    ],
+
+    'cta_title' => 'Obtenha o empréstimo que você precisa rapidamente.',
+    'cta_text' => 'Solicite um empréstimo online hoje. Nossa plataforma conecta você com credores confiáveis para soluções financeiras rápidas e seguras.',
+    'cta_button' => 'Comece agora',
+
+    'terms' => 'Condições gerais',
+    'privacy_policy' => 'Política de privacidade',
+    'site_map' => 'Mapa do site',
+    'about' => [
+        'title' => 'Sobre',
+        'who_we_are' => 'Quem somos?',
+        'faq' => 'Perguntas Frequentes',
+        'contact' => 'Contato',
+    ],
+    'loan_types' => [
+        'title' => 'Tipos de empréstimos',
+        'personal_loans' => 'Empréstimos pessoais',
+        'mortgage_loans' => 'Empréstimos imobiliários',
+        'auto_loans' => 'Empréstimos para automóveis',
+        'student_loans' => 'Empréstimos estudantis',
+    ],
+    'support' => [
+        'title' => 'Suporte',
+        'help_support' => 'Ajuda & Suporte',
+        'transaction_security' => 'Segurança da transação',
+        'responsible_loan_policy' => 'Política de empréstimo responsável',
+    ],
+    'subscribe' => [
+        'title' => 'Inscreva-se',
+        'placeholder' => 'Seu endereço de email',
+        'button' => 'Enviar',
+    ],
+    'rights_reserved' => '© Credixa. 2024. Todos os direitos reservados.',
+
+    'en' => 'Inglês',
+    'fr' => 'Francês',
+    'es' => 'Espanhol',
+    'hu' => 'Húngaro',
+    'lt' => 'Lituano',
+    'de' => 'Alemão',
+    'hr' => 'Croata',
+    'mt' => 'maltês',
+    'pt' => 'Português',
+    'sl' => 'esloveno',
+
+    // Hero subtitle
+    'hero_subtitle' => 'Sem procedimentos complexos, sem taxas ocultas. Desde 1990 financiamos projetos pessoais, imobiliários, automóveis e empresariais com transparência e rapidez.',
+
+    // Slide
+    'slide_1' => [
+        'title' => '✓ Desde 1990 · Autorizado · Resposta em 24h',
+        'text1' => 'Financie todos os seus projetos,',
+        'text2' => 'até 95 000 € em 24h.',
+    ],
+    'slide_2' => [
+        'title' => 'Empréstimos Inteligentes para Futuros Brilhantes',
+        'text1' => 'Os nossos Empréstimos irão Fazer',
+        'text2' => 'Os Seus Sonhos Tornarem-se Realidade',
+    ],
+    'slide_3' => [
+        'title' => 'Empréstimos Inteligentes para Futuros Brilhantes',
+        'text1' => 'Nós fornecemos os melhores',
+        'text2' => 'serviços para o seu empréstimo',
+    ],
+    'slide_4' => [
+        'title' => 'Empréstimos Inteligentes para Futuros Brilhantes',
+        'text1' => 'Liderando a Melhor',
+        'text2' => 'Empresa de Empréstimos',
+    ],
+
+    'infos' => [
+        'item1' => 'aprovações rápidas',
+        'item2' => 'mais de 500k clientes',
+        'item3' => 'sem taxas de pagamento',
+        'item4' => 'pagamentos flexíveis',
+    ],
+
+    'about' => [
+        'exptitle' => 'ano de experiência',
+        'sectagline' => 'bem-vindo à Credixa',
+        'sectitle' => 'Empréstimos pessoais para realizar os seus sonhos',
+        'text1' => 'Estamos neste negócio desde 1990 e oferecemos os melhores serviços.',
+        'text2' => 'A Credixa é a sua plataforma confiável para empréstimos com uma experiência de cliente excecional. Estamos comprometidos em fornecer soluções financeiras simples, seguras e rápidas.',
+        'check1' => 'empréstimo para pequenas empresas',
+        'check2' => 'empréstimo para estudar no estrangeiro',
+        'check3' => 'processo de empréstimo rápido',
+        'check4' => 'taxas muito baixas',
+    ],
+
+    'services' => [
+        'sectagline' => 'o que estamos a oferecer',
+        'sectitle' => 'Fornecemos os melhores serviços para o seu empréstimo',
+    ],
+
+    'simulate' => [
+        'sectitle' => 'Quanto Você Precisa?',
+    ],
+
+    'chooses' => [
+        'sectagline' => 'os nossos benefícios',
+        'sectitle' => 'por que escolher-nos',
+        'text1' => 'Estamos neste negócio desde 1990 e oferecemos os melhores serviços.',
+        'item1' => 'taxas mais baixas',
+        'item2' => 'rápido e fácil',
+        'progress1' => 'processo de empréstimo',
+        'progress2' => 'consultoria para negócios',
+        'progress3' => 'benefícios de pagamentos',
+    ],
+
+    // 'works' => [
+    //     'sectagline' => 'como funciona',
+    //     'sectitle' => 'nosso processo de trabalho',
+    //     'step' => 'passo',
+    //     'step1' => [
+    //         'title' => 'Submissão de aplicação',
+    //         'desc' => 'Em uma hora livre, quando nosso poder de escolha não é limitado e quando nada nos impede'
+    //     ],
+    //     'step2' => [
+    //         'title' => 'Revisão e Verificação',
+    //         'desc' => 'De volta ao quadro de desenho, mostramos coragem, pois devemos nos reunir para discutir os detalhes'
+    //     ],
+    //     'step3' => [
+    //         'title' => 'Aprovação do Empréstimo',
+    //         'desc' => 'Vamos começar a correr. Tenho permissão para gravar esta reunião? Sincronização rápida com visão geral'
+    //     ],
+    //     'step4' => [
+    //         'title' => 'Liberação do Empréstimo',
+    //         'desc' => 'A forma mais radical de promover. Isso é óbvio, sem necessidade de falar com os usuários, basta baseá-lo no'
+    //     ],
+    // ],
+
+    'works' => [
+        'sectagline' => 'Como Funciona',
+        'sectitle' => 'Nosso Fluxo de Trabalho',
+        'step' => 'Passo',
+        'step1' => [
+            'title' => 'Submissão da Aplicação',
+            'desc' => 'Complete e envie sua aplicação online em minutos. Não é necessário visitar uma filial.',
+        ],
+        'step2' => [
+            'title' => 'Revisão e Verificação',
+            'desc' => 'Nossa equipe revisa o seu arquivo e verifica as informações para garantir sua elegibilidade.',
+        ],
+        'step3' => [
+            'title' => 'Aprovação do Empréstimo',
+            'desc' => 'Uma vez aprovado, você receberá a confirmação da aprovação do empréstimo, bem como os detalhes dos termos.',
+        ],
+        'step4' => [
+            'title' => 'Pagamento dos Fundos',
+            'desc' => 'Os fundos são transferidos diretamente para a sua conta bancária em um curto período de tempo após a aprovação.',
+        ],
+    ],
+
+    'loan_reasons' => [
+        'sectagline' => 'razões para o empréstimo',
+        'sectitle' => 'Razões Populares para Pedir um Empréstimo',
+        'reasons' => [
+            'title1' => 'Precisa de um carro novo?',
+            'desc1' => 'Assuma o controlo das suas finanças e conduza o carro dos seus sonhos com um empréstimo feito sob medida para as suas necessidades.',
+            'title2' => 'Consolide as suas dívidas',
+            'desc2' => 'Combine múltiplas dívidas em um único pagamento mensal fácil, ajudando a simplificar e gerir melhor as suas finanças.',
+            'title3' => 'Melhoria da casa',
+            'desc3' => 'Renove ou melhore a sua casa, adicionando valor e conforto ao seu espaço de vida sem o peso financeiro.',
+        ],
+        'btn_text' => 'Saber Mais',
+        'btn_icon' => 'icon-next',
+    ],
+
+
+    'total_loans_granted' => 'Total de Empréstimos Concedidos',
+    'customer_satisfaction_rate' => 'Clientes Satisfeitos',
+    'total_loan_amount_granted' => 'Montante disponível',
+    'average_approval_time' => 'Resposta garantida',
+    'member' => 'Clientes financiados',
+    'day' => 'Dias',
+
+    'cta_title2' => 'Obtenha o empréstimo que precisa rapidamente.',
+    'cta_text2' => 'Obtenha um Empréstimo para o Negócio Rapidamente',
+    'cta_button2' => 'Comece agora',
+
+    'about_text' => 'Oferecemos soluções de empréstimos personalizadas para ajudá-lo a alcançar os seus objetivos financeiros. Opções rápidas, seguras e flexíveis, desenhadas para satisfazer as suas necessidades exclusivas.',
+    'get' => 'Entre em contacto',
+
+];

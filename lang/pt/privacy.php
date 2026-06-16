@@ -1,0 +1,52 @@
+<?php
+
+return [
+    'title' => 'Política de privacidade',
+    'introduction_title' => '1. Introdução',
+    'introduction_text' => 'Na Credixa, estamos comprometidos em proteger e respeitar sua privacidade. Esta política de privacidade explica como coletamos, usamos, divulgamos e protegemos suas informações pessoais quando você utiliza nosso site e serviços de empréstimo online. Ao usar nosso site, você aceita as práticas descritas nesta política.',
+    'information_collection_title' => '2. Informações que coletamos',
+    'information_collection_text' => 'Podemos coletar e processar as seguintes informações sobre você:',
+    'information_collection_list' => [
+        'Informações que você nos fornece diretamente, como seu nome, endereço, e-mail, número de telefone, informações financeiras, etc.',
+        'Informações coletadas automaticamente quando você usa nosso site, incluindo seu endereço IP, tipo de navegador, páginas que você visita e duração da sua visita.',
+        'Informações de terceiros, como agências de crédito, parceiros de negócios ou fontes públicas.',
+    ],
+    'information_use_title' => '3. Uso das suas informações',
+    'information_use_text' => 'Usamos as informações que coletamos para:',
+    'information_use_list' => [
+        'Fornecer e gerenciar nossos serviços de empréstimo, incluindo avaliar sua elegibilidade para empréstimo e gerenciar sua conta.',
+        'Melhorar nosso site e serviços, incluindo analisando como você usa nosso site e personalizando sua experiência.',
+        'Comunicar com você, especialmente para informá-lo sobre o status de sua solicitação de empréstimo, atualizações em nossos serviços e ofertas promocionais.',
+        'Cumprir nossas obrigações legais e regulatórias.',
+    ],
+    'information_sharing_title' => '4. Compartilhamento das suas informações',
+    'information_sharing_text' => 'Podemos compartilhar suas informações pessoais com:',
+    'information_sharing_list' => [
+        'Nossos parceiros e prestadores de serviços que nos ajudam a fornecer e melhorar nossos serviços de empréstimo.',
+        'Agências de crédito e outras instituições financeiras para avaliar sua solvência e gerenciar riscos financeiros.',
+        'Autoridades regulatórias e governamentais, quando exigido por lei.',
+        'Terceiros no contexto de uma transação comercial, como fusão, aquisição ou venda de ativos.',
+    ],
+    'information_security_title' => '5. Segurança das suas informações',
+    'information_security_text' => 'Implementamos medidas de segurança técnicas e organizacionais adequadas para proteger suas informações pessoais contra perda, uso indevido, acesso não autorizado, divulgação, alteração e destruição. No entanto, a segurança absoluta das informações transmitidas pela Internet não pode ser garantida.',
+    'your_rights_title' => '6. Seus direitos',
+    'your_rights_text' => 'Você tem o direito de:',
+    'your_rights_list' => [
+        'Acessar suas informações pessoais que temos em posse.',
+        'Solicitar a correção de suas informações pessoais, caso sejam imprecisas ou incompletas.',
+        'Solicitar a exclusão de suas informações pessoais, sujeito a certas condições.',
+        'Opor-se ao processamento de suas informações pessoais em certas circunstâncias.',
+        'Retirar seu consentimento para o processamento de suas informações pessoais a qualquer momento, quando o processamento se basear em seu consentimento.',
+    ],
+    'your_rights_contact' => 'Para exercer seus direitos, entre em contato conosco pelo e-mail indicado na seção "Contato" abaixo.',
+    'policy_updates_title' => '7. Alterações a esta política de privacidade',
+    'policy_updates_text' => 'Podemos atualizar esta política de privacidade de tempos em tempos para refletir mudanças em nossas práticas e serviços. Recomendamos que você verifique esta página regularmente em busca de atualizações. A data da última atualização está indicada no topo desta política.',
+    'contact_title' => '8. Contato',
+    'contact_text' => 'Se você tiver alguma dúvida, preocupação ou solicitação relacionada a esta política de privacidade ou como tratamos suas informações pessoais, entre em contato conosco em:',
+    'contact_details' => [
+        'Credixa',
+        'Endereço: Calcea Victoriei 118 Sector 1 010093 Bucareste',
+        'E-mail: contact@credixa.eu',
+        'Telefone: +34 613 85 36 14 ',
+    ],
+];

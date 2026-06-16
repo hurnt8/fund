@@ -1,0 +1,53 @@
+<?php
+
+return [
+   'title' => 'Informativa sulla privacy',
+'introduction_title' => '1. Introduzione',
+'introduction_text' => 'In Credixa, ci impegniamo a proteggere e rispettare la tua privacy. Questa informativa sulla privacy spiega come raccogliamo, utilizziamo, divulghiamo e proteggiamo le tue informazioni personali quando utilizzi il nostro sito web e i nostri servizi di prestito online. Utilizzando il nostro sito, accetti le pratiche descritte in questa informativa.',
+'information_collection_title' => '2. Informazioni che raccogliamo',
+'information_collection_text' => 'Potremmo raccogliere ed elaborare le seguenti informazioni su di te:',
+'information_collection_list' => [
+    'Informazioni fornite direttamente da te, come nome, indirizzo, indirizzo email, numero di telefono, informazioni finanziarie, ecc.',
+    'Informazioni raccolte automaticamente quando utilizzi il nostro sito, inclusi indirizzo IP, tipo di browser, pagine visitate e durata della visita.',
+    'Informazioni da terze parti, come agenzie di credito, partner commerciali o fonti pubbliche.',
+],
+'information_use_title' => '3. Utilizzo delle tue informazioni',
+'information_use_text' => 'Utilizziamo le informazioni raccolte per:',
+'information_use_list' => [
+    'Fornire e gestire i nostri servizi di prestito, inclusa la valutazione della tua idoneità al prestito e la gestione del tuo account.',
+    'Migliorare il nostro sito web e i nostri servizi, analizzando come utilizzi il nostro sito e personalizzando la tua esperienza.',
+    'Comunicare con te, in particolare per informarti sullo stato della tua richiesta di prestito, aggiornamenti sui nostri servizi e offerte promozionali.',
+    'Rispettare i nostri obblighi legali e normativi.',
+],
+'information_sharing_title' => '4. Condivisione delle tue informazioni',
+'information_sharing_text' => 'Potremmo condividere le tue informazioni personali con:',
+'information_sharing_list' => [
+    'I nostri partner e fornitori di servizi che ci aiutano a fornire e migliorare i nostri servizi di prestito.',
+    'Agenzie di credito e altre istituzioni finanziarie per valutare la tua solvibilità e gestire i rischi finanziari.',
+    'Autorità regolamentari e governative ove richiesto dalla legge.',
+    'Terze parti nel contesto di una transazione commerciale, come una fusione, acquisizione o vendita di beni.',
+],
+'information_security_title' => '5. Sicurezza delle tue informazioni',
+'information_security_text' => 'Implementiamo misure tecniche e organizzative appropriate per proteggere le tue informazioni personali contro perdita, uso improprio, accesso non autorizzato, divulgazione, alterazione e distruzione. Tuttavia, la sicurezza assoluta delle informazioni trasmesse via Internet non può essere garantita.',
+'your_rights_title' => '6. I tuoi diritti',
+'your_rights_text' => 'Hai il diritto di:',
+'your_rights_list' => [
+    'Accedere alle tue informazioni personali in nostro possesso.',
+    'Richiedere la correzione delle tue informazioni personali se inesatte o incomplete.',
+    'Richiedere la cancellazione delle tue informazioni personali, soggetta a determinate condizioni.',
+    'Opporti al trattamento delle tue informazioni personali in determinate circostanze.',
+    'Revocare il consenso al trattamento delle tue informazioni personali in qualsiasi momento, ove il trattamento sia basato sul tuo consenso.',
+],
+'your_rights_contact' => 'Per esercitare i tuoi diritti, ti preghiamo di contattarci all\'indirizzo email indicato nella sezione "Contatti" qui sotto.',
+'policy_updates_title' => '7. Modifiche a questa informativa sulla privacy',
+'policy_updates_text' => 'Potremmo aggiornare questa informativa sulla privacy di tanto in tanto per riflettere i cambiamenti nelle nostre pratiche e nei nostri servizi. Ti invitiamo a controllare regolarmente questa pagina per eventuali aggiornamenti. La data dell\'ultima modifica è indicata in alto in questa informativa.',
+'contact_title' => '8. Contatti',
+'contact_text' => 'Se hai domande, preoccupazioni o richieste relative a questa informativa sulla privacy o al trattamento delle tue informazioni personali, ti preghiamo di contattarci a:',
+'contact_details' => [
+    'Credixa',
+    'Indirizzo: Rua de Santo António 33, 7200-175, Portogallo',
+    'Email: contact@credixa.eu',
+    'Telefono: +34 613 85 36 14 ',
+],
+
+];

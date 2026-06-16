@@ -1,0 +1,52 @@
+<?php
+
+return [
+    'title' => 'Privacy policy',
+    'introduction_title' => '1. Introduction',
+    'introduction_text' => 'At Credixa, we are committed to protecting and respecting your privacy. This privacy policy explains how we collect, use, disclose and protect your personal information when you use our website and online lending services. By using our site, you accept the practices described in this policy.',
+    'information_collection_title' => '2. Information we collect',
+    'information_collection_text' => 'We may collect and process the following information about you:',
+    'information_collection_list' => [
+        'Information you provide to us directly, such as your name, address, email address, telephone number, financial information, etc.',
+        'Information collected automatically when you use our site, including your IP address, browser type, pages you visit, and length of your visit.',
+        'Information from third parties, such as credit agencies, business partners or public sources.',
+    ],
+    'information_use_title' => '3. Use of your information',
+    'information_use_text' => 'We use the information we collect to:',
+    'information_use_list' => [
+        'Provide and manage our loan services, including assessing your loan eligibility and managing your account.',
+        'Improve our website and services, including by analyzing how you use our site and personalizing your experience.',
+        'Communicate with you, in particular to inform you of the status of your loan application, updates to our services, and promotional offers.',
+        'Respect our legal and regulatory obligations.',
+    ],
+    'information_sharing_title' => '4. Sharing your information',
+    'information_sharing_text' => 'We may share your personal information with:',
+    'information_sharing_list' => [
+        'Our partners and service providers who help us provide and improve our lending services.',
+        'Credit agencies and other financial institutions to assess your creditworthiness and manage financial risks.',
+        'Regulatory and governmental authorities where required by law.',
+        'Third parties in the context of a commercial transaction, such as a merger, acquisition or sale of assets.',
+    ],
+    'information_security_title' => '5. Security of your information',
+    'information_security_text' => 'We implement appropriate technical and organizational security measures to protect your personal information against loss, misuse, unauthorized access, disclosure, alteration and destruction. However, the absolute security of information transmitted via the Internet cannot be guaranteed.',
+    'your_rights_title' => '6. Your rights',
+    'your_rights_text' => 'You have the right to:',
+    'your_rights_list' => [
+        'Access your personal information that we hold.',
+        'Request correction of your personal information if it is inaccurate or incomplete.',
+        'Request deletion of your personal information, subject to certain conditions.',
+        'Object to the processing of your personal information in certain circumstances.',
+        'Withdraw your consent to the processing of your personal information at any time, where the processing is based on your consent.',
+    ],
+    'your_rights_contact' => 'To exercise your rights, please contact us at the email address indicated in the "Contact" section below.',
+    'policy_updates_title' => '7. Changes to this privacy policy',
+    'policy_updates_text' => 'We may update this privacy policy from time to time to reflect changes in our practices and services. We encourage you to check this page regularly for updates. The date of the last update is indicated at the top of this policy.',
+    'contact_title' => '8. Contact',
+    'contact_text' => 'If you have any questions, concerns or requests regarding this privacy policy or how we treat your personal information, please contact us at:',
+    'contact_details' => [
+        'Credixa',
+        'Address: Rua de Santo António 33, 7200-175, Portugal',
+        'Email: contact@credixa.eu',
+        'Phone: +34 613 85 36 14 ',
+    ],
+];

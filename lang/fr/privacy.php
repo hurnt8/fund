@@ -1,0 +1,52 @@
+<?php
+
+return [
+    'title' => 'Politique de confidentialité',
+    'introduction_title' => '1. Introduction',
+    'introduction_text' => 'Chez Credixa, nous nous engageons à protéger et à respecter votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, divulguons et protégeons vos informations personnelles lorsque vous utilisez notre site web et nos services de prêt en ligne. En utilisant notre site, vous acceptez les pratiques décrites dans cette politique.',
+    'information_collection_title' => '2. Informations que nous collectons',
+    'information_collection_text' => 'Nous pouvons collecter et traiter les informations suivantes vous concernant :',
+    'information_collection_list' => [
+        'Informations que vous nous fournissez directement, telles que votre nom, adresse, adresse e-mail, numéro de téléphone, informations financières, etc.',
+        'Informations collectées automatiquement lorsque vous utilisez notre site, y compris votre adresse IP, le type de navigateur, les pages que vous visitez, et la durée de votre visite.',
+        'Informations provenant de tiers, telles que des agences de crédit, des partenaires commerciaux ou des sources publiques.',
+    ],
+    'information_use_title' => '3. Utilisation de vos informations',
+    'information_use_text' => 'Nous utilisons les informations que nous collectons pour :',
+    'information_use_list' => [
+        'Fournir et gérer nos services de prêt, y compris l\'évaluation de votre éligibilité au prêt et la gestion de votre compte.',
+        'Améliorer notre site web et nos services, notamment en analysant la façon dont vous utilisez notre site et en personnalisant votre expérience.',
+        'Communiquer avec vous, notamment pour vous informer de l\'état de votre demande de prêt, des mises à jour de nos services, et des offres promotionnelles.',
+        'Respecter nos obligations légales et réglementaires.',
+    ],
+    'information_sharing_title' => '4. Partage de vos informations',
+    'information_sharing_text' => 'Nous pouvons partager vos informations personnelles avec :',
+    'information_sharing_list' => [
+        'Nos partenaires et prestataires de services qui nous aident à fournir et à améliorer nos services de prêt.',
+        'Les agences de crédit et autres institutions financières pour évaluer votre solvabilité et gérer les risques financiers.',
+        'Les autorités réglementaires et gouvernementales lorsque cela est requis par la loi.',
+        'Les tiers dans le cadre d\'une transaction commerciale, telle qu\'une fusion, une acquisition ou une vente d\'actifs.',
+    ],
+    'information_security_title' => '5. Sécurité de vos informations',
+    'information_security_text' => 'Nous mettons en place des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos informations personnelles contre toute perte, utilisation abusive, accès non autorisé, divulgation, altération et destruction. Cependant, la sécurité absolue des informations transmises via Internet ne peut être garantie.',
+    'your_rights_title' => '6. Vos droits',
+    'your_rights_text' => 'Vous avez le droit de :',
+    'your_rights_list' => [
+        'Accéder à vos informations personnelles que nous détenons.',
+        'Demander la correction de vos informations personnelles si elles sont inexactes ou incomplètes.',
+        'Demander la suppression de vos informations personnelles, sous réserve de certaines conditions.',
+        'Vous opposer au traitement de vos informations personnelles dans certaines circonstances.',
+        'Retirer votre consentement au traitement de vos informations personnelles à tout moment, lorsque le traitement est basé sur votre consentement.',
+    ],
+    'your_rights_contact' => 'Pour exercer vos droits, veuillez nous contacter à l\'adresse e-mail indiquée dans la section "Contact" ci-dessous.',
+    'policy_updates_title' => '7. Modifications de cette politique de confidentialité',
+    'policy_updates_text' => 'Nous pouvons mettre à jour cette politique de confidentialité de temps à autre pour refléter les changements dans nos pratiques et services. Nous vous encourageons à consulter régulièrement cette page pour prendre connaissance des mises à jour. La date de la dernière mise à jour est indiquée en haut de cette politique.',
+    'contact_title' => '8. Contact',
+    'contact_text' => 'Si vous avez des questions, des préoccupations ou des demandes concernant cette politique de confidentialité ou la façon dont nous traitons vos informations personnelles, veuillez nous contacter à :',
+    'contact_details' => [
+        'Credixa',
+        'Adresse : Rua de Santo António 33, 7200-175, Portugal',
+        'E-mail : contact@credixa.eu',
+        'Téléphone : +34 613 85 36 14 ',
+    ],
+];

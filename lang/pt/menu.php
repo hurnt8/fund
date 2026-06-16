@@ -1,0 +1,34 @@
+<?php
+
+return [
+    'menu' => 'menu',
+    'home' => 'Casa',
+    'about' => 'Sobre nós',
+    'services' => 'Os Nossos Serviços',
+    'simulate' => 'Simulação de empréstimo',
+    'contact' => 'Fale Connosco',
+    'loan' => 'Solicitar empréstimo',
+
+    'personal' => 'Empréstimo pessoal',
+    'auto' => 'Empréstimo automático',
+    'home_loan' => 'Empréstimo à habitação',
+    'study' => 'Empréstimo para estudo',
+    'business' => 'Empréstimo comercial',
+    'bike' => 'Empréstimo de bicicleta',
+
+
+    'arlert' => 'Consiga um empréstimo com uma taxa de juro até 3%',
+
+
+
+    'faq'              => 'FAQ',
+    'terms'            => 'Termos de utilização',
+    'privacy'          => 'Política de privacidade',
+    'quick_links'      => 'Links rápidos',
+    'rights_reserved'  => 'Todos os direitos reservados.',
+    'email_placeholder'=> 'O seu endereço de email',
+    'newsletter_title' => 'Fique informado sobre as nossas ofertas',
+    'subscribe'        => 'Subscrever',
+    'read_more'        => 'Saber mais',
+    'footer_desc'      => 'Credixa é o seu parceiro de confiança para soluções de financiamento rápidas, flexíveis e personalizadas em toda a Europa.',
+];
