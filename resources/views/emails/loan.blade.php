@@ -1,20 +1,26 @@
 <x-mail::message>
-# Demande de prêt
+# {{ __('message.loan_admin_subject') }}
 
-<p style="font-size: 12px !important;">
-    <h1>Informations du client :</h1>
-    <p><strong>Nom et prénoms :</strong> {{ $data['name'] }}</p>
-    <p><strong>Email :</strong> {{ $data['email'] }}</p>
-    <p><strong>Numéro de téléphone :</strong> {{ $data['phone'] }}</p>
-    <p><strong>Adresse :</strong> {{ $data['address'] }}</p>
-    <p><strong>Montant du prêt souhaité :</strong> {{ $data['amount'] }} €</p>
-    <p><strong>Durée du prêt :</strong> {{ $data['darly'] }} mois</p>
-    <p><strong>type de prêt :</strong> {{ $data['subject'] }}</p>
-</p>
+{{ __('message.loan_admin_intro') }}
 
-<strong>Message</strong>
-<p style="font-size: 12px !important">
-    {{$data['objet']}}
-</p> 
+---
+
+**{{ __('loan.label_name') }} :** {{ $data['name'] }}
+
+**{{ __('loan.label_email') }} :** {{ $data['email'] }}
+
+**{{ __('loan.label_phone') }} :** {{ $data['phone'] }}
+
+**{{ __('loan.label_address') }} :** {{ $data['address'] }}
+
+**{{ __('loan.label_amount') }} :** {{ number_format($data['amount'], 0, ',', ' ') }} €
+
+**{{ __('loan.label_darly') }} :** {{ $data['darly'] }} {{ __('message.months') }}
+
+**{{ __('loan.label_objet') }} :** {{ $data['subject'] }}
+
+---
+
+**{{ __('loan.label_objet') }} :** {{ $data['objet'] }}
 
 </x-mail::message>

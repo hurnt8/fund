@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class LoanMail extends Mailable
+class LoanConfirmationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,7 +19,7 @@ class LoanMail extends Mailable
     {
         return $this
             ->from('no-reply@credixa.eu', config('app.name'))
-            ->subject(__('message.loan_admin_subject') . ' — ' . $this->data['name'])
-            ->markdown('emails.loan');
+            ->subject(__('message.loan_confirm_subject'))
+            ->markdown('emails.loan-confirmation');
     }
 }

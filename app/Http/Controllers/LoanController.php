@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\LoanMail;
-use App\Models\LoanRequest;
+use App\Mail\LoanConfirmationMail;
 use App\Services\LoanService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class LoanController extends Controller
 {
@@ -43,32 +43,29 @@ class LoanController extends Controller
 
     public function sendMail(Request $request)
     {
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email',
-            'phone'   => 'required|string',
-            'address' => 'required|string',
+            'phone'   => 'required|string|max:50',
+            'address' => 'required|string|max:500',
             'amount'  => 'required|numeric|min:1',
             'darly'   => 'required|numeric|min:1',
-            'objet'   => 'required|string',
             'subject' => 'required|string',
-            'npi'     => 'nullable|string',
-            'status'  => 'nullable|string',
-            'files.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx',
+            'objet'   => 'required|string',
         ]);
 
-        $files = [];
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                Storage::makeDirectory('public/uploads', 0775, true);
-                $files[] = $file->store('public/uploads');
-            }
+        $locale = $request->input('locale', 'fr');
+        if (!in_array($locale, ['fr', 'en', 'pl', 'es'])) {
+            $locale = 'fr';
         }
+        App::setLocale($locale);
 
-        $loanRequest = LoanRequest::create(array_merge($validatedData, ['files' => $files]));
+        // Email 1 : dossier complet → contact@credixa.eu
+        Mail::to('contact@credixa.eu')->send(new LoanMail($data, $locale));
 
-        Mail::to('contact@credixa.eu')->send(new LoanMail($loanRequest));
+        // Email 2 : confirmation → demandeur
+        Mail::to($data['email'])->send(new LoanConfirmationMail($data, $locale));
 
-        return back()->with('success', 'Your loan request has been sent successfully.');
+        return back()->with('success', __('message.success_loan'));
     }
 }

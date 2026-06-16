@@ -35,8 +35,9 @@
                         <div class="alert alert-danger">{{ __('message.error_loan') }}</div>
                     @endif
 
-                    <form method="POST" action="{{ route('loan.request') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('loan.request') }}">
                         @csrf
+                        <input type="hidden" name="locale" value="{{ app()->getLocale() }}">
                         <div class="row g-3">
                             <div class="col-12">
                                 <div class="form-group">
@@ -101,34 +102,12 @@
                                     @error('subject')<span class="form-error">{{ $message }}</span>@enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>NPI</label>
-                                    <input type="text" name="npi" class="form-control" value="{{ old('npi') }}"
-                                           placeholder="NPI (optionnel)">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Statut</label>
-                                    <input type="text" name="status" class="form-control" value="{{ old('status') }}"
-                                           placeholder="Salarié / Indépendant…">
-                                </div>
-                            </div>
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>{{ __('loan.label_objet') }} *</label>
                                     <textarea name="objet" class="form-control" rows="4"
                                               placeholder="{{ __('loan.placeholder_objet') }}" required>{{ old('objet') }}</textarea>
                                     @error('objet')<span class="form-error">{{ $message }}</span>@enderror
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Documents (PDF, JPG, PNG, DOC)</label>
-                                    <input type="file" name="files[]" class="form-control" multiple
-                                           accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
-                                    @error('files.*')<span class="form-error">{{ $message }}</span>@enderror
                                 </div>
                             </div>
                             <div class="col-12 mt-2">
