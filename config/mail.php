@@ -28,45 +28,45 @@ return [
     | sending an e-mail. You will specify which one you are using for your
     | mailers below. You are free to add additional mailers as required.
     |
-    | Supported: "smtp", "sendmail", "mailgun", "ses",
-    |            "postmark", "log", "array", "failover"
+    | Supported: "smtp", "sendmail", "mailgun", "ses", "ses-v2",
+    |            "postmark", "log", "array", "failover", "roundrobin"
     |
     */
 
     'mailers' => [
         'smtp' => [
             'transport'    => 'smtp',
+            'url'          => env('MAIL_URL'),
             'host'         => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port'         => env('MAIL_PORT', 587),
             'encryption'   => env('MAIL_ENCRYPTION', 'tls'),
             'username'     => env('MAIL_USERNAME'),
             'password'     => env('MAIL_PASSWORD'),
-            'timeout'      => null,
+            'timeout'      => 30,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
-        ],
-
-        'smtp-no-verify' => [
-            'transport'  => 'smtp-no-verify',
-            'host'       => env('MAIL_HOST', 'localhost'),
-            'port'       => env('MAIL_PORT', 587),
-            'username'   => env('MAIL_USERNAME'),
-            'password'   => env('MAIL_PASSWORD'),
-            'timeout'    => null,
+            'stream'       => [
+                'ssl' => [
+                    'allow_self_signed' => true,
+                    'verify_peer'       => false,
+                    'verify_peer_name'  => false,
+                ],
+            ],
         ],
 
         'ses' => [
             'transport' => 'ses',
         ],
 
-        'mailgun' => [
-            'transport' => 'mailgun',
+        'postmark' => [
+            'transport' => 'postmark',
+            // 'message_stream_id' => null,
             // 'client' => [
             //     'timeout' => 5,
             // ],
         ],
 
-        'postmark' => [
-            'transport' => 'postmark',
+        'mailgun' => [
+            'transport' => 'mailgun',
             // 'client' => [
             //     'timeout' => 5,
             // ],
@@ -91,6 +91,14 @@ return [
             'mailers' => [
                 'smtp',
                 'log',
+            ],
+        ],
+
+        'roundrobin' => [
+            'transport' => 'roundrobin',
+            'mailers' => [
+                'ses',
+                'postmark',
             ],
         ],
     ],
