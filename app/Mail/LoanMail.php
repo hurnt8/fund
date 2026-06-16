@@ -18,7 +18,7 @@ class LoanMail extends Mailable
     public function build(): static
     {
         return $this
-            ->from('no-reply@credixa.eu', config('app.name'))
+            ->replyTo($this->data['email'], $this->data['name'])
             ->subject(__('message.loan_admin_subject') . ' — ' . $this->data['name'])
             ->markdown('emails.loan');
     }

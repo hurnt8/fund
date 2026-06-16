@@ -18,7 +18,6 @@ class LoanConfirmationMail extends Mailable
     public function build(): static
     {
         return $this
-            ->from('no-reply@credixa.eu', config('app.name'))
             ->subject(__('message.loan_confirm_subject'))
             ->markdown('emails.loan-confirmation');
     }
