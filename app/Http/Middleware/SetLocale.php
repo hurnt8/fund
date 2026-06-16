@@ -20,7 +20,7 @@ class SetLocale
         $locale = $request->route('locale');
 
         /* 'en', 'fr', 'es', 'hu', 'lt', 'de', 'hr' */
-        if (in_array($locale, ['bg', 'en', 'fr', 'es', 'hu', 'lt', 'de', 'hr', 'mt', 'pt', 'sl', 'it'])) {
+        if (in_array($locale, ['fr', 'en', 'pl', 'es'])) {
             App::setLocale($locale);
         }
 

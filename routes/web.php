@@ -18,7 +18,7 @@ use App\Http\Controllers\ContactController;
 |
 */
 
-$supportedLocales = ['bg', 'en', 'fr', 'es', 'hu', 'lt', 'de', 'hr', 'mt', 'pt', 'sl', 'it'];
+$supportedLocales = ['fr', 'en', 'pl', 'es'];
 
 Route::get('/', function (Request $request) use ($supportedLocales) {
     $locale = 'en';
