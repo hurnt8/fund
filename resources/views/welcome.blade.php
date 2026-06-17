@@ -387,40 +387,84 @@ $serviceNav = [
 </section>
 
 {{-- ============================================================
-     TESTIMONIALS
+     TESTIMONIALS — Swiper carousel
 ============================================================ --}}
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<style>
+.testimonials-swiper { padding-bottom: 3rem !important; overflow: visible; }
+.testimonials-swiper .swiper-wrapper { align-items: stretch; }
+.testimonials-swiper .swiper-slide { height: auto; display: flex; }
+.testimonials-swiper .swiper-slide .testimonial-card { flex: 1; display: flex; flex-direction: column; }
+.testimonials-swiper .swiper-slide .testimonial-card__quote { flex: 1; }
+.testimonials-swiper .swiper-pagination { bottom: 0; }
+.testimonials-swiper .swiper-pagination-bullet { background: var(--navy); opacity: .3; width: 8px; height: 8px; transition: all .3s; }
+.testimonials-swiper .swiper-pagination-bullet-active { background: var(--gold); opacity: 1; width: 24px; border-radius: 4px; }
+</style>
+@endpush
+
 <section class="py-24" style="background:var(--cream);" id="testimonials">
     <div class="container">
         <div class="text-center mb-14">
             <div class="section-label justify-content-center">{{ __('home.testimonials_title') }}</div>
             <h2 class="section-title">{{ __('home.testimonials_title') }}</h2>
         </div>
-        <div class="row g-4 gutter-y-30">
-            @foreach ([
-                ['quote' => __('home.testimonial_1.quote'), 'name' => 'Michael G. Ware',  'role' => 'Client'],
-                ['quote' => __('home.testimonial_2.quote'), 'name' => 'Mike Hardson',      'role' => 'Client'],
-                ['quote' => __('home.testimonial_3.quote'), 'name' => 'Judith White',      'role' => 'Cliente'],
-            ] as $i => $t)
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="800ms" data-wow-delay="{{ $i*80 }}ms">
-                <div class="testimonial-card">
-                    <p class="testimonial-card__quote">{{ $t['quote'] }}</p>
-                    <div class="testimonial-card__author">
-                        <div style="width:44px;height:44px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:700;font-size:1.125rem;flex-shrink:0;">
-                            {{ strtoupper(substr($t['name'],0,1)) }}
-                        </div>
-                        <div>
-                            <p class="testimonial-card__name">{{ $t['name'] }}</p>
-                            <div class="testimonial-card__stars">
-                                @for($s=0;$s<5;$s++)<i class="fas fa-star"></i>@endfor
+
+        <div class="swiper testimonials-swiper">
+            <div class="swiper-wrapper">
+                @foreach (range(1, 6) as $i)
+                @php $t = __('home.testimonial_' . $i); @endphp
+                <div class="swiper-slide">
+                    <div class="testimonial-card" style="width:100%;">
+                        <p class="testimonial-card__quote">{{ $t['quote'] }}</p>
+                        <div class="testimonial-card__author">
+                            <div style="width:44px;height:44px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:700;font-size:1.125rem;flex-shrink:0;">
+                                {{ strtoupper(substr($t['name'], 0, 1)) }}
+                            </div>
+                            <div>
+                                <p class="testimonial-card__name">{{ $t['name'] }}</p>
+                                @if (!empty($t['location']))
+                                <p style="font-size:.75rem;color:#999;margin:0 0 .2rem;">{{ $t['location'] }}</p>
+                                @endif
+                                <div class="testimonial-card__stars">
+                                    @for($s=0;$s<5;$s++)<i class="fas fa-star"></i>@endfor
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
+            <div class="swiper-pagination"></div>
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+new Swiper('.testimonials-swiper', {
+    loop: true,
+    speed: 700,
+    autoplay: {
+        delay: 4500,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+    },
+    slidesPerView: 1,
+    spaceBetween: 24,
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    },
+    breakpoints: {
+        640:  { slidesPerView: 1, spaceBetween: 20 },
+        768:  { slidesPerView: 2, spaceBetween: 24 },
+        1024: { slidesPerView: 3, spaceBetween: 30 },
+    },
+});
+</script>
+@endpush
 
 {{-- ============================================================
      CTA BANNER

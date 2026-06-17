@@ -72,49 +72,34 @@ return [
     'testimonials_title' => 'Testimonios',
     'testimonials_description' => 'Descubra lo que nuestros clientes dicen sobre nosotros.',
     'testimonial_1' => [
-        'quote' => '"Estoy muy satisfecho con el servicio. El proceso de solicitud del préstamo fue rápido y sencillo. Recibí la aprobación en tan solo unos días y las tasas fueron competitivas. ¡Muchas gracias!"',
-        'name' => 'Julie B.',
+        'quote'    => '«Solicité un préstamo hipotecario tras varios rechazos en mi banco habitual. Credixa Invest estudió mi caso con detalle y me aprobó la financiación en cinco días. El tipo de interés fue mejor de lo esperado. Muy recomendable.»',
+        'name'     => 'Carlos García',
+        'location' => 'Madrid, España',
     ],
     'testimonial_2' => [
-        'quote' => '"Recomiendo ampliamente este servicio de préstamo. El equipo fue muy profesional y servicial. Respondieron todas mis preguntas e hicieron que el proceso fuera libre de estrés. ¡Gracias por su excelente servicio!"',
-        'name' => 'Pierre L.',
+        'quote'    => '«El proceso fue completamente digital y muy intuitivo. Me asignaron un asesor personal que me llamó en cada fase para explicarme los pasos. Nunca me sentí perdida ni presionada. Un servicio de diez.»',
+        'name'     => 'María López',
+        'location' => 'Barcelona, España',
     ],
     'testimonial_3' => [
-        'quote' => '"El proceso de solicitud de préstamo fue transparente
-          y eficiente. Recibí asesoramiento profesional y personalizado durante todo
-          durante todo el proceso. Gracias a todo el equipo por su excelente
-          ¡trabajar!"',
-        'name' => 'Sophie D.',
+        'quote'    => '«Necesitaba financiación para ampliar mi taller mecánico y los bancos me pedían avales imposibles. Credixa analizó mi facturación real y me concedió el préstamo empresarial que necesitaba. Gracias al equipo.»',
+        'name'     => 'Antonio Martínez',
+        'location' => 'Sevilla, España',
     ],
     'testimonial_4' => [
-        'quote' => '"Obtener un préstamo con esta empresa fue una
-          Experiencia sin complicaciones. El personal era amable y eficiente, y el
-          El proceso fue rápido y eficiente. ¡Lo recomiendo altamente!"',
-        'name' => 'Marc F.',
+        'quote'    => '«Pedí un préstamo personal para reformar la cocina de casa. La respuesta llegó en menos de 24 horas y el dinero estaba en mi cuenta al día siguiente. Rapidez y profesionalidad al máximo nivel.»',
+        'name'     => 'Isabel Rodríguez',
+        'location' => 'Valencia, España',
     ],
     'testimonial_5' => [
-        'quote' => '"¡Excelente servicio al cliente! Me guiaron a través de
-          cada paso del proceso de préstamo y mis preguntas fueron respondidas
-          rápidamente. Estoy muy satisfecho con el resultado final."',
-        'name' => 'Nathalie P.',
+        'quote'    => '«Lo que más valoré fue la transparencia total: sin comisiones ocultas, sin letra pequeña engañosa. Desde el primer momento supe exactamente cuánto iba a pagar cada mes. Eso genera mucha confianza.»',
+        'name'     => 'Juan Hernández',
+        'location' => 'Bilbao, España',
     ],
     'testimonial_6' => [
-        'quote' => '"Muy buena tasa de interés y proceso rápido. Yo
-          Recomiendo encarecidamente este servicio a cualquiera que necesite un préstamo.
-          rápido y confiable."',
-        'name' => 'Luc M.',
-    ],
-    'testimonial_7' => [
-        'quote' => '"Proceso de préstamo simple y eficiente. He estado
-          Gratamente sorprendido por la velocidad de aprobación. Gracias a todos
-          ¡el equipo!"',
-        'name' => 'María C.',
-    ],
-    'testimonial_8' => [
-        'quote' => '"Tuve una excelente experiencia con este servicio
-          préstamo. El personal fue atento y profesional. recomiendo
-          ¡No puedo esperar!"',
-        'name' => 'Jean L.',
+        'quote'    => '«Mi situación laboral como autónoma complicaba la obtención de crédito. Credixa valoró mis ingresos reales y me ofreció condiciones adaptadas a mi perfil. Por fin una entidad que entiende la realidad de los trabajadores independientes.»',
+        'name'     => 'Carmen Fernández',
+        'location' => 'Málaga, España',
     ],
 
     'about_title' => 'Únase al mejor mercado para trabajadores del mundo',

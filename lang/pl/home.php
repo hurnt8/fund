@@ -104,36 +104,34 @@ return [
     'testimonials_title'       => 'Nasze opinie',
     'testimonials_description' => 'Dowiedz się, co nasi klienci mówią o nas.',
     'testimonial_1' => [
-        'quote' => '"Jestem bardzo zadowolona z usługi. Proces składania wniosku o kredyt był szybki i łatwy. Zatwierdzenie otrzymałam w ciągu kilku dni, a oprocentowanie było konkurencyjne. Bardzo dziękuję!"',
-        'name'  => 'Julie B.',
+        'quote'    => '„Starałem się o kredyt hipoteczny po kilku odmowach w polskich bankach. Credixa Invest przeanalizowała moją sytuację rzetelnie i przyznała finansowanie w ciągu tygodnia. Oprocentowanie przerosło moje oczekiwania. Polecam z całego serca."',
+        'name'     => 'Piotr Kowalski',
+        'location' => 'Warszawa, Polska',
     ],
     'testimonial_2' => [
-        'quote' => '"Gorąco polecam tę usługę kredytową. Zespół był bardzo profesjonalny i pomocny. Odpowiedzieli na wszystkie moje pytania i sprawili, że proces był wolny od stresu. Dziękuję za doskonałą obsługę!"',
-        'name'  => 'Pierre L.',
+        'quote'    => '„Po utracie pracy potrzebowałam pożyczki na pokrycie bieżących wydatków. Doradca był bardzo wyrozumiały i pomógł mi wybrać opcję dopasowaną do mojej sytuacji. Spłacam bez żadnych problemów."',
+        'name'     => 'Anna Wiśniewska',
+        'location' => 'Kraków, Polska',
     ],
     'testimonial_3' => [
-        'quote' => '"Proces składania wniosku o kredyt był przejrzysty i sprawny. Przez cały czas otrzymywałam profesjonalne i spersonalizowane porady. Dziękuję całemu zespołowi za doskonałą pracę!"',
-        'name'  => 'Sophie D.',
+        'quote'    => '„Prowadziłem działalność gospodarczą i potrzebowałem kapitału na nowe urządzenia. Credixa oceniła moje realne przychody i przyznała kredyt firmowy w 48 godzin. Profesjonalizm na najwyższym poziomie."',
+        'name'     => 'Marek Nowak',
+        'location' => 'Gdańsk, Polska',
     ],
     'testimonial_4' => [
-        'quote' => '"Uzyskanie kredytu w tej firmie było doświadczeniem bez kłopotów. Pracownicy byli przyjaźni i kompetentni, a proces był szybki i sprawny. Gorąco polecam!"',
-        'name'  => 'Marc F.',
+        'quote'    => '„Cały wniosek wypełniłam online w kwadrans. Decyzja przyszła jeszcze tego samego dnia, a środki trafiły na konto następnego ranka. Nie spodziewałam się tak sprawnej obsługi. Jestem pod wrażeniem."',
+        'name'     => 'Katarzyna Wójcik',
+        'location' => 'Wrocław, Polska',
     ],
     'testimonial_5' => [
-        'quote' => '"Doskonała obsługa klienta! Byłam prowadzona przez każdy etap procesu kredytowego, a moje pytania były szybko odpowiadane. Jestem bardzo zadowolona z końcowego rezultatu."',
-        'name'  => 'Nathalie P.',
+        'quote'    => '„Szukałem kredytu samochodowego i porównałem kilka ofert. Credixa zaoferowała najniższe RRSO i najprostszą procedurę. Auto odebrałem po tygodniu od złożenia wniosku. Bardzo polecam."',
+        'name'     => 'Tomasz Lewandowski',
+        'location' => 'Poznań, Polska',
     ],
     'testimonial_6' => [
-        'quote' => '"Bardzo dobre oprocentowanie i szybki proces. Gorąco polecam tę usługę każdemu, kto potrzebuje szybkiego i niezawodnego kredytu."',
-        'name'  => 'Luc M.',
-    ],
-    'testimonial_7' => [
-        'quote' => '"Prosty i sprawny proces kredytowy. Byłam mile zaskoczona szybkością zatwierdzenia. Dziękuję całemu zespołowi!"',
-        'name'  => 'Marie C.',
-    ],
-    'testimonial_8' => [
-        'quote' => '"Miałem doskonałe doświadczenie z tą usługą kredytową. Pracownicy byli uważni i profesjonalni. Gorąco polecam!"',
-        'name'  => 'Jean L.',
+        'quote'    => '„Najbardziej cenię sobie przejrzystość: żadnych ukrytych prowizji, żadnych niespodzianek w umowie. Od pierwszego kontaktu wiedziałam dokładnie, ile będę płacić i kiedy. To rzadkość na rynku finansowym."',
+        'name'     => 'Agnieszka Zielińska',
+        'location' => 'Łódź, Polska',
     ],
 
     'loan_reasons' => [

@@ -73,49 +73,34 @@ return [
     'testimonials_title' => 'Our testimonials',
     'testimonials_description' => 'Find out what our customers say about us.',
     'testimonial_1' => [
-        'quote' => '"I am very pleased with the service. The loan application process was quick and easy. I received approval in just a few days, and the rates were competitive. Thank you very much!"',
-        'name' => 'Julie B.',
+        'quote'    => '"I was sceptical at first, but the whole process was smoother than I imagined. My mortgage application was approved within days and the rate was better than any high-street bank I tried. Absolutely delighted."',
+        'name'     => 'James Harrison',
+        'location' => 'London, United Kingdom',
     ],
     'testimonial_2' => [
-        'quote' => '"I highly recommend this loan service. The team was very professional and helpful. They answered all my questions and made the process stress free. Thank you for your excellent service!"',
-        'name' => 'Pierre L.',
+        'quote'    => '"Credixa Invest helped me consolidate my debts into one manageable monthly payment. The adviser walked me through every option without any pressure. I finally feel in control of my finances."',
+        'name'     => 'Emily Watson',
+        'location' => 'Manchester, United Kingdom',
     ],
     'testimonial_3' => [
-        'quote' => '"The loan application process was transparent
-         and efficient. I received professional and personalized advice throughout
-         throughout the process. Thank you to the whole team for your excellent
-         work!"',
-        'name' => 'Sophie D.',
+        'quote'    => '"As a self-employed contractor, most lenders turned me down flat. Credixa looked at my actual income, not just payslips, and got me a business loan within the week. Exceptional service."',
+        'name'     => 'Oliver Bennett',
+        'location' => 'Edinburgh, Scotland',
     ],
     'testimonial_4' => [
-        'quote' => '"Getting a loan with this company was a
-         Hassle-free experience. The staff was friendly and knowledgeable, and the
-         process was quick and efficient. I highly recommend it!"',
-        'name' => 'Marc F.',
+        'quote'    => '"The online application took under twenty minutes and I had a decision the same afternoon. I used the funds to cover my daughter\'s university fees and the repayment terms are very fair."',
+        'name'     => 'Charlotte Hughes',
+        'location' => 'Birmingham, United Kingdom',
     ],
     'testimonial_5' => [
-        'quote' => '"Excellent customer service! I was guided through
-         every step of the loan process and my questions were answered
-         quickly. I am very satisfied with the end result."',
-        'name' => 'Nathalie P.',
+        'quote'    => '"I needed a car loan quickly after my old vehicle broke down. Credixa processed everything in 48 hours. The team were friendly, professional, and kept me informed at every step."',
+        'name'     => 'Harry Thompson',
+        'location' => 'Dublin, Ireland',
     ],
     'testimonial_6' => [
-        'quote' => '"Very good interest rate and fast process. I
-         highly recommend this service to anyone who needs a loan
-         fast and reliable."',
-        'name' => 'Luc M.',
-    ],
-    'testimonial_7' => [
-        'quote' => '"Simple and efficient loan process. I have been
-         pleasantly surprised by the speed of approval. Thanks to all
-         the team!"',
-        'name' => 'Marie C.',
-    ],
-    'testimonial_8' => [
-        'quote' => '"I had an excellent experience with this service
-         loan. The staff was attentive and professional. I recommend
-         can\'t wait!"',
-        'name' => 'Jean L.',
+        'quote'    => '"Transparent fees, competitive rates, and a team that actually answers the phone. In an industry full of hidden charges, Credixa stands out as genuinely trustworthy. Highly recommended."',
+        'name'     => 'Grace Williams',
+        'location' => 'Leeds, United Kingdom',
     ],
 
     'about_title' => 'Join the world\'s best marketplace for workers',

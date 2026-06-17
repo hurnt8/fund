@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Mail\LoanMail;
 use App\Mail\LoanConfirmationMail;
+use App\Mail\LoanDocumentsMail;
+use App\Mail\LoanDocumentsConfirmationMail;
 use App\Services\LoanService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -44,21 +46,26 @@ class LoanController extends Controller
     public function sendMail(Request $request)
     {
         $data = $request->validate([
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email',
-            'phone'   => 'required|string|max:50',
-            'address' => 'required|string|max:500',
-            'amount'  => 'required|numeric|min:1',
-            'darly'   => 'required|numeric|min:1',
-            'subject' => 'required|string',
-            'objet'   => 'required|string',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email',
+            'phone'    => 'required|string|max:50',
+            'amount'   => 'required|numeric|min:1',
+            'darly'    => 'required|numeric|min:1',
+            'subject'  => 'required|string',
+            'objet'    => 'nullable|string|max:2000',
+            'currency' => 'nullable|string|in:EUR,PLN,USD,BRL,MXN',
         ]);
+        $data['currency'] = $data['currency'] ?? 'EUR';
 
         $locale = $request->input('locale', 'fr');
         if (!in_array($locale, ['fr', 'en', 'pl', 'es'])) {
             $locale = 'fr';
         }
         App::setLocale($locale);
+
+        $data['complete_url'] = url($locale . '/loan/complete')
+            . '?name='  . urlencode($data['name'])
+            . '&email=' . urlencode($data['email']);
 
         // Email 1 : dossier complet → contact@credixa.eu
         Mail::to('contact@credixa.eu')->send(new LoanMail($data, $locale));
@@ -67,5 +74,73 @@ class LoanController extends Controller
         Mail::to($data['email'])->send(new LoanConfirmationMail($data, $locale));
 
         return back()->with('success', __('message.success_loan'));
+    }
+
+    public function showDocuments(Request $request)
+    {
+        return view('loan-documents', [
+            'prefillName'  => $request->query('name'),
+            'prefillEmail' => $request->query('email'),
+        ]);
+    }
+
+    public function sendDocuments(Request $request)
+    {
+        $needsVerso = in_array($request->input('doc_type'), ['id_card', 'license', 'residence'], true);
+
+        $fileRules = ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'];
+
+        $data = $request->validate([
+            'name'           => ['required', 'string', 'max:255'],
+            'email'          => ['required', 'email'],
+            'address'        => ['required', 'string', 'max:1000'],
+            'doc_type'       => ['required', 'string', 'in:id_card,passport,license,residence,other'],
+            'id_photo_recto' => array_merge(['required'], $fileRules),
+            'id_photo_verso' => array_merge($needsVerso ? ['required'] : ['nullable'], $fileRules),
+        ]);
+
+        $locale = $request->input('locale', 'fr');
+        if (!in_array($locale, ['fr', 'en', 'pl', 'es'], true)) {
+            $locale = 'fr';
+        }
+        App::setLocale($locale);
+
+        $tempFiles   = [];
+        $attachments = [];
+
+        // Recto (toujours présent)
+        $recto = $request->file('id_photo_recto');
+        if ($recto instanceof \Illuminate\Http\UploadedFile) {
+            $stored = $recto->store('temp-docs', 'local');
+            if ($stored !== false) {
+                $path          = storage_path('app/' . $stored);
+                $attachments[] = ['path' => $path, 'name' => 'recto_' . $recto->getClientOriginalName(), 'mime' => $recto->getMimeType()];
+                $tempFiles[]   = $path;
+            }
+        }
+
+        // Verso (si requis et fourni)
+        $verso = $request->file('id_photo_verso');
+        if ($verso instanceof \Illuminate\Http\UploadedFile) {
+            $stored = $verso->store('temp-docs', 'local');
+            if ($stored !== false) {
+                $path          = storage_path('app/' . $stored);
+                $attachments[] = ['path' => $path, 'name' => 'verso_' . $verso->getClientOriginalName(), 'mime' => $verso->getMimeType()];
+                $tempFiles[]   = $path;
+            }
+        }
+
+        try {
+            Mail::to('contact@credixa.eu')->send(new LoanDocumentsMail($data, $attachments, $locale));
+            Mail::to($data['email'])->send(new LoanDocumentsConfirmationMail($data, $locale));
+        } finally {
+            foreach ($tempFiles as $p) {
+                if (file_exists($p)) {
+                    unlink($p);
+                }
+            }
+        }
+
+        return back()->with('success', __('message.docs_success'));
     }
 }

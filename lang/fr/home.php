@@ -73,49 +73,34 @@ return [
     'testimonials_title' => 'Témoignages',
     'testimonials_description' => 'Découvrez ce que nos clients disent de nous.',
     'testimonial_1' => [
-        'quote' => '"Je suis très satisfait du service. Le processus de demande de prêt était simple et rapide. J\'ai reçu l\'approbation en quelques jours seulement, et les taux étaient compétitifs. Merci beaucoup!"',
-        'name' => 'Julie B.',
+        'quote' => '« J\'ai obtenu mon prêt immobilier en moins d\'une semaine. Le conseiller a été d\'une disponibilité remarquable et les conditions proposées étaient bien en dessous de ce que je trouvais ailleurs. Je recommande sans hésiter. »',
+        'name'  => 'Jean-Pierre Moreau',
+        'location' => 'Paris, France',
     ],
     'testimonial_2' => [
-        'quote' => '"Je recommande vivement ce service de prêt. L\'équipe était très professionnelle et serviable. Ils ont répondu à toutes mes questions et ont rendu le processus sans stress. Merci pour votre excellent service!"',
-        'name' => 'Pierre L.',
+        'quote' => '« Après deux refus en banque traditionnelle, Credixa Invest m\'a accordé un prêt personnel en 48 h. L\'équipe a su étudier mon dossier avec sérieux et bienveillance. Merci infiniment ! »',
+        'name'  => 'Isabelle Dupont',
+        'location' => 'Lyon, France',
     ],
     'testimonial_3' => [
-        'quote' => '"Le processus de demande de prêt était transparent
-        et efficace. J\'ai reçu des conseils professionnels et personnalisés tout
-        au long du processus. Merci à toute l\'équipe pour votre excellent
-        travail!"',
-        'name' => 'Sophie D.',
+        'quote' => '« Démarche 100 % en ligne, réponse rapide, taux compétitif. J\'ai financé ma voiture sans me déplacer une seule fois en agence. Un service moderne et efficace. »',
+        'name'  => 'Thomas Renard',
+        'location' => 'Bordeaux, France',
     ],
     'testimonial_4' => [
-        'quote' => '"Obtenir un prêt avec cette entreprise a été une
-        expérience sans tracas. Le personnel était amical et compétent, et le
-        processus était rapide et efficace. Je le recommande vivement!"',
-        'name' => 'Marc F.',
+        'quote' => '« Le suivi personnalisé m\'a vraiment impressionnée. Mon conseiller m\'a appelée à chaque étape pour m\'expliquer l\'avancement de mon dossier. On se sent accompagné, pas seul face aux formulaires. »',
+        'name'  => 'Céline Fontaine',
+        'location' => 'Marseille, France',
     ],
     'testimonial_5' => [
-        'quote' => '"Excellent service client! J\'ai été guidé à travers
-        chaque étape du processus de prêt et mes questions ont été répondues
-        rapidement. Je suis très satisfait du résultat final."',
-        'name' => 'Nathalie P.',
+        'quote' => '« Simulateur clair, dossier simple, virement reçu en trois jours ouvrés. J\'avais besoin de financer des travaux urgents et Credixa a répondu présent au bon moment. »',
+        'name'  => 'Aurélien Leclerc',
+        'location' => 'Nantes, France',
     ],
     'testimonial_6' => [
-        'quote' => '"Très bon taux d\'intérêt et processus rapide. Je
-        recommande fortement ce service à tous ceux qui ont besoin d\'un prêt
-        rapide et fiable."',
-        'name' => 'Luc M.',
-    ],
-    'testimonial_7' => [
-        'quote' => '"Processus de prêt simple et efficace. J\'ai été
-        agréablement surpris par la rapidité de l\'approbation. Merci à toute
-        l\'équipe!"',
-        'name' => 'Marie C.',
-    ],
-    'testimonial_8' => [
-        'quote' => '"J\'ai eu une excellente expérience avec ce service
-        de prêt. Le personnel était attentif et professionnel. Je recommande
-        vivement!"',
-        'name' => 'Jean L.',
+        'quote' => '« La transparence sur les taux et les frais m\'a convaincue dès le premier contact. Aucune mauvaise surprise en cours de route. C\'est rare et précieux dans ce secteur. »',
+        'name'  => 'Sandrine Bouchard',
+        'location' => 'Strasbourg, France',
     ],
 
     'about_title' => 'Rejoignez le meilleur marché mondial pour les travailleurs',

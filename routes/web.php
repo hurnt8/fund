@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoanController;
 use Illuminate\Support\Facades\Redirect;
@@ -69,6 +68,8 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setLocale'], function () 
         return view('apply-loan');
     })->name('loan');
 
+    Route::get('/loan/complete', [LoanController::class, 'showDocuments'])->name('loan.complete');
+
     Route::get('/terms', function () {
         return view('terms');
     })->name('terms');
@@ -114,3 +115,4 @@ Route::post('/loan/simulate', [LoanController::class, 'simulate'])->name('loan.s
 Route::post('/contact/send', [ContactController::class, 'sendMail'])->name('contact.send');
 Route::post('/subscribe/send', [ContactController::class, 'subscribeMail'])->name('subscribe.send');
 Route::post('/loan/request', [LoanController::class, 'sendMail'])->name('loan.request');
+Route::post('/loan/documents', [LoanController::class, 'sendDocuments'])->name('loan.documents');

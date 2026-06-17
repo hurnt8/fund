@@ -11,16 +11,16 @@
 
 **{{ __('loan.label_phone') }} :** {{ $data['phone'] }}
 
-**{{ __('loan.label_address') }} :** {{ $data['address'] }}
-
-**{{ __('loan.label_amount') }} :** {{ number_format($data['amount'], 0, ',', ' ') }} €
+**{{ __('loan.label_amount') }} :** {{ number_format($data['amount'], 0, ',', ' ') }} {{ $data['currency'] ?? 'EUR' }}
 
 **{{ __('loan.label_darly') }} :** {{ $data['darly'] }} {{ __('message.months') }}
 
-**{{ __('loan.label_objet') }} :** {{ $data['subject'] }}
+**{{ __('contact.subject') }} :** {{ $data['subject'] }}
 
+@if (!empty($data['objet']))
 ---
 
 **{{ __('loan.label_objet') }} :** {{ $data['objet'] }}
+@endif
 
 </x-mail::message>
