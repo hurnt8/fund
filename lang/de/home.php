@@ -179,7 +179,7 @@ return [
 
     // Slide
     'slide_1' => [
-        'title' => '✓ Seit 1990 · Lizenziert · Antwort in 24h',
+        'title' => ' Seit 1990 · Lizenziert · Antwort in 24h',
         'text1' => 'Finanzieren Sie alle Projekte,',
         'text2' => 'bis zu 95.000 € in 24h.',
     ],

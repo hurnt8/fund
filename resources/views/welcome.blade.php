@@ -78,7 +78,7 @@
                 <div class="hero-pills d-flex flex-wrap gap-2 mb-4">
                     @foreach([
                         ['fas fa-bolt',       __('home.infos.item1')],
-                        ['fas fa-lock',       __('home.infos.item3')],
+                        ['fas fa-coins',      __('home.infos.item3')],
                         ['fas fa-sync-alt',   __('home.infos.item4')],
                     ] as $pill)
                     <span style="display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:.3rem .85rem;color:rgba(255,255,255,.85);font-size:.78rem;font-weight:500;">
@@ -145,7 +145,7 @@
                         <div class="hero-trust__icon"><i class="fas fa-history"></i></div>
                         <div>
                             <div class="hero-trust__label">{{ __('home.about.exptitle') }}</div>
-                            <div class="hero-trust__value">34+</div>
+                            <div class="hero-trust__value">5</div>
                         </div>
                     </div>
                 </div>
@@ -192,45 +192,127 @@ $serviceNav = [
 {{-- ============================================================
      ABOUT
 ============================================================ --}}
+@push('styles')
+<style>
+/* ── About section ── */
+.about-engage-card {
+    display:flex; gap:1rem; padding:1rem 1.25rem;
+    background:var(--cream); border-radius:12px;
+    border-left:3px solid var(--gold); margin-bottom:.75rem;
+}
+.about-engage-icon {
+    width:42px; height:42px; flex-shrink:0; border-radius:10px;
+    background:var(--gold-pale); display:flex; align-items:center;
+    justify-content:center; color:var(--gold-dark); font-size:1rem;
+}
+.about-engage-title { font-size:.875rem; font-weight:800; color:var(--navy); margin-bottom:.2rem; }
+.about-engage-desc  { font-size:.78rem; color:#6b7280; margin:0; line-height:1.55; }
+
+.about-loan-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:.4rem .75rem; margin-bottom:1.25rem;
+}
+.about-loan-item {
+    display:flex; align-items:center; gap:.55rem;
+    font-size:.82rem; font-weight:600; color:var(--navy); padding:.4rem 0;
+    border-bottom:1px solid #f3f4f6;
+}
+.about-loan-item i { color:var(--gold); width:16px; text-align:center; font-size:.8rem; }
+
+.about-partner-bar {
+    display:flex; flex-wrap:wrap; align-items:center; gap:.55rem;
+    padding:.75rem 1rem; background:#f7f8fa; border-radius:10px;
+    border:1px solid #eaecf0; margin-bottom:1.5rem;
+}
+.about-partner-bar__lbl { font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; color:#9ca3af; margin-right:.2rem; white-space:nowrap; }
+.about-partner-bar img  { height:20px; width:auto; opacity:.5; filter:grayscale(1); transition:opacity .25s,filter .25s; }
+.about-partner-bar img:hover { opacity:1; filter:grayscale(0); }
+</style>
+@endpush
+
 <section class="py-24 bg-white" id="about">
     <div class="container">
         <div class="row gutter-y-60 align-items-center">
 
+            {{-- ── Image ── --}}
             <div class="col-lg-6 wow fadeInLeft" data-wow-duration="1000ms">
                 <div class="about-image-wrap">
-                    <img src="{{ asset('assets/images/about/about-2-1.jpg') }}"
-                         alt="Credixa" class="about-image-main">
-                    <img src="{{ asset('assets/images/about/about-2-2.jpg') }}"
-                         alt="" class="about-image-secondary">
+                    <img src="{{ asset('assets/images/about/about-3-1.jpg') }}"
+                         alt="Credixa — conseiller financier" class="about-image-main">
+                    <img src="{{ asset('assets/images/about/about-3-3.jpg') }}"
+                         alt="Conseiller avec clients" class="about-image-secondary"
+                         style="width:38%;right:1rem;bottom:1rem;">
                     <div class="about-badge">
-                        <span class="about-badge__number">34+</span>
+                        <span class="about-badge__number">5</span>
                         <span class="about-badge__label">{{ __('home.about.exptitle') }}</span>
                     </div>
                 </div>
             </div>
 
+            {{-- ── Contenu ── --}}
             <div class="col-lg-6 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="150ms">
+
                 <div class="section-label">{{ __('home.about.sectagline') }}</div>
                 <h2 class="section-title">{{ __('home.about.sectitle') }}</h2>
 
-                <div class="about-highlight mb-4">
-                    <i class="fas fa-coins about-highlight__icon"></i>
-                    <p class="about-highlight__text">{{ __('home.about.text1') }}</p>
-                </div>
-
-                <p class="mb-5" style="color:var(--gray-500);font-size:.9375rem;line-height:1.8;">
+                <p style="color:var(--gray-500);font-size:.9375rem;line-height:1.8;margin-bottom:1.5rem;">
                     {{ __('home.about.text2') }}
                 </p>
 
-                <ul class="checklist mb-6">
-                    <li><i class="fas fa-check-circle checklist__icon"></i>{{ __('home.about.check1') }}</li>
-                    <li><i class="fas fa-check-circle checklist__icon"></i>{{ __('home.about.check2') }}</li>
-                </ul>
+                {{-- 3 engagements clés --}}
+                <div class="about-engage-card">
+                    <div class="about-engage-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <div class="about-engage-title">{{ __('home.about.engage1_title') }}</div>
+                        <p class="about-engage-desc">{{ __('home.about.engage1_desc') }}</p>
+                    </div>
+                </div>
+                <div class="about-engage-card">
+                    <div class="about-engage-icon"><i class="fas fa-bolt"></i></div>
+                    <div>
+                        <div class="about-engage-title">{{ __('home.about.engage2_title') }}</div>
+                        <p class="about-engage-desc">{{ __('home.about.engage2_desc') }}</p>
+                    </div>
+                </div>
+                <div class="about-engage-card" style="margin-bottom:1.5rem;">
+                    <div class="about-engage-icon"><i class="fas fa-globe"></i></div>
+                    <div>
+                        <div class="about-engage-title">{{ __('home.about.engage3_title') }}</div>
+                        <p class="about-engage-desc">{{ __('home.about.engage3_desc') }}</p>
+                    </div>
+                </div>
 
-                <a href="{{ route('about', ['locale' => $locale]) }}" class="btn-primary btn-primary--lg">
-                    @lang('menu.about')
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+                {{-- Types de prêts --}}
+                <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);margin-bottom:.6rem;">
+                    <i class="fas fa-tags" style="color:var(--gold);margin-right:.35rem;"></i>@lang('home.discover_our_loan_services')
+                </div>
+                <div class="about-loan-grid">
+                    <div class="about-loan-item"><i class="fas fa-user-tie"></i> @lang('home.personal_loan')</div>
+                    <div class="about-loan-item"><i class="fas fa-home"></i> @lang('home.mortgage_loan')</div>
+                    <div class="about-loan-item"><i class="fas fa-car"></i> @lang('home.auto_loan')</div>
+                    <div class="about-loan-item"><i class="fas fa-graduation-cap"></i> @lang('home.student_loan')</div>
+                    <div class="about-loan-item"><i class="fas fa-briefcase"></i> @lang('home.business_loan')</div>
+                    <div class="about-loan-item"><i class="fas fa-credit-card"></i> @lang('home.microcredit')</div>
+                </div>
+
+                {{-- Partenaires bancaires --}}
+                <div class="about-partner-bar">
+                    <span class="about-partner-bar__lbl">@lang('home.partners_label') :</span>
+                    <img src="{{ asset('images/partners/bnpparibas.svg') }}" alt="BNP Paribas">
+                    <img src="{{ asset('images/partners/santander.svg') }}" alt="Santander">
+                    <img src="{{ asset('images/partners/pko.svg') }}" alt="PKO Bank Polski">
+                    <img src="{{ asset('images/partners/revolut.svg') }}" alt="Revolut">
+                    <img src="{{ asset('images/partners/bbva.svg') }}" alt="BBVA">
+                </div>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ route('loan', ['locale' => $locale]) }}" class="btn-primary btn-primary--lg">
+                        <i class="fas fa-file-signature"></i> @lang('menu.loan')
+                    </a>
+                    <a href="{{ route('about', ['locale' => $locale]) }}" class="btn-outline">
+                        @lang('menu.about') <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
             </div>
 
         </div>
@@ -364,10 +446,10 @@ $serviceNav = [
         <div class="row gutter-y-0">
             @php
             $stats = [
-                ['stop'=>'8500', 'suffix'=>'+', 'prefix'=>'',  'label'=> __('home.customer_satisfaction_rate')],
+                ['stop'=>'2500', 'suffix'=>'+', 'prefix'=>'',  'label'=> __('home.customer_satisfaction_rate')],
                 ['stop'=>'95',   'suffix'=>'k', 'prefix'=>'€', 'label'=> __('home.total_loan_amount_granted')],
-                ['stop'=>'99',   'suffix'=>'%', 'prefix'=>'',  'label'=> __('home.average_approval_time')],
-                ['stop'=>'550',  'suffix'=>'+', 'prefix'=>'',  'label'=> __('home.member')],
+                ['stop'=>'24',   'suffix'=>'h', 'prefix'=>'',  'label'=> __('home.average_approval_time')],
+                ['stop'=>'5',    'suffix'=>'+', 'prefix'=>'',  'label'=> __('home.years_experience')],
             ];
             @endphp
             @foreach ($stats as $i => $stat)
@@ -387,12 +469,53 @@ $serviceNav = [
 </section>
 
 {{-- ============================================================
+     BANQUES PARTENAIRES — après les stats (signal de confiance)
+============================================================ --}}
+@push('styles')
+<style>
+.partners-strip { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:1.1rem; }
+.partner-logo {
+    display:flex; align-items:center; justify-content:center;
+    padding:.8rem 1.5rem; min-width:120px; height:66px;
+    background:#fff; border:1.5px solid #e5e7eb; border-radius:12px;
+    filter:grayscale(1); opacity:.5;
+    transition:filter .3s ease, opacity .3s ease, border-color .3s ease, box-shadow .3s ease;
+    cursor:default;
+}
+.partner-logo:hover {
+    filter:grayscale(0); opacity:1;
+    border-color:var(--gold); box-shadow:0 4px 22px rgba(200,169,81,.2);
+}
+@media (max-width:576px) {
+    .partner-logo { min-width:100px; padding:.65rem 1rem; height:56px; }
+    .partners-strip { gap:.65rem; }
+}
+</style>
+@endpush
+
+<section class="py-10" style="background:#f7f8fa;border-top:1px solid #eaecf0;border-bottom:1px solid #eaecf0;">
+    <div class="container">
+        <p class="text-center" style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#9ca3af;margin-bottom:1.4rem;">
+            @lang('home.partners_label')
+        </p>
+        <div class="partners-strip">
+            <div class="partner-logo"><img src="{{ asset('images/partners/bnpparibas.svg') }}" alt="BNP Paribas" style="height:36px;width:auto;"></div>
+            <div class="partner-logo"><img src="{{ asset('images/partners/santander.svg') }}" alt="Santander" style="height:36px;width:auto;"></div>
+            <div class="partner-logo"><img src="{{ asset('images/partners/pko.svg') }}" alt="PKO Bank Polski" style="height:36px;width:auto;"></div>
+            <div class="partner-logo"><img src="{{ asset('images/partners/revolut.svg') }}" alt="Revolut" style="height:36px;width:auto;"></div>
+            <div class="partner-logo"><img src="{{ asset('images/partners/bbva.svg') }}" alt="BBVA" style="height:36px;width:auto;"></div>
+        </div>
+    </div>
+</section>
+
+{{-- ============================================================
      TESTIMONIALS — Swiper carousel
 ============================================================ --}}
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <style>
-.testimonials-swiper { padding-bottom: 3rem !important; overflow: visible; }
+.testimonials-swiper { padding-bottom: 3rem !important; overflow: hidden; isolation: isolate; }
+@media (min-width: 768px) { .testimonials-swiper { overflow: visible; } }
 .testimonials-swiper .swiper-wrapper { align-items: stretch; }
 .testimonials-swiper .swiper-slide { height: auto; display: flex; }
 .testimonials-swiper .swiper-slide .testimonial-card { flex: 1; display: flex; flex-direction: column; }

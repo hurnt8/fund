@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 70">
+  <!-- BNP Paribas — étoile 4 branches très effilées (diamant en croix) -->
+  <polygon points="35,4 40,30 65,35 40,40 35,66 30,40 5,35 30,30" fill="#00965E"/>
+  <!-- Wordmark -->
+  <text x="78" y="28" font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" font-size="24" fill="#00965E">BNP</text>
+  <text x="78" y="50" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" fill="#00965E" letter-spacing="2.5">PARIBAS</text>
+</svg>

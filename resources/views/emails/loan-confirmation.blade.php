@@ -17,7 +17,7 @@
 
 {{ __('message.loan_complete_intro') }}
 
-<x-mail::button :url="$completeUrl" color="primary">
+<x-mail::button :url="$data['complete_url']" color="primary">
 {{ __('message.loan_complete_btn') }}
 </x-mail::button>
 

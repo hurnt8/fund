@@ -179,7 +179,7 @@ return [
 
     // Slide
     'slide_1' => [
-        'title' => '✓ 1990 óta · Engedélyes · Válasz 24 órán belül',
+        'title' => ' 1990 óta · Engedélyes · Válasz 24 órán belül',
         'text1' => 'Finanszírozza összes projektjét,',
         'text2' => 'akár 95 000 € 24 órán belül.',
     ],

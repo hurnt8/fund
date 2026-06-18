@@ -179,7 +179,7 @@ return [
 
     // Slide
     'slide_1' => [
-        'title' => '✓ Nuo 1990 · Licencijuota · Atsakymas per 24h',
+        'title' => ' Nuo 1990 · Licencijuota · Atsakymas per 24h',
         'text1' => 'Finansuokite visus projektus,',
         'text2' => 'iki 95 000 € per 24h.',
     ],

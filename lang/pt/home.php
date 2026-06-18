@@ -167,7 +167,7 @@ return [
 
     // Slide
     'slide_1' => [
-        'title' => '✓ Desde 1990 · Autorizado · Resposta em 24h',
+        'title' => ' Desde 1990 · Autorizado · Resposta em 24h',
         'text1' => 'Financie todos os seus projetos,',
         'text2' => 'até 95 000 € em 24h.',
     ],

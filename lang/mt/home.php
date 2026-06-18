@@ -158,7 +158,7 @@ return [
 
     // Slide
     'slide_1' => [
-        'title' => '✓ Mill-1990 · Liċenzjat · Risposta fi 24h',
+        'title' => ' Mill-1990 · Liċenzjat · Risposta fi 24h',
         'text1' => 'Iffinanzja l-proġetti kollha tiegħek,',
         'text2' => 'sa €95,000 fi 24h.',
     ],

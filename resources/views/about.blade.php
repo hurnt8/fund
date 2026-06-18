@@ -4,6 +4,23 @@
 @section('content')
 @php $locale = app()->getLocale(); @endphp
 
+@push('styles')
+<style>
+.about-engage-card {
+    display:flex; gap:1rem; padding:1rem 1.25rem;
+    background:var(--cream); border-radius:12px;
+    border-left:3px solid var(--gold); margin-bottom:.75rem;
+}
+.about-engage-icon {
+    width:42px; height:42px; flex-shrink:0; border-radius:10px;
+    background:var(--gold-pale); display:flex; align-items:center;
+    justify-content:center; color:var(--gold-dark); font-size:1rem;
+}
+.about-engage-title { font-size:.875rem; font-weight:800; color:var(--navy); margin-bottom:.2rem; }
+.about-engage-desc  { font-size:.78rem; color:#6b7280; margin:0; line-height:1.55; }
+</style>
+@endpush
+
 {{-- Page hero --}}
 <div class="page-hero">
     <div class="container">
@@ -27,9 +44,10 @@
                     <img src="{{ asset('assets/images/about/about-1-1.jpg') }}"
                          alt="Credixa" class="about-image-main">
                     <img src="{{ asset('assets/images/about/about-1-2.jpg') }}"
-                         alt="" class="about-image-secondary">
+                         alt="" class="about-image-secondary"
+                         style="width:38%;right:1rem;bottom:1rem;">
                     <div class="about-badge">
-                        <span class="about-badge__number">34+</span>
+                        <span class="about-badge__number">5</span>
                         <span class="about-badge__label">{{ __('home.about.exptitle') }}</span>
                     </div>
                 </div>
@@ -39,28 +57,62 @@
                 <div class="section-label">{{ __('home.about.sectagline') }}</div>
                 <h2 class="section-title">{{ __('home.about.sectitle') }}</h2>
 
-                <div class="about-highlight mb-4">
-                    <i class="fas fa-coins about-highlight__icon"></i>
-                    <p class="about-highlight__text">{{ __('home.about.text1') }}</p>
-                </div>
-                <p class="mb-6" style="color:var(--gray-500);font-size:.9375rem;line-height:1.8;">{{ __('home.about.text2') }}</p>
+                <p style="color:var(--gray-500);font-size:.9375rem;line-height:1.8;margin-bottom:1.5rem;">
+                    {{ __('home.about.text2') }}
+                </p>
 
-                <div class="row g-3 mb-6">
-                    @foreach ([
-                        ['fas fa-hand-holding-usd', __('home.about.check1')],
-                        ['fas fa-check-circle',     __('home.about.check2')],
-                        ['fas fa-headset',          __('home.loan_reasons.reasons.title1')],
-                        ['fas fa-bolt',             __('home.loan_reasons.reasons.title2')],
-                    ] as $feat)
-                    <div class="col-sm-6">
-                        <div class="d-flex align-items-center gap-3 p-3" style="background:var(--cream);border-radius:var(--radius-sm);border-left:3px solid var(--gold);">
-                            <div style="width:36px;height:36px;background:var(--gold-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold-dark);flex-shrink:0;">
-                                <i class="{{ $feat[0] }}"></i>
-                            </div>
-                            <span style="font-size:.875rem;font-weight:600;color:var(--navy);">{{ $feat[1] }}</span>
-                        </div>
+                {{-- 3 engagements clés --}}
+                <div class="about-engage-card">
+                    <div class="about-engage-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <div class="about-engage-title">{{ __('home.about.engage1_title') }}</div>
+                        <p class="about-engage-desc">{{ __('home.about.engage1_desc') }}</p>
                     </div>
+                </div>
+                <div class="about-engage-card">
+                    <div class="about-engage-icon"><i class="fas fa-bolt"></i></div>
+                    <div>
+                        <div class="about-engage-title">{{ __('home.about.engage2_title') }}</div>
+                        <p class="about-engage-desc">{{ __('home.about.engage2_desc') }}</p>
+                    </div>
+                </div>
+                <div class="about-engage-card" style="margin-bottom:1.5rem;">
+                    <div class="about-engage-icon"><i class="fas fa-globe"></i></div>
+                    <div>
+                        <div class="about-engage-title">{{ __('home.about.engage3_title') }}</div>
+                        <p class="about-engage-desc">{{ __('home.about.engage3_desc') }}</p>
+                    </div>
+                </div>
+
+                {{-- Types de prêts proposés --}}
+                <div style="margin-bottom:.5rem;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);">
+                    <i class="fas fa-tags" style="color:var(--gold);margin-right:.35rem;"></i>@lang('home.discover_our_loan_services')
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem;">
+                    @foreach([
+                        ['fas fa-user-tie',       'home.personal_loan'],
+                        ['fas fa-home',           'home.mortgage_loan'],
+                        ['fas fa-car',            'home.auto_loan'],
+                        ['fas fa-graduation-cap', 'home.student_loan'],
+                        ['fas fa-briefcase',      'home.business_loan'],
+                        ['fas fa-credit-card',    'home.microcredit'],
+                    ] as $t)
+                    <span style="display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .75rem;border-radius:999px;background:var(--cream);border:1px solid #e2ddd0;font-size:.75rem;font-weight:700;color:var(--navy);">
+                        <i class="{{ $t[0] }}" style="color:var(--gold-dark);font-size:.7rem;"></i> @lang($t[1])
+                    </span>
                     @endforeach
+                </div>
+
+                {{-- Partenaires --}}
+                <div style="padding:.85rem 1.1rem;background:#f7f8fa;border:1px solid #eaecf0;border-radius:12px;margin-bottom:1.5rem;">
+                    <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#9ca3af;margin-bottom:.75rem;">@lang('home.partners_title')</div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;">
+                        <img src="{{ asset('images/partners/bnpparibas.svg') }}" alt="BNP Paribas" style="height:22px;width:auto;opacity:.55;filter:grayscale(1);">
+                        <img src="{{ asset('images/partners/santander.svg') }}" alt="Santander" style="height:22px;width:auto;opacity:.55;filter:grayscale(1);">
+                        <img src="{{ asset('images/partners/pko.svg') }}" alt="PKO Bank Polski" style="height:22px;width:auto;opacity:.55;filter:grayscale(1);">
+                        <img src="{{ asset('images/partners/revolut.svg') }}" alt="Revolut" style="height:22px;width:auto;opacity:.55;filter:grayscale(1);">
+                        <img src="{{ asset('images/partners/bbva.svg') }}" alt="BBVA" style="height:22px;width:auto;opacity:.55;filter:grayscale(1);">
+                    </div>
                 </div>
 
                 <a href="{{ route('loan', ['locale' => $locale]) }}" class="btn-primary btn-primary--lg">
@@ -77,10 +129,10 @@
         <div class="row">
             @php
             $stats = [
-                ['stop'=>'8500','suffix'=>'+','prefix'=>'', 'label'=> __('home.customer_satisfaction_rate')],
+                ['stop'=>'2500','suffix'=>'+','prefix'=>'', 'label'=> __('home.customer_satisfaction_rate')],
                 ['stop'=>'95',  'suffix'=>'k','prefix'=>'€','label'=> __('home.total_loan_amount_granted')],
-                ['stop'=>'99',  'suffix'=>'%','prefix'=>'', 'label'=> __('home.average_approval_time')],
-                ['stop'=>'550', 'suffix'=>'+','prefix'=>'', 'label'=> __('home.member')],
+                ['stop'=>'24',  'suffix'=>'h','prefix'=>'', 'label'=> __('home.average_approval_time')],
+                ['stop'=>'5',   'suffix'=>'+','prefix'=>'', 'label'=> __('home.years_experience')],
             ];
             @endphp
             @foreach ($stats as $i => $stat)

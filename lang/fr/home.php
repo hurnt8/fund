@@ -6,16 +6,8 @@ return [
     'banner_text' => 'Des millions de personnes utilisent Credixa pour réaliser leurs projets.',
     'get_loan_now' => 'Obtenez un prêt maintenant',
     'popular_loans' => 'Types de prêts populaires:',
-    'personal_loan' => 'Prêt personnel',
-    'mortgage_loan' => 'Prêt hypothécaire',
-    'auto_loan' => 'Prêt auto',
-    'student_loan' => 'Prêt étudiant',
-    'business_loan' => 'Prêt professionnel',
-    'consumer_loan' => "Prêt à la consommation",
-    'bridge_loan' => 'Prêt à la consommation',
-    'microcredit' => 'Microcredit',
 
-    // New translations for the section
+    // Loan types
     'discover_our_loan_services' => 'Découvrez nos services de prêt',
     'find_the_right_loan' => 'Trouvez le prêt adapté à vos besoins parmi nos différentes options',
     'personal_loan' => 'Prêt personnel',
@@ -122,12 +114,6 @@ return [
     'terms' => 'Conditions générales',
     'privacy_policy' => 'Politique de confidentialité',
     'site_map' => 'Plan du site',
-    'about' => [
-        'title' => 'À propos',
-        'who_we_are' => 'Qui sommes-nous ?',
-        'faq' => 'FAQ',
-        'contact' => 'Contact',
-    ],
     'loan_types' => [
         'title' => 'Types de prêts',
         'personal_loans' => 'Prêts personnels',
@@ -160,11 +146,11 @@ return [
     'sl' => 'Slovène',
 
     // Hero subtitle
-    'hero_subtitle' => 'Pas de démarche complexe, pas de frais cachés. Nous finançons vos projets personnels, immobiliers, auto et professionnels depuis 1990 avec transparence et rapidité.',
+    'hero_subtitle' => 'Pas de démarche complexe, pas de frais cachés. Depuis 5 ans, nous finançons vos projets personnels, immobiliers, auto et professionnels avec transparence et rapidité.',
 
     // Slide
     'slide_1' => [
-        'title' => '✓ Depuis 1990 · Agréé · Réponse garantie',
+        'title' => ' Depuis 5 ans · Agréé · Réponse garantie',
         'text1' => 'Financez tous vos projets,',
         'text2' => 'jusqu\'à 95 000 € en 24h.',
     ],
@@ -188,7 +174,7 @@ return [
     'infos' => [
         'item1' => 'approbations rapides',
         'item2' => '500k+ clients',
-        'item3' => 'pas de frais de paiement',
+        'item3' => '6 devises acceptées',
         'item4' => 'paiements flexibles',
     ],
 
@@ -203,6 +189,12 @@ return [
         'check2' => 'prêt pour étudier à l\'étranger',
         'check3' => 'processus de prêt rapide',
         'check4' => 'taux très bas',
+        'engage1_title' => 'Agréé & réglementé',
+        'engage1_desc'  => 'Organisme de crédit certifié, soumis aux normes européennes. Vos données et votre dossier sont protégés à chaque étape.',
+        'engage2_title' => 'Réponse garantie sous 24h',
+        'engage2_desc'  => 'Traitement 100 % en ligne, sans déplacement ni paperasse. Décision rendue sous 24 heures.',
+        'engage3_title' => 'Multi-devises & multi-pays',
+        'engage3_desc'  => 'Prêts disponibles en Euro, Złoty, Dollar US, Peso mexicain, Réal brésilien et Colón costaricien selon votre projet.',
     ],
 
     // Services
@@ -262,6 +254,16 @@ return [
             'desc2' => 'Combinez plusieurs dettes en un paiement mensuel facile, vous aidant ainsi à simplifier et mieux gérer vos finances.',
             'title3' => 'Amélioration de l\'habitat',
             'desc3' => 'Améliorez ou rénovez votre maison, ajoutant de la valeur et du confort à votre espace de vie sans pression financière.',
+            'title4' => 'Financer vos études',
+            'desc4' => 'Investissez dans votre avenir : frais de scolarité, formations professionnelles ou reconversion, sans compromettre votre quotidien.',
+            'title5' => 'Voyage & vacances',
+            'desc5' => 'Partez sereinement à la découverte du monde. Financez votre voyage de rêve sans puiser dans vos économies.',
+            'title6' => 'Mariage & événements familiaux',
+            'desc6' => 'Célébrez les moments importants de la vie sans stress financier. Organisez l\'événement de vos rêves à votre rythme.',
+            'title7' => 'Dépenses médicales & santé',
+            'desc7' => 'Faites face aux imprévus de santé avec sérénité. Couvrez soins, opérations ou équipements médicaux rapidement.',
+            'title8' => 'Création d\'entreprise & investissement',
+            'desc8' => 'Donnez vie à votre projet entrepreneurial ou développez votre activité grâce à un financement rapide et flexible.',
         ],
         'btn_text' => 'En savoir plus',
         'btn_icon' => 'icon-next',
@@ -270,10 +272,14 @@ return [
     // Others
     'total_loans_granted' => 'Total des prêts accordés',
     'customer_satisfaction_rate' => 'Clients satisfaits',
-    'total_loan_amount_granted' => 'Montant disponible',
-    'average_approval_time' => 'Réponse garantie',
-    'member' => 'Clients financés',
+    'total_loan_amount_granted' => 'Prêt max. / dossier',
+    'average_approval_time'     => 'Réponse garantie',
+    'member'                    => 'Clients financés',
+    'years_experience'          => 'Années d\'expérience',
     'day' => 'Jours',
+
+    'partners_label' => 'Nos partenaires',
+    'partners_title' => 'Banques partenaires',
 
     'cta_title2' => 'Obtenez le prêt dont vous avez besoin rapidement.',
     'cta_text2' => 'Obtenez des prêts commerciaux rapidement',

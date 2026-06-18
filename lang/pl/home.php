@@ -2,10 +2,10 @@
 
 return [
     'general_title' => 'Credixa Invest – Najlepsze kredyty online w Europie.',
-    'hero_subtitle' => 'Bez skomplikowanych procedur, bez ukrytych opłat. Od 1990 roku finansujemy projekty osobiste, nieruchomości, samochodowe i biznesowe z pełną przejrzystością i szybkością.',
+    'hero_subtitle' => 'Bez skomplikowanych procedur, bez ukrytych opłat. Od 5 lat finansujemy projekty osobiste, nieruchomości, samochodowe i biznesowe z pełną przejrzystością i szybkością.',
 
     'slide_1' => [
-        'title' => '✓ Od 1990 roku · Licencjonowany · Gwarantowana odpowiedź',
+        'title' => ' 5 lat doświadczenia · Licencjonowany · Gwarantowana odpowiedź',
         'text1' => 'Sfinansuj wszystkie swoje projekty,',
         'text2' => 'do 95 000 € w 24h.',
     ],
@@ -28,7 +28,7 @@ return [
     'infos' => [
         'item1' => 'szybka akceptacja',
         'item2' => '500 000+ klientów',
-        'item3' => 'bez opłat za płatność',
+        'item3' => '6 walut do wyboru',
         'item4' => 'elastyczne płatności',
     ],
 
@@ -42,6 +42,12 @@ return [
         'check2' => 'kredyt na studia za granicą',
         'check3' => 'szybki proces kredytowy',
         'check4' => 'bardzo niskie oprocentowanie',
+        'engage1_title' => 'Licencjonowany i Regulowany',
+        'engage1_desc'  => 'Certyfikowana instytucja kredytowa działająca zgodnie z normami europejskimi. Twoje dane i akta są chronione na każdym etapie.',
+        'engage2_title' => 'Gwarantowana odpowiedź w 24h',
+        'engage2_desc'  => 'Proces 100% online, bez wizyty w oddziale. Decyzja w ciągu 24 godzin.',
+        'engage3_title' => 'Wielowalutowy i Wielokrajowy',
+        'engage3_desc'  => 'Kredyty dostępne w Euro, Złotym, Dolarze amerykańskim, Peso meksykańskim, Realu brazylijskim i Kolonie kostarykańskim.',
     ],
 
     'services' => [
@@ -88,14 +94,18 @@ return [
 
     'total_loans_granted'      => 'Całkowita liczba udzielonych kredytów',
     'customer_satisfaction_rate' => 'Zadowoleni klienci',
-    'total_loan_amount_granted' => 'Dostępna kwota',
+    'total_loan_amount_granted' => 'Maks. kwota / wniosek',
     'average_approval_time'    => 'Gwarantowana odpowiedź',
     'member'                   => 'Sfinansowani klienci',
+    'years_experience'         => 'Lat doświadczenia',
     'day'                      => 'Dni',
 
     'cta_title' => 'Szybko uzyskaj potrzebny kredyt.',
     'cta_text'  => 'Złóż wniosek o kredyt online już dziś. Nasza platforma łączy Cię z zaufanymi pożyczkodawcami, oferując szybkie i bezpieczne rozwiązania finansowe.',
     'cta_button' => 'Zacznij teraz',
+
+    'partners_label' => 'Nasi partnerzy',
+    'partners_title' => 'Banki partnerskie',
 
     'cta_title2'  => 'Szybko uzyskaj potrzebny kredyt.',
     'cta_text2'   => 'Szybko uzyskaj kredyt biznesowy',
@@ -144,6 +154,16 @@ return [
             'desc2'  => 'Połącz wiele długów w jedną wygodną miesięczną ratę, upraszczając zarządzanie swoimi finansami.',
             'title3' => 'Remont domu',
             'desc3'  => 'Ulepsz lub wyremontuj swój dom, dodając wartość i komfort bez obciążeń finansowych.',
+            'title4' => 'Finansowanie edukacji',
+            'desc4'  => 'Inwestuj w swoją przyszłość: czesne, szkolenia zawodowe czy zmiana kariery — bez uszczerbku dla codziennego życia.',
+            'title5' => 'Podróże i wakacje',
+            'desc5'  => 'Odkrywaj świat bez obaw. Sfinansuj wymarzoną podróż, nie ruszając swoich oszczędności.',
+            'title6' => 'Ślub i wydarzenia rodzinne',
+            'desc6'  => 'Świętuj ważne chwile bez stresu finansowego. Zorganizuj wymarzone wydarzenie we własnym tempie.',
+            'title7' => 'Wydatki medyczne i zdrowotne',
+            'desc7'  => 'Radź sobie z niespodziewanymi kosztami zdrowia spokojnie. Szybko pokryj leczenie, operacje lub sprzęt medyczny.',
+            'title8' => 'Założenie firmy i inwestycje',
+            'desc8'  => 'Urzeczywistnij swój projekt biznesowy lub rozwiń działalność dzięki szybkiemu i elastycznemu finansowaniu.',
         ],
         'btn_text' => 'Dowiedz się więcej',
         'btn_icon' => 'icon-next',

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 70">
+  <defs>
+    <clipPath id="flame">
+      <rect x="0" y="0" width="68" height="70"/>
+    </clipPath>
+  </defs>
+  <!-- Flamme Santander : 3 ovales en éventail -->
+  <g clip-path="url(#flame)">
+    <ellipse cx="22" cy="46" rx="15" ry="32" fill="#EC0000" opacity="0.72" transform="rotate(-21,22,46)"/>
+    <ellipse cx="35" cy="42" rx="15" ry="32" fill="#EC0000" opacity="0.72"/>
+    <ellipse cx="48" cy="46" rx="15" ry="32" fill="#EC0000" opacity="0.72" transform="rotate(21,48,46)"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="78" y="46" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="30" fill="#EC0000">Santander</text>
+</svg>

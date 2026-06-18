@@ -166,7 +166,7 @@ return [
 
     // Slide
     'slide_1' => [
-        'title' => '✓ Od 1990 · Licencirano · Odgovor v 24h',
+        'title' => ' Od 1990 · Licencirano · Odgovor v 24h',
         'text1' => 'Financirajte vse svoje projekte,',
         'text2' => 'do 95.000 € v 24h.',
     ],

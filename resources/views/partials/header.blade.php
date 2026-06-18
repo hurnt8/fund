@@ -95,7 +95,7 @@
          x-transition:leave="transition ease-in duration-150"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="lg:hidden mobile-menu border-t" style="display:none">
+         class="lg:hidden mobile-menu border-t" style="display:none; position:relative; z-index:9999;">
         <div class="max-w-screen-xl mx-auto px-6 py-4 space-y-1">
             @foreach ($links as $link)
             @php

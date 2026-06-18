@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 70">
+  <!-- PKO Bank Polski — aigle stylisé bleu + wordmark -->
+  <!-- Corps de l'aigle -->
+  <ellipse cx="33" cy="34" rx="5" ry="8" fill="#003087"/>
+  <!-- Tête -->
+  <circle cx="33" cy="19" r="5" fill="#003087"/>
+  <!-- Bec -->
+  <path d="M37,19 L43,17 L38,22Z" fill="#003087"/>
+  <!-- Aile gauche étalée -->
+  <path d="M28,30 C18,22 6,19 4,26 C9,27 16,30 21,34 C15,33 9,36 7,40 C14,37 23,35 28,37Z" fill="#003087"/>
+  <!-- Aile droite étalée -->
+  <path d="M38,30 C48,22 60,19 62,26 C57,27 50,30 45,34 C51,33 57,36 59,40 C52,37 43,35 38,37Z" fill="#003087"/>
+  <!-- Queue -->
+  <path d="M30,42 L33,55 L36,42Z" fill="#003087"/>
+  <!-- Wordmark -->
+  <text x="76" y="30" font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" font-size="22" fill="#003087">PKO</text>
+  <text x="76" y="50" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700" fill="#003087" letter-spacing=".5">Bank Polski</text>
+</svg>

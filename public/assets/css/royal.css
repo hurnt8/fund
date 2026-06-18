@@ -1119,6 +1119,26 @@ select.form-control { cursor: pointer; }
 .footer-bottom a { color: var(--gold); }
 .footer-bottom a:hover { color: var(--white); }
 
+/* ── Footer accordion (mobile) ── */
+.footer-accordion-heading {
+    display: flex; align-items: center; justify-content: space-between;
+}
+.footer-toggle-icon {
+    flex-shrink: 0; margin-left: .5rem;
+    font-size: .65rem; color: rgba(255,255,255,.3);
+    transition: transform .25s ease;
+}
+.footer-toggle-icon.rotated { transform: rotate(180deg); }
+
+@media (min-width: 768px) {
+    .footer-accordion-heading { pointer-events: none; }
+    .footer-toggle-icon       { display: none; }
+    .footer-collapse          { display: block !important; }
+}
+@media (max-width: 767.98px) {
+    .footer-accordion-heading { cursor: pointer; }
+}
+
 /* ================================================================
    CTA SECTION
 ================================================================ */
@@ -1315,11 +1335,16 @@ select.form-control { cursor: pointer; }
     .stat-item--sep { border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); }
 
     /* ── About section ── */
-    .about-image-main { height: 240px; object-position: center top; }
-    .about-image-wrap { margin-bottom: 3.5rem; }
-    .about-badge { left: 0; top: auto; bottom: -1.5rem; }
-    .about-highlight { padding: 1rem; gap: .875rem; }
-    .about-highlight__icon { font-size: 1.25rem; }
+    .about-image-main       { height: 260px; object-position: center top; }
+    .about-image-secondary  { display: none !important; }
+    .about-image-wrap       { margin-bottom: 2.75rem; overflow: visible; }
+    .about-badge            { left: .75rem; top: auto; bottom: -1.25rem; padding: .875rem 1.1rem; }
+    .about-badge__number    { font-size: 1.875rem; }
+    .about-highlight        { padding: 1rem; gap: .875rem; }
+    .about-highlight__icon  { font-size: 1.25rem; }
+    /* engage cards – colonne icône + texte empilés sur < 375px */
+    .about-engage-card      { flex-direction: column; gap: .625rem; padding: .875rem 1rem; }
+    .about-loan-grid        { grid-template-columns: 1fr; }
 
     /* ── Loan calculator ── */
     .calc-wrapper { padding: 1.25rem; }
@@ -1402,6 +1427,18 @@ select.form-control { cursor: pointer; }
     .legal-content { padding: 1.5rem 1.25rem; }
     .legal-content h1 { font-size: 1.5rem; }
     .legal-content h2 { font-size: 1.125rem; }
+}
+
+/* ================================================================
+   RESPONSIVE — 991px (tablette portrait)
+================================================================ */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* About : image secondaire visible mais contenue dans le cadre */
+    .about-image-main      { height: 360px; }
+    .about-image-secondary { width: 36% !important; right: .75rem !important; bottom: .75rem !important; }
+    .about-badge           { left: 0; }
+    /* Loan grid en 1 colonne sur tablette */
+    .about-loan-grid       { grid-template-columns: 1fr; }
 }
 
 /* ================================================================

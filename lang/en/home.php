@@ -6,16 +6,7 @@ return [
     'banner_text' => 'Millions of people use Credixa to realize their projects.',
     'get_loan_now' => 'Get a loan now',
     'popular_loans' => 'Popular loan types:',
-    'personal_loan' => 'Personal loan',
-    'mortgage_loan' => 'Mortgage loan',
-    'auto_loan' => 'Auto loan',
-    'student_loan' => 'Student loan',
-    'business_loan' => 'Professional loan',
-    'consumer_loan' => "Consumer loan",
-    'bridge_loan' => 'Consumer loan',
-    'microcredit' => 'Microcredit',
 
-    // New translations for the section
     'discover_our_loan_services' => 'Discover our loan services',
     'find_the_right_loan' => 'Find the loan suited to your needs among our different options',
     'personal_loan' => 'Personal loan',
@@ -122,12 +113,6 @@ return [
     'terms' => 'General conditions',
     'privacy_policy' => 'Privacy policy',
     'site_map' => 'Site map',
-    'about' => [
-        'title' => 'About',
-        'who_we_are' => 'Who are we?',
-        'faq' => 'FAQ',
-        'contact' => 'Contact',
-    ],
     'loan_types' => [
         'title' => 'Types of loans',
         'personal_loans' => 'Personal loans',
@@ -160,11 +145,11 @@ return [
     'sl' => 'Slovenian',
 
     // Hero subtitle
-    'hero_subtitle' => 'No complex process, no hidden fees. We have been financing personal, real estate, auto and business projects since 1990 with transparency and speed.',
+    'hero_subtitle' => 'No complex process, no hidden fees. For 5 years, we have been financing personal, real estate, auto and business projects with transparency and speed.',
 
     // Slide
     'slide_1' => [
-        'title' => '✓ Since 1990 · Licensed · Guaranteed Response',
+        'title' => ' 5 Years of Expertise · Licensed · Guaranteed Response',
         'text1' => 'Finance all your projects,',
         'text2' => 'up to €95,000 in 24h.',
     ],
@@ -187,7 +172,7 @@ return [
     'infos' => [
         'item1' => 'fast approvals',
         'item2' => '500k+ customers',
-        'item3' => 'no payment fees',
+        'item3' => '6 currencies accepted',
         'item4' => 'flexible payments',
     ],
 
@@ -201,6 +186,12 @@ return [
         'check2' => 'studying abroad loan',
         'check3' => 'quick loan process',
         'check4' => 'very low rates',
+        'engage1_title' => 'Licensed & Regulated',
+        'engage1_desc'  => 'Certified credit institution operating under European standards. Your data and file are protected at every step.',
+        'engage2_title' => 'Guaranteed Response in 24h',
+        'engage2_desc'  => '100% online process, no branch visit required. Decision delivered within 24 hours.',
+        'engage3_title' => 'Multi-currency & Multi-country',
+        'engage3_desc'  => 'Loans available in Euro, Złoty, US Dollar, Mexican Peso, Brazilian Real and Costa Rican Colón to suit your project.',
     ],
 
     'services' => [
@@ -278,6 +269,16 @@ return [
             'desc2' => 'Combine multiple debts into one easy monthly payment, helping you simplify and manage your finances better.',
             'title3' => 'Home improvement',
             'desc3' => 'Upgrade or renovate your home, adding value and comfort to your living space without the financial strain.',
+            'title4' => 'Fund your education',
+            'desc4' => 'Invest in your future: tuition fees, professional training or a career change — without compromising your day-to-day life.',
+            'title5' => 'Travel & holidays',
+            'desc5' => 'Explore the world with peace of mind. Finance your dream trip without dipping into your savings.',
+            'title6' => 'Wedding & family events',
+            'desc6' => 'Celebrate life\'s most important moments without financial stress. Plan the event of your dreams at your own pace.',
+            'title7' => 'Medical & health expenses',
+            'desc7' => 'Handle unexpected health costs with confidence. Cover treatments, operations or medical equipment quickly.',
+            'title8' => 'Business start-up & investment',
+            'desc8' => 'Bring your entrepreneurial project to life or grow your business with fast, flexible funding.',
         ],
         'btn_text' => 'Learn More',
         'btn_icon' => 'icon-next'
@@ -286,10 +287,14 @@ return [
 
     'total_loans_granted' => 'Total Loans Granted',
     'customer_satisfaction_rate' => 'Happy Customers',
-    'total_loan_amount_granted' => 'Available amount',
-    'average_approval_time' => 'Guaranteed response',
-    'member' => 'Financed clients',
+    'total_loan_amount_granted' => 'Max. loan / file',
+    'average_approval_time'     => 'Guaranteed response',
+    'member'                    => 'Financed clients',
+    'years_experience'          => 'Years of experience',
     'day' => 'Days',
+
+    'partners_label' => 'Our partners',
+    'partners_title' => 'Banking partners',
 
     'cta_title2' => 'Get the loan you need quickly.',
     'cta_text2' => 'Get a Business Loans Quickly',
