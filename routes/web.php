@@ -5,6 +5,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoanController;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Auth\ClientLoginController;
+use App\Http\Controllers\Auth\InvitationController;
+use App\Http\Controllers\Auth\StaffLoginController;
+use App\Http\Controllers\Dashboard\ClientDashboardController;
+use App\Http\Controllers\Dashboard\AdminDashboardController;
+use App\Http\Controllers\Dashboard\SuperAdminDashboardController;
+use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\LoanRequestController as AdminLoanRequestController;
+use App\Http\Controllers\Admin\ContractTemplateController;
+use App\Http\Controllers\SuperAdmin\LoanRequestController as SuperAdminLoanRequestController;
+use App\Http\Controllers\Client\LoanRequestController as ClientLoanRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +54,7 @@ Route::get('/', function (Request $request) use ($supportedLocales) {
     return redirect("/{$locale}");
 });
 
-Route::group(['prefix' => '{locale}', 'middleware' => 'setLocale'], function () {
+Route::group(['prefix' => '{locale}', 'middleware' => 'setLocale', 'where' => ['locale' => 'fr|en|pl|es']], function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('home');
@@ -116,3 +127,97 @@ Route::post('/contact/send', [ContactController::class, 'sendMail'])->name('cont
 Route::post('/subscribe/send', [ContactController::class, 'subscribeMail'])->name('subscribe.send');
 Route::post('/loan/request', [LoanController::class, 'sendMail'])->name('loan.request');
 Route::post('/loan/documents', [LoanController::class, 'sendDocuments'])->name('loan.documents');
+
+// ── Locale switcher (for auth pages without {locale} prefix) ────────────────
+Route::get('/lang/{lang}', function (Request $request, $lang) {
+    if (in_array($lang, ['fr', 'en', 'pl', 'es'])) {
+        session(['locale' => $lang]);
+    }
+    $back = $request->headers->get('referer', url('/'));
+    return redirect($back);
+})->name('lang.switch');
+
+// ── Authentication ──────────────────────────────────────────────────────────
+
+// Account invitation / activation (public — no auth required)
+Route::get('/invitation/{token}',  [InvitationController::class, 'show'])->name('invitation.show');
+Route::post('/invitation/{token}', [InvitationController::class, 'activate'])->name('invitation.activate');
+
+// Client login
+Route::get('/login',  [ClientLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [ClientLoginController::class, 'login'])->name('login.submit')->middleware('guest');
+Route::post('/logout',[ClientLoginController::class, 'logout'])->name('logout');
+
+// Staff login (admin / super-admin)
+Route::get('/staff/login',  [StaffLoginController::class, 'showLoginForm'])->name('staff.login')->middleware('guest');
+Route::post('/staff/login', [StaffLoginController::class, 'login'])->name('staff.login.submit')->middleware('guest');
+Route::post('/staff/logout',[StaffLoginController::class, 'logout'])->name('staff.logout');
+
+// ── Client dashboard ────────────────────────────────────────────────────────
+Route::middleware(['auth', 'role:client'])->prefix('dashboard')->name('client.')->group(function () {
+    Route::get('/', [ClientDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/loans',       [ClientLoanRequestController::class, 'index'])->name('loans');
+    Route::get('/loans/{loan}',[ClientLoanRequestController::class, 'show'])->name('loans.show');
+});
+
+// ── Admin dashboard ─────────────────────────────────────────────────────────
+Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Gestion des demandes de prêt
+    Route::get('/loans',                           [AdminLoanRequestController::class, 'index'])->name('loans.index');
+    Route::get('/loans/create',                    [AdminLoanRequestController::class, 'create'])->name('loans.create');
+    Route::post('/loans',                          [AdminLoanRequestController::class, 'store'])->name('loans.store');
+    Route::get('/loans/{loan}',                    [AdminLoanRequestController::class, 'show'])->name('loans.show');
+    Route::get('/loans/{loan}/edit',               [AdminLoanRequestController::class, 'edit'])->name('loans.edit');
+    Route::put('/loans/{loan}',                    [AdminLoanRequestController::class, 'update'])->name('loans.update');
+    Route::delete('/loans/{loan}',                 [AdminLoanRequestController::class, 'destroy'])->name('loans.destroy');
+    Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
+    Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
+    Route::post('/loans/{loan}/validate',          [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
+    Route::post('/loans/{loan}/signed',            [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
+    Route::patch('/loans/{loan}/status',           [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
+
+    // Modèles de contrats
+    Route::get('/contract-templates',             [ContractTemplateController::class, 'index'])->name('contract-templates.index');
+    Route::get('/contract-templates/create',      [ContractTemplateController::class, 'create'])->name('contract-templates.create');
+    Route::post('/contract-templates',            [ContractTemplateController::class, 'store'])->name('contract-templates.store');
+    Route::get('/contract-templates/{contractTemplate}/edit',    [ContractTemplateController::class, 'edit'])->name('contract-templates.edit');
+    Route::put('/contract-templates/{contractTemplate}',         [ContractTemplateController::class, 'update'])->name('contract-templates.update');
+    Route::delete('/contract-templates/{contractTemplate}',      [ContractTemplateController::class, 'destroy'])->name('contract-templates.destroy');
+    Route::get('/contract-templates/{contractTemplate}/preview',          [ContractTemplateController::class, 'preview'])->name('contract-templates.preview');
+    Route::get('/contract-templates/{contractTemplate}/docx-frame',      [ContractTemplateController::class, 'docxFrame'])->name('contract-templates.docx-frame');
+    Route::get('/contract-templates/{contractTemplate}/download-docx',   [ContractTemplateController::class, 'downloadDocx'])->name('contract-templates.download-docx');
+    Route::post('/contract-templates/{contractTemplate}/save-content',   [ContractTemplateController::class, 'saveContent'])->name('contract-templates.save-content');
+    Route::post('/contract-templates/{contractTemplate}/reset-docx-edit',[ContractTemplateController::class, 'resetDocxEdit'])->name('contract-templates.reset-docx-edit');
+
+    // User management
+    Route::get('/users',                        [UserManagementController::class, 'index'])->name('users');
+    Route::post('/users',                       [UserManagementController::class, 'store'])->name('users.store');
+    Route::put('/users/{user}',                 [UserManagementController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}',              [UserManagementController::class, 'destroy'])->name('users.destroy');
+    Route::post('/users/{user}/resend-invite',  [UserManagementController::class, 'resendInvitation'])->name('users.resend-invite');
+});
+
+// ── Super Admin dashboard ───────────────────────────────────────────────────
+Route::middleware(['auth', 'role:super-admin'])->prefix('super-admin')->name('super-admin.')->group(function () {
+    Route::get('/', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/roles', [SuperAdminDashboardController::class, 'roles'])->name('roles');
+    Route::post('/users/{user}/role', [SuperAdminDashboardController::class, 'assignRole'])->name('users.role');
+
+    // Vue globale de toutes les demandes
+    Route::get('/loans',        [SuperAdminLoanRequestController::class, 'index'])->name('loans.index');
+
+    // Gestion complète (mêmes droits que l'admin) — /create AVANT /{loan}
+    Route::get('/loans/create',                    [AdminLoanRequestController::class, 'create'])->name('loans.create');
+    Route::post('/loans',                          [AdminLoanRequestController::class, 'store'])->name('loans.store');
+    Route::get('/loans/{loan}',                    [SuperAdminLoanRequestController::class, 'show'])->name('loans.show');
+    Route::get('/loans/{loan}/edit',               [AdminLoanRequestController::class, 'edit'])->name('loans.edit');
+    Route::put('/loans/{loan}',                    [AdminLoanRequestController::class, 'update'])->name('loans.update');
+    Route::delete('/loans/{loan}',                 [AdminLoanRequestController::class, 'destroy'])->name('loans.destroy');
+    Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
+    Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
+    Route::post('/loans/{loan}/validate',          [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
+    Route::post('/loans/{loan}/signed',            [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
+    Route::patch('/loans/{loan}/status',           [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
+});
