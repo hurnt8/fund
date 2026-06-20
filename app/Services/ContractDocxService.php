@@ -642,7 +642,7 @@ br{display:block;margin:.1em 0}
         preg_match_all('/Id="([^"]+)"[^>]+Target="([^"]+)"/', $bodyRels, $rm);
         $relMap = array_combine($rm[1], $rm[2]);
 
-        // ── Watermark from header ────────────────────────────────────────────
+        // ── Watermark from header — style inline (évite base64 dans <style>) ──
         $watermarkHtml = '';
         $hdrRels = $zip->getFromName('word/_rels/header1.xml.rels') ?: '';
         if (preg_match('/Target="([^"]*image[^"]*)"/', $hdrRels, $wm)) {
@@ -651,11 +651,10 @@ br{display:block;margin:.1em 0}
             if ($wmData) {
                 $mime = str_ends_with(strtolower($wmPath), '.jpg') ? 'image/jpeg' : 'image/png';
                 $b64  = base64_encode($wmData);
-                $watermarkHtml = '<style>'
-                    . '.crx-watermark{position:absolute;inset:0;z-index:0;pointer-events:none;'
-                    . 'background:url("data:' . $mime . ';base64,' . $b64 . '") center/contain no-repeat;opacity:.12}'
-                    . '</style>'
-                    . '<div class="crx-watermark"></div>';
+                $watermarkHtml = '<div class="crx-watermark" style="'
+                    . 'position:absolute;inset:0;z-index:0;pointer-events:none;'
+                    . 'background:url(\'data:' . $mime . ';base64,' . $b64 . '\') center/contain no-repeat;'
+                    . 'opacity:.12"></div>';
             }
         }
 
@@ -707,23 +706,21 @@ br{display:block;margin:.1em 0}
 
             $textBoxRids[] = $rid;
             $textBoxDivs  .= sprintf(
-                '<div style="position:absolute;left:%dpx;top:%dpx;width:%dpx;height:%dpx;overflow:hidden">'
-                . '<img src="%s" data-docx-auto="1" style="width:100%%;height:100%%;object-fit:contain">'
-                . '</div>',
-                max(0, $leftPx), max(0, $topPx), $widthPx, $heightPx, $src
+                '<img class="crx-auto-img" src="%s" data-docx-auto="1" '
+                . 'style="position:absolute;left:%dpx;top:%dpx;width:%dpx;height:%dpx;'
+                . 'z-index:5;object-fit:contain;cursor:grab">',
+                $src, max(0, $leftPx), max(0, $topPx), $widthPx, $heightPx
             );
         }
 
         $zip->close();
 
-        // Inject after <body>
+        // Inject each overlay image directly after <body> (no wrapper div)
         if ($watermarkHtml) {
             $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $watermarkHtml, $html, 1) ?? $html;
         }
         if ($textBoxDivs) {
-            $tbWrap = '<div class="crx-textboxes" style="position:absolute;inset:0;pointer-events:none;z-index:10">'
-                    . $textBoxDivs . '</div>';
-            $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $tbWrap, $html, 1) ?? $html;
+            $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $textBoxDivs, $html, 1) ?? $html;
         }
 
         return $html;
@@ -778,7 +775,7 @@ br{display:block;margin:.1em 0}
         preg_match_all('/Id="([^"]+)"[^>]+Target="([^"]+)"/', $bodyRels, $rm);
         $relMap = array_combine($rm[1], $rm[2]);
 
-        // Watermark from header
+        // Watermark from header — style inline (pas dans <style> pour éviter le scoping base64)
         $watermarkCss = '';
         $hdrRels = $zip->getFromName('word/_rels/header1.xml.rels') ?: '';
         if (preg_match('/Target="([^"]*image[^"]*)"/', $hdrRels, $wm)) {
@@ -787,12 +784,10 @@ br{display:block;margin:.1em 0}
             if ($wmData) {
                 $mime = str_ends_with(strtolower($wmPath), '.jpg') ? 'image/jpeg' : 'image/png';
                 $b64  = base64_encode($wmData);
-                $watermarkCss = '<style>'
-                    . '.crx-watermark{position:absolute;inset:0;z-index:0;pointer-events:none;'
-                    . 'background:url("data:' . $mime . ';base64,' . $b64 . '") center/contain no-repeat;'
-                    . 'opacity:.12}'
-                    . '</style>'
-                    . '<div class="crx-watermark"></div>';
+                $watermarkCss = '<div class="crx-watermark" style="'
+                    . 'position:absolute;inset:0;z-index:0;pointer-events:none;'
+                    . 'background:url(\'data:' . $mime . ';base64,' . $b64 . '\') center/contain no-repeat;'
+                    . 'opacity:.12"></div>';
             }
         }
 
@@ -858,11 +853,12 @@ br{display:block;margin:.1em 0}
 
             $textBoxRids[] = $rid;
             // data-docx-auto marks this as auto-injected (stripped on save, re-injected on load)
+            // crx-auto-img = direct child of pageDiv with full absolute positioning (no wrapper)
             $textBoxDivs  .= sprintf(
-                '<div style="position:absolute;left:%dpx;top:%dpx;width:%dpx;height:%dpx;overflow:hidden">'
-                . '<img src="%s" data-docx-auto="1" style="width:100%%;height:100%%;object-fit:contain">'
-                . '</div>',
-                max(0, $leftPx), max(0, $topPx), $widthPx, $heightPx, $src
+                '<img class="crx-auto-img" src="%s" data-docx-auto="1" data-docx-page="0" '
+                . 'style="position:absolute;left:%dpx;top:%dpx;width:%dpx;height:%dpx;'
+                . 'z-index:5;object-fit:contain;cursor:grab">',
+                $src, max(0, $leftPx), max(0, $topPx), $widthPx, $heightPx
             );
         }
 
@@ -894,11 +890,12 @@ br{display:block;margin:.1em 0}
             $opacity = number_format((float)($pos['opacity'] ?? 1.0), 2);
 
             $anchorRids[]  = $rid;
+            $pageNum       = max(0, (int)($pos['page'] ?? 0));
             $textBoxDivs  .= sprintf(
-                '<img src="%s" data-docx-auto="1" '
+                '<img class="crx-auto-img" src="%s" data-docx-auto="1" data-docx-page="%d" '
                 . 'style="position:absolute;left:%dpx;top:%dpx;width:%dpx;height:%dpx;'
-                . 'z-index:%d;opacity:%s;object-fit:contain;pointer-events:none">',
-                $src, $left, $top, $width, $height, $zIndex, $opacity
+                . 'z-index:%d;opacity:%s;object-fit:contain;cursor:grab">',
+                $src, $pageNum, $left, $top, $width, $height, $zIndex, $opacity
             );
         }
 
@@ -929,11 +926,10 @@ br{display:block;margin:.1em 0}
             $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $watermarkCss, $html, 1);
         }
 
-        // Inject text box container (position:absolute wrapper) after <body>
+        // Inject auto images directly after <body> — each with class="crx-auto-img"
+        // and full position:absolute coords so JS can move them to pageDiv without losing info
         if ($textBoxDivs) {
-            $tbHtml = '<div class="crx-textboxes" style="position:absolute;inset:0;pointer-events:none;z-index:10">'
-                    . $textBoxDivs . '</div>';
-            $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $tbHtml, $html, 1);
+            $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $textBoxDivs, $html, 1);
         }
 
         // Inject inline images at top of first page
@@ -1003,11 +999,101 @@ br{display:block;margin:.1em 0}
         // Supprimer les <img> restants qui référencent des fichiers _html_* maintenant supprimés
         $html = preg_replace('/<img\b[^>]*src="[^"]*_html_[^"]*"[^>]*\/?>/i', '', $html) ?? $html;
 
+        // Supprimer le <div title="header"> de LO (en-tête vide — watermark géré via zip DOCX)
+        $html = preg_replace('/<div\b[^>]*title\s*=\s*["\']header["\'][^>]*>.*?<\/div>/is', '', $html) ?? $html;
+
+        // Supprimer la règle @page (pour impression uniquement — inutile en rendu écran)
+        $html = preg_replace_callback('/<style([^>]*)>(.*?)<\/style>/is', static function($m) {
+            $css = preg_replace('/@page\s*\{[^}]*\}/s', '', $m[2]) ?? $m[2];
+            return '<style' . $m[1] . '>' . $css . '</style>';
+        }, $html) ?? $html;
+
+        // Réparer les {balise} scindées par LO en plusieurs éléments HTML inline
+        // Ex: {</font><font face="..."><span lang="fr-FR">devise</span></font><font>}  → {devise}
+        $html = preg_replace(
+            '/\{(?:(?:<\/[a-zA-Z][^>]{0,120}>|<[a-zA-Z][^>]{0,200}>|\s){0,8})'
+            . '([a-zA-Z][a-zA-Z0-9_]{0,40})'
+            . '(?:(?:<\/[a-zA-Z][^>]{0,120}>|<[a-zA-Z][^>]{0,200}>|\s){0,8})\}/',
+            '{$1}',
+            $html
+        ) ?? $html;
+
+        // ── Pagination LO : injection de marqueurs aux sauts de page ──────────
+        $html = $this->injectLoPageBreaks($html, $docxPath);
+
         // ── Watermark (header DOCX) + images Groq ────────────────────────────
         // injectDocxImages() gère : watermark header, images Groq, textboxes mc:AC
         $html = $this->injectDocxImages($html, $docxPath);
 
         return $html;
+    }
+
+    /**
+     * Injecte des marqueurs de saut de page dans l'HTML LibreOffice en lisant
+     * les <w:pageBreakBefore> et <w:br w:type="page"> du XML DOCX.
+     * Chaque page après la première reçoit un <br style="page-break-before:always">.
+     */
+    private function injectLoPageBreaks(string $html, string $docxPath): string
+    {
+        $zip = new ZipArchive();
+        if ($zip->open($docxPath) !== true) return $html;
+        $docXml = $zip->getFromName('word/document.xml') ?: '';
+        $zip->close();
+
+        if (!$docXml) return $html;
+
+        // Collect paragraph indices with explicit page breaks (before or after)
+        preg_match_all('/<w:p\b[^>]*>(.*?)<\/w:p>/s', $docXml, $pms);
+        $breakBeforePars = [];
+        foreach ($pms[0] as $idx => $pXml) {
+            if (str_contains($pXml, 'w:pageBreakBefore')
+                || preg_match('/<w:br\b[^>]*w:type=["\']page["\']/', $pXml)) {
+                $breakBeforePars[] = $idx;
+            }
+        }
+
+        if (empty($breakBeforePars)) return $html;
+
+        // Count <p> elements in the HTML body and inject break markers
+        $bodyStart = stripos($html, '<body');
+        $bodyStart = $bodyStart !== false ? strpos($html, '>', $bodyStart) + 1 : 0;
+        $bodyEnd   = strripos($html, '</body>');
+        if ($bodyEnd === false) return $html;
+
+        $pre  = substr($html, 0, $bodyStart);
+        $body = substr($html, $bodyStart, $bodyEnd - $bodyStart);
+        $post = substr($html, $bodyEnd);
+
+        $pCount = 0;
+        $result = '';
+        $offset = 0;
+        $marker = '<br style="page-break-before:always;clear:both">';
+
+        while (($pOpen = stripos($body, '<p', $offset)) !== false) {
+            // Append everything up to this <p>
+            $result .= substr($body, $offset, $pOpen - $offset);
+
+            if (in_array($pCount, $breakBeforePars, true)) {
+                $result .= $marker;
+            }
+
+            // Find end of <p>...</p>
+            $pClose = stripos($body, '</p>', $pOpen);
+            if ($pClose === false) {
+                $result .= substr($body, $pOpen);
+                $offset  = strlen($body);
+                $pCount++;
+                break;
+            }
+            $pClose += 4; // include </p>
+            $result .= substr($body, $pOpen, $pClose - $pOpen);
+            $offset  = $pClose;
+            $pCount++;
+        }
+
+        $result .= substr($body, $offset);
+
+        return $pre . $result . $post;
     }
 
     private function convertWithLibreOffice(string $docxPath, ?string $binary = null): string
@@ -1388,6 +1474,9 @@ br{display:block;margin:.1em 0}
     {
         // Strip comments first (PCRE on just the CSS string is safe — it's tiny)
         $css = preg_replace('/\/\*[\s\S]*?\*\//', '', $css) ?? $css;
+
+        // Strip @page rules (print-only — not needed for screen preview)
+        $css = preg_replace('/@page\s*\{[^}]*\}/s', '', $css) ?? $css;
 
         return (string) preg_replace_callback(
             '/([^@{}\r\n][^{}]*?)\s*\{([^{}]*)\}/s',

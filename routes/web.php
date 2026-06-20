@@ -190,6 +190,7 @@ Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('ad
     Route::get('/contract-templates/{contractTemplate}/download-docx',   [ContractTemplateController::class, 'downloadDocx'])->name('contract-templates.download-docx');
     Route::post('/contract-templates/{contractTemplate}/save-content',   [ContractTemplateController::class, 'saveContent'])->name('contract-templates.save-content');
     Route::post('/contract-templates/{contractTemplate}/reset-docx-edit',[ContractTemplateController::class, 'resetDocxEdit'])->name('contract-templates.reset-docx-edit');
+    Route::get('/contract-templates/{contractTemplate}/missing-vars',   [ContractTemplateController::class, 'missingVars'])->name('contract-templates.missing-vars');
 
     // User management
     Route::get('/users',                        [UserManagementController::class, 'index'])->name('users');

@@ -313,13 +313,33 @@ body {
 .docx-content li { margin: .15em 0; }
 /* phpoffice paragraph spacing */
 .docx-content p { margin: 0; padding: 0; }
-/* Tables from phpoffice */
+/* Tables from phpoffice/LibreOffice */
 .docx-content table { border-collapse: collapse; width: 100%; margin: .5em 0; }
 .docx-content td, .docx-content th { border: 1px solid #ccc; padding: 4px 6px; }
-/* All non-auto images are draggable */
+/* LibreOffice font elements */
+.docx-content font { display: inline; }
+/* LibreOffice divs (sections) */
+.docx-content div { display: block; }
+/* Preserve text alignment from LO */
+.docx-content p[align="center"] { text-align: center; }
+.docx-content p[align="right"]  { text-align: right; }
+.docx-content p[align="left"]   { text-align: left; }
+.docx-content p[align="justify"]{ text-align: justify; }
+/* All images in DOCX pages are draggable */
 .docx-a4-page img:not([data-docx-auto]) { cursor: grab; user-select: none; }
 .docx-a4-page img:not([data-docx-auto])[style*="position:absolute"] {
   box-shadow: 0 0 0 1.5px rgba(200,169,81,.5), 0 2px 12px rgba(0,0,0,.2);
+}
+/* DOCX overlay images — positionnées directement dans .docx-a4-page */
+.docx-a4-page > img.crx-auto-img {
+  cursor: grab;
+  transition: box-shadow .1s;
+}
+.docx-a4-page > img.crx-auto-img:hover,
+.docx-a4-page > img.crx-auto-img.crx-selected {
+  box-shadow: 0 0 0 2px #C8A951, 0 2px 14px rgba(0,0,0,.3);
+  outline: none;
+  z-index: 20 !important;
 }
 
 .docx-page-num {
@@ -799,8 +819,10 @@ async function loadDocxPages() {
     content.spellcheck = false;
     content.innerHTML = pageHtml;
 
-    // Move absolutely-positioned overlays out of content so they're relative to the A4 page
-    content.querySelectorAll('.crx-textboxes, .crx-watermark').forEach(el => {
+    // Move overlays out of content so they're positioned relative to the A4 page
+    // .crx-auto-img = each DOCX image (direct, full position:absolute)
+    // .crx-watermark = DOCX header watermark
+    content.querySelectorAll('.crx-auto-img, .crx-watermark').forEach(el => {
       pageDiv.appendChild(el);
     });
 
@@ -834,6 +856,14 @@ async function loadDocxPages() {
 
   spinner.style.display = 'none';
 
+  // Distribuer les images DOCX vers leur page correcte (data-docx-page=N)
+  // Toutes les images sont injectées dans le body et atterrissent sur la page 0 ;
+  // on les déplace ici vers les pages suivantes si nécessaire.
+  redistributeAutoImages();
+
+  // Auto-split pages that overflow A4 height (LibreOffice generates no page break markers)
+  autoSplitOverflowPages();
+
   // Restore user watermark from saved CSS (persisted as .crx-wm-user rule with base64)
   const wmRuleMatch = docxCurrentCSS.match(/\.crx-wm-user\s*\{[^}]*url\(["']?(data:[^"')]+)["']?\)/);
   if (wmRuleMatch && wmRuleMatch[1]) {
@@ -845,6 +875,123 @@ async function loadDocxPages() {
     // Watermark set in same session but not yet saved
     applyUserWatermark();
   }
+}
+
+/**
+ * Déplace les .crx-auto-img depuis la page 0 vers leur page cible (data-docx-page=N).
+ * Doit être appelé APRÈS que toutes les pages sont dans le DOM.
+ */
+function redistributeAutoImages() {
+  const wrap = document.getElementById('docxPagesWrap');
+  if (!wrap) return;
+  const allPages = [...wrap.querySelectorAll('.docx-a4-page')];
+  if (allPages.length <= 1) return;
+
+  // All auto images land on page 0 initially (injected at body start)
+  [...allPages[0].querySelectorAll('.crx-auto-img')].forEach(img => {
+    const targetIdx = parseInt(img.dataset.docxPage || '0');
+    if (targetIdx > 0 && targetIdx < allPages.length) {
+      allPages[targetIdx].appendChild(img);
+    }
+  });
+}
+
+/**
+ * Pour l'HTML LibreOffice (pas de sauts de page côté serveur), détecte les pages
+ * qui dépassent la hauteur A4 (1123px) et les découpe visuellement en plusieurs divs.
+ * Les images .crx-auto-img (direct children de pageDiv) sont redistribuées par top.
+ */
+function autoSplitOverflowPages() {
+  const PAGE_H = 1123;
+  const wrap   = document.getElementById('docxPagesWrap');
+  if (!wrap) return;
+  const pages  = [...wrap.querySelectorAll('.docx-a4-page')];
+
+  pages.forEach(pageDiv => {
+    const content = pageDiv.querySelector('.docx-content');
+    if (!content) return;
+
+    requestAnimationFrame(() => {
+      const totalH = content.scrollHeight;
+      if (totalH <= PAGE_H + 80) return; // tolérance 80px
+
+      // Snapshot des images DOCX positionnées (direct children de pageDiv)
+      const autoImgs  = [...pageDiv.querySelectorAll('.crx-auto-img')];
+      const watermark = pageDiv.querySelector('.crx-watermark');
+      const userWm    = pageDiv.querySelector('.crx-wm-user');
+
+      const allNodes = [...content.childNodes];
+      content.innerHTML = '';
+
+      const makePageDiv = () => {
+        const pg = document.createElement('div');
+        pg.className = 'docx-a4-page';
+        if (watermark) pg.appendChild(watermark.cloneNode(true));
+        if (userWm)    pg.appendChild(userWm.cloneNode(true));
+        const c = document.createElement('div');
+        c.className = 'docx-content';
+        c.contentEditable = 'true';
+        c.spellcheck = false;
+        c.addEventListener('focus', () => { activeEditor = c; updateToolbarState(); });
+        c.addEventListener('keyup', updateToolbarState);
+        c.addEventListener('mouseup', updateToolbarState);
+        pg.appendChild(c);
+        const num = document.createElement('div');
+        num.className = 'docx-page-num';
+        pg.appendChild(num);
+        return { pg, c };
+      };
+
+      let cur = { pg: pageDiv, c: content };
+      let pageCount = 1;
+      const newPages = [cur];
+
+      allNodes.forEach(node => {
+        const clone = node.cloneNode ? node.cloneNode(true) : document.createTextNode(node.textContent);
+        cur.c.appendChild(clone);
+        if (cur.c.scrollHeight > PAGE_H - 30) {
+          if (cur.c.childNodes.length > 1) {
+            cur.c.removeChild(cur.c.lastChild);
+            const np = makePageDiv();
+            wrap.appendChild(np.pg);
+            np.c.appendChild(clone);
+            cur = np;
+            pageCount++;
+            newPages.push(cur);
+          }
+        }
+      });
+
+      // Redistribuer les .crx-auto-img selon leur top absolu
+      // Chaque image a déjà position:absolute + left/top/width/height complets
+      autoImgs.forEach(img => {
+        const topPx = parseInt(img.style.top || '0');
+        const pi    = Math.min(Math.floor(topPx / PAGE_H), pageCount - 1);
+        const targetPg = newPages[pi];
+        if (!targetPg) return;
+        const ic = img.cloneNode(true);
+        ic.style.top = (topPx - pi * PAGE_H) + 'px';
+        targetPg.pg.appendChild(ic);
+        img.remove();
+      });
+
+      // Mettre à jour les numéros de page
+      const allPgs = wrap.querySelectorAll('.docx-a4-page');
+      allPgs.forEach((p, i) => {
+        const num = p.querySelector('.docx-page-num');
+        if (num) num.textContent = 'Page ' + (i + 1) + ' / ' + allPgs.length;
+      });
+
+      // Mettre à jour le compteur sidebar
+      const pc = document.getElementById('docxPageCount');
+      if (pc) {
+        const n = allPgs.length;
+        pc.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> '
+                     + n + ' page' + (n > 1 ? 's' : '') + ' détectée' + (n > 1 ? 's' : '');
+        pc.style.color = '#CBD5E1';
+      }
+    });
+  });
 }
 
 loadDocxPages();
@@ -1079,8 +1226,8 @@ async function saveDocxEdit() {
   const bodyContent = pages.map(p => {
     const pageDiv = p.closest('.docx-a4-page');
     const clone = p.cloneNode(true);
-    clone.querySelectorAll('img[data-docx-auto]').forEach(img => img.remove());
-    clone.querySelectorAll('.crx-watermark, .crx-textboxes, .crx-wm-user').forEach(el => el.remove());
+    clone.querySelectorAll('img[data-docx-auto], .crx-auto-img').forEach(img => img.remove());
+    clone.querySelectorAll('.crx-watermark, .crx-wm-user').forEach(el => el.remove());
 
     let html = clone.innerHTML;
 
@@ -1168,10 +1315,12 @@ document.addEventListener('click', e => {
   if (!bar) return;
 
   const img = e.target.closest('img');
-  if (img && img.closest('.docx-content') && !img.dataset.docxAuto) {
-    // User-inserted image clicked (no data-docx-auto)
+  // Show control bar for user images (inside .docx-content) AND DOCX overlay images (.crx-auto-img)
+  if (img && img.closest('.docx-a4-page') && (img.closest('.docx-content') || img.classList.contains('crx-auto-img'))) {
     e.preventDefault();
     e.stopPropagation();
+    document.querySelectorAll('.crx-selected').forEach(el => el.classList.remove('crx-selected'));
+    img.classList.add('crx-selected');
     selectedImg = img;
     imgShowBar(img);
   } else if (!e.target.closest('#imgCtrl')) {
@@ -1183,18 +1332,35 @@ function imgShowBar(img) {
   const bar  = document.getElementById('imgCtrl');
   const rect = img.getBoundingClientRect();
 
-  // Calculate current width % relative to parent
-  const parentW = img.parentElement?.getBoundingClientRect().width || 698;
-  const curW    = img.style.width
-    ? (img.style.width.endsWith('%') ? parseInt(img.style.width) : Math.round(img.offsetWidth / parentW * 100))
-    : Math.round(img.offsetWidth / parentW * 100);
-  const pct = Math.max(10, Math.min(100, curW || 100));
+  // For overlay images (crx-auto-img), width is in px; for content images, use % of parent
+  let pct;
+  if (img.classList.contains('crx-auto-img')) {
+    const pageDiv = img.closest('.docx-a4-page');
+    const pageW   = pageDiv ? pageDiv.getBoundingClientRect().width : 794;
+    pct = Math.max(5, Math.min(100, Math.round(img.offsetWidth / pageW * 100)));
+  } else {
+    const parentW = img.parentElement?.getBoundingClientRect().width || 698;
+    const curW    = img.style.width
+      ? (img.style.width.endsWith('%') ? parseInt(img.style.width) : Math.round(img.offsetWidth / parentW * 100))
+      : Math.round(img.offsetWidth / parentW * 100);
+    pct = Math.max(10, Math.min(100, curW || 100));
+  }
 
   document.getElementById('icWidthRange').value = pct;
   document.getElementById('icWidthVal').textContent = pct + '%';
 
+  // Hide alignment buttons for overlay images (absolute position, no float)
+  const isOverlay = img.classList.contains('crx-auto-img');
+  bar.querySelectorAll('button[onclick^="imgAlign"]').forEach(btn => {
+    btn.style.display = isOverlay ? 'none' : '';
+  });
+  bar.querySelectorAll('.ic-sep').forEach((sep, i) => {
+    // Hide the separator before alignment buttons (2nd separator) for overlay images
+    if (i === 1) sep.style.display = isOverlay ? 'none' : '';
+  });
+
   // Position bar above the image, clamped to viewport
-  const barW = 300;
+  const barW = isOverlay ? 220 : 300;
   let left = rect.left + (rect.width / 2) - (barW / 2);
   left = Math.max(8, Math.min(window.innerWidth - barW - 8, left));
   let top = rect.top - 44;
@@ -1208,15 +1374,25 @@ function imgShowBar(img) {
 function imgHideBar() {
   const bar = document.getElementById('imgCtrl');
   if (bar) bar.style.display = 'none';
+  document.querySelectorAll('.crx-selected').forEach(el => el.classList.remove('crx-selected'));
   selectedImg = null;
 }
 
 function imgSetWidth(pct) {
   document.getElementById('icWidthVal').textContent = pct + '%';
   if (!selectedImg) return;
-  selectedImg.style.width  = pct + '%';
-  selectedImg.style.height = 'auto';
-  // Reposition bar since image may have resized
+  if (selectedImg.classList.contains('crx-auto-img')) {
+    // Overlay image: resize in px relative to page width
+    const pageDiv = selectedImg.closest('.docx-a4-page');
+    const pageW   = pageDiv ? pageDiv.getBoundingClientRect().width : 794;
+    const newW    = Math.round(pageW * pct / 100);
+    const ratio   = selectedImg.naturalHeight / (selectedImg.naturalWidth || 1);
+    selectedImg.style.width  = newW + 'px';
+    selectedImg.style.height = Math.round(newW * ratio) + 'px';
+  } else {
+    selectedImg.style.width  = pct + '%';
+    selectedImg.style.height = 'auto';
+  }
   requestAnimationFrame(() => { if (selectedImg) imgShowBar(selectedImg); });
 }
 
@@ -1240,7 +1416,10 @@ function imgAlign(pos) {
 
 function imgDelete() {
   if (!selectedImg) return;
-  if (confirm('Supprimer cette image ?')) {
+  const msg = selectedImg.classList.contains('crx-auto-img')
+    ? 'Masquer cette image du document ?\n(Elle sera restaurée si vous rechargez le rendu DOCX original.)'
+    : 'Supprimer cette image ?';
+  if (confirm(msg)) {
     selectedImg.remove();
     imgHideBar();
   }
@@ -1313,7 +1492,9 @@ document.getElementById('docxPagesWrap').addEventListener('pointerup', e => {
   dragImg.style.opacity = '';
   dragImg.style.cursor  = 'grab';
   document.body.style.cursor = dragCursorOrig;
-  // Show control bar on release
+  // Show control bar on release and mark as selected
+  document.querySelectorAll('.crx-selected').forEach(el => el.classList.remove('crx-selected'));
+  dragImg.classList.add('crx-selected');
   selectedImg = dragImg;
   imgShowBar(dragImg);
   dragImg  = null;

@@ -123,11 +123,12 @@ class GroqDocxRendererService
             $zIndex  = (int)($pos['zIndex']  ?? 10);
             $opacity = number_format((float)($pos['opacity'] ?? 1.0), 2);
 
+            $pageNum = max(0, (int)($pos['page'] ?? 0));
             $divs .= sprintf(
-                '<img src="%s" data-docx-auto="1" '
+                '<img class="crx-auto-img" src="%s" data-docx-auto="1" data-docx-page="%d" '
                 . 'style="position:absolute;left:%dpx;top:%dpx;width:%dpx;height:%dpx;'
-                . 'z-index:%d;opacity:%s;object-fit:contain;pointer-events:none">',
-                $src, $left, $top, $width, $height, $zIndex, $opacity
+                . 'z-index:%d;opacity:%s;object-fit:contain;cursor:grab">',
+                $src, $pageNum, $left, $top, $width, $height, $zIndex, $opacity
             );
             $usedRids[] = $rid;
             $injected++;
@@ -136,10 +137,8 @@ class GroqDocxRendererService
         $zip->close();
 
         if ($divs) {
-            $container = '<div class="crx-textboxes" '
-                . 'style="position:absolute;inset:0;pointer-events:none;z-index:0">'
-                . $divs . '</div>';
-            $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $container, $html, 1) ?? $html;
+            // Inject images directly (no wrapper) so JS can move each one to its pageDiv
+            $html = preg_replace('/<body([^>]*)>/i', '<body$1>' . $divs, $html, 1) ?? $html;
         }
 
         $report .= "\n✅ $injected image(s) injectée(s) par l'agent Groq.";
@@ -364,10 +363,11 @@ RÈGLES wrapType :
 - "Tight" → image en flux avec le texte ; utilise quand même position:absolute avec les coordonnées calculées (meilleure approximation possible)
 
 RÈGLES MULTI-PAGE ET HORS-PAGE :
-- Si top calculé > pageHeightPx : l'image est sur une page suivante. Ramène-la à top = top % pageHeightPx et note page=N dans le reasoning.
+- Si top calculé > pageHeightPx : l'image est sur une page suivante. Calcule page = floor(topTotal / pageHeightPx) et top = topTotal % pageHeightPx. Retourne page dans le JSON.
 - Si top > pageHeightPx * 0.85 : l'image est en bas de page, laisse-la visible (ne la pousse pas hors page).
 - Ne retourne JAMAIS top > pageHeightPx dans le JSON final.
 - Inclus TOUTES les images ayant un rid non null, même celles difficiles à positionner.
+- Le champ `page` est OBLIGATOIRE dans la réponse (0 = première page, 1 = deuxième page, etc.).
 
 RÉPONSE : JSON strict avec :
 {
@@ -376,11 +376,12 @@ RÉPONSE : JSON strict avec :
       "rid": "rId8",
       "left": 103,
       "top": 746,
+      "page": 0,
       "width": 122,
       "height": 122,
       "zIndex": 1,
       "opacity": 1.0,
-      "reasoning": "image 3, page-relative, calcul direct"
+      "reasoning": "image 3, page 0 (première page), calcul direct depuis bord page"
     }
   ],
   "report": "Résumé de l'analyse et des décisions de positionnement prises."

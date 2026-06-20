@@ -461,6 +461,25 @@ class ContractTemplateController extends Controller
         ];
     }
 
+    /**
+     * Retourne les balises du template qui ne sont pas dans la liste standard.
+     * Utilisé en AJAX par le formulaire de création de demande.
+     */
+    public function missingVars(ContractTemplate $contractTemplate)
+    {
+        $knownKeys     = array_keys($this->variablesList()); // ex: ['{nom_client}', ...]
+        $detectedTags  = $contractTemplate->detected_tags ?? []; // ex: ['{nom_client}', '{ville}']
+
+        $unknownTags = array_values(array_filter($detectedTags, function ($tag) use ($knownKeys) {
+            return !in_array($tag, $knownKeys, true);
+        }));
+
+        // Nettoyer les accolades pour retourner juste le nom
+        $fields = array_map(fn($t) => trim($t, '{}'), $unknownTags);
+
+        return response()->json(['fields' => $fields]);
+    }
+
     private function variablesList(): array
     {
         return [

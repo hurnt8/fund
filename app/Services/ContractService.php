@@ -251,6 +251,12 @@ class ContractService
             },
         ];
 
+        // Balises personnalisées saisies dans la modale (ex: {ville}, {nom_projet})
+        $extraVars = [];
+        foreach ($loan->extra_fields ?? [] as $key => $value) {
+            $extraVars['{' . $key . '}'] = (string) $value;
+        }
+
         return array_merge([
             '{reference}'       => $loan->reference ?? '',
             '{archive}'         => $loan->archive_ref ?? '',
@@ -273,7 +279,7 @@ class ContractService
                                     ? $loan->validated_at->format('d/m/Y')
                                     : now()->format('d/m/Y'),
             '{societe}'         => 'CREDIXA INVESTI',
-        ], $genderVars);
+        ], $genderVars, $extraVars);
     }
 
     // ── Génère le contrat en FR (aperçu admin) ───────────────────────────────

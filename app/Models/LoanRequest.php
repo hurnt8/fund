@@ -36,6 +36,7 @@ class LoanRequest extends Model
         'monthly_payment', 'total_cost', 'total_with_interest',
         'admin_fees', 'bank_account',
         'darly', 'objet', 'subject', 'npi',
+        'extra_fields',
         'special_conditions',
         'contract_content', 'contract_language',
         'amortization_schedule',
@@ -45,6 +46,7 @@ class LoanRequest extends Model
 
     protected $casts = [
         'files'                => 'array',
+        'extra_fields'         => 'array',
         'amortization_schedule'=> 'array',
         'start_date'           => 'date',
         'validated_at'         => 'datetime',
@@ -70,6 +72,11 @@ class LoanRequest extends Model
     }
 
     public function template()
+    {
+        return $this->belongsTo(ContractTemplate::class, 'contract_template_id');
+    }
+
+    public function contractTemplate()
     {
         return $this->belongsTo(ContractTemplate::class, 'contract_template_id');
     }
