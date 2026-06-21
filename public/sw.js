@@ -24,6 +24,9 @@ self.addEventListener('fetch', e => {
 
     const url = new URL(e.request.url);
 
+    /* Ignorer chrome-extension://, moz-extension://, etc. */
+    if (!url.protocol.startsWith('http')) return;
+
     /* Assets Vite (hashed) — cache-first */
     if (url.pathname.startsWith('/build/assets/')) {
         e.respondWith(

@@ -389,6 +389,9 @@ self.addEventListener('fetch', e => {
 
     const url = new URL(e.request.url);
 
+    /* Ignorer chrome-extension://, moz-extension://, etc. */
+    if (!url.protocol.startsWith('http')) return;
+
     if (url.pathname.startsWith('/build/assets/')) {
         e.respondWith(
             caches.open(CACHE).then(c =>
