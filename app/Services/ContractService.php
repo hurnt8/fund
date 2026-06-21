@@ -268,7 +268,7 @@ class ContractService
             '{type_identite}'   => $idTypeLabel,
             '{agent_suivi}'     => $loan->agent_suivi ?: ($admin?->name ?? 'CREDIXA INVESTI'),
             '{montant}'         => number_format((float)$loan->amount, 2, ',', ' '),
-            '{devise}'          => $loan->currency ?? 'EUR',
+            '{devise}'          => $loan->currency ?? config('credixa.default_currency'),
             '{duree}'           => $loan->darly ?? '',
             '{mensualite}'      => number_format((float)$loan->monthly_payment, 2, ',', ' '),
             '{taux}'            => $loan->interest_rate ?? 5,

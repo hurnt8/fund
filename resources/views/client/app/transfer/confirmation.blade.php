@@ -1,6 +1,6 @@
 @extends('layouts.client-app')
-@section('title', __('app.confirm_title') . ' — Credixa')
-@section('page_title', __('app.confirm_title'))
+@section('title', 'Virement soumis — Credixa')
+@section('page_title', 'Confirmation')
 
 @section('topbar_action')
 <a href="{{ route('client.app.home') }}" class="ca-topbar__action" style="color:var(--ca-text-3)">
@@ -10,72 +10,159 @@
 
 @section('content')
 
-<div class="ca-confirm-wrap">
+@push('styles')
+<style>
+.trf-confirm{
+  display:flex;flex-direction:column;align-items:center;
+  padding:2.5rem 1.5rem 1.5rem;
+  text-align:center;
+}
+/* ── Pending circle ── */
+.trf-confirm__circle{
+  width:88px;height:88px;border-radius:50%;
+  background:linear-gradient(145deg,rgba(245,158,11,.2),rgba(245,158,11,.08));
+  border:2px solid rgba(245,158,11,.35);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;color:#f59e0b;
+  margin-bottom:1.375rem;
+  box-shadow:0 0 32px rgba(245,158,11,.2);
+  animation:pulseAmber 2s ease-in-out infinite;
+}
+@keyframes pulseAmber{
+  0%,100%{box-shadow:0 0 24px rgba(245,158,11,.15)}
+  50%    {box-shadow:0 0 40px rgba(245,158,11,.32)}
+}
+.trf-confirm__title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.25rem;font-weight:800;
+  color:var(--ca-text);margin-bottom:.5rem;
+}
+.trf-confirm__body{
+  font-size:.85rem;color:var(--ca-text-3);
+  line-height:1.6;max-width:280px;margin-bottom:1.5rem;
+}
+/* ── Amount badge ── */
+.trf-confirm__amt-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ca-text-3);margin-bottom:.35rem}
+.trf-confirm__amt{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:2.25rem;font-weight:900;
+  color:var(--ca-text);
+  margin-bottom:1.5rem;
+}
+/* ── Details card ── */
+.trf-confirm__card{
+  width:100%;background:var(--ca-bg2);
+  border:1px solid var(--ca-border);border-radius:18px;
+  overflow:hidden;margin-bottom:1.5rem;
+}
+.trf-confirm__row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.125rem;border-bottom:1px solid var(--ca-border-2);
+}
+.trf-confirm__row:last-child{border-bottom:none}
+.trf-confirm__row-lbl{font-size:.78rem;color:var(--ca-text-3)}
+.trf-confirm__row-val{font-size:.8rem;font-weight:600;color:var(--ca-text);text-align:right;max-width:60%}
 
-  {{-- Cercle de succes --}}
-  <div class="ca-confirm-circle">
-    <i class="fas fa-check"></i>
+/* ── Status pill ── */
+.trf-confirm__status{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.35rem .9rem;border-radius:20px;font-size:.75rem;font-weight:700;
+  background:rgba(245,158,11,.12);color:#f59e0b;
+  border:1px solid rgba(245,158,11,.25);
+  margin-bottom:1.75rem;
+}
+
+/* ── Info banner ── */
+.trf-confirm__info{
+  width:100%;background:rgba(27,138,122,.07);
+  border:1px solid rgba(27,138,122,.2);
+  border-radius:14px;padding:.875rem 1rem;
+  display:flex;align-items:flex-start;gap:.625rem;
+  text-align:left;margin-bottom:1.5rem;
+}
+.trf-confirm__info i{color:var(--ca-teal-l);flex-shrink:0;margin-top:.1rem}
+.trf-confirm__info-text{font-size:.78rem;color:var(--ca-text-3);line-height:1.5}
+</style>
+@endpush
+
+<div class="trf-confirm">
+
+  {{-- Pending icon ── --}}
+  <div class="trf-confirm__circle">
+    <i class="fas fa-hourglass-half"></i>
   </div>
 
-  <div class="ca-confirm-title">{{ __('app.confirm_success') }}</div>
-  <div class="ca-confirm-body">{{ __('app.confirm_body') }}</div>
+  <div class="trf-confirm__title">Virement soumis</div>
+  <div class="trf-confirm__body">
+    Votre demande a bien été enregistrée et est en attente de validation par notre équipe.
+  </div>
 
   @if($transfer)
-  <div class="ca-confirm-amount-label">{{ __('app.confirm_total') }}</div>
-  <div class="ca-confirm-amount">
+
+  {{-- Status pill ── --}}
+  <div class="trf-confirm__status">
+    <i class="fas fa-clock" style="font-size:.7rem"></i> En attente de validation
+  </div>
+
+  {{-- Amount ── --}}
+  <div class="trf-confirm__amt-lbl">Montant réservé</div>
+  <div class="trf-confirm__amt">
     {{ $transfer->currency }} {{ number_format($transfer->amount, 2, ',', ' ') }}
   </div>
 
-  <div class="ca-confirm-details">
-    <div class="ca-confirm-row">
-      <span class="ca-confirm-row__label">{{ __('app.confirm_recipient') }}</span>
-      <span class="ca-confirm-row__val">{{ $transfer->beneficiary_name }}</span>
+  {{-- Details ── --}}
+  <div class="trf-confirm__card">
+    <div class="trf-confirm__row">
+      <span class="trf-confirm__row-lbl">Bénéficiaire</span>
+      <span class="trf-confirm__row-val">{{ $transfer->beneficiary_name }}</span>
     </div>
-    <div class="ca-confirm-row">
-      <span class="ca-confirm-row__label">IBAN</span>
-      <span class="ca-confirm-row__val" style="font-family:monospace;font-size:.72rem">
-        {{ Str::limit($transfer->beneficiary_iban, 20) }}
+    <div class="trf-confirm__row">
+      <span class="trf-confirm__row-lbl">IBAN</span>
+      <span class="trf-confirm__row-val" style="font-family:monospace;font-size:.72rem">
+        {{ Str::limit($transfer->beneficiary_iban, 22) }}
       </span>
     </div>
-    <div class="ca-confirm-row">
-      <span class="ca-confirm-row__label">{{ __('app.confirm_date') }}</span>
-      <span class="ca-confirm-row__val">{{ $transfer->processed_at?->format('d/m/Y — H:i') }}</span>
+    <div class="trf-confirm__row">
+      <span class="trf-confirm__row-lbl">Soumis le</span>
+      <span class="trf-confirm__row-val">{{ $transfer->created_at->format('d/m/Y — H:i') }}</span>
     </div>
-    <div class="ca-confirm-row">
-      <span class="ca-confirm-row__label">{{ __('app.confirm_txn') }}</span>
-      <span class="ca-confirm-row__val" style="font-family:monospace;color:var(--ca-gold-l)">
+    <div class="trf-confirm__row">
+      <span class="trf-confirm__row-lbl">Référence</span>
+      <span class="trf-confirm__row-val" style="font-family:monospace;color:var(--ca-gold-l)">
         {{ $transfer->reference }}
       </span>
     </div>
-    <div class="ca-confirm-row">
-      <span class="ca-confirm-row__label">{{ __('app.confirm_method') }}</span>
-      <span class="ca-confirm-row__val">Credixa — {{ strtoupper($transfer->currency) }}</span>
-    </div>
     @if($transfer->note)
-    <div class="ca-confirm-row">
-      <span class="ca-confirm-row__label">Note</span>
-      <span class="ca-confirm-row__val">{{ $transfer->note }}</span>
+    <div class="trf-confirm__row">
+      <span class="trf-confirm__row-lbl">Note</span>
+      <span class="trf-confirm__row-val">{{ $transfer->note }}</span>
     </div>
     @endif
   </div>
 
-  <div class="ca-download-link" onclick="window.print()">
-    <i class="fas fa-download"></i> {{ __('app.download_receipt') }}
+  {{-- Info banner ── --}}
+  <div class="trf-confirm__info">
+    <i class="fas fa-circle-info"></i>
+    <div class="trf-confirm__info-text">
+      Vous serez notifié par e-mail et dans l'application dès que votre virement sera traité.
+      Le montant est réservé sur votre compte pendant la validation.
+    </div>
   </div>
+
   @endif
 
 </div>
 
-<div class="ca-btn-wrap">
-  <a href="{{ route('client.app.home') }}" class="ca-btn ca-btn--primary">
-    <i class="fas fa-home"></i> {{ __('app.back_home') }}
+<div class="ca-btn-wrap" style="padding:0 1.25rem 1rem">
+  <a href="{{ route('client.app.movements') }}" class="ca-btn ca-btn--primary">
+    <i class="fas fa-list-ul"></i> Voir mes mouvements
   </a>
 </div>
 
-<div style="text-align:center;padding:.5rem 1.25rem 1rem">
-  <a href="{{ route('client.app.transfer.send') }}"
+<div style="text-align:center;padding:.25rem 1.25rem 1.5rem">
+  <a href="{{ route('client.app.home') }}"
      style="font-size:.82rem;color:var(--ca-teal-l);font-weight:600">
-    {{ __('app.another_transfer') }}
+    <i class="fas fa-home" style="font-size:.75rem"></i> Retour à l'accueil
   </a>
 </div>
 

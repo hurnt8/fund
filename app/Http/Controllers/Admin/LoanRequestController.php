@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\LoanValidatedMail;
 use App\Mail\SignedContractAcknowledgementMail;
 use App\Mail\UserInvitationMail;
+use App\Models\ClientNotification;
 use App\Models\ContractTemplate;
 use App\Models\LoanHistory;
 use App\Models\LoanRequest;
@@ -64,7 +65,7 @@ class LoanRequestController extends Controller
         $admin     = Auth::user();
         $myClients = $this->clientsForAdmin($admin);
         $templates  = $this->templatesForAdmin($admin);
-        $currencies = ['EUR','PLN','USD','GBP','BRL','MXN'];
+        $currencies = config('credixa.currencies');
 
         return view('admin.loans.create', compact('myClients', 'templates', 'currencies'));
     }
@@ -217,7 +218,7 @@ class LoanRequestController extends Controller
         $myClients = User::where('type', 'client')
                          ->whereHas('clientLoans', fn($q) => $q->where('admin_id', $admin->id))
                          ->orderBy('name')->get();
-        $currencies = ['EUR','PLN','USD','GBP','BRL','MXN'];
+        $currencies = config('credixa.currencies');
         $templates  = $this->templatesForAdmin($admin);
 
         return view('admin.loans.edit', compact('loan', 'myClients', 'currencies', 'templates'));
@@ -240,6 +241,7 @@ class LoanRequestController extends Controller
             'agent_suivi'          => 'nullable|string|max:255',
             'special_conditions'   => 'nullable|string',
             'contract_template_id' => 'nullable|exists:contract_templates,id',
+            'contract_language'    => 'nullable|in:fr,en,pl,es',
             'extra_fields'         => 'nullable|array',
             'extra_fields.*'       => 'nullable|string|max:500',
         ]);
@@ -256,11 +258,13 @@ class LoanRequestController extends Controller
             'total_cost'           => $calc['total_cost'],
             'total_with_interest'  => $calc['total_with_interest'],
             'amortization_schedule'=> $calc['amortization_schedule'],
+            'contract_language'    => $data['contract_language'] ?? $loan->contract_language ?? 'fr',
             'extra_fields'         => !empty($data['extra_fields']) ? $data['extra_fields'] : null,
         ]));
 
-        // Régénérer le contenu du contrat avec le nouveau template
-        $loan->contract_content = $this->contractService->generateFr($loan);
+        // Régénérer l'aperçu dans la langue choisie
+        $loan->refresh();
+        $loan->contract_content = $this->contractService->generateForClient($loan);
         $loan->save();
 
         $this->logHistory($loan, 'updated', $old, $loan->only(['amount','darly','status','contract_template_id']));
@@ -324,6 +328,17 @@ class LoanRequestController extends Controller
 
         $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status]);
 
+        // Notification in-app au client
+        if ($loan->client_id) {
+            ClientNotification::forUser(
+                $loan->client_id,
+                'loan_update',
+                'Contrat envoyé par e-mail',
+                'Votre contrat ' . $loan->reference . ' a été envoyé à votre adresse e-mail. Veuillez le signer et nous le retourner.',
+                ['loan_id' => $loan->id, 'reference' => $loan->reference]
+            );
+        }
+
         // Supprimer PDFs temporaires
         @unlink($contractPdf);
         @unlink($amortizationPdf);
@@ -364,6 +379,18 @@ class LoanRequestController extends Controller
         // Créditer le solde du client lors du passage en "finalisé"
         if ($data['status'] === LoanRequest::STATUS_FINALIZED && $old['status'] !== LoanRequest::STATUS_FINALIZED) {
             $loan->client?->increment('balance', (float) $loan->amount);
+
+            if ($loan->client_id) {
+                $cur = $loan->currency ?? config('credixa.default_currency');
+                ClientNotification::forUser(
+                    $loan->client_id,
+                    'credit',
+                    'Financement débloqué',
+                    number_format((float) $loan->amount, 2, ',', ' ') . ' ' . $cur
+                        . ' ont été crédités sur votre compte (dossier ' . $loan->reference . ').',
+                    ['loan_id' => $loan->id, 'amount' => $loan->amount, 'currency' => $cur]
+                );
+            }
         }
 
         $this->logHistory($loan, 'status_changed', $old, ['status' => $data['status']]);

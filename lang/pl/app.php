@@ -30,6 +30,8 @@ return [
     'status_signed'    => 'Podpisane',
     'status_finalized' => 'Zakonczone',
     'status_rejected'  => 'Odrzucone',
+    'step_current'     => 'W toku',
+    'step_done'        => 'Zakonczone',
 
     'loan_amount'      => 'Przyznana kwota',
     'monthly'          => 'Rata miesieczna',
@@ -68,7 +70,8 @@ return [
     'send_btn'              => 'Wyslij',
     'send_name'             => 'Nazwa odbiorcy',
     'send_iban'             => 'IBAN odbiorcy',
-    'transfer_insufficient' => 'Niewystarczajace saldo do realizacji przelewu.',
+    'transfer_insufficient'     => 'Niewystarczajace saldo do realizacji przelewu.',
+    'transfer_negative_balance' => 'Saldo jest ujemne. Przelewy są zablokowane do czasu wyrównania konta.',
 
     'receive_title'      => 'Odbierz',
     'receive_subtitle'   => 'Udostepnij dane bankowe, aby otrzymac przelew',

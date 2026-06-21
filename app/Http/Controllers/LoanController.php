@@ -53,9 +53,9 @@ class LoanController extends Controller
             'darly'    => 'required|numeric|min:1',
             'subject'  => 'required|string',
             'objet'    => 'nullable|string|max:2000',
-            'currency' => 'nullable|string|in:EUR,PLN,USD,BRL,MXN',
+            'currency' => 'nullable|string|in:' . implode(',', config('credixa.currencies')),
         ]);
-        $data['currency'] = $data['currency'] ?? 'EUR';
+        $data['currency'] = $data['currency'] ?? config('credixa.default_currency');
 
         $locale = $request->input('locale', 'fr');
         if (!in_array($locale, ['fr', 'en', 'pl', 'es'])) {

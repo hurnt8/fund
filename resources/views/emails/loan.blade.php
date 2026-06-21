@@ -11,7 +11,7 @@
 
 **{{ __('loan.label_phone') }} :** {{ $data['phone'] }}
 
-**{{ __('loan.label_amount') }} :** {{ number_format($data['amount'], 0, ',', ' ') }} {{ $data['currency'] ?? 'EUR' }}
+**{{ __('loan.label_amount') }} :** {{ number_format($data['amount'], 0, ',', ' ') }} {{ $data['currency'] ?? config('credixa.default_currency') }}
 
 **{{ __('loan.label_darly') }} :** {{ $data['darly'] }} {{ __('message.months') }}
 

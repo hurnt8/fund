@@ -20,6 +20,12 @@ use App\Http\Controllers\Admin\ContractTemplateController;
 use App\Http\Controllers\SuperAdmin\LoanRequestController as SuperAdminLoanRequestController;
 use App\Http\Controllers\Client\LoanRequestController as ClientLoanRequestController;
 use App\Http\Controllers\Client\AppController as ClientAppController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\TransferValidationController;
+use App\Http\Controllers\Admin\SupportController as AdminSupportController;
+use App\Http\Controllers\Admin\AdminNotificationController;
+use App\Http\Controllers\Client\SupportController as ClientSupportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -194,11 +200,11 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
     Route::get('/profile/password',    [ClientAppController::class, 'changePassword'])->name('profile.password');
     Route::post('/profile/password',   [ClientAppController::class, 'savePassword'])->name('profile.password.save');
 
-    // Notifications
-    Route::get('/notifications',               [ClientAppController::class, 'notifications'])->name('notifications');
-    Route::post('/notifications/read-all',     [ClientAppController::class, 'notificationReadAll'])->name('notifications.read-all');
-    Route::post('/notifications/{id}/read',    [ClientAppController::class, 'notificationRead'])->name('notifications.read');
-    Route::get('/notifications/unread-count',  [ClientAppController::class, 'notificationCount'])->name('notifications.count');
+    // Notifications (page)
+    Route::get('/notifications',             [ClientAppController::class, 'notifications'])->name('notifications');
+
+    // Mouvements de compte
+    Route::get('/movements', [ClientAppController::class, 'movements'])->name('movements');
 
     // Transferts : hub central (bouton FAB nav) + sous-pages
     Route::get('/transfers',           [\App\Http\Controllers\Client\TransferController::class, 'hub'])->name('transfers');
@@ -206,6 +212,18 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
     Route::post('/transfer/send',      [\App\Http\Controllers\Client\TransferController::class, 'sendProcess'])->name('transfer.send.process');
     Route::get('/transfer/receive',    [\App\Http\Controllers\Client\TransferController::class, 'receive'])->name('transfer.receive');
     Route::get('/transfer/confirmation', [\App\Http\Controllers\Client\TransferController::class, 'confirmation'])->name('transfer.confirmation');
+
+    // Support client (page principale)
+    Route::get('/support', [ClientSupportController::class, 'index'])->name('support');
+
+    // ── Endpoints AJAX internes (rate-limited + sécurisés) ──────────────────
+    Route::middleware(['ajax.secure', 'throttle:60,1'])->group(function () {
+        Route::get('/support/poll',              [ClientSupportController::class, 'poll'])->name('support.poll');
+        Route::post('/support',                  [ClientSupportController::class, 'store'])->name('support.store');
+        Route::get('/notifications/unread-count',[ClientAppController::class, 'notificationCount'])->name('notifications.count');
+        Route::post('/notifications/read-all',   [ClientAppController::class, 'notificationReadAll'])->name('notifications.read-all');
+        Route::post('/notifications/{id}/read',  [ClientAppController::class, 'notificationRead'])->name('notifications.read');
+    });
 
     Route::post('/locale', function (\Illuminate\Http\Request $request) {
         $locale = $request->input('locale', 'fr');
@@ -256,6 +274,53 @@ Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('ad
     Route::put('/users/{user}',                 [UserManagementController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}',              [UserManagementController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{user}/resend-invite',  [UserManagementController::class, 'resendInvitation'])->name('users.resend-invite');
+
+    // Account management (credit / debit)
+    Route::get('/accounts',                        [AccountController::class, 'index'])->name('accounts.index');
+    Route::get('/accounts/{account}',              [AccountController::class, 'show'])->name('accounts.show');
+    Route::post('/accounts/{account}/credit',      [AccountController::class, 'credit'])->name('accounts.credit');
+    Route::post('/accounts/{account}/debit',       [AccountController::class, 'debit'])->name('accounts.debit');
+
+    // Validation des transferts clients
+    Route::get('/transfers',                          [TransferValidationController::class, 'index'])->name('transfers.index');
+    Route::post('/transfers/{transfer}/approve',      [TransferValidationController::class, 'approve'])->name('transfers.approve');
+    Route::post('/transfers/{transfer}/reject',       [TransferValidationController::class, 'reject'])->name('transfers.reject');
+    Route::post('/transfers/{transfer}/invoice',      [TransferValidationController::class, 'invoice'])->name('transfers.invoice');
+
+    // Support (pages HTML)
+    Route::get('/support',          [AdminSupportController::class, 'index'])->name('support.index');
+    Route::get('/support/{client}', [AdminSupportController::class, 'show'])->name('support.show');
+
+    // Support AJAX (poll + envoi message)
+    Route::middleware(['ajax.secure', 'throttle:60,1'])->group(function () {
+        Route::post('/support/{client}',     [AdminSupportController::class, 'store'])->name('support.store');
+        Route::get('/support/{client}/poll', [AdminSupportController::class, 'poll'])->name('support.poll');
+    });
+
+    // Notifications admin — endpoints AJAX sécurisés
+    Route::middleware(['ajax.secure', 'throttle:60,1'])->group(function () {
+        Route::get('/notifications',                      [AdminNotificationController::class, 'list'])->name('notifications.list');
+        Route::get('/notifications/count',                [AdminNotificationController::class, 'unreadCount'])->name('notifications.count');
+        Route::post('/notifications/read-all',            [AdminNotificationController::class, 'markAllRead'])->name('notifications.read-all');
+        Route::post('/notifications/{notification}/read', [AdminNotificationController::class, 'markRead'])->name('notifications.read');
+    });
+
+    // Profil admin
+    Route::get('/profile',           [\App\Http\Controllers\Admin\AdminProfileController::class, 'index'])->name('profile');
+    Route::post('/profile',          [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/password', [\App\Http\Controllers\Admin\AdminProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Facturation
+    Route::get('/invoices',                         [InvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('/invoices/create',                  [InvoiceController::class, 'create'])->name('invoices.create');
+    Route::post('/invoices',                        [InvoiceController::class, 'store'])->name('invoices.store');
+    Route::get('/invoices/{invoice}',               [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{invoice}/edit',          [InvoiceController::class, 'edit'])->name('invoices.edit');
+    Route::put('/invoices/{invoice}',               [InvoiceController::class, 'update'])->name('invoices.update');
+    Route::post('/invoices/{invoice}/send',         [InvoiceController::class, 'send'])->name('invoices.send');
+    Route::post('/invoices/{invoice}/mark-paid',    [InvoiceController::class, 'markPaid'])->name('invoices.mark-paid');
+    Route::post('/invoices/{invoice}/cancel',       [InvoiceController::class, 'cancel'])->name('invoices.cancel');
+    Route::delete('/invoices/{invoice}',            [InvoiceController::class, 'destroy'])->name('invoices.destroy');
 });
 
 // ── Super Admin dashboard ───────────────────────────────────────────────────
@@ -279,4 +344,9 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('super-admin')->name('su
     Route::post('/loans/{loan}/validate',          [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
     Route::post('/loans/{loan}/signed',            [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
     Route::patch('/loans/{loan}/status',           [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
+
+    // Profil super-admin
+    Route::get('/profile',           [\App\Http\Controllers\Admin\AdminProfileController::class, 'index'])->name('profile');
+    Route::post('/profile',          [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/password', [\App\Http\Controllers\Admin\AdminProfileController::class, 'updatePassword'])->name('profile.password');
 });

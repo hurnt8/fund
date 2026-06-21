@@ -40,6 +40,7 @@ class LoanPdfService
     private function generateWithDomPdf(LoanRequest $loan, string $locale): string
     {
         $html = $this->contractService->generateForClient($loan);
+        $html = $this->embedStorageImages($html);
 
         $pdf = Pdf::loadHTML($html)
                   ->setPaper('a4', 'portrait')
@@ -55,6 +56,46 @@ class LoanPdfService
         Storage::put($path, $pdf->output());
 
         return storage_path('app/' . $path);
+    }
+
+    /**
+     * Convertit les URLs storage/ en data URIs base64 pour DomPDF (qui n'accepte pas les URLs HTTP).
+     * Gère les attributs src="..." et les CSS url("...").
+     */
+    private function embedStorageImages(string $html): string
+    {
+        $storagePublicPath = storage_path('app/public/');
+        $storagePublicUrl  = url('storage/');
+
+        $callback = function (string $url) use ($storagePublicPath, $storagePublicUrl): string {
+            if (!str_starts_with($url, $storagePublicUrl)) {
+                return $url;
+            }
+            $relativePath = ltrim(substr($url, strlen($storagePublicUrl)), '/');
+            $filePath     = $storagePublicPath . $relativePath;
+            if (!file_exists($filePath)) {
+                return $url;
+            }
+            $mime = mime_content_type($filePath) ?: 'image/png';
+            $data = base64_encode(file_get_contents($filePath));
+            return 'data:' . $mime . ';base64,' . $data;
+        };
+
+        // Remplace src="http://...storage/..."
+        $html = preg_replace_callback(
+            '/\bsrc="(' . preg_quote($storagePublicUrl, '/') . '[^"]+)"/i',
+            fn ($m) => 'src="' . $callback($m[1]) . '"',
+            $html
+        );
+
+        // Remplace url("http://...storage/...") dans les styles CSS inline
+        $html = preg_replace_callback(
+            '/url\(["\']?(' . preg_quote($storagePublicUrl, '/') . '[^"\')\s]+)["\']?\)/i',
+            fn ($m) => 'url("' . $callback($m[1]) . '")',
+            $html
+        );
+
+        return $html;
     }
 
     /**

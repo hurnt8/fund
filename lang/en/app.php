@@ -30,6 +30,8 @@ return [
     'status_signed'    => 'Signed',
     'status_finalized' => 'Finalized',
     'status_rejected'  => 'Rejected',
+    'step_current'     => 'In progress',
+    'step_done'        => 'Completed',
 
     'loan_amount'      => 'Granted amount',
     'monthly'          => 'Monthly payment',
@@ -68,7 +70,8 @@ return [
     'send_btn'              => 'Send',
     'send_name'             => 'Recipient name',
     'send_iban'             => 'Recipient IBAN',
-    'transfer_insufficient' => 'Insufficient balance to complete this transfer.',
+    'transfer_insufficient'     => 'Insufficient balance to complete this transfer.',
+    'transfer_negative_balance' => 'Your balance is negative. Transfers are blocked until your account is settled.',
 
     'receive_title'      => 'Receive',
     'receive_subtitle'   => 'Share your bank details to receive a transfer',

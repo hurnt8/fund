@@ -228,7 +228,7 @@
   <div class="pm-detail-row">
     <span class="pm-detail-key">{{ __('app.balance') }}</span>
     <span class="pm-detail-val" style="color:var(--ca-positive)">
-      {{ $user->currency ?? 'EUR' }} {{ number_format((float)$user->balance, 2, ',', ' ') }}
+      {{ $user->currency ?? config('credixa.default_currency') }} {{ number_format((float)$user->balance, 2, ',', ' ') }}
     </span>
   </div>
 </div>

@@ -30,11 +30,13 @@ return [
     // Statuts
     'status_draft'     => 'Brouillon',
     'status_pending'   => 'En attente',
-    'status_validated' => 'Valide',
-    'status_sent'      => 'Contrat envoye',
-    'status_signed'    => 'Signe',
-    'status_finalized' => 'Finalise',
-    'status_rejected'  => 'Refuse',
+    'status_validated' => 'Validé',
+    'status_sent'      => 'Contrat envoyé',
+    'status_signed'    => 'Contrat signé',
+    'status_finalized' => 'Finalisé',
+    'status_rejected'  => 'Refusé',
+    'step_current'     => 'Étape en cours',
+    'step_done'        => 'Complété',
 
     // Pret
     'loan_amount'      => 'Montant accorde',
@@ -76,7 +78,8 @@ return [
     'send_btn'           => 'Envoyer',
     'send_name'          => 'Nom du beneficiaire',
     'send_iban'          => 'IBAN du beneficiaire',
-    'transfer_insufficient' => 'Solde insuffisant pour effectuer ce virement.',
+    'transfer_insufficient'     => 'Solde insuffisant pour effectuer ce virement.',
+    'transfer_negative_balance' => 'Votre solde est négatif. Les virements sont bloqués jusqu\'à régularisation.',
 
     'receive_title'      => 'Recevoir',
     'receive_subtitle'   => 'Partagez vos coordonnees bancaires pour recevoir un virement',

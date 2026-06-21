@@ -3,7 +3,7 @@
 
 {{ __('message.loan_confirm_body', [
     'amount'   => number_format($data['amount'], 0, ',', ' '),
-    'currency' => $data['currency'] ?? 'EUR',
+    'currency' => $data['currency'] ?? config('credixa.default_currency'),
     'duration' => $data['darly'],
 ]) }}
 

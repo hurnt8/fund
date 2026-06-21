@@ -4,16 +4,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+ * Toutes les routes API exigent un token Sanctum valide.
+ * Aucune donnée n'est accessible sans authentification.
+ */
+Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // Utilisateur courant
+    Route::get('/user', function (Request $request) {
+        $user = $request->user();
+        return response()->json([
+            'id'    => $user->id,
+            'name'  => $user->name,
+            'email' => $user->email,
+            'role'  => $user->getRoleNames()->first(),
+        ]);
+    });
+
+});
+
+// Toute route non définie → 404 JSON (jamais de redirection)
+Route::fallback(function () {
+    return response()->json(['error' => 'Not found.'], 404);
 });

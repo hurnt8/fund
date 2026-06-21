@@ -30,7 +30,7 @@
       <div class="cl-hero__label">Bonjour, {{ Auth::user()->name }}</div>
       <div class="cl-hero__amount">
         {{ number_format((float) Auth::user()->balance, 2, ',', ' ') }}
-        <span class="cl-hero__currency">{{ Auth::user()->currency ?? 'EUR' }}</span>
+        <span class="cl-hero__currency">{{ Auth::user()->currency ?? config('credixa.default_currency') }}</span>
       </div>
       <div class="cl-hero__sub">
         <i class="fas fa-wallet me-1" style="color:var(--cl-gold)"></i>

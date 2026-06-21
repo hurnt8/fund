@@ -80,7 +80,7 @@
             <label class="form-label-pro">Conditions particulières</label>
             <textarea name="special_conditions" class="form-control-pro" rows="3">{{ old('special_conditions',$loan->special_conditions) }}</textarea>
           </div>
-          <div class="col-12">
+          <div class="col-sm-6">
             <label class="form-label-pro">Modèle de contrat</label>
             <select name="contract_template_id" class="form-control-pro">
               <option value="">— Modèle par défaut —</option>
@@ -90,6 +90,17 @@
               </option>
               @endforeach
             </select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label-pro">Langue du contrat</label>
+            <select name="contract_language" class="form-control-pro">
+              @foreach(['fr'=>'Français','en'=>'English','pl'=>'Polski','es'=>'Español'] as $lc => $llabel)
+              <option value="{{ $lc }}" {{ old('contract_language', $loan->contract_language ?? 'fr') === $lc ? 'selected' : '' }}>
+                {{ $llabel }}
+              </option>
+              @endforeach
+            </select>
+            <p class="form-help">Langue utilisée pour le PDF envoyé au client</p>
           </div>
         </div>
       </div>

@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AdminTransferMail;
+use App\Models\AdminNotification;
 use App\Models\Transfer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TransferController extends Controller
 {
@@ -20,6 +24,12 @@ class TransferController extends Controller
     public function sendForm()
     {
         $user = Auth::user();
+
+        if ((float) $user->balance < 0) {
+            return redirect()->route('client.app.transfers')
+                ->withErrors(['blocked' => __('app.transfer_negative_balance')]);
+        }
+
         return view('client.app.transfer.send', compact('user'));
     }
 
@@ -36,6 +46,10 @@ class TransferController extends Controller
 
         $amount = (float) $validated['amount'];
 
+        if ((float) $user->balance < 0) {
+            return back()->withErrors(['amount' => __('app.transfer_negative_balance')])->withInput();
+        }
+
         if ($amount > (float) $user->balance) {
             return back()->withErrors(['amount' => __('app.transfer_insufficient')])->withInput();
         }
@@ -46,17 +60,20 @@ class TransferController extends Controller
                 'reference'        => Transfer::generateReference(),
                 'type'             => 'send',
                 'amount'           => $amount,
-                'currency'         => $user->currency ?? 'EUR',
+                'currency'         => $user->currency ?? config('credixa.default_currency'),
                 'beneficiary_name' => $validated['beneficiary_name'],
                 'beneficiary_iban' => $validated['beneficiary_iban'],
                 'note'             => $validated['note'] ?? null,
-                'status'           => 'completed',
-                'processed_at'     => now(),
+                'status'           => Transfer::STATUS_PENDING,
             ]);
 
+            // Fonds réservés immédiatement — remboursés si rejet admin
             $user->decrement('balance', $amount);
 
             session(['last_transfer_id' => $transfer->id]);
+
+            // Notifier les admins responsables
+            $this->notifyAdmins($user, $transfer);
         });
 
         return redirect()->route('client.app.transfer.confirmation');
@@ -66,6 +83,37 @@ class TransferController extends Controller
     {
         $user = Auth::user();
         return view('client.app.transfer.receive', compact('user'));
+    }
+
+    private function notifyAdmins(User $client, Transfer $transfer): void
+    {
+        $adminIds = collect();
+
+        if ($client->created_by) {
+            $adminIds->push($client->created_by);
+        }
+        $loanAdminId = $client->clientLoans()->whereNotNull('admin_id')->value('admin_id');
+        if ($loanAdminId) $adminIds->push($loanAdminId);
+        $adminIds = $adminIds->unique();
+
+        if ($adminIds->isEmpty()) {
+            $adminIds = User::role('super-admin')->pluck('id');
+        }
+
+        $body = 'Virement de ' . number_format($transfer->amount, 2, ',', ' ') . ' '
+            . $transfer->currency . ' vers ' . $transfer->beneficiary_name;
+
+        foreach ($adminIds as $adminId) {
+            AdminNotification::forAdmin($adminId, 'transfer', 'Virement en attente — ' . $client->name, $body, [
+                'transfer_id' => $transfer->id,
+                'client_id'   => $client->id,
+            ]);
+
+            $admin = User::find($adminId);
+            if ($admin) {
+                Mail::to($admin->email)->send(new AdminTransferMail($client, $transfer));
+            }
+        }
     }
 
     public function confirmation()

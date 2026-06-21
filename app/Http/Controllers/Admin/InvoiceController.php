@@ -1,0 +1,315 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Mail\InvoiceMail;
+use App\Models\ClientNotification;
+use App\Models\Invoice;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+
+class InvoiceController extends Controller
+{
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    private function isSuperAdmin(): bool
+    {
+        return Auth::user()->hasRole('super-admin');
+    }
+
+    private function clientsQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = User::where('type', 'client');
+
+        if (! $this->isSuperAdmin()) {
+            $adminId = Auth::id();
+            $query->where(function ($q) use ($adminId) {
+                $q->where('created_by', $adminId)
+                  ->orWhereHas('clientLoans', fn ($q2) => $q2->where('admin_id', $adminId));
+            });
+        }
+
+        return $query->orderBy('name');
+    }
+
+    private function authorizeInvoice(Invoice $invoice): void
+    {
+        if ($this->isSuperAdmin()) return;
+        abort_unless($invoice->admin_id === Auth::id(), 403);
+    }
+
+    private function baseQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = Invoice::with(['client:id,name,email', 'admin:id,name']);
+
+        if (! $this->isSuperAdmin()) {
+            $query->where('admin_id', Auth::id());
+        }
+
+        return $query;
+    }
+
+    // ── Index ─────────────────────────────────────────────────────────────────
+
+    public function index(Request $request)
+    {
+        $query = $this->baseQuery();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('reference', 'like', "%$s%")
+                  ->orWhereHas('client', fn ($q2) => $q2->where('name', 'like', "%$s%")->orWhere('email', 'like', "%$s%"));
+            });
+        }
+
+        $invoices = $query->latest()->paginate(15)->appends($request->query());
+
+        $stats = [
+            'total'     => $this->baseQuery()->count(),
+            'draft'     => $this->baseQuery()->where('status', 'draft')->count(),
+            'sent'      => $this->baseQuery()->where('status', 'sent')->count(),
+            'paid'      => $this->baseQuery()->where('status', 'paid')->count(),
+            'cancelled' => $this->baseQuery()->where('status', 'cancelled')->count(),
+        ];
+
+        return view('admin.invoices.index', compact('invoices', 'stats'));
+    }
+
+    // ── Create / Store ────────────────────────────────────────────────────────
+
+    public function create()
+    {
+        $clients    = $this->clientsQuery()->get();
+        $currencies = config('credixa.currencies');
+        return view('admin.invoices.create', compact('clients', 'currencies'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'client_id'   => 'required|exists:users,id',
+            'issue_date'  => 'required|date',
+            'due_date'    => 'nullable|date|after_or_equal:issue_date',
+            'currency'    => 'required|string|in:' . implode(',', config('credixa.currencies')),
+            'tax_rate'    => 'nullable|numeric|min:0|max:100',
+            'description' => 'nullable|string|max:1000',
+            'note'        => 'nullable|string|max:500',
+            'items'       => 'required|array|min:1',
+            'items.*.description' => 'required|string|max:255',
+            'items.*.quantity'    => 'required|numeric|min:0.01',
+            'items.*.unit_price'  => 'required|numeric|min:0',
+        ]);
+
+        // Build items with totals
+        $items    = [];
+        $subtotal = 0;
+        foreach ($data['items'] as $item) {
+            $lineTotal  = round((float) $item['quantity'] * (float) $item['unit_price'], 2);
+            $subtotal  += $lineTotal;
+            $items[]    = [
+                'description' => $item['description'],
+                'quantity'    => (float) $item['quantity'],
+                'unit_price'  => (float) $item['unit_price'],
+                'total'       => $lineTotal,
+            ];
+        }
+
+        $taxRate   = (float) ($data['tax_rate'] ?? 0);
+        $taxAmount = round($subtotal * $taxRate / 100, 2);
+        $total     = round($subtotal + $taxAmount, 2);
+
+        Invoice::create([
+            'reference'   => Invoice::generateReference(),
+            'admin_id'    => Auth::id(),
+            'client_id'   => $data['client_id'],
+            'currency'    => $data['currency'],
+            'subtotal'    => $subtotal,
+            'tax_rate'    => $taxRate,
+            'tax_amount'  => $taxAmount,
+            'total'       => $total,
+            'status'      => Invoice::STATUS_DRAFT,
+            'issue_date'  => $data['issue_date'],
+            'due_date'    => $data['due_date'] ?? null,
+            'description' => $data['description'] ?? null,
+            'note'        => $data['note'] ?? null,
+            'items'       => $items,
+        ]);
+
+        return redirect()->route('admin.invoices.index')
+                         ->with('success', 'Facture créée en brouillon.');
+    }
+
+    // ── Show ──────────────────────────────────────────────────────────────────
+
+    public function show(Invoice $invoice)
+    {
+        $this->authorizeInvoice($invoice);
+        $invoice->load(['client', 'admin']);
+        return view('admin.invoices.show', compact('invoice'));
+    }
+
+    // ── Edit / Update ─────────────────────────────────────────────────────────
+
+    public function edit(Invoice $invoice)
+    {
+        $this->authorizeInvoice($invoice);
+        abort_unless($invoice->isDraft(), 403, 'Seuls les brouillons peuvent être modifiés.');
+
+        $clients    = $this->clientsQuery()->get();
+        $currencies = config('credixa.currencies');
+        return view('admin.invoices.edit', compact('invoice', 'clients', 'currencies'));
+    }
+
+    public function update(Request $request, Invoice $invoice)
+    {
+        $this->authorizeInvoice($invoice);
+        abort_unless($invoice->isDraft(), 403);
+
+        $data = $request->validate([
+            'client_id'   => 'required|exists:users,id',
+            'issue_date'  => 'required|date',
+            'due_date'    => 'nullable|date|after_or_equal:issue_date',
+            'currency'    => 'required|string|in:' . implode(',', config('credixa.currencies')),
+            'tax_rate'    => 'nullable|numeric|min:0|max:100',
+            'description' => 'nullable|string|max:1000',
+            'note'        => 'nullable|string|max:500',
+            'items'       => 'required|array|min:1',
+            'items.*.description' => 'required|string|max:255',
+            'items.*.quantity'    => 'required|numeric|min:0.01',
+            'items.*.unit_price'  => 'required|numeric|min:0',
+        ]);
+
+        $items    = [];
+        $subtotal = 0;
+        foreach ($data['items'] as $item) {
+            $lineTotal  = round((float) $item['quantity'] * (float) $item['unit_price'], 2);
+            $subtotal  += $lineTotal;
+            $items[]    = [
+                'description' => $item['description'],
+                'quantity'    => (float) $item['quantity'],
+                'unit_price'  => (float) $item['unit_price'],
+                'total'       => $lineTotal,
+            ];
+        }
+
+        $taxRate   = (float) ($data['tax_rate'] ?? 0);
+        $taxAmount = round($subtotal * $taxRate / 100, 2);
+        $total     = round($subtotal + $taxAmount, 2);
+
+        $invoice->update([
+            'client_id'   => $data['client_id'],
+            'currency'    => $data['currency'],
+            'subtotal'    => $subtotal,
+            'tax_rate'    => $taxRate,
+            'tax_amount'  => $taxAmount,
+            'total'       => $total,
+            'issue_date'  => $data['issue_date'],
+            'due_date'    => $data['due_date'] ?? null,
+            'description' => $data['description'] ?? null,
+            'note'        => $data['note'] ?? null,
+            'items'       => $items,
+        ]);
+
+        return redirect()->route('admin.invoices.show', $invoice)
+                         ->with('success', 'Facture mise à jour.');
+    }
+
+    // ── Send ──────────────────────────────────────────────────────────────────
+
+    public function send(Invoice $invoice)
+    {
+        $this->authorizeInvoice($invoice);
+        abort_unless($invoice->isDraft(), 403, 'Seule une facture en brouillon peut être envoyée.');
+
+        $invoice->load(['client', 'admin']);
+
+        $invoice->update([
+            'status'  => Invoice::STATUS_SENT,
+            'sent_at' => now(),
+        ]);
+
+        // Email au client dans sa langue
+        try {
+            Mail::to($invoice->client->email)
+                ->locale($invoice->client->locale ?? 'fr')
+                ->send(new InvoiceMail($invoice));
+        } catch (\Throwable $e) {
+            Log::error('InvoiceMail failed for ' . $invoice->reference . ': ' . $e->getMessage());
+        }
+
+        // Notification in-app au client
+        ClientNotification::forUser(
+            $invoice->client_id,
+            'system',
+            'Nouvelle facture reçue',
+            'La facture ' . $invoice->reference . ' d\'un montant de '
+                . number_format($invoice->total, 2, ',', ' ') . ' ' . $invoice->currency
+                . ' vous a été envoyée par e-mail.',
+            ['invoice_id' => $invoice->id, 'reference' => $invoice->reference]
+        );
+
+        return redirect()->route('admin.invoices.show', $invoice)
+                         ->with('success', 'Facture envoyée au client par e-mail.');
+    }
+
+    // ── Mark paid ─────────────────────────────────────────────────────────────
+
+    public function markPaid(Invoice $invoice)
+    {
+        $this->authorizeInvoice($invoice);
+        abort_unless($invoice->isSent(), 403, 'Seule une facture envoyée peut être marquée comme payée.');
+
+        $invoice->update([
+            'status'  => Invoice::STATUS_PAID,
+            'paid_at' => now(),
+        ]);
+
+        // Notification in-app au client
+        ClientNotification::forUser(
+            $invoice->client_id,
+            'system',
+            'Paiement enregistré',
+            'Le paiement de la facture ' . $invoice->reference . ' ('
+                . number_format($invoice->total, 2, ',', ' ') . ' ' . $invoice->currency
+                . ') a bien été enregistré.',
+            ['invoice_id' => $invoice->id]
+        );
+
+        return redirect()->route('admin.invoices.show', $invoice)
+                         ->with('success', 'Facture marquée comme payée.');
+    }
+
+    // ── Cancel ────────────────────────────────────────────────────────────────
+
+    public function cancel(Invoice $invoice)
+    {
+        $this->authorizeInvoice($invoice);
+        abort_unless(! $invoice->isPaid(), 403, 'Une facture payée ne peut pas être annulée.');
+
+        $invoice->update(['status' => Invoice::STATUS_CANCELLED]);
+
+        return redirect()->route('admin.invoices.show', $invoice)
+                         ->with('success', 'Facture annulée.');
+    }
+
+    // ── Destroy ───────────────────────────────────────────────────────────────
+
+    public function destroy(Invoice $invoice)
+    {
+        $this->authorizeInvoice($invoice);
+        abort_unless($invoice->isDraft(), 403, 'Seuls les brouillons peuvent être supprimés.');
+
+        $invoice->delete();
+
+        return redirect()->route('admin.invoices.index')
+                         ->with('success', 'Facture supprimée.');
+    }
+}

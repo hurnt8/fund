@@ -389,7 +389,7 @@ class ContractTemplateController extends Controller
             '{numero_identite}' => 'AB123456789',
             '{agent_suivi}'     => 'Marie Martin',
             '{montant}'         => '10 000,00',
-            '{devise}'          => match($locale) { 'pl' => 'PLN', default => 'EUR' },
+            '{devise}'          => match($locale) { 'pl' => 'PLN', default => config('credixa.default_currency') },
             '{duree}'           => '12',
             '{mensualite}'      => '856,07',
             '{taux}'            => '5',

@@ -30,6 +30,8 @@ return [
     'status_signed'    => 'Firmado',
     'status_finalized' => 'Finalizado',
     'status_rejected'  => 'Rechazado',
+    'step_current'     => 'En curso',
+    'step_done'        => 'Completado',
 
     'loan_amount'      => 'Importe concedido',
     'monthly'          => 'Cuota mensual',
@@ -68,7 +70,8 @@ return [
     'send_btn'              => 'Enviar',
     'send_name'             => 'Nombre del beneficiario',
     'send_iban'             => 'IBAN del beneficiario',
-    'transfer_insufficient' => 'Saldo insuficiente para realizar esta transferencia.',
+    'transfer_insufficient'     => 'Saldo insuficiente para realizar esta transferencia.',
+    'transfer_negative_balance' => 'Su saldo es negativo. Las transferencias están bloqueadas hasta regularización.',
 
     'receive_title'      => 'Recibir',
     'receive_subtitle'   => 'Comparta sus datos bancarios para recibir una transferencia',

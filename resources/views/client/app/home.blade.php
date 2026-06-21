@@ -380,7 +380,7 @@
 
   {{-- Amount --}}
   <div class="h-balance" x-show="shown" x-transition>
-    <sup>{{ $user->currency ?? 'EUR' }}</sup>{{ number_format((float)$user->balance, 2, ',', ' ') }}
+    <sup>{{ $user->currency ?? config('credixa.default_currency') }}</sup>{{ number_format((float)$user->balance, 2, ',', ' ') }}
   </div>
   <div class="h-balance--hidden" x-show="!shown" aria-hidden="true">
     &bull;&bull;&bull;&bull;&bull;&bull;
@@ -394,7 +394,7 @@
     </div>
     <div class="h-card__badge">
       <i class="fas fa-shield-halved" style="font-size:.6rem"></i>
-      {{ $user->currency ?? 'EUR' }}
+      {{ $user->currency ?? config('credixa.default_currency') }}
     </div>
   </div>
 </div>
@@ -425,6 +425,12 @@
     </div>
     <span class="h-action__lbl">{{ __('app.action_analytics') }}</span>
   </a>
+  <a href="{{ route('client.app.movements') }}" class="h-action">
+    <div class="h-action__ico" style="background:rgba(200,169,81,.15);border:1px solid rgba(200,169,81,.3);color:var(--ca-gold-l)">
+      <i class="fas fa-list-ul"></i>
+    </div>
+    <span class="h-action__lbl">Mouvements</span>
+  </a>
 </div>
 
 {{-- ── Pending alert ─────────────────────────────────────────────── --}}
@@ -438,26 +444,10 @@
 </div>
 @endif
 
-{{-- ── Stats ─────────────────────────────────────────────────────── --}}
-<div class="h-stats">
-  <div class="h-stat h-stat--def">
-    <div class="h-stat__num">{{ $loans->count() }}</div>
-    <div class="h-stat__lbl">{{ __('app.stat_total') }}</div>
-  </div>
-  <div class="h-stat h-stat--teal">
-    <div class="h-stat__num">{{ $activeLoans->count() }}</div>
-    <div class="h-stat__lbl">{{ __('app.stat_active') }}</div>
-  </div>
-  <div class="h-stat h-stat--amb">
-    <div class="h-stat__num">{{ $pendingLoans->count() }}</div>
-    <div class="h-stat__lbl">{{ __('app.stat_pending') }}</div>
-  </div>
-</div>
-
 {{-- ── Recent activity ───────────────────────────────────────────── --}}
 <div class="h-section">
   <span class="h-section__title">{{ __('app.recent_transactions') }}</span>
-  <a href="{{ route('client.app.loans') }}" class="h-section__link">
+  <a href="{{ route('client.app.movements') }}" class="h-section__link">
     {{ __('app.see_all') }} <i class="fas fa-chevron-right" style="font-size:.6rem"></i>
   </a>
 </div>
@@ -490,19 +480,27 @@
   @endforeach
 
   @foreach($recentTransfers->take(2) as $trf)
-  <div class="h-txn">
+  @php
+    $isPending = in_array($trf->status, [\App\Models\Transfer::STATUS_PENDING, \App\Models\Transfer::STATUS_FEE_REQUIRED]);
+  @endphp
+  <a href="{{ route('client.app.movements') }}" class="h-txn">
     <div class="h-txn__ico" style="background:rgba(255,90,90,.1)">
       <i class="fas fa-paper-plane" style="color:var(--ca-negative)"></i>
     </div>
     <div class="h-txn__info">
       <div class="h-txn__title">{{ $trf->beneficiary_name }}</div>
-      <div class="h-txn__sub">{{ $trf->reference }}</div>
+      <div class="h-txn__sub">
+        {{ $trf->reference }}
+        @if($isPending)
+          &nbsp;<span style="font-size:.6rem;background:rgba(245,158,11,.2);color:#f59e0b;padding:.1rem .4rem;border-radius:999px;font-weight:700">En attente</span>
+        @endif
+      </div>
     </div>
     <div class="h-txn__right">
       <div class="h-txn__amount h-txn__amount--neg">-{{ number_format($trf->amount, 0, ',', ' ') }}</div>
-      <div class="h-txn__date">{{ $trf->processed_at?->format('d/m · H:i') }}</div>
+      <div class="h-txn__date">{{ $trf->created_at->format('d/m · H:i') }}</div>
     </div>
-  </div>
+  </a>
   @endforeach
 
   @if($activeLoans->isEmpty() && $recentTransfers->isEmpty())

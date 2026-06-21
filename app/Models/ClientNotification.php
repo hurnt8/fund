@@ -29,6 +29,8 @@ class ClientNotification extends Model
         $iconMap = [
             'transfer'    => 'paper-plane',
             'loan_update' => 'file-contract',
+            'credit'      => 'circle-plus',
+            'debit'       => 'circle-minus',
             'system'      => 'bell',
         ];
 

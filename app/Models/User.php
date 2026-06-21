@@ -39,6 +39,18 @@ class User extends Authenticatable
         return $this->hasMany(LoanRequest::class, 'client_id');
     }
 
+    // Messages de support (côté client)
+    public function supportMessages()
+    {
+        return $this->hasMany(SupportMessage::class, 'client_id');
+    }
+
+    // Notifications admin
+    public function adminNotifications()
+    {
+        return $this->hasMany(AdminNotification::class, 'admin_id');
+    }
+
     // Modèles de contrats attribués à cet admin
     public function assignedTemplates()
     {

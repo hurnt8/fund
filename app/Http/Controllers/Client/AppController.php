@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OtpMail;
+use App\Models\AccountMovement;
 use App\Models\ClientNotification;
 use App\Models\LoanRequest;
 use App\Models\Transfer;
@@ -18,7 +19,10 @@ class AppController extends Controller
     public function index()
     {
         $user  = Auth::user();
-        $loans = LoanRequest::where('client_id', $user->id)->latest()->get();
+        // Brouillons non visibles dans le compte client
+        $loans = LoanRequest::where('client_id', $user->id)
+            ->where('status', '!=', LoanRequest::STATUS_DRAFT)
+            ->latest()->get();
 
         $activeLoans  = $loans->whereIn('status', [
             LoanRequest::STATUS_CONTRACT_SENT,
@@ -27,7 +31,6 @@ class AppController extends Controller
         ])->values();
 
         $pendingLoans = $loans->whereIn('status', [
-            LoanRequest::STATUS_DRAFT,
             LoanRequest::STATUS_PENDING,
             LoanRequest::STATUS_VALIDATED,
         ])->values();
@@ -49,7 +52,10 @@ class AppController extends Controller
     public function loans()
     {
         $user  = Auth::user();
-        $loans = LoanRequest::where('client_id', $user->id)->latest()->get();
+        // Les brouillons ne sont pas visibles dans l'espace client
+        $loans = LoanRequest::where('client_id', $user->id)
+            ->where('status', '!=', LoanRequest::STATUS_DRAFT)
+            ->latest()->get();
 
         return view('client.app.loans.index', compact('user', 'loans'));
     }
@@ -71,7 +77,9 @@ class AppController extends Controller
     public function analytics()
     {
         $user  = Auth::user();
+        // Les dossiers rejetés ne sont pas comptabilisés dans les analytiques
         $loans = LoanRequest::where('client_id', $user->id)
+            ->where('status', '!=', LoanRequest::STATUS_REJECTED)
             ->whereNotNull('amortization_schedule')
             ->get();
 
@@ -84,15 +92,29 @@ class AppController extends Controller
             }
         }
 
+        // Virements envoyés validés
         $totalPaid = Transfer::where('user_id', $user->id)
             ->where('type', 'send')
-            ->where('status', 'completed')
+            ->where('status', Transfer::STATUS_COMPLETED)
             ->sum('amount');
 
-        $totalReceived = (float) $user->balance;
+        // Virements en attente de validation
+        $pendingTransfers = Transfer::where('user_id', $user->id)
+            ->where('type', 'send')
+            ->whereIn('status', [Transfer::STATUS_PENDING, Transfer::STATUS_FEE_REQUIRED])
+            ->get();
+
+        $pendingAmount = $pendingTransfers->sum('amount');
+
+        // Total crédits reçus sur le compte (admin + prêts finalisés)
+        $totalReceived = AccountMovement::where('user_id', $user->id)
+            ->where('type', 'credit')
+            ->sum('amount');
 
         return view('client.app.analytics', compact(
-            'user', 'loans', 'monthlyData', 'totalPaid', 'totalReceived'
+            'user', 'loans', 'monthlyData',
+            'totalPaid', 'totalReceived',
+            'pendingTransfers', 'pendingAmount'
         ));
     }
 
@@ -259,6 +281,60 @@ class AppController extends Controller
         $user->update(['password' => Hash::make($request->input('password'))]);
 
         return redirect()->route('client.app.profile')->with('success', __('app.password_changed'));
+    }
+
+    // ── Account movements ────────────────────────────────────────────────────
+
+    public function movements()
+    {
+        $user = Auth::user();
+
+        // Admin credit/debit operations
+        $adminMvts = AccountMovement::where('user_id', $user->id)
+            ->with('admin:id,name')
+            ->get()
+            ->map(fn ($m) => (object) [
+                'source'       => 'account',
+                'type'         => $m->type,
+                'amount'       => (float) $m->amount,
+                'currency'     => $m->currency,
+                'label'        => $m->type === 'credit' ? 'Crédit compte' : 'Débit compte',
+                'sub'          => $m->note ?? ($m->admin?->name ?? 'Système'),
+                'balance_after' => (float) $m->balance_after,
+                'has_balance'  => true,
+                'status'       => 'completed',
+                'created_at'   => $m->created_at,
+            ]);
+
+        // Client transfers (send = debit, receive = credit)
+        $transfers = Transfer::where('user_id', $user->id)
+            ->whereIn('status', [
+                Transfer::STATUS_PENDING,
+                Transfer::STATUS_COMPLETED,
+                Transfer::STATUS_FEE_REQUIRED,
+                Transfer::STATUS_REJECTED,
+            ])
+            ->get()
+            ->map(fn ($t) => (object) [
+                'source'       => 'transfer',
+                'type'         => $t->type === 'send' ? 'debit' : 'credit',
+                'amount'       => (float) $t->amount,
+                'currency'     => $t->currency,
+                'label'        => $t->type === 'send'
+                    ? 'Virement → ' . $t->beneficiary_name
+                    : 'Virement reçu',
+                'sub'          => $t->reference . ($t->note ? ' — ' . $t->note : ''),
+                'balance_after' => null,
+                'has_balance'  => false,
+                'status'       => $t->status,
+                'created_at'   => $t->created_at,
+            ]);
+
+        $merged = $adminMvts->merge($transfers)
+            ->sortByDesc('created_at')
+            ->values();
+
+        return view('client.app.movements', compact('user', 'merged'));
     }
 
     // ── PWA ─────────────────────────────────────────────────────────────────
