@@ -1,69 +1,55 @@
 <?php
 /*
- * Migration storage → public/storage (sans symlink)
+ * Équivalent de : php artisan storage:link
  * À SUPPRIMER après utilisation
  * Accès : https://credixa.eu/storage-link.php
  */
 header('Content-Type: text/plain; charset=utf-8');
 
-$publicStorage = __DIR__ . '/storage';          // public/storage/
-$oldStorage    = __DIR__ . '/../storage/app/public'; // storage/app/public/
+// public/storage  →  storage/app/public
+$link   = __DIR__ . '/storage';
+$target = realpath(__DIR__ . '/../storage/app/public');
 
-echo "=== CREDIXA STORAGE SETUP ===\n";
-echo "public/storage : $publicStorage\n";
-echo "old storage    : $oldStorage\n\n";
+echo "=== php artisan storage:link (équivalent) ===\n\n";
+echo "Lien    : $link\n";
+echo "Cible   : " . (__DIR__ . '/../storage/app/public') . "\n\n";
 
-/* 1. Supprimer le symlink cassé s'il existe */
-if (is_link($publicStorage)) {
-    $target = readlink($publicStorage);
-    echo "Symlink trouvé → $target\n";
-    if (!is_dir($publicStorage)) {
-        unlink($publicStorage);
-        echo "✓ Symlink cassé supprimé\n";
+/* 1. Créer storage/app/public/ si absent */
+$targetPath = __DIR__ . '/../storage/app/public';
+if (!is_dir($targetPath)) {
+    if (mkdir($targetPath, 0755, true)) {
+        echo "✓ Dossier storage/app/public/ créé\n";
     } else {
-        echo "Symlink fonctionnel détecté (pas de changement nécessaire)\n";
+        echo "✗ Impossible de créer storage/app/public/\n";
+        exit;
     }
 }
+$target = realpath($targetPath);
+echo "Cible résolue : $target\n\n";
 
-/* 2. Créer public/storage/ comme vrai dossier */
-if (!file_exists($publicStorage)) {
-    mkdir($publicStorage, 0755, true);
-    echo "✓ Dossier public/storage/ créé\n";
-} elseif (is_dir($publicStorage) && !is_link($publicStorage)) {
-    echo "✓ Dossier public/storage/ existe déjà\n";
+/* 2. Supprimer l'ancien lien/dossier public/storage si existant */
+if (is_link($link)) {
+    unlink($link);
+    echo "✓ Ancien symlink supprimé\n";
+} elseif (is_dir($link)) {
+    echo "⚠ public/storage est un vrai dossier (pas un symlink).\n";
+    echo "  Supprimez-le manuellement via cPanel puis relancez.\n";
+    exit;
 }
 
-/* 3. Migrer les fichiers depuis storage/app/public/ si présents */
-if (is_dir($oldStorage)) {
-    echo "\n--- Migration storage/app/public/ → public/storage/ ---\n";
-    $migrated = 0;
-    $iterator = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($oldStorage, RecursiveDirectoryIterator::SKIP_DOTS),
-        RecursiveIteratorIterator::SELF_FIRST
-    );
-    foreach ($iterator as $item) {
-        $relPath = substr($item->getPathname(), strlen($oldStorage));
-        $dest    = $publicStorage . $relPath;
-        if ($item->isDir()) {
-            if (!is_dir($dest)) { mkdir($dest, 0755, true); }
-        } else {
-            if (!file_exists($dest)) {
-                copy($item->getPathname(), $dest);
-                $migrated++;
-            }
-        }
-    }
-    echo "✓ $migrated fichier(s) migré(s)\n";
+/* 3. Créer le symlink */
+if (symlink($target, $link)) {
+    echo "✓ Symlink créé : public/storage → storage/app/public\n\n";
+    echo "=== VÉRIFICATION ===\n";
+    echo "is_link  : " . (is_link($link)  ? 'OUI ✓' : 'NON ✗') . "\n";
+    echo "is_dir   : " . (is_dir($link)   ? 'OUI ✓' : 'NON ✗') . "\n";
+    echo "readlink : " . readlink($link) . "\n\n";
+    echo "✓ Succès — supprimez ce fichier maintenant.\n";
 } else {
-    echo "\nAucun ancien storage à migrer\n";
+    echo "✗ symlink() a échoué.\n";
+    echo "  Votre hébergeur bloque peut-être symlink() en PHP.\n\n";
+    echo "=== SOLUTION ALTERNATIVE ===\n";
+    echo "Dans cPanel, créez un vrai dossier : public/storage/\n";
+    echo "Puis modifiez config/filesystems.php :\n";
+    echo "  'root' => public_path('storage'),\n";
 }
-
-/* 4. Vérification finale */
-echo "\n=== RÉSULTAT ===\n";
-$dirs = glob($publicStorage . '/*', GLOB_ONLYDIR);
-echo "Sous-dossiers dans public/storage/ : " . count($dirs) . "\n";
-foreach ($dirs as $d) {
-    $count = count(glob($d . '/*'));
-    echo "  " . basename($d) . "/ → $count fichier(s)\n";
-}
-echo "\nSTATUS : " . (is_dir($publicStorage) ? "OK ✓ - Supprimez ce fichier maintenant" : "ERREUR ✗") . "\n";
