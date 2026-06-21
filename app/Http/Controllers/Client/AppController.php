@@ -365,7 +365,7 @@ class AppController extends Controller
     public function serviceWorker()
     {
         $js = <<<'JS'
-const CACHE = 'credixa-v5';
+const CACHE = 'credixa-v6';
 const SHELL = ['/app', '/login'];
 
 self.addEventListener('install', e => {
