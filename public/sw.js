@@ -27,14 +27,17 @@ self.addEventListener('fetch', e => {
     /* Ignorer chrome-extension://, moz-extension://, etc. */
     if (!url.protocol.startsWith('http')) return;
 
-    /* Assets Vite (hashed) — cache-first */
+    /* Assets Vite hashés — cache-first */
     if (url.pathname.startsWith('/build/assets/')) {
         e.respondWith(
             caches.open(CACHE).then(c =>
                 c.match(e.request).then(cached => {
                     if (cached) return cached;
                     return fetch(e.request).then(resp => {
-                        if (resp.ok) c.put(e.request, resp.clone());
+                        if (resp.ok) {
+                            const clone = resp.clone(); /* cloner avant put() */
+                            c.put(e.request, clone);
+                        }
                         return resp;
                     });
                 })
@@ -43,12 +46,13 @@ self.addEventListener('fetch', e => {
         return;
     }
 
-    /* Everything else — network-first, fallback to cache then /app */
+    /* Tout le reste — network-first, fallback cache */
     e.respondWith(
         fetch(e.request)
             .then(resp => {
                 if (resp.ok) {
-                    caches.open(CACHE).then(c => c.put(e.request, resp.clone()));
+                    const clone = resp.clone(); /* cloner immédiatement */
+                    caches.open(CACHE).then(c => c.put(e.request, clone));
                 }
                 return resp;
             })

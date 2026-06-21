@@ -398,7 +398,10 @@ self.addEventListener('fetch', e => {
                 c.match(e.request).then(cached => {
                     if (cached) return cached;
                     return fetch(e.request).then(resp => {
-                        if (resp.ok) c.put(e.request, resp.clone());
+                        if (resp.ok) {
+                            const clone = resp.clone();
+                            c.put(e.request, clone);
+                        }
                         return resp;
                     });
                 })
