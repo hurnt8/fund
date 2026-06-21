@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ContractTemplate;
 use App\Models\LoanRequest;
 
 class ContractService
@@ -265,7 +266,7 @@ class ContractService
             '{date_naissance}'  => $birthDate,
             '{numero_identite}' => $client?->id_number ?? '',
             '{type_identite}'   => $idTypeLabel,
-            '{agent_suivi}'     => $admin?->name ?? 'CREDIXA INVESTI',
+            '{agent_suivi}'     => $loan->agent_suivi ?: ($admin?->name ?? 'CREDIXA INVESTI'),
             '{montant}'         => number_format((float)$loan->amount, 2, ',', ' '),
             '{devise}'          => $loan->currency ?? 'EUR',
             '{duree}'           => $loan->darly ?? '',
@@ -307,24 +308,27 @@ class ContractService
         // Si le dossier a un modèle personnalisé de type HTML → l'utiliser
         $template = $loan->contractTemplate;
         if ($template && $template->template_type === 'html' && $template->content) {
-            return $this->renderCustomTemplate($template->content, $t, $vars, $header);
+            return $this->renderCustomTemplate($template, $t, $vars, $header);
         }
 
         // Fallback : vue Blade structurée
         return view('contracts.template', [
-            't'      => $t,
-            'vars'   => $vars,
-            'header' => $header,
-            'loan'   => $loan,
+            't'       => $t,
+            'vars'    => $vars,
+            'header'  => $header,
+            'loan'    => $loan,
+            'tpl'     => $template,
         ])->render();
     }
 
     /**
      * Rend un template HTML personnalisé (stocké en BDD) avec toutes les balises substituées.
-     * Les balises {tradXxx} (ex: {title}, {art1_title}) ET les balises données ({nom_client}…) sont remplacées.
+     * Injecte automatiquement le filigrane, les logos et les signatures du template.
      */
-    private function renderCustomTemplate(string $content, array $t, array $vars, string $header): string
+    private function renderCustomTemplate(ContractTemplate $template, array $t, array $vars, string $header): string
     {
+        $content = $template->content;
+
         // Aplatir les clés de traduction en balises {clé}
         $translationVars = [];
         foreach ($t as $key => $value) {
@@ -339,10 +343,54 @@ class ContractService
         $rendered = str_replace(array_keys($all), array_values($all), $content);
         $rendered = str_replace(array_keys($all), array_values($all), $rendered);
 
+        // ── Filigrane ───────────────────────────────────────────────────────
+        $watermarkHtml = '';
+        $watermarkCss  = '';
+        if ($template->watermark_path) {
+            $wmUrl = asset('storage/' . $template->watermark_path);
+            $watermarkCss = '.crx-wm{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;background:url("' . $wmUrl . '") center/40% no-repeat;opacity:.08;}';
+            $watermarkHtml = '<div class="crx-wm"></div>';
+        }
+
+        // ── Logos haut de page ───────────────────────────────────────────────
+        $logosHtml = '';
+        if ($template->logo_left_path || $template->logo_right_path) {
+            $left  = $template->logo_left_path
+                ? '<img src="' . asset('storage/' . $template->logo_left_path) . '" style="max-height:55px;max-width:150px;object-fit:contain;">'
+                : '<span></span>';
+            $right = $template->logo_right_path
+                ? '<img src="' . asset('storage/' . $template->logo_right_path) . '" style="max-height:55px;max-width:150px;object-fit:contain;">'
+                : '<span></span>';
+            $logosHtml = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e0e0e0;">'
+                . $left . $right
+                . '</div>';
+        }
+
+        // ── Cachet + Signatures ──────────────────────────────────────────────
+        $sigsHtml = '';
+        if ($template->signature_admin_path || $template->signature_agent_path || $template->stamp_path) {
+            $sigsHtml = '<div style="margin-top:24px;display:flex;justify-content:space-around;align-items:flex-end;gap:20px;">';
+            foreach ([
+                $template->signature_admin_path => 'max-height:55px;max-width:140px;object-fit:contain;',
+                $template->stamp_path           => 'max-height:65px;max-width:140px;object-fit:contain;',
+                $template->signature_agent_path => 'max-height:55px;max-width:140px;object-fit:contain;',
+            ] as $path => $style) {
+                if ($path) {
+                    $sigsHtml .= '<div style="text-align:center;"><img src="' . asset('storage/' . $path) . '" style="' . $style . '"></div>';
+                }
+            }
+            $sigsHtml .= '</div>';
+        }
+
         return '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><style>'
             . $this->contractCss()
-            . '</style></head><body><div class="page">'
+            . $watermarkCss
+            . '</style></head><body>'
+            . $watermarkHtml
+            . '<div class="page">'
+            . $logosHtml
             . $rendered
+            . $sigsHtml
             . '</div></body></html>';
     }
 

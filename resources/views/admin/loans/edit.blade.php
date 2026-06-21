@@ -70,6 +70,13 @@
             <p class="form-help">Communiqué au client après signature</p>
           </div>
           <div class="col-12">
+            <label class="form-label-pro">Agent de suivi</label>
+            <input type="text" name="agent_suivi" class="form-control-pro"
+                   value="{{ old('agent_suivi', $loan->agent_suivi ?? Auth::user()->name) }}"
+                   placeholder="Nom de l'agent responsable du dossier">
+            <p class="form-help">Remplace la variable <code>{agent_suivi}</code> dans le contrat</p>
+          </div>
+          <div class="col-12">
             <label class="form-label-pro">Conditions particulières</label>
             <textarea name="special_conditions" class="form-control-pro" rows="3">{{ old('special_conditions',$loan->special_conditions) }}</textarea>
           </div>

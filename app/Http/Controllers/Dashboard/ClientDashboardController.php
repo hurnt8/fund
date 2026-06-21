@@ -12,15 +12,16 @@ class ClientDashboardController extends Controller
     {
         $user = Auth::user();
 
-        $loans = LoanRequest::where('email', $user->email)
+        $loans = LoanRequest::where('client_id', $user->id)
             ->latest()
             ->get();
 
         $stats = [
-            'total'    => $loans->count(),
-            'pending'  => $loans->whereIn('status', [null, 'pending'])->count(),
-            'approved' => $loans->where('status', 'approved')->count(),
-            'rejected' => $loans->where('status', 'rejected')->count(),
+            'total'     => $loans->count(),
+            'pending'   => $loans->whereIn('status', ['draft', 'pending', 'validated'])->count(),
+            'active'    => $loans->whereIn('status', ['contract_sent', 'contract_signed'])->count(),
+            'finalized' => $loans->where('status', 'finalized')->count(),
+            'rejected'  => $loans->where('status', 'rejected')->count(),
         ];
 
         return view('dashboard.client.index', compact('loans', 'stats'));

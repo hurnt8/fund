@@ -1,73 +1,130 @@
 @extends('layouts.dashboard')
-@section('title','Dossier '.$loan->reference)
-@section('page_title','Mon dossier')
+@section('title','Dossier '.$loan->reference.' — Credixa')
+@section('page_title','Dossier '.$loan->reference)
+
+@push('styles')
+<style>
+  body { background: #0D1F35 !important; }
+  .main-wrap { background: #0D1F35; }
+  .content-area { background: transparent; }
+  .topbar { background: #112237 !important; border-bottom-color: rgba(200,169,81,.14) !important; }
+  .topbar-title { color: #E8EDF5 !important; }
+  .topbar-badge { background: #162D47 !important; border-color: rgba(255,255,255,.1) !important; color: #B8C8D8 !important; }
+  .topbar-avatar { background: linear-gradient(135deg,#1D3A5C,#0B2E4E) !important; color: #C8A951 !important; }
+</style>
+@endpush
 
 @section('content')
+@php
+  $steps = [
+    'draft'           => 'Brouillon',
+    'pending'         => 'En attente',
+    'validated'       => 'Validée',
+    'contract_sent'   => 'Contrat envoyé',
+    'contract_signed' => 'Contrat signé',
+    'finalized'       => 'Finalisée',
+  ];
+  $stepKeys   = array_keys($steps);
+  $currentIdx = array_search($loan->status, $stepKeys);
 
-<div class="d-flex align-items-start justify-content-between flex-wrap gap-3 page-hdr">
+  $badgeClass = match($loan->status) {
+      'draft'           => 'cl-badge--draft',
+      'pending'         => 'cl-badge--pending',
+      'validated'       => 'cl-badge--validated',
+      'contract_sent'   => 'cl-badge--sent',
+      'contract_signed' => 'cl-badge--signed',
+      'finalized'       => 'cl-badge--finalized',
+      'rejected'        => 'cl-badge--rejected',
+      default           => 'cl-badge--draft',
+  };
+
+  $principal = (float) $loan->amount;
+  $total     = (float) $loan->total_with_interest;
+  $interest  = max(0, $total - $principal);
+@endphp
+<div class="cl-scope">
+
+{{-- ── Page header ──────────────────────────────────────────── --}}
+<div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-4">
   <div>
-    <div class="d-flex align-items-center gap-3 mb-1">
-      <span style="font-family:monospace;font-size:1.125rem;font-weight:800;color:var(--c-navy)">{{ $loan->reference }}</span>
-      <span class="badge-status bs-{{ $loan->statusColor() }}">{{ $loan->statusLabel() }}</span>
+    <div class="d-flex align-items-center gap-3 mb-1 flex-wrap">
+      <span style="font-family:'Space Grotesk',monospace;font-size:1rem;font-weight:700;color:var(--cl-gold)">
+        {{ $loan->reference }}
+      </span>
+      <span class="cl-badge {{ $badgeClass }}">{{ $loan->statusLabel() }}</span>
     </div>
-    <p>Demande de {{ number_format($loan->amount,2,',',' ') }} {{ $loan->currency }} · {{ $loan->darly }} mois</p>
+    <div style="font-size:.8rem;color:var(--cl-muted)">
+      {{ number_format($loan->amount, 2, ',', ' ') }} {{ $loan->currency }} ·
+      {{ $loan->darly }} mois · {{ $loan->interest_rate }}% · ouvert le {{ $loan->created_at->format('d/m/Y') }}
+    </div>
   </div>
-  <a href="{{ route('client.loans') }}" class="btn-ghost btn-sm-pro">
-    <i class="fas fa-arrow-left"></i> Mes demandes
+  <a href="{{ route('client.loans') }}" class="cl-btn cl-btn--ghost">
+    <i class="fas fa-arrow-left"></i> Mes dossiers
   </a>
 </div>
 
-{{-- Alerte contrat envoyé --}}
+{{-- ── Alerts ───────────────────────────────────────────────── --}}
 @if($loan->status === 'contract_sent')
-<div class="flash flash-warn mb-4">
-  <i class="fas fa-envelope" style="font-size:1.125rem"></i>
+<div class="cl-alert cl-alert--warn mb-4">
+  <div class="cl-alert__icon"><i class="fas fa-envelope"></i></div>
   <div>
-    <div style="font-weight:700">Votre contrat est en attente de signature</div>
-    <div style="font-size:.8125rem;margin-top:.15rem">
-      Nous vous l'avons envoyé par email le {{ $loan->sent_at?->format('d/m/Y') }}.
-      Veuillez le lire, le signer, puis nous le retourner par email.
-    </div>
+    <div class="cl-alert__title">Contrat en attente de signature</div>
+    Nous vous avons envoyé votre contrat le {{ $loan->sent_at?->format('d/m/Y') }}.
+    Veuillez le signer et nous le retourner par email.
+  </div>
+</div>
+@endif
+
+@if($loan->status === 'finalized')
+<div class="cl-alert cl-alert--green mb-4">
+  <div class="cl-alert__icon"><i class="fas fa-check-circle"></i></div>
+  <div>
+    <div class="cl-alert__title">Financement accordé</div>
+    Le montant de {{ number_format($loan->amount, 2, ',', ' ') }} {{ $loan->currency }}
+    a été versé sur votre compte.
   </div>
 </div>
 @endif
 
 @if($loan->status === 'rejected')
-<div class="flash flash-err mb-4">
-  <i class="fas fa-ban" style="font-size:1.125rem"></i>
+<div class="cl-alert cl-alert--error mb-4">
+  <div class="cl-alert__icon"><i class="fas fa-ban"></i></div>
   <div>
-    <div style="font-weight:700">Votre demande n'a pas pu être acceptée</div>
-    <div style="font-size:.8125rem;margin-top:.15rem">Contactez votre conseiller Credixa pour plus d'informations.</div>
+    <div class="cl-alert__title">Demande non acceptée</div>
+    Contactez votre conseiller Credixa pour plus d'informations.
   </div>
 </div>
 @endif
 
-{{-- Timeline --}}
-@php
-$steps = [
-  'draft'           => 'Brouillon',
-  'pending'         => 'En attente',
-  'validated'       => 'Validée',
-  'contract_sent'   => 'Contrat envoyé',
-  'contract_signed' => 'Contrat signé',
-  'finalized'       => 'Finalisée',
-];
-$stepKeys   = array_keys($steps);
-$currentIdx = array_search($loan->status,$stepKeys);
-@endphp
-
+{{-- ── Timeline ─────────────────────────────────────────────── --}}
 @if($loan->status !== 'rejected')
-<div class="card-pro mb-4">
-  <div class="card-pro-body" style="padding:1.5rem 1.25rem">
-    <div class="steps-bar">
-      @foreach($steps as $key=>$label)
-      @php $i=array_search($key,$stepKeys); $done=$currentIdx!==false&&$i<=$currentIdx; $cur=$loan->status===$key; @endphp
-      <div class="step-item">
-        <div class="step-dot {{ $cur?'current':($done?'done':'') }}">
-          @if($done&&!$cur)<i class="fas fa-check" style="font-size:.6rem"></i>
-          @else {{ $i+1 }}
+<div class="cl-panel mb-4">
+  <div class="cl-panel__head">
+    <div class="cl-panel__title">
+      <span class="cl-panel__dot"></span> Avancement du dossier
+    </div>
+    @php
+      $pct = $currentIdx !== false ? round(($currentIdx + 1) / count($stepKeys) * 100) : 0;
+    @endphp
+    <span style="font-size:.72rem;color:var(--cl-gold-2);font-weight:700">{{ $pct }}%</span>
+  </div>
+  <div class="cl-panel__body" style="padding:1.5rem 1.25rem">
+    <div class="cl-steps">
+      @foreach($steps as $key => $label)
+      @php
+        $i    = array_search($key, $stepKeys);
+        $done = $currentIdx !== false && $i <= $currentIdx;
+        $cur  = $loan->status === $key;
+      @endphp
+      <div class="cl-step {{ $cur ? 'current' : ($done ? 'done' : '') }}">
+        <div class="cl-step__dot">
+          @if($done && !$cur)
+            <i class="fas fa-check" style="font-size:.55rem"></i>
+          @else
+            {{ $i + 1 }}
           @endif
         </div>
-        <div class="step-label {{ $done?'done':'' }}">{{ $label }}</div>
+        <div class="cl-step__label">{{ $label }}</div>
       </div>
       @endforeach
     </div>
@@ -75,106 +132,173 @@ $currentIdx = array_search($loan->status,$stepKeys);
 </div>
 @endif
 
+{{-- ── Main content ─────────────────────────────────────────── --}}
 <div class="row g-4">
 
   {{-- Financement --}}
-  <div class="col-md-6">
-    <div class="card-pro h-100">
-      <div class="card-pro-hdr">
-        <div class="card-pro-title"><span class="icon-dot"></span>Détails du financement</div>
+  <div class="col-lg-7">
+    <div class="cl-panel h-100">
+      <div class="cl-panel__head">
+        <div class="cl-panel__title">
+          <span class="cl-panel__dot"></span> Détails du financement
+        </div>
       </div>
-      <div class="card-pro-body">
+      <div class="cl-panel__body">
 
-        <div class="summary-box mb-3">
-          <div class="row g-2">
-            <div class="col-6">
-              <div class="summary-box__label">Montant accordé</div>
-              <div class="summary-box__val">{{ number_format($loan->amount,2,',',' ') }} {{ $loan->currency }}</div>
+        {{-- Hero amounts --}}
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <div style="background:var(--cl-surface-2);border-radius:12px;padding:1rem;border:1px solid var(--cl-border)">
+              <div style="font-size:.65rem;color:var(--cl-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">
+                Montant accordé
+              </div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cl-text);line-height:1">
+                {{ number_format($loan->amount, 2, ',', ' ') }}
+                <span style="font-size:.8rem;color:var(--cl-gold);font-weight:600">{{ $loan->currency }}</span>
+              </div>
             </div>
-            <div class="col-6">
-              <div class="summary-box__label">Mensualité</div>
-              <div class="summary-box__val">{{ number_format($loan->monthly_payment,2,',',' ') }} {{ $loan->currency }}</div>
+          </div>
+          <div class="col-6">
+            <div style="background:var(--cl-surface-2);border-radius:12px;padding:1rem;border:1px solid var(--cl-border)">
+              <div style="font-size:.65rem;color:var(--cl-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">
+                Mensualité
+              </div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cl-gold-2);line-height:1">
+                {{ number_format($loan->monthly_payment, 2, ',', ' ') }}
+                <span style="font-size:.8rem;font-weight:600">{{ $loan->currency }}</span>
+              </div>
             </div>
           </div>
         </div>
 
+        {{-- Data rows --}}
         @foreach([
           ['Durée totale', $loan->darly.' mois'],
-          ['Taux d\'intérêt', $loan->interest_rate.' %'],
-          ['Total à rembourser', number_format($loan->total_with_interest,2,',',' ').' '.$loan->currency],
-          ['Coût du crédit', number_format($loan->total_cost??0,2,',',' ').' '.$loan->currency],
-          ['Frais administratifs', $loan->admin_fees ? number_format($loan->admin_fees,2,',',' ').' '.$loan->currency : '—'],
+          ["Taux d'intérêt", $loan->interest_rate.' %'],
+          ['Total à rembourser', number_format($loan->total_with_interest, 2, ',', ' ').' '.$loan->currency],
+          ['Coût total du crédit', number_format($loan->total_cost ?? 0, 2, ',', ' ').' '.$loan->currency],
+          ['Frais administratifs', $loan->admin_fees ? number_format($loan->admin_fees, 2, ',', ' ').' '.$loan->currency : '—'],
           ['Première échéance', $loan->start_date?->format('d/m/Y') ?? '—'],
           ['Objet', $loan->objet ?? '—'],
-        ] as [$l,$v])
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--c-border)">
-          <span style="font-size:.8125rem;color:var(--c-muted)">{{ $l }}</span>
-          <span style="font-size:.8375rem;font-weight:600;color:var(--c-navy)">{{ $v }}</span>
-        </div>
-        @endforeach
-      </div>
-    </div>
-  </div>
-
-  {{-- Suivi --}}
-  <div class="col-md-6">
-    <div class="card-pro h-100">
-      <div class="card-pro-hdr">
-        <div class="card-pro-title"><span class="icon-dot"></span>Suivi du dossier</div>
-      </div>
-      <div class="card-pro-body">
-        @foreach([
-          ['fa-hashtag','Référence',$loan->reference],
-          ['fa-calendar-plus','Date de demande',$loan->created_at->format('d/m/Y')],
-          ['fa-check-double','Date de validation',$loan->validated_at?->format('d/m/Y')??'En attente'],
-          ['fa-envelope-open','Contrat envoyé le',$loan->sent_at?->format('d/m/Y')??'—'],
-          ['fa-file-check','Contrat signé reçu',$loan->signed_received_at?->format('d/m/Y')??'—'],
-          ['fa-user-tie','Votre conseiller',$loan->admin?->name??'—'],
-        ] as [$i,$l,$v])
-        <div style="display:flex;align-items:flex-start;gap:.875rem;padding:.75rem 0;border-bottom:1px solid var(--c-border)">
-          <div style="width:32px;height:32px;border-radius:8px;background:var(--c-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fas {{ $i }}" style="font-size:.78rem;color:var(--c-gold-d)"></i>
-          </div>
-          <div>
-            <div style="font-size:.72rem;color:var(--c-muted)">{{ $l }}</div>
-            <div style="font-size:.8375rem;font-weight:600;color:var(--c-navy)">{{ $v }}</div>
-          </div>
+        ] as [$lbl, $val])
+        <div class="cl-data-row">
+          <span class="cl-data-row__label">{{ $lbl }}</span>
+          <span class="cl-data-row__val">{{ $val }}</span>
         </div>
         @endforeach
 
         @if($loan->special_conditions)
-        <div style="margin-top:1rem;padding:.875rem;background:var(--c-bg);border-radius:var(--radius-sm)">
-          <div style="font-size:.72rem;color:var(--c-muted);margin-bottom:.35rem">Conditions particulières</div>
-          <div style="font-size:.8125rem;color:var(--c-text)">{{ $loan->special_conditions }}</div>
+        <div style="margin-top:1rem;background:var(--cl-surface-2);border-radius:10px;padding:.875rem;border:1px solid var(--cl-border)">
+          <div style="font-size:.68rem;color:var(--cl-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">
+            Conditions particulières
+          </div>
+          <div style="font-size:.82rem;color:var(--cl-text-2)">{{ $loan->special_conditions }}</div>
         </div>
         @endif
       </div>
     </div>
   </div>
+
+  {{-- Sidebar: chart + tracking --}}
+  <div class="col-lg-5 d-flex flex-column gap-4">
+
+    {{-- Doughnut chart --}}
+    @if($total > 0)
+    <div class="cl-panel">
+      <div class="cl-panel__head">
+        <div class="cl-panel__title">
+          <span class="cl-panel__dot"></span> Répartition capital / intérêts
+        </div>
+      </div>
+      <div class="cl-panel__body">
+        <div class="cl-chart-wrap" style="max-height:220px">
+          <canvas id="amortChart" style="max-height:220px"></canvas>
+          <div class="cl-chart-center">
+            <div class="cl-chart-center__val">
+              {{ number_format($principal / max(1, $total) * 100, 0) }}%
+            </div>
+            <div class="cl-chart-center__lbl">Capital</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.25rem">
+          <div style="background:rgba(29,58,92,.4);border-radius:9px;padding:.75rem;border:1px solid rgba(29,58,92,.6)">
+            <div style="font-size:.65rem;color:var(--cl-muted);margin-bottom:.2rem">Capital</div>
+            <div style="font-weight:700;color:var(--cl-text-2);font-size:.85rem">
+              {{ number_format($principal, 2, ',', ' ') }} {{ $loan->currency }}
+            </div>
+          </div>
+          <div style="background:rgba(200,169,81,.08);border-radius:9px;padding:.75rem;border:1px solid rgba(200,169,81,.2)">
+            <div style="font-size:.65rem;color:var(--cl-muted);margin-bottom:.2rem">Intérêts</div>
+            <div style="font-weight:700;color:var(--cl-gold-2);font-size:.85rem">
+              {{ number_format($interest, 2, ',', ' ') }} {{ $loan->currency }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    @endif
+
+    {{-- Suivi dossier --}}
+    <div class="cl-panel">
+      <div class="cl-panel__head">
+        <div class="cl-panel__title">
+          <span class="cl-panel__dot"></span> Suivi du dossier
+        </div>
+      </div>
+      <div class="cl-panel__body" style="padding:1rem 1.25rem">
+        @foreach([
+          ['fa-hashtag',         'Référence',              $loan->reference],
+          ['fa-calendar-plus',   'Date de demande',        $loan->created_at->format('d/m/Y')],
+          ['fa-check-double',    'Date de validation',     $loan->validated_at?->format('d/m/Y') ?? 'En attente'],
+          ['fa-envelope-open',   'Contrat envoyé le',      $loan->sent_at?->format('d/m/Y') ?? '—'],
+          ['fa-file-check',      'Contrat signé reçu',     $loan->signed_received_at?->format('d/m/Y') ?? '—'],
+          ['fa-user-tie',        'Votre conseiller',       $loan->admin?->name ?? '—'],
+        ] as [$icon, $label, $value])
+        <div class="cl-track-item">
+          <div class="cl-track-icon"><i class="fas {{ $icon }}"></i></div>
+          <div>
+            <div class="cl-track-label">{{ $label }}</div>
+            <div class="cl-track-val">{{ $value }}</div>
+          </div>
+        </div>
+        @endforeach
+      </div>
+    </div>
+
+  </div>
 </div>
 
-{{-- Tableau d'amortissement --}}
+{{-- ── Amortization table ───────────────────────────────────── --}}
 @if($loan->amortization_schedule && $loan->status !== 'draft')
-<div class="card-pro mt-4">
-  <div class="card-pro-hdr">
-    <div class="card-pro-title"><span class="icon-dot"></span>Tableau d'amortissement</div>
-    <span style="font-size:.75rem;color:var(--c-muted)">{{ count($loan->amortization_schedule) }} échéances · {{ $loan->darly }} mois</span>
+<div class="cl-panel mt-4">
+  <div class="cl-panel__head">
+    <div class="cl-panel__title">
+      <span class="cl-panel__dot"></span> Tableau d'amortissement
+    </div>
+    <span style="font-size:.72rem;color:var(--cl-muted)">
+      {{ count($loan->amortization_schedule) }} échéances · {{ $loan->darly }} mois
+    </span>
   </div>
   <div style="max-height:380px;overflow-y:auto">
-    <table class="pro-table w-100">
-      <thead style="position:sticky;top:0">
+    <table class="cl-table">
+      <thead>
         <tr>
-          <th>N°</th><th>Mensualité</th><th>Capital remboursé</th><th>Intérêts payés</th><th>Capital restant</th>
+          <th>N°</th>
+          <th>Mensualité</th>
+          <th>Capital remboursé</th>
+          <th>Intérêts payés</th>
+          <th>Capital restant</th>
         </tr>
       </thead>
       <tbody>
         @foreach($loan->amortization_schedule as $row)
         <tr>
-          <td style="color:var(--c-muted);font-size:.78rem">{{ $row['month'] }}</td>
-          <td style="font-weight:600">{{ number_format($row['payment'],2,',',' ') }} {{ $loan->currency }}</td>
-          <td style="color:var(--c-green)">{{ number_format($row['principal'],2,',',' ') }} {{ $loan->currency }}</td>
-          <td style="color:var(--c-red)">{{ number_format($row['interest'],2,',',' ') }} {{ $loan->currency }}</td>
-          <td style="color:var(--c-muted)">{{ number_format($row['balance'],2,',',' ') }} {{ $loan->currency }}</td>
+          <td class="td-muted">{{ $row['month'] }}</td>
+          <td class="td-bold">{{ number_format($row['payment'], 2, ',', ' ') }} {{ $loan->currency }}</td>
+          <td class="td-green">{{ number_format($row['principal'], 2, ',', ' ') }} {{ $loan->currency }}</td>
+          <td class="td-red">{{ number_format($row['interest'], 2, ',', ' ') }} {{ $loan->currency }}</td>
+          <td class="td-muted">{{ number_format($row['balance'], 2, ',', ' ') }} {{ $loan->currency }}</td>
         </tr>
         @endforeach
       </tbody>
@@ -183,4 +307,20 @@ $currentIdx = array_search($loan->status,$stepKeys);
 </div>
 @endif
 
+</div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof buildAmortChart !== 'undefined') {
+    buildAmortChart(
+      'amortChart',
+      {{ $principal }},
+      {{ $interest }},
+      '{{ $loan->currency }}'
+    );
+  }
+});
+</script>
+@endpush

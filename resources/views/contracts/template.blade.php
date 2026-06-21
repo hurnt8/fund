@@ -26,10 +26,24 @@
   .sig-label { font-weight: bold; font-size: 9px; text-transform: uppercase; color: #0B1A2E; border-top: 1px solid #ccc; padding-top: 5px; margin-top: 40px; }
   .logo-area { text-align: center; margin-bottom: 10px; }
   .company-name { font-size: 13px; font-weight: bold; color: #0B1A2E; letter-spacing: 2px; }
+  .crx-wm{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.08;background-size:40%;background-position:center;background-repeat:no-repeat;}
 </style>
 </head>
 <body>
+@isset($tpl)
+  @if($tpl->watermark_path)
+    <div class="crx-wm" style="background-image:url('{{ asset('storage/'.$tpl->watermark_path) }}')"></div>
+  @endif
+@endisset
 <div class="page">
+@isset($tpl)
+  @if($tpl->logo_left_path || $tpl->logo_right_path)
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e0e0e0;">
+      @if($tpl->logo_left_path)<img src="{{ asset('storage/'.$tpl->logo_left_path) }}" style="max-height:55px;max-width:150px;object-fit:contain;">@else<span></span>@endif
+      @if($tpl->logo_right_path)<img src="{{ asset('storage/'.$tpl->logo_right_path) }}" style="max-height:55px;max-width:150px;object-fit:contain;">@else<span></span>@endif
+    </div>
+  @endif
+@endisset
 
   {{-- EN-TÊTE --}}
   <div class="header">
@@ -110,16 +124,23 @@
     <div class="sig-date">{{ $t['made_at'] }} : {{ $vars['{date}'] }}</div>
     <div class="sig-row">
       <div class="sig-cell">
+        @isset($tpl) @if($tpl->signature_admin_path)<img src="{{ asset('storage/'.$tpl->signature_admin_path) }}" style="max-height:50px;object-fit:contain;display:block;margin:0 auto 6px;">@endif @endisset
         <div class="sig-label">{{ $t['sig_lender'] }}</div>
       </div>
       <div class="sig-cell">
+        @isset($tpl) @if($tpl->stamp_path)<img src="{{ asset('storage/'.$tpl->stamp_path) }}" style="max-height:60px;object-fit:contain;display:block;margin:0 auto 6px;">@endif @endisset
         <div class="sig-label">{{ $t['sig_agent'] }}</div>
       </div>
       <div class="sig-cell">
+        @isset($tpl) @if($tpl->signature_agent_path)<img src="{{ asset('storage/'.$tpl->signature_agent_path) }}" style="max-height:50px;object-fit:contain;display:block;margin:0 auto 6px;">@endif @endisset
         <div class="sig-label">{{ $t['sig_borrower'] }}</div>
       </div>
     </div>
   </div>
+
+@isset($tpl)
+  @if($tpl->logo_left_path || $tpl->logo_right_path){{-- logos already at top --}}@endif
+@endisset
 
 </div>
 </body>

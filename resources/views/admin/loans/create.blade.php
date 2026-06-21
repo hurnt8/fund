@@ -150,12 +150,17 @@
             <p class="form-help">Communiqué au client après signature du contrat</p>
           </div>
           <div class="col-12">
+            <label class="form-label-pro">Agent de suivi</label>
+            <input type="text" name="agent_suivi" class="form-control-pro" value="{{ old('agent_suivi', Auth::user()->name) }}" placeholder="Nom de l'agent responsable du dossier">
+            <p class="form-help">Remplace la variable <code>{agent_suivi}</code> dans le contrat</p>
+          </div>
+          <div class="col-12">
             <label class="form-label-pro">Conditions particulières</label>
             <textarea name="special_conditions" class="form-control-pro" rows="3" placeholder="Clauses spécifiques à ce dossier…">{{ old('special_conditions') }}</textarea>
           </div>
           <div class="col-12">
             <label class="form-label-pro">Modèle de contrat</label>
-            <select name="contract_template_id" class="form-control-pro">
+            <select name="contract_template_id" class="form-control-pro" @change="onTemplateChange($event)">
               <option value="">— Modèle par défaut —</option>
               @foreach($templates as $tpl)
               <option value="{{ $tpl->id }}" {{ old('contract_template_id')==$tpl->id?'selected':'' }}>
@@ -163,6 +168,10 @@
               </option>
               @endforeach
             </select>
+            <p class="form-help" x-show="missingFields.length > 0" style="color:var(--c-gold)">
+              <i class="fas fa-info-circle"></i>
+              Ce modèle contient <span x-text="missingFields.length"></span> champ(s) personnalisé(s) à renseigner.
+            </p>
           </div>
         </div>
       </div>
@@ -278,17 +287,86 @@
 
   </div>
 </div>
+
+{{-- Modal : champs personnalisés du modèle de contrat --}}
+<div class="modal fade" id="missingVarsModal" tabindex="-1" aria-labelledby="missingVarsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:12px;border:none;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+      <div class="modal-header" style="background:var(--c-navy);border-radius:12px 12px 0 0;border:none;padding:1.25rem 1.5rem">
+        <h5 class="modal-title text-white" id="missingVarsModalLabel" style="font-weight:700;font-size:.9375rem">
+          <i class="fas fa-tag me-2" style="color:var(--c-gold)"></i>Champs personnalisés du modèle
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:1.5rem">
+        <p class="text-muted" style="font-size:.8125rem;margin-bottom:1.25rem">
+          Ce modèle de contrat contient des balises spécifiques qui ne sont pas renseignées automatiquement.
+          Veuillez compléter les champs ci-dessous.
+        </p>
+        <template x-for="field in missingFields" :key="field">
+          <div class="mb-3">
+            <label class="form-label-pro" x-text="field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())"></label>
+            <input type="text" class="form-control-pro"
+                   :name="'extra_fields[' + field + ']'"
+                   x-model="extraFieldValues[field]"
+                   :placeholder="field">
+          </div>
+        </template>
+      </div>
+      <div class="modal-footer" style="border:none;padding:1rem 1.5rem 1.5rem">
+        <button type="button" class="btn-ghost" data-bs-dismiss="modal">Ignorer</button>
+        <button type="button" class="btn-navy" @click="confirmMissingVars()">
+          <i class="fas fa-check me-1"></i> Valider
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </form>
 @endsection
 
 @push('scripts')
 <script>
+const _missingVarsBase = '{{ url("admin/contract-templates") }}';
+
 function loanForm(){
   return {
     amount:{{ old('amount',0) }}, duration:{{ old('darly',12) }}, rate:5,
     currency:'{{ old('currency','EUR') }}', clientMode:'{{ old('client_mode','existing') }}',
     monthly:0, totalCost:0, totalInterest:0, schedule:[],
+    missingFields:[], extraFieldValues:{},
+
     loadClient(e){const o=e.target.selectedOptions[0];if(o&&o.dataset.currency)this.currency=o.dataset.currency;},
+
+    onTemplateChange(e){
+      const tplId = e.target.value;
+      this.missingFields = [];
+      this.extraFieldValues = {};
+      if(!tplId) return;
+      fetch(`${_missingVarsBase}/${tplId}/missing-vars`,{headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'}})
+        .then(r => r.ok ? r.json() : {fields:[]})
+        .then(data => {
+          this.missingFields = data.fields || [];
+          if(this.missingFields.length > 0){
+            this.$nextTick(() => {
+              const el = document.getElementById('missingVarsModal');
+              if(el && typeof bootstrap !== 'undefined'){
+                (bootstrap.Modal.getOrCreateInstance(el)).show();
+              }
+            });
+          }
+        })
+        .catch(() => {});
+    },
+
+    confirmMissingVars(){
+      const el = document.getElementById('missingVarsModal');
+      if(el && typeof bootstrap !== 'undefined'){
+        bootstrap.Modal.getInstance(el)?.hide();
+      }
+    },
+
     calc(){
       if(!this.amount||!this.duration){this.monthly=0;return;}
       const r=this.rate/100/12,n=this.duration,P=this.amount;

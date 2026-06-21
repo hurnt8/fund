@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContractTemplate;
+use App\Models\User;
 use App\Services\ContractDocxService;
 use App\Services\ContractService;
 use Illuminate\Http\Request;
@@ -20,7 +21,12 @@ class ContractTemplateController extends Controller
 
     public function index()
     {
-        $templates = ContractTemplate::with('creator')->latest()->get();
+        $user = Auth::user();
+        if ($user->hasRole('super-admin')) {
+            $templates = ContractTemplate::with('creator', 'assignedAdmins')->latest()->get();
+        } else {
+            $templates = $user->assignedTemplates()->with('creator')->latest()->get();
+        }
         return view('admin.contract-templates.index', compact('templates'));
     }
 
@@ -79,9 +85,16 @@ class ContractTemplateController extends Controller
     public function edit(ContractTemplate $contractTemplate)
     {
         $variables = $this->variablesList();
+        $admins    = Auth::user()->hasRole('super-admin')
+            ? User::whereHas('roles', fn($q) => $q->where('name', 'admin'))->orderBy('name')->get()
+            : collect();
+        $assignedIds = $contractTemplate->assignedAdmins()->pluck('users.id')->toArray();
+
         return view('admin.contract-templates.edit', [
-            'template'  => $contractTemplate,
-            'variables' => $variables,
+            'template'    => $contractTemplate,
+            'variables'   => $variables,
+            'admins'      => $admins,
+            'assignedIds' => $assignedIds,
         ]);
     }
 
@@ -123,6 +136,12 @@ class ContractTemplateController extends Controller
 
         $contractTemplate->update($updates);
         $this->handleImageUploads($request, $contractTemplate);
+
+        // Synchroniser les admins assignés (super-admin uniquement)
+        if (Auth::user()->hasRole('super-admin')) {
+            $adminIds = array_filter(array_map('intval', (array) $request->input('assigned_admins', [])));
+            $contractTemplate->assignedAdmins()->sync($adminIds);
+        }
 
         return redirect()->route('admin.contract-templates.index')
                          ->with('success', 'Modèle mis à jour.');

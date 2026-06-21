@@ -1,19 +1,11 @@
 @php
-/**
- * Page d'activation de compte — multilingue + sensible au genre
- * Langue & genre lus depuis $user->locale et $user->gender
- */
 $locale = $user->locale ?? 'fr';
 $gender = $user->gender ?? 'N';
 
 $texts = [
     'fr' => [
         'title'       => 'Activation de compte — Credixa Invest',
-        'greeting'    => [
-            'M' => 'Cher Monsieur',
-            'F' => 'Chère Madame',
-            'N' => 'Bonjour',
-        ],
+        'greeting'    => ['M' => 'Cher Monsieur', 'F' => 'Chère Madame', 'N' => 'Bonjour'],
         'subtitle'    => 'Définissez votre mot de passe pour activer votre accès',
         'info_title'  => 'Votre compte Credixa Invest',
         'info_body'   => 'a été créé par votre conseiller. Choisissez un mot de passe sécurisé pour accéder à votre espace personnel.',
@@ -30,12 +22,8 @@ $texts = [
     ],
     'en' => [
         'title'       => 'Account Activation — Credixa Invest',
-        'greeting'    => [
-            'M' => 'Dear Mr.',
-            'F' => 'Dear Ms.',
-            'N' => 'Hello',
-        ],
-        'subtitle'    => 'Set your password to activate your account access',
+        'greeting'    => ['M' => 'Dear Mr.', 'F' => 'Dear Ms.', 'N' => 'Hello'],
+        'subtitle'    => 'Set your password to activate your account',
         'info_title'  => 'Your Credixa Invest account',
         'info_body'   => 'was created by your advisor. Choose a secure password to access your personal space.',
         'email_label' => 'Email address',
@@ -51,11 +39,7 @@ $texts = [
     ],
     'es' => [
         'title'       => 'Activación de cuenta — Credixa Invest',
-        'greeting'    => [
-            'M' => 'Estimado Sr.',
-            'F' => 'Estimada Sra.',
-            'N' => 'Hola',
-        ],
+        'greeting'    => ['M' => 'Estimado Sr.', 'F' => 'Estimada Sra.', 'N' => 'Hola'],
         'subtitle'    => 'Establezca su contraseña para activar su cuenta',
         'info_title'  => 'Su cuenta de Credixa Invest',
         'info_body'   => 'fue creada por su asesor. Elija una contraseña segura para acceder a su espacio personal.',
@@ -72,11 +56,7 @@ $texts = [
     ],
     'pl' => [
         'title'       => 'Aktywacja konta — Credixa Invest',
-        'greeting'    => [
-            'M' => 'Szanowny Panie',
-            'F' => 'Szanowna Pani',
-            'N' => 'Witaj',
-        ],
+        'greeting'    => ['M' => 'Szanowny Panie', 'F' => 'Szanowna Pani', 'N' => 'Witaj'],
         'subtitle'    => 'Ustaw hasło, aby aktywować dostęp do konta',
         'info_title'  => 'Twoje konto Credixa Invest',
         'info_body'   => 'zostało utworzone przez Twojego doradcę. Wybierz bezpieczne hasło, aby uzyskać dostęp do swojego osobistego obszaru.',
@@ -93,169 +73,319 @@ $texts = [
     ],
 ];
 
-$t        = $texts[$locale]         ?? $texts['fr'];
-$greeting = $t['greeting'][$gender] ?? $t['greeting']['N'];
-$lastName = explode(' ', $user->name, 2)[1] ?? $user->name;
-// Pour 'N', on affiche juste le prénom ; pour M/F on ajoute le nom de famille
+$t              = $texts[$locale]         ?? $texts['fr'];
+$greeting       = $t['greeting'][$gender] ?? $t['greeting']['N'];
 $salutationName = ($gender === 'N') ? explode(' ', $user->name)[0] : $user->name;
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $locale }}">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ $t['title'] }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#080C18">
 <link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
+<title>{{ $t['title'] }}</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/all.min.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
+:root{
+  --bg:   #080C18;
+  --inp:  #141C2E;
+  --cyan: #0DCFDC;
+  --cyan2:#09B5C8;
+  --text: #FFFFFF;
+  --sub:  rgba(255,255,255,.52);
+  --muted:rgba(255,255,255,.28);
+  --bdr:  rgba(255,255,255,.09);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#F1F4F9;color:#1A2332;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem}
-.card{background:#fff;border-radius:16px;box-shadow:0 4px 32px rgba(0,0,0,.1);width:100%;max-width:460px;overflow:hidden}
-.card-top{background:linear-gradient(135deg,#0B1A2E 0%,#1a3a5c 100%);padding:2rem 2rem 1.875rem;text-align:center}
-.card-top img{height:38px;display:block;margin:0 auto 1.375rem}
-.avatar{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#C8A951,#A88830);display:flex;align-items:center;justify-content:center;font-size:1.375rem;font-weight:800;color:#0B1A2E;margin:0 auto 1rem;box-shadow:0 2px 14px rgba(200,169,81,.4)}
-.card-top h1{font-size:1.0625rem;font-weight:800;color:#fff;margin-bottom:.375rem;line-height:1.35}
-.card-top p{font-size:.78rem;color:rgba(255,255,255,.48);line-height:1.5}
-.card-body{padding:1.875rem 2rem}
-.info-box{display:flex;gap:.75rem;align-items:flex-start;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:.875rem 1rem;margin-bottom:1.5rem}
-.info-box i{color:#2563EB;font-size:.9rem;flex-shrink:0;margin-top:.15rem}
-.info-box p{font-size:.775rem;color:#1E40AF;line-height:1.55}
-.info-box strong{font-weight:700}
-label{display:block;font-size:.78rem;font-weight:600;color:#0B1A2E;margin-bottom:.375rem}
-.field{margin-bottom:1rem}
-.input-wrap{position:relative}
-.input-wrap input{width:100%;padding:.65rem 2.5rem .65rem .875rem;border:1.5px solid #E4E8F0;border-radius:9px;font-size:.8375rem;color:#1A2332;font-family:'Inter',sans-serif;transition:border-color .2s,box-shadow .2s;background:#fff;outline:none;appearance:none}
-.input-wrap input:focus{border-color:#C8A951;box-shadow:0 0 0 3px rgba(200,169,81,.13)}
-.input-wrap input[readonly]{background:#F8FAFF;color:#6B7280;cursor:not-allowed}
-.eye-btn{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;color:#9CA3AF;cursor:pointer;font-size:.78rem;padding:.25rem;display:flex;align-items:center}
-.eye-btn:hover{color:#374151}
-.strength-bar{height:4px;border-radius:99px;background:#E4E8F0;margin-top:.35rem;overflow:hidden}
-.strength-fill{height:100%;border-radius:99px;transition:width .3s,background .3s;width:0%}
-.strength-txt{font-size:.68rem;color:#9CA3AF;margin-top:.3rem;min-height:1em}
-.err-box{display:flex;gap:.5rem;align-items:flex-start;background:#FEF2F2;border:1px solid #FECACA;border-radius:9px;padding:.75rem 1rem;margin-bottom:1.125rem;font-size:.78rem;color:#991B1B}
-.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.75rem;background:#0B1A2E;color:#fff;border:none;border-radius:9px;font-size:.875rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:background .2s;margin-top:1.375rem}
-.btn:hover{background:#112240}
-.btn:active{transform:scale(.99)}
-.foot{text-align:center;font-size:.72rem;color:#9CA3AF;margin-top:1.125rem}
-.foot a{color:#0B1A2E;font-weight:600;text-decoration:none}
-.foot a:hover{text-decoration:underline}
-@media(max-width:500px){.card-body{padding:1.375rem 1.25rem}.card-top{padding:1.5rem 1.25rem 1.375rem}}
+html,body{
+  min-height:100vh;background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;font-size:15px;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+body{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:1.5rem 1.25rem;
+  padding-top:calc(1.5rem + env(safe-area-inset-top,0px));
+  padding-bottom:calc(1.5rem + env(safe-area-inset-bottom,0px));
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+
+/* Background orbs */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px)}
+.orb-1{
+  width:520px;height:520px;top:-15%;right:-10%;
+  background:radial-gradient(circle,rgba(13,207,220,.11) 0%,transparent 65%);
+  animation:orbf 10s ease-in-out infinite alternate;
+}
+.orb-2{
+  width:380px;height:380px;bottom:-15%;left:-8%;
+  background:radial-gradient(circle,rgba(13,207,220,.06) 0%,transparent 65%);
+  animation:orbf 14s ease-in-out infinite alternate-reverse;
+}
+@keyframes orbf{from{transform:scale(1)}to{transform:scale(1.1) translate(2%,3%)}}
+
+/* Card */
+.card{
+  position:relative;z-index:1;
+  width:100%;max-width:420px;
+  animation:fadeUp .45s ease .05s both;
+}
+
+/* Logo box */
+.logo-box{
+  width:74px;height:74px;border-radius:22px;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.375rem;
+  box-shadow:0 0 36px rgba(13,207,220,.3);
+}
+.logo-box img{height:40px;object-fit:contain;filter:brightness(0) invert(1)}
+.logo-box span{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:800;color:#080C18;line-height:1}
+
+/* Avatar */
+.avatar{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:800;
+  color:#080C18;margin:0 auto 1rem;
+  box-shadow:0 0 24px rgba(13,207,220,.3);
+}
+
+/* Heading */
+.card-head{text-align:center;margin-bottom:1.75rem}
+.card-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:.35rem;
+}
+.card-sub{font-size:.8rem;color:var(--sub);line-height:1.6}
+
+/* Info box */
+.info-box{
+  display:flex;gap:.75rem;align-items:flex-start;
+  background:rgba(13,207,220,.07);
+  border:1px solid rgba(13,207,220,.18);
+  border-radius:12px;padding:.875rem 1rem;margin-bottom:1.5rem;
+}
+.info-box i{color:var(--cyan);font-size:.88rem;flex-shrink:0;margin-top:.15rem}
+.info-box p{font-size:.77rem;color:rgba(255,255,255,.65);line-height:1.6}
+.info-box strong{color:var(--cyan);font-weight:600}
+
+/* Error */
+.ferr{
+  display:flex;align-items:flex-start;gap:.55rem;
+  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);
+  border-left:3px solid #ef4444;border-radius:10px;
+  padding:.7rem .9rem;font-size:.79rem;color:#FCA5A5;margin-bottom:1.125rem;
+}
+.ferr i{margin-top:.1rem;flex-shrink:0}
+
+/* Field */
+.fgrp{margin-bottom:.875rem}
+.flabel{display:block;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:.4rem}
+.frel{position:relative}
+.ficon{
+  position:absolute;left:.95rem;top:50%;transform:translateY(-50%);
+  color:rgba(255,255,255,.3);font-size:.75rem;pointer-events:none;transition:color .18s;
+}
+.finput{
+  width:100%;padding:.85rem 2.6rem .85rem 2.6rem;
+  background:var(--inp);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;
+  font-size:.875rem;font-family:'Inter',sans-serif;color:var(--text);
+  outline:none;transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.finput::placeholder{color:rgba(255,255,255,.2)}
+.finput:focus{border-color:var(--cyan);background:#161E30;box-shadow:0 0 0 3.5px rgba(13,207,220,.15)}
+.finput:focus ~ .ficon,.frel:focus-within .ficon{color:var(--cyan)}
+.finput.err{border-color:#ef4444}
+.finput[readonly]{
+  color:rgba(255,255,255,.4);cursor:not-allowed;
+  background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.05);
+}
+.feye{
+  position:absolute;right:.9rem;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:rgba(255,255,255,.28);cursor:pointer;
+  font-size:.78rem;padding:.3rem;display:flex;align-items:center;transition:color .18s;
+}
+.feye:hover{color:rgba(255,255,255,.7)}
+
+/* Password strength */
+.strength-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:.5rem;overflow:hidden}
+.strength-fill{height:100%;border-radius:2px;transition:width .3s,background .3s;width:0}
+.strength-txt{font-size:.68rem;color:var(--muted);margin-top:.3rem;min-height:1em;transition:color .2s}
+
+/* Cyan pill button */
+.fbtn{
+  width:100%;padding:.92rem 1.5rem;border:none;border-radius:999px;
+  font-size:.97rem;font-weight:700;font-family:'Inter',sans-serif;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.625rem;
+  background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan2) 100%);
+  color:#080C18;letter-spacing:.01em;
+  box-shadow:0 6px 28px rgba(13,207,220,.35),0 2px 8px rgba(0,0,0,.3);
+  transition:filter .2s,box-shadow .2s,transform .1s;margin-top:1.25rem;
+}
+.fbtn:hover{filter:brightness(1.08);box-shadow:0 8px 36px rgba(13,207,220,.5)}
+.fbtn:active{transform:scale(.975)}
+.fbtn:disabled{opacity:.6;cursor:not-allowed;filter:none}
+
+/* Footer link */
+.foot{text-align:center;font-size:.76rem;color:var(--muted);margin-top:1.25rem}
+.foot a{color:var(--cyan);font-weight:600;transition:opacity .18s}
+.foot a:hover{opacity:.75}
+
+/* Copyright */
+.copy{
+  position:relative;z-index:1;text-align:center;
+  font-size:.65rem;color:rgba(255,255,255,.2);margin-top:1.5rem;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
+
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
+
 <div class="card">
 
-  {{-- En-tête --}}
-  <div class="card-top">
-    <img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa Invest">
-    <div class="avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
-    <h1>{{ $greeting }}, {{ $salutationName }} !</h1>
-    <p>{{ $t['subtitle'] }}</p>
+  {{-- Logo --}}
+  <div class="logo-box">
+    <img src="{{ asset('assets/images/logo new.png') }}"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+         alt="Credixa">
+    <span style="display:none">C</span>
   </div>
 
-  {{-- Corps --}}
-  <div class="card-body">
+  {{-- Avatar + Heading --}}
+  <div class="avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
 
-    <div class="info-box">
-      <i class="fas fa-envelope-open-text"></i>
-      <p>
-        <strong>{{ $t['info_title'] }}</strong>
-        {{ $t['info_body'] }}
-      </p>
-    </div>
-
-    @if($errors->any())
-    <div class="err-box">
-      <i class="fas fa-exclamation-circle" style="margin-top:.1rem;flex-shrink:0"></i>
-      <span>{{ $errors->first() }}</span>
-    </div>
-    @endif
-
-    <form method="POST" action="{{ route('invitation.activate', $token) }}">
-      @csrf
-
-      {{-- Email (lecture seule) --}}
-      <div class="field">
-        <label>{{ $t['email_label'] }}</label>
-        <div class="input-wrap">
-          <input type="email" value="{{ $user->email }}" readonly>
-          <span class="eye-btn" style="cursor:default"><i class="fas fa-lock"></i></span>
-        </div>
-      </div>
-
-      {{-- Mot de passe --}}
-      <div class="field">
-        <label for="password">{{ $t['pw_label'] }}</label>
-        <div class="input-wrap">
-          <input type="password" id="password" name="password" required
-                 placeholder="{{ $t['pw_ph'] }}" autocomplete="new-password"
-                 oninput="checkStrength(this.value)">
-          <button type="button" class="eye-btn" onclick="togglePw('password',this)">
-            <i class="fas fa-eye"></i>
-          </button>
-        </div>
-        <div class="strength-bar"><div class="strength-fill" id="sFill"></div></div>
-        <div class="strength-txt" id="sTxt">{{ $t['str_ph'] }}</div>
-      </div>
-
-      {{-- Confirmation --}}
-      <div class="field" style="margin-bottom:0">
-        <label for="password_confirmation">{{ $t['cpw_label'] }}</label>
-        <div class="input-wrap">
-          <input type="password" id="password_confirmation" name="password_confirmation"
-                 required placeholder="{{ $t['cpw_ph'] }}" autocomplete="new-password">
-          <button type="button" class="eye-btn" onclick="togglePw('password_confirmation',this)">
-            <i class="fas fa-eye"></i>
-          </button>
-        </div>
-      </div>
-
-      <button type="submit" class="btn">
-        <i class="fas fa-unlock-alt"></i> {{ $t['btn'] }}
-      </button>
-    </form>
-
-    <div class="foot">
-      {{ $t['login_text'] }}
-      <a href="{{ $user->type === 'staff' ? route('staff.login') : route('login') }}">
-        {{ $t['login_link'] }}
-      </a>
-    </div>
-
+  <div class="card-head">
+    <h1 class="card-title">{{ $greeting }}, {{ $salutationName }} !</h1>
+    <p class="card-sub">{{ $t['subtitle'] }}</p>
   </div>
+
+  {{-- Info box --}}
+  <div class="info-box">
+    <i class="fas fa-envelope-open-text"></i>
+    <p><strong>{{ $t['info_title'] }}</strong> {{ $t['info_body'] }}</p>
+  </div>
+
+  {{-- Errors --}}
+  @if($errors->any())
+  <div class="ferr">
+    <i class="fas fa-circle-exclamation"></i>
+    <span>{{ $errors->first() }}</span>
+  </div>
+  @endif
+
+  {{-- Form --}}
+  <form method="POST" action="{{ route('invitation.activate', $token) }}"
+        onsubmit="this.querySelector('button[type=submit]').disabled=true">
+    @csrf
+
+    {{-- Email (readonly) --}}
+    <div class="fgrp">
+      <label class="flabel">{{ $t['email_label'] }}</label>
+      <div class="frel">
+        <i class="fas fa-envelope ficon"></i>
+        <input type="email" class="finput" value="{{ $user->email }}" readonly>
+        <span class="feye" style="cursor:default"><i class="fas fa-lock"></i></span>
+      </div>
+    </div>
+
+    {{-- Password --}}
+    <div class="fgrp">
+      <label class="flabel" for="password">{{ $t['pw_label'] }}</label>
+      <div class="frel">
+        <i class="fas fa-lock ficon"></i>
+        <input type="password" id="password" name="password" required
+               class="finput {{ $errors->has('password') ? 'err' : '' }}"
+               placeholder="{{ $t['pw_ph'] }}"
+               autocomplete="new-password"
+               oninput="checkStrength(this.value)">
+        <button type="button" class="feye" onclick="tglPwd('password',this)">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+      <div class="strength-bar"><div class="strength-fill" id="sFill"></div></div>
+      <div class="strength-txt" id="sTxt">{{ $t['str_ph'] }}</div>
+    </div>
+
+    {{-- Confirm password --}}
+    <div class="fgrp">
+      <label class="flabel" for="password_confirmation">{{ $t['cpw_label'] }}</label>
+      <div class="frel">
+        <i class="fas fa-lock ficon"></i>
+        <input type="password" id="password_confirmation" name="password_confirmation"
+               required class="finput"
+               placeholder="{{ $t['cpw_ph'] }}"
+               autocomplete="new-password">
+        <button type="button" class="feye" onclick="tglPwd('password_confirmation',this)">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <button type="submit" class="fbtn">
+      <i class="fas fa-unlock-alt"></i>
+      {{ $t['btn'] }}
+    </button>
+  </form>
+
+  <div class="foot">
+    {{ $t['login_text'] }}
+    <a href="{{ $user->type === 'staff' ? route('staff.login') : route('login') }}">
+      {{ $t['login_link'] }}
+    </a>
+  </div>
+
 </div>
+
+<div class="copy">&copy; {{ date('Y') }} Credixa Invest</div>
 
 <script>
 const strengths = @json($t['strengths']);
-const strPh = @json($t['str_ph']);
-const colors = ['#E4E8F0','#EF4444','#F97316','#EAB308','#22C55E','#16A34A'];
-const widths  = ['0%','25%','50%','75%','90%','100%'];
+const strPh     = @json($t['str_ph']);
+const colors    = ['','#ef4444','#f97316','#eab308','#22c55e','#0DCFDC'];
+const widths    = ['0%','25%','50%','75%','90%','100%'];
 
-function togglePw(id, btn) {
-  const el   = document.getElementById(id);
-  const icon = btn.querySelector('i');
-  if (el.type === 'password') { el.type='text'; icon.className='fas fa-eye-slash'; }
+function tglPwd(id, btn) {
+  var el   = document.getElementById(id);
+  var icon = btn.querySelector('i');
+  if (el.type === 'password') { el.type='text';     icon.className='fas fa-eye-slash'; }
   else                        { el.type='password'; icon.className='fas fa-eye'; }
 }
 
 function checkStrength(pw) {
-  const fill = document.getElementById('sFill');
-  const txt  = document.getElementById('sTxt');
-  if (!pw) { fill.style.width='0%'; txt.textContent=strPh; txt.style.color='#9CA3AF'; return; }
-  let s = 0;
-  if (pw.length >= 8)           s++;
-  if (pw.length >= 12)          s++;
-  if (/[A-Z]/.test(pw))         s++;
-  if (/[0-9]/.test(pw))         s++;
-  if (/[^A-Za-z0-9]/.test(pw))  s++;
+  var fill = document.getElementById('sFill');
+  var txt  = document.getElementById('sTxt');
+  if (!pw) { fill.style.width='0%'; txt.textContent=strPh; txt.style.color='rgba(255,255,255,.28)'; return; }
+  var s = 0;
+  if (pw.length >= 8)          s++;
+  if (pw.length >= 12)         s++;
+  if (/[A-Z]/.test(pw))        s++;
+  if (/[0-9]/.test(pw))        s++;
+  if (/[^A-Za-z0-9]/.test(pw)) s++;
   s = Math.min(s, 5);
   fill.style.width      = widths[s];
-  fill.style.background = colors[s];
+  fill.style.background = colors[s] || 'transparent';
   txt.textContent       = strengths[s] || strPh;
-  txt.style.color       = s > 2 ? colors[s] : '#9CA3AF';
+  txt.style.color       = s > 0 ? colors[s] : 'rgba(255,255,255,.28)';
 }
 </script>
 </body>

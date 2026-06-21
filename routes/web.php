@@ -6,6 +6,9 @@ use App\Http\Controllers\LoanController;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Auth\ClientLoginController;
+use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\InvitationController;
 use App\Http\Controllers\Auth\StaffLoginController;
 use App\Http\Controllers\Dashboard\ClientDashboardController;
@@ -16,6 +19,7 @@ use App\Http\Controllers\Admin\LoanRequestController as AdminLoanRequestControll
 use App\Http\Controllers\Admin\ContractTemplateController;
 use App\Http\Controllers\SuperAdmin\LoanRequestController as SuperAdminLoanRequestController;
 use App\Http\Controllers\Client\LoanRequestController as ClientLoanRequestController;
+use App\Http\Controllers\Client\AppController as ClientAppController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,6 +152,17 @@ Route::get('/login',  [ClientLoginController::class, 'showLoginForm'])->name('lo
 Route::post('/login', [ClientLoginController::class, 'login'])->name('login.submit')->middleware('guest');
 Route::post('/logout',[ClientLoginController::class, 'logout'])->name('logout');
 
+// OTP verification
+Route::get('/otp-verify',  [OtpController::class, 'show'])->name('otp.show');
+Route::post('/otp-verify', [OtpController::class, 'verify'])->name('otp.verify');
+Route::post('/otp-resend', [OtpController::class, 'resend'])->name('otp.resend');
+
+// Forgot / reset password (clients)
+Route::get('/forgot-password',         [ForgotPasswordController::class, 'show'])->name('password.request')->middleware('guest');
+Route::post('/forgot-password',        [ForgotPasswordController::class, 'send'])->name('password.email')->middleware('guest');
+Route::get('/reset-password/{token}',  [ResetPasswordController::class, 'show'])->name('password.reset')->middleware('guest');
+Route::post('/reset-password',         [ResetPasswordController::class, 'reset'])->name('password.update')->middleware('guest');
+
 // Staff login (admin / super-admin)
 Route::get('/staff/login',  [StaffLoginController::class, 'showLoginForm'])->name('staff.login')->middleware('guest');
 Route::post('/staff/login', [StaffLoginController::class, 'login'])->name('staff.login.submit')->middleware('guest');
@@ -159,6 +174,37 @@ Route::middleware(['auth', 'role:client'])->prefix('dashboard')->name('client.')
     Route::get('/loans',       [ClientLoanRequestController::class, 'index'])->name('loans');
     Route::get('/loans/{loan}',[ClientLoanRequestController::class, 'show'])->name('loans.show');
 });
+
+// ── Application mobile client (PWA) ─────────────────────────────────────────
+Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name('client.app.')->group(function () {
+    Route::get('/',                    [ClientAppController::class, 'index'])->name('home');
+
+    // Dossiers (alias "dossiers" pour la navigation + route loans conservee)
+    Route::get('/dossiers',            [ClientAppController::class, 'loans'])->name('dossiers');
+    Route::get('/loans',               [ClientAppController::class, 'loans'])->name('loans');
+    Route::get('/loans/{loan}',        [ClientAppController::class, 'loanShow'])->name('loans.show');
+
+    Route::get('/analytics',           [ClientAppController::class, 'analytics'])->name('analytics');
+    Route::get('/profile',             [ClientAppController::class, 'profile'])->name('profile');
+    Route::post('/profile',            [ClientAppController::class, 'updateProfile'])->name('profile.update');
+
+    // Transferts : hub central (bouton FAB nav) + sous-pages
+    Route::get('/transfers',           [\App\Http\Controllers\Client\TransferController::class, 'hub'])->name('transfers');
+    Route::get('/transfer/send',       [\App\Http\Controllers\Client\TransferController::class, 'sendForm'])->name('transfer.send');
+    Route::post('/transfer/send',      [\App\Http\Controllers\Client\TransferController::class, 'sendProcess'])->name('transfer.send.process');
+    Route::get('/transfer/receive',    [\App\Http\Controllers\Client\TransferController::class, 'receive'])->name('transfer.receive');
+    Route::get('/transfer/confirmation', [\App\Http\Controllers\Client\TransferController::class, 'confirmation'])->name('transfer.confirmation');
+
+    Route::post('/locale', function (\Illuminate\Http\Request $request) {
+        $locale = $request->input('locale', 'fr');
+        if (in_array($locale, ['fr','en','pl','es'])) {
+            $request->user()->update(['locale' => $locale]);
+        }
+        return back();
+    })->name('locale');
+});
+Route::get('/manifest.json', [ClientAppController::class, 'manifest'])->name('pwa.manifest');
+Route::get('/sw.js',         [ClientAppController::class, 'serviceWorker'])->name('pwa.sw');
 
 // ── Admin dashboard ─────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('admin.')->group(function () {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\LoanValidatedMail;
 use App\Mail\SignedContractAcknowledgementMail;
+use App\Mail\UserInvitationMail;
 use App\Models\ContractTemplate;
 use App\Models\LoanHistory;
 use App\Models\LoanRequest;
@@ -14,6 +15,8 @@ use App\Services\LoanPdfService;
 use App\Services\LoanService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -59,11 +62,8 @@ class LoanRequestController extends Controller
     public function create()
     {
         $admin     = Auth::user();
-        $myClients = User::where('type', 'client')
-                         ->where('created_by', $admin->id)
-                         ->orderBy('name')->get();
-
-        $templates = ContractTemplate::all();
+        $myClients = $this->clientsForAdmin($admin);
+        $templates  = $this->templatesForAdmin($admin);
         $currencies = ['EUR','PLN','USD','GBP','BRL','MXN'];
 
         return view('admin.loans.create', compact('myClients', 'templates', 'currencies'));
@@ -76,7 +76,7 @@ class LoanRequestController extends Controller
             'client_mode'       => 'required|in:existing,new',
             'client_id'         => 'required_if:client_mode,existing|nullable|exists:users,id',
             'client_name'       => 'required_if:client_mode,new|nullable|string|max:255',
-            'client_email'      => 'required_if:client_mode,new|nullable|email',
+            'client_email'      => 'required_if:client_mode,new|nullable|email|unique:users,email',
             'client_phone'      => 'nullable|string|max:50',
             'client_address'    => 'nullable|string|max:500',
             'client_birth_date' => 'nullable|date',
@@ -93,30 +93,53 @@ class LoanRequestController extends Controller
             'currency'          => 'required|string|max:10',
             'admin_fees'        => 'nullable|numeric|min:0',
             'bank_account'      => 'nullable|string|max:255',
+            'agent_suivi'       => 'nullable|string|max:255',
             'special_conditions'=> 'nullable|string',
             'contract_template_id' => 'nullable|exists:contract_templates,id',
+            // Balises personnalisées du template (modale)
+            'extra_fields'      => 'nullable|array',
+            'extra_fields.*'    => 'nullable|string|max:500',
+        ], [
+            'client_email.unique' => 'Cet email est déjà utilisé dans le système. Passez en mode "Client existant" pour sélectionner ce client.',
+            'client_name.required_if'  => 'Le nom du client est obligatoire pour un nouveau client.',
+            'client_email.required_if' => 'L\'email du client est obligatoire pour un nouveau client.',
+            'client_id.required_if'    => 'Veuillez sélectionner un client existant.',
+            'amount.required'   => 'Le montant est obligatoire.',
+            'darly.required'    => 'La durée est obligatoire.',
         ]);
 
         $admin = Auth::user();
 
         // Créer ou récupérer le client
+        $sendActivationEmail = false;
+        $activationUrl       = null;
+
         if ($data['client_mode'] === 'new') {
+            $token  = Str::random(64);
             $client = User::create([
-                'name'       => $data['client_name'],
-                'email'      => $data['client_email'],
-                'password'   => bcrypt(Str::random(12)),
-                'type'       => 'client',
-                'phone'      => $data['client_phone'] ?? null,
-                'address'    => $data['client_address'] ?? null,
-                'birth_date' => $data['client_birth_date'] ?? null,
-                'id_type'    => $data['client_id_type'] ?? null,
-                'id_number'  => $data['client_id_number'] ?? null,
-                'locale'     => $data['client_locale'] ?? 'fr',
-                'currency'   => $data['client_currency'] ?? $data['currency'],
+                'name'             => $data['client_name'],
+                'email'            => $data['client_email'],
+                'password'         => Hash::make(Str::random(32)),
+                'type'             => 'client',
+                'created_by'       => $admin->id,
+                'invitation_token' => $token,
+                'phone'            => $data['client_phone'] ?? null,
+                'address'          => $data['client_address'] ?? null,
+                'birth_date'       => $data['client_birth_date'] ?? null,
+                'id_type'          => $data['client_id_type'] ?? null,
+                'id_number'        => $data['client_id_number'] ?? null,
+                'locale'           => $data['client_locale'] ?? 'fr',
+                'currency'         => $data['client_currency'] ?? $data['currency'],
             ]);
             $client->assignRole('client');
+            $sendActivationEmail = true;
+            $activationUrl = route('invitation.activate', ['token' => $token]);
         } else {
             $client = User::findOrFail($data['client_id']);
+            // Un admin régulier ne peut sélectionner que ses propres clients
+            if (!$admin->hasRole('super-admin')) {
+                abort_unless($client->created_by === $admin->id, 403, 'Client non autorisé.');
+            }
         }
 
         // Calculs financiers
@@ -127,6 +150,7 @@ class LoanRequestController extends Controller
         );
 
         // Créer la demande
+        $locale = $client->locale ?? 'fr';
         $loan = LoanRequest::create([
             'reference'            => LoanRequest::generateReference(),
             'archive_ref'          => 'CR-ARCH-' . strtoupper(Str::random(8)),
@@ -147,22 +171,34 @@ class LoanRequestController extends Controller
             'special_conditions'   => $data['special_conditions'] ?? null,
             'admin_fees'           => $data['admin_fees'] ?? null,
             'bank_account'         => $data['bank_account'] ?? null,
+            'agent_suivi'          => $data['agent_suivi'] ?? null,
             'monthly_payment'      => $calc['monthly_payment'],
             'total_cost'           => $calc['total_cost'],
             'total_with_interest'  => $calc['total_with_interest'],
             'amortization_schedule'=> $calc['amortization_schedule'],
-            'contract_language'    => $client->locale ?? 'fr',
+            'contract_language'    => $locale,
             'status'               => LoanRequest::STATUS_DRAFT,
+            'extra_fields'         => !empty($data['extra_fields']) ? $data['extra_fields'] : null,
         ]);
 
-        // Générer le contrat en FR
+        // Générer le contrat (aperçu FR stocké)
         $loan->contract_content = $this->contractService->generateFr($loan);
         $loan->save();
+
+        // Envoyer l'email d'activation si nouveau client
+        if ($sendActivationEmail && $activationUrl) {
+            try {
+                Mail::to($client->email)->send(new UserInvitationMail($client, $activationUrl));
+            } catch (\Throwable $e) {
+                Log::error('UserInvitationMail failed for ' . $client->email . ': ' . $e->getMessage());
+            }
+        }
 
         $this->logHistory($loan, 'created', null, ['status' => $loan->status]);
 
         return redirect()->route('admin.loans.show', $loan)
-                         ->with('success', 'Demande N°' . $loan->reference . ' créée avec succès.');
+                         ->with('success', 'Dossier N°' . $loan->reference . ' créé (statut : Brouillon). '
+                             . ($sendActivationEmail ? 'Un email d\'activation a été envoyé à ' . $client->email . '.' : ''));
     }
 
     public function show(LoanRequest $loan)
@@ -182,8 +218,9 @@ class LoanRequestController extends Controller
                          ->whereHas('clientLoans', fn($q) => $q->where('admin_id', $admin->id))
                          ->orderBy('name')->get();
         $currencies = ['EUR','PLN','USD','GBP','BRL','MXN'];
+        $templates  = $this->templatesForAdmin($admin);
 
-        return view('admin.loans.edit', compact('loan', 'myClients', 'currencies'));
+        return view('admin.loans.edit', compact('loan', 'myClients', 'currencies', 'templates'));
     }
 
     public function update(Request $request, LoanRequest $loan)
@@ -192,35 +229,41 @@ class LoanRequestController extends Controller
         abort_unless($loan->isEditable(), 403);
 
         $data = $request->validate([
-            'amount'            => 'required|numeric|min:100',
-            'darly'             => 'required|integer|min:1|max:360',
-            'objet'             => 'nullable|string|max:255',
-            'subject'           => 'nullable|string|max:2000',
-            'start_date'        => 'nullable|date',
-            'currency'          => 'required|string|max:10',
-            'admin_fees'        => 'nullable|numeric|min:0',
-            'bank_account'      => 'nullable|string|max:255',
-            'special_conditions'=> 'nullable|string',
+            'amount'               => 'required|numeric|min:100',
+            'darly'                => 'required|integer|min:1|max:360',
+            'objet'                => 'nullable|string|max:255',
+            'subject'              => 'nullable|string|max:2000',
+            'start_date'           => 'nullable|date',
+            'currency'             => 'required|string|max:10',
+            'admin_fees'           => 'nullable|numeric|min:0',
+            'bank_account'         => 'nullable|string|max:255',
+            'agent_suivi'          => 'nullable|string|max:255',
+            'special_conditions'   => 'nullable|string',
+            'contract_template_id' => 'nullable|exists:contract_templates,id',
+            'extra_fields'         => 'nullable|array',
+            'extra_fields.*'       => 'nullable|string|max:500',
         ]);
 
-        $old = $loan->only(['amount','darly','status']);
+        $old = $loan->only(['amount','darly','status','contract_template_id']);
 
         $calc = $this->loanService->calculateAll(
             (float) $data['amount'], 5.00, (int) $data['darly']
         );
 
         $loan->update(array_merge($data, [
-            'interest_rate'       => 5.00,
-            'monthly_payment'     => $calc['monthly_payment'],
-            'total_cost'          => $calc['total_cost'],
-            'total_with_interest' => $calc['total_with_interest'],
+            'interest_rate'        => 5.00,
+            'monthly_payment'      => $calc['monthly_payment'],
+            'total_cost'           => $calc['total_cost'],
+            'total_with_interest'  => $calc['total_with_interest'],
             'amortization_schedule'=> $calc['amortization_schedule'],
+            'extra_fields'         => !empty($data['extra_fields']) ? $data['extra_fields'] : null,
         ]));
 
+        // Régénérer le contenu du contrat avec le nouveau template
         $loan->contract_content = $this->contractService->generateFr($loan);
         $loan->save();
 
-        $this->logHistory($loan, 'updated', $old, $loan->only(['amount','darly','status']));
+        $this->logHistory($loan, 'updated', $old, $loan->only(['amount','darly','status','contract_template_id']));
 
         return redirect()->route('admin.loans.show', $loan)
                          ->with('success', 'Demande mise à jour.');
@@ -229,8 +272,10 @@ class LoanRequestController extends Controller
     public function contract(LoanRequest $loan)
     {
         $this->authorizeAccess($loan);
-        $templates = ContractTemplate::all();
-        return view('admin.loans.contract', compact('loan', 'templates'));
+        $templates   = $this->templatesForAdmin(Auth::user());
+        $previewHtml = $loan->contract_content
+            ?? $this->contractService->generateFr($loan);
+        return view('admin.loans.contract', compact('loan', 'templates', 'previewHtml'));
     }
 
     public function updateContract(Request $request, LoanRequest $loan)
@@ -257,12 +302,19 @@ class LoanRequestController extends Controller
             'validated_at' => now(),
         ]);
 
-        // Générer PDF traduit dans la langue du client
-        $locale  = $loan->contract_language ?? 'fr';
-        $pdfPath = $this->pdfService->generate($loan, $locale);
+        // Générer PDFs traduits dans la langue du client
+        $locale          = $loan->contract_language ?? 'fr';
+        $contractPdf     = $this->pdfService->generate($loan, $locale);
+        $amortizationPdf = $this->pdfService->generateAmortizationPdf($loan, $locale);
 
-        // Envoyer email au client
-        Mail::to($loan->email)->send(new LoanValidatedMail($loan, $pdfPath, $locale));
+        // Envoyer email au client avec contrat + tableau d'amortissement
+        try {
+            Mail::to($loan->email)->send(
+                new LoanValidatedMail($loan, $contractPdf, $locale, $amortizationPdf)
+            );
+        } catch (\Throwable $e) {
+            Log::error('LoanValidatedMail failed for ' . $loan->reference . ': ' . $e->getMessage());
+        }
 
         // Mettre à jour statut → contract_sent
         $loan->update([
@@ -272,13 +324,12 @@ class LoanRequestController extends Controller
 
         $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status]);
 
-        // Supprimer PDF temporaire
-        if (file_exists($pdfPath)) {
-            @unlink($pdfPath);
-        }
+        // Supprimer PDFs temporaires
+        @unlink($contractPdf);
+        @unlink($amortizationPdf);
 
         return redirect()->route('admin.loans.show', $loan)
-                         ->with('success', 'Contrat validé et envoyé au client.');
+                         ->with('success', 'Contrat validé et envoyé au client (avec tableau d\'amortissement).');
     }
 
     public function markSigned(LoanRequest $loan)
@@ -309,6 +360,12 @@ class LoanRequestController extends Controller
 
         $old = ['status' => $loan->status];
         $loan->update(['status' => $data['status']]);
+
+        // Créditer le solde du client lors du passage en "finalisé"
+        if ($data['status'] === LoanRequest::STATUS_FINALIZED && $old['status'] !== LoanRequest::STATUS_FINALIZED) {
+            $loan->client?->increment('balance', (float) $loan->amount);
+        }
+
         $this->logHistory($loan, 'status_changed', $old, ['status' => $data['status']]);
 
         return back()->with('success', 'Statut mis à jour.');
@@ -320,6 +377,28 @@ class LoanRequestController extends Controller
         abort_unless($loan->status === LoanRequest::STATUS_DRAFT, 403, 'Seuls les brouillons peuvent être supprimés.');
         $loan->delete();
         return redirect()->route('admin.loans.index')->with('success', 'Demande supprimée.');
+    }
+
+    private function clientsForAdmin(\App\Models\User $admin): \Illuminate\Support\Collection
+    {
+        if ($admin->hasRole('super-admin')) {
+            return User::where('type', 'client')->orderBy('name')->get();
+        }
+        return User::where('type', 'client')
+                   ->where('created_by', $admin->id)
+                   ->orderBy('name')->get();
+    }
+
+    private function templatesForAdmin(\App\Models\User $admin): \Illuminate\Support\Collection
+    {
+        if ($admin->hasRole('super-admin')) {
+            return ContractTemplate::orderBy('name')->get();
+        }
+        $assigned = $admin->assignedTemplates()->orderBy('name')->get();
+        if ($assigned->isEmpty()) {
+            return ContractTemplate::where('is_default', true)->get();
+        }
+        return $assigned;
     }
 
     private function authorizeAccess(LoanRequest $loan): void

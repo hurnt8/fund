@@ -22,7 +22,8 @@ class RedirectIfAuthenticated
                 if ($user->hasRole('admin')) {
                     return redirect()->route('admin.dashboard');
                 }
-                return redirect()->route('client.dashboard');
+                // Clients → PWA
+                return redirect()->route('client.app.home');
             }
         }
 

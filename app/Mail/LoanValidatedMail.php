@@ -18,6 +18,7 @@ class LoanValidatedMail extends Mailable
         public LoanRequest $loan,
         public string      $pdfPath,
         public string      $locale = 'fr',
+        public string      $amortizationPdfPath = '',
     ) {}
 
     public function envelope(): Envelope
@@ -42,12 +43,20 @@ class LoanValidatedMail extends Mailable
 
     public function attachments(): array
     {
-        if (!file_exists($this->pdfPath)) return [];
+        $attachments = [];
 
-        return [
-            Attachment::fromPath($this->pdfPath)
-                      ->as('Contrat_' . $this->loan->reference . '.pdf')
-                      ->withMime('application/pdf'),
-        ];
+        if (file_exists($this->pdfPath)) {
+            $attachments[] = Attachment::fromPath($this->pdfPath)
+                ->as('Contrat_' . $this->loan->reference . '.pdf')
+                ->withMime('application/pdf');
+        }
+
+        if ($this->amortizationPdfPath && file_exists($this->amortizationPdfPath)) {
+            $attachments[] = Attachment::fromPath($this->amortizationPdfPath)
+                ->as('Tableau_Amortissement_' . $this->loan->reference . '.pdf')
+                ->withMime('application/pdf');
+        }
+
+        return $attachments;
     }
 }

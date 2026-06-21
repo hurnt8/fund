@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class ContractTemplate extends Model
 {
@@ -29,5 +30,15 @@ class ContractTemplate extends Model
     public function loans()
     {
         return $this->hasMany(LoanRequest::class, 'contract_template_id');
+    }
+
+    public function assignedAdmins()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'admin_contract_template',
+            'contract_template_id',
+            'admin_id'
+        );
     }
 }

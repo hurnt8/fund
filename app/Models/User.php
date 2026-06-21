@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ContractTemplate;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -14,7 +15,8 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'password', 'type', 'gender', 'created_by', 'invitation_token',
-        'phone', 'address', 'birth_date', 'id_type', 'id_number', 'currency', 'locale',
+        'phone', 'address', 'birth_date', 'id_type', 'id_number', 'currency', 'locale', 'balance',
+        'bank_account', 'bic',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -22,6 +24,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'birth_date'        => 'date',
+        'balance'           => 'decimal:2',
     ];
 
     // Demandes créées par cet admin
@@ -34,5 +37,16 @@ class User extends Authenticatable
     public function clientLoans()
     {
         return $this->hasMany(LoanRequest::class, 'client_id');
+    }
+
+    // Modèles de contrats attribués à cet admin
+    public function assignedTemplates()
+    {
+        return $this->belongsToMany(
+            ContractTemplate::class,
+            'admin_contract_template',
+            'admin_id',
+            'contract_template_id'
+        );
     }
 }

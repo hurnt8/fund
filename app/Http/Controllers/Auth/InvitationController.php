@@ -39,7 +39,8 @@ class InvitationController extends Controller
                              ->with('success', 'Compte activé avec succès. Bienvenue !');
         }
 
-        return redirect()->route('client.dashboard')
+        // Clients → PWA
+        return redirect()->route('client.app.home')
                          ->with('success', 'Compte activé avec succès. Bienvenue !');
     }
 }

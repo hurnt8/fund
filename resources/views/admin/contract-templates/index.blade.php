@@ -49,6 +49,17 @@
         <div style="font-size:.78rem;color:var(--c-muted)">
           <i class="fas fa-calendar me-1"></i> Créé le {{ $t->created_at->format('d/m/Y') }}
         </div>
+        @if(auth()->user()->hasRole('super-admin') && isset($t->assignedAdmins))
+          @php $assigned = $t->assignedAdmins; @endphp
+          <div style="margin-top:.5rem;font-size:.75rem;color:var(--c-muted)">
+            @if($assigned->isEmpty())
+              <i class="fas fa-users me-1"></i> <em>Tous les admins</em>
+            @else
+              <i class="fas fa-user-check me-1" style="color:var(--c-navy)"></i>
+              {{ $assigned->pluck('name')->join(', ') }}
+            @endif
+          </div>
+        @endif
         <div style="margin-top:1rem;padding:.75rem;background:var(--c-bg);border-radius:var(--radius-sm);font-size:.72rem;color:var(--c-muted);font-family:monospace;overflow:hidden;max-height:54px">
           {{ Str::limit(strip_tags($t->content),120) }}
         </div>

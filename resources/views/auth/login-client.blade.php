@@ -2,392 +2,457 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ __('auth.client_login_title') }} | Credixa</title>
-<link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Credixa">
+<meta name="theme-color" content="#080C18">
+<link rel="manifest" href="{{ route('pwa.manifest') }}">
+<link rel="apple-touch-icon" href="/images/icon-192.svg">
+<link rel="icon" type="image/svg+xml" href="/images/icon-192.svg">
+<title>{{ __('auth.client_login_title') }} — Credixa</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap/css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/all.min.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 <style>
 :root{
-  --navy:#0B1A2E;--nm:#162540;--nl:#1E3A5F;
-  --gold:#C8A951;--gd:#A88830;--gp:#F5E9C8;
+  --bg:   #080C18;
+  --bg2:  #0C1120;
+  --card: #0E1626;
+  --inp:  #141C2E;
+  --cyan: #0DCFDC;
+  --cyan2:#09B5C8;
+  --text: #FFFFFF;
+  --sub:  rgba(255,255,255,.52);
+  --muted:rgba(255,255,255,.28);
+  --bdr:  rgba(255,255,255,.09);
 }
-html,body{height:100%;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:flex;flex-direction:column}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  height:100%;background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;font-size:15px;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+body{min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
 
-/* ════ LEFT PANEL ════ */
-.auth-left{
-  background:linear-gradient(160deg,var(--navy) 0%,var(--nm) 55%,#0d2545 100%);
-  min-height:100vh; padding:2.5rem 3rem;
-  display:flex;flex-direction:column;justify-content:space-between;
-  position:relative;overflow:hidden;
+/* ── Loading overlay ── */
+#ld{
+  position:fixed;inset:0;z-index:9999;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .35s ease;
 }
-.auth-left::before{
-  content:'';position:absolute;top:-140px;right:-140px;
-  width:420px;height:420px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,169,81,.1) 0%,transparent 68%);
-  pointer-events:none;
+#ld.on{opacity:1;pointer-events:all}
+.ld-bar{
+  position:absolute;top:0;left:0;width:0;height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--cyan2),var(--cyan));
+  background-size:200% 100%;border-radius:0 3px 3px 0;
 }
-.auth-left::after{
-  content:'';position:absolute;bottom:-80px;left:-80px;
-  width:280px;height:280px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,169,81,.06) 0%,transparent 70%);
-  pointer-events:none;
+#ld.on .ld-bar{animation:ldbar 1.8s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes ldbar{
+  0%{width:0;background-position:100% 0}
+  40%{width:60%;background-position:60% 0}
+  100%{width:92%;background-position:0 0}
 }
-.auth-left__logo img{height:40px}
-.auth-left__body{position:relative;z-index:1}
-.auth-left__tag{
-  display:inline-flex;align-items:center;gap:.45rem;
-  background:rgba(200,169,81,.1);border:1px solid rgba(200,169,81,.22);
-  border-radius:999px;padding:.3rem .875rem;
-  font-size:.7rem;font-weight:700;color:var(--gold);
-  text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.5rem;
+.ld-logo{
+  width:76px;height:76px;border-radius:22px;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.5rem;position:relative;
+  box-shadow:0 0 40px rgba(13,207,220,.35);
 }
-.auth-left__title{
-  font-family:'Playfair Display',serif;font-size:2.25rem;font-weight:800;
-  color:#fff;line-height:1.2;margin-bottom:.875rem;
+.ld-logo span{
+  font-family:'Space Grotesk',sans-serif;font-size:2rem;
+  font-weight:800;color:#080C18;
 }
-.auth-left__title span{color:var(--gold)}
-.auth-left__sub{font-size:.875rem;color:rgba(255,255,255,.48);line-height:1.8;margin-bottom:2rem;max-width:340px}
+.ld-ring{
+  position:absolute;inset:-8px;border-radius:30px;
+  border:2px solid rgba(13,207,220,.2);border-top-color:var(--cyan);
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ld-lbl{font-size:.8rem;font-weight:600;color:var(--sub);letter-spacing:.06em}
+.ld-dots{display:flex;gap:.4rem;margin-top:.875rem}
+.ld-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  animation:ldp 1.2s ease-in-out infinite;
+}
+.ld-dot:nth-child(2){animation-delay:.18s}
+.ld-dot:nth-child(3){animation-delay:.36s}
+@keyframes ldp{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
 
-/* Stats grid */
-.auth-stats{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem}
-.auth-stat{
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;padding:.875rem 1rem;
+/* ── Background ── */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px)}
+.orb-1{
+  width:480px;height:480px;top:-10%;right:-8%;
+  background:radial-gradient(circle,rgba(13,207,220,.1) 0%,transparent 65%);
+  animation:orbf 10s ease-in-out infinite alternate;
 }
-.auth-stat__val{font-size:1.375rem;font-weight:800;color:#fff;line-height:1}
-.auth-stat__val em{font-style:normal;color:var(--gold);font-size:.85em}
-.auth-stat__lbl{font-size:.68rem;color:rgba(255,255,255,.38);margin-top:.2rem}
-
-/* Feature pills */
-.auth-features{display:flex;flex-wrap:wrap;gap:.5rem}
-.auth-feat{
-  display:inline-flex;align-items:center;gap:.375rem;
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);
-  border-radius:999px;padding:.3rem .75rem;
-  font-size:.7rem;color:rgba(255,255,255,.5);
+.orb-2{
+  width:360px;height:360px;bottom:-15%;left:-8%;
+  background:radial-gradient(circle,rgba(13,207,220,.06) 0%,transparent 65%);
+  animation:orbf 14s ease-in-out infinite alternate-reverse;
 }
-.auth-feat i{color:var(--gold);font-size:.6rem}
-.auth-left__copy{font-size:.7rem;color:rgba(255,255,255,.2);position:relative;z-index:1}
-.auth-left__copy a{color:rgba(255,255,255,.3);text-decoration:none}
-.auth-left__copy a:hover{color:rgba(255,255,255,.55)}
+@keyframes orbf{from{transform:scale(1)}to{transform:scale(1.1) translate(2%,3%)}}
 
-/* ════ RIGHT PANEL ════ */
-.auth-right{
-  background:#fff;display:flex;flex-direction:column;min-height:100vh;
-}
-
-/* Top bar */
-.auth-topbar{
+/* ── Top bar ── */
+.topbar{
+  position:relative;z-index:10;
   display:flex;align-items:center;justify-content:space-between;
-  padding:1.25rem 2rem;border-bottom:1px solid #f0f2f5;flex-shrink:0;
+  padding:.9rem 1.5rem;
+  padding-top:calc(.9rem + env(safe-area-inset-top,0px));
 }
-.auth-topbar__back{
+.topbar__back{
   display:inline-flex;align-items:center;gap:.45rem;
-  font-size:.8rem;color:#6b7280;text-decoration:none;font-weight:500;transition:color .18s;
+  font-size:.78rem;font-weight:500;color:var(--sub);transition:color .18s;
 }
-.auth-topbar__back:hover{color:var(--navy)}
-.auth-topbar__logo img{height:34px}
+.topbar__back:hover{color:var(--text)}
+.topbar__back i{font-size:.65rem}
 
-/* ── Lang switcher ── */
+/* Language dropdown */
 .ls{position:relative}
 .ls__btn{
-  display:flex;align-items:center;gap:.5rem;cursor:pointer;
-  background:#f8f9fb;border:1.5px solid #e8eaf0;border-radius:9px;
-  padding:.4rem .85rem;font-size:.8rem;font-weight:600;color:var(--navy);
-  transition:all .18s;
+  display:flex;align-items:center;gap:.45rem;cursor:pointer;
+  background:rgba(255,255,255,.06);border:1.5px solid var(--bdr);
+  border-radius:8px;padding:.35rem .7rem;
+  font-size:.76rem;font-weight:600;color:var(--text);
+  transition:border-color .18s,background .18s;
 }
-.ls__btn:hover{border-color:var(--gold);background:var(--gp)}
-.ls__btn img{width:20px;height:14px;object-fit:cover;border-radius:2px}
-.ls__chevron{font-size:.55rem;transition:transform .2s}
+.ls__btn:hover{border-color:rgba(13,207,220,.4);background:rgba(13,207,220,.06)}
+.ls__btn img{width:18px;height:12px;object-fit:cover;border-radius:2px}
+.ls__chevron{font-size:.48rem;transition:transform .2s;color:var(--muted)}
 .ls__menu{
   position:absolute;right:0;top:calc(100% + .5rem);
-  background:#fff;border:1.5px solid #e8eaf0;border-radius:12px;
-  box-shadow:0 10px 40px rgba(0,0,0,.12);padding:.375rem;
-  min-width:160px;z-index:1000;
+  background:#0E1626;border:1.5px solid var(--bdr);
+  border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.55);
+  padding:.35rem;min-width:148px;z-index:1000;
 }
 .ls__opt{
-  display:flex;align-items:center;gap:.625rem;
-  padding:.5rem .75rem;border-radius:8px;
-  font-size:.8rem;font-weight:600;color:#374151;
-  text-decoration:none;transition:all .15s;
+  display:flex;align-items:center;gap:.5rem;
+  padding:.45rem .7rem;border-radius:8px;
+  font-size:.78rem;font-weight:600;color:rgba(255,255,255,.65);
+  transition:all .15s;
 }
-.ls__opt:hover{background:#f3f4f6;color:var(--navy)}
-.ls__opt img{width:20px;height:14px;object-fit:cover;border-radius:2px}
-.ls__opt.is-cur{background:var(--gp);color:var(--gd)}
-.ls__opt.is-cur i{color:var(--gd)}
+.ls__opt:hover{background:rgba(255,255,255,.06);color:#fff}
+.ls__opt img{width:18px;height:12px;object-fit:cover;border-radius:2px}
+.ls__opt.cur{background:rgba(13,207,220,.12);color:var(--cyan)}
 
-/* ── Form area ── */
-.auth-form-wrap{
+/* ── Center wrapper ── */
+.page-wrap{
+  position:relative;z-index:1;
   flex:1;display:flex;align-items:center;justify-content:center;
-  padding:2rem;
+  padding:1.5rem 1.25rem 2rem;
+  min-height:0;
 }
-.auth-form-inner{width:100%;max-width:400px}
+.page-shell{display:flex;flex-direction:column;min-height:100vh}
+
+/* ── Auth card ── */
+.card{width:100%;max-width:400px}
+
+/* Logo */
+.logo-box{
+  width:74px;height:74px;border-radius:22px;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.5rem;
+  box-shadow:0 0 36px rgba(13,207,220,.3);
+}
+.logo-box img{height:40px;object-fit:contain;filter:brightness(0) invert(1)}
+.logo-box span{
+  font-family:'Space Grotesk',sans-serif;font-size:2rem;
+  font-weight:800;color:#080C18;line-height:1;
+}
 
 /* Heading */
-.form-eyebrow{
-  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
-  color:var(--gd);display:flex;align-items:center;gap:.5rem;margin-bottom:.625rem;
+.card-head{text-align:center;margin-bottom:2rem}
+.card-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.75rem;font-weight:800;color:var(--text);
+  margin-bottom:.4rem;
 }
-.form-eyebrow::before{content:'';width:22px;height:2px;background:var(--gold);border-radius:2px}
-.form-title{
-  font-family:'Playfair Display',serif;font-size:1.875rem;font-weight:800;
-  color:var(--navy);line-height:1.15;margin-bottom:.375rem;
-}
-.form-sub{font-size:.8125rem;color:#6b7280;margin-bottom:1.625rem}
+.card-sub{font-size:.82rem;color:var(--sub);line-height:1.6}
 
 /* Error */
-.auth-error{
-  display:flex;align-items:center;gap:.5rem;
-  background:#fef2f2;border:1px solid #fecaca;border-left:3px solid #ef4444;
-  border-radius:9px;padding:.7rem .9rem;font-size:.8rem;color:#991b1b;
-  margin-bottom:1rem;
+.ferr{
+  display:flex;align-items:flex-start;gap:.55rem;
+  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);
+  border-left:3px solid #ef4444;border-radius:10px;
+  padding:.7rem .9rem;font-size:.79rem;color:#FCA5A5;margin-bottom:1.125rem;
+}
+.ferr i{margin-top:.1rem;flex-shrink:0}
+
+/* Field */
+.fgrp{margin-bottom:.875rem}
+.flabel{
+  display:block;font-size:.75rem;font-weight:600;
+  color:rgba(255,255,255,.5);margin-bottom:.4rem;letter-spacing:.01em;
+}
+.frel{position:relative}
+.ficon{
+  position:absolute;left:.95rem;top:50%;transform:translateY(-50%);
+  color:rgba(255,255,255,.3);font-size:.75rem;pointer-events:none;z-index:1;
+  transition:color .18s;
+}
+.finput{
+  width:100%;padding:.85rem 1rem .85rem 2.6rem;
+  background:var(--inp);
+  border:1.5px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  font-size:.88rem;font-family:'Inter',sans-serif;color:var(--text);
+  outline:none;transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.finput::placeholder{color:rgba(255,255,255,.2)}
+.finput:focus{
+  border-color:var(--cyan);background:#161E30;
+  box-shadow:0 0 0 3.5px rgba(13,207,220,.15);
+}
+.finput:focus ~ .ficon,.frel:focus-within .ficon{color:var(--cyan)}
+.finput.err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.13)}
+.feye{
+  position:absolute;right:.9rem;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:rgba(255,255,255,.28);cursor:pointer;
+  font-size:.78rem;padding:.3rem;display:flex;align-items:center;
+  transition:color .18s;
+}
+.feye:hover{color:rgba(255,255,255,.7)}
+
+/* Checkbox row */
+.frow{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:1rem 0 1.5rem;
+}
+.fcheck{display:flex;align-items:center;gap:.45rem}
+.fcheck input{
+  width:16px;height:16px;accent-color:var(--cyan);
+  cursor:pointer;flex-shrink:0;border-radius:4px;
+}
+.fcheck label{font-size:.78rem;color:var(--sub);cursor:pointer;-webkit-user-select:none;user-select:none}
+.fforgot{font-size:.78rem;font-weight:600;color:var(--cyan);transition:opacity .18s}
+.fforgot:hover{opacity:.75}
+
+/* Cyan pill submit button */
+.fbtn{
+  width:100%;padding:.95rem 1.5rem;border:none;border-radius:999px;
+  font-size:.97rem;font-weight:700;font-family:'Inter',sans-serif;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.625rem;
+  background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan2) 100%);
+  color:#080C18;letter-spacing:.01em;
+  box-shadow:0 6px 28px rgba(13,207,220,.35),0 2px 8px rgba(0,0,0,.3);
+  transition:filter .2s,box-shadow .2s,transform .1s;
+}
+.fbtn:hover{
+  filter:brightness(1.08);
+  box-shadow:0 8px 36px rgba(13,207,220,.5),0 2px 10px rgba(0,0,0,.35);
+}
+.fbtn:active{transform:scale(.975)}
+.fbtn:disabled{opacity:.6;cursor:not-allowed;filter:none}
+.btn-spinner{
+  display:inline-block;width:18px;height:18px;border-radius:50%;
+  border:2.5px solid rgba(8,12,24,.3);border-top-color:#080C18;
+  animation:spin .65s linear infinite;
 }
 
-/* Fields */
-.f-group{margin-bottom:1.125rem}
-.f-label{display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:.375rem}
-.f-wrap{position:relative}
-.f-icon{
-  position:absolute;left:.9rem;top:50%;transform:translateY(-50%);
-  color:#9ca3af;font-size:.75rem;pointer-events:none;z-index:2;
+/* Staff link */
+.alt-link{
+  text-align:center;margin-top:1.625rem;
+  font-size:.76rem;color:var(--muted);
 }
-.f-input{
-  width:100%;padding:.7rem .9rem .7rem 2.5rem;
-  border:1.5px solid #e5e7eb;border-radius:9px;
-  font-size:.875rem;font-family:'Inter',sans-serif;color:#111827;
-  outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;
-}
-.f-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,26,46,.08)}
-.f-input.is-err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.08)}
-.f-eye{
-  position:absolute;right:.875rem;top:50%;transform:translateY(-50%);
-  background:none;border:none;color:#9ca3af;cursor:pointer;
-  font-size:.75rem;padding:.25rem;display:flex;align-items:center;
-}
-.f-eye:hover{color:var(--navy)}
-
-/* Options row */
-.f-options{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.375rem}
-.f-check{display:flex;align-items:center;gap:.45rem}
-.f-check input{width:14px;height:14px;accent-color:var(--navy);cursor:pointer;flex-shrink:0}
-.f-check label{font-size:.78rem;color:#6b7280;cursor:pointer;user-select:none}
-
-/* Submit */
-.btn-auth{
-  width:100%;padding:.8rem;border:none;border-radius:10px;
-  font-size:.9rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
-  background:var(--navy);color:#fff;
-  transition:background .2s,transform .12s;letter-spacing:.01em;
-}
-.btn-auth:hover{background:var(--nm)}
-.btn-auth:active{transform:scale(.98)}
+.alt-link a{color:rgba(13,207,220,.75);font-weight:600;transition:color .18s}
+.alt-link a:hover{color:var(--cyan)}
 
 /* Footer */
-.auth-footer{
-  padding:.875rem 2rem 1.25rem;text-align:center;
-  font-size:.72rem;color:#9ca3af;flex-shrink:0;
+.pg-foot{
+  padding:.75rem 1.5rem 1.25rem;text-align:center;
+  padding-bottom:calc(1.25rem + env(safe-area-inset-bottom,0px));
+  font-size:.68rem;color:rgba(255,255,255,.22);
+  position:relative;z-index:1;
 }
-.auth-footer a{color:#6b7280;text-decoration:none;transition:color .15s}
-.auth-footer a:hover{color:var(--navy)}
+.pg-foot a{color:rgba(255,255,255,.3)}.pg-foot a:hover{color:rgba(255,255,255,.6)}
 
-/* ════ RESPONSIVE ════ */
-@media (max-width:991.98px){
-  .auth-left{display:none!important}
-  .auth-right{min-height:100vh}
-  .auth-topbar{padding:1rem 1.25rem}
-  .auth-topbar__logo{display:block}
-  .auth-form-wrap{padding:1.5rem 1.25rem}
-}
-@media (max-width:575.98px){
-  .auth-form-inner{max-width:100%}
-  .form-title{font-size:1.5rem}
-  .auth-form-wrap{padding:1.25rem 1rem}
-  .auth-topbar{padding:.875rem 1rem}
-}
+/* Entrance animation */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.logo-box  {animation:fadeUp .4s ease .05s both}
+.card-head {animation:fadeUp .4s ease .12s both}
+.fgrp:nth-child(1){animation:fadeUp .4s ease .18s both}
+.fgrp:nth-child(2){animation:fadeUp .4s ease .22s both}
+.frow      {animation:fadeUp .4s ease .26s both}
+.fbtn      {animation:fadeUp .4s ease .3s  both}
+.alt-link  {animation:fadeUp .4s ease .35s both}
 </style>
 </head>
 <body>
-<div class="container-fluid p-0" style="min-height:100vh">
-<div class="row g-0" style="min-height:100vh">
 
-  {{-- ── LEFT PANEL ── --}}
-  <div class="col-lg-5 d-none d-lg-flex">
-    <div class="auth-left w-100">
+{{-- Loading overlay --}}
+<div id="ld" role="status" aria-label="Connexion en cours">
+  <div class="ld-bar"></div>
+  <div class="ld-logo">
+    <span>C</span>
+    <div class="ld-ring"></div>
+  </div>
+  <p class="ld-lbl">Connexion en cours…</p>
+  <div class="ld-dots">
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+  </div>
+</div>
 
-      <div class="auth-left__logo">
-        <a href="{{ url('/') }}"><img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa"></a>
-      </div>
+{{-- Background orbs --}}
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
 
-      <div class="auth-left__body">
-        <div class="auth-left__tag"><i class="fas fa-shield-alt"></i> {{ __('auth.feature_certified') }}</div>
-        <h2 class="auth-left__title">{!! __('auth.client_brand_title') !!}</h2>
-        <p class="auth-left__sub">{{ __('auth.client_brand_sub') }}</p>
+<div class="page-shell">
 
-        <div class="auth-stats">
-          <div class="auth-stat">
-            <div class="auth-stat__val">8 500<em>+</em></div>
-            <div class="auth-stat__lbl">{{ __('auth.stat_clients') }}</div>
-          </div>
-          <div class="auth-stat">
-            <div class="auth-stat__val">95<em>k€</em></div>
-            <div class="auth-stat__lbl">{{ __('auth.stat_amount') }}</div>
-          </div>
-          <div class="auth-stat">
-            <div class="auth-stat__val">24<em>h</em></div>
-            <div class="auth-stat__lbl">{{ __('auth.stat_time') }}</div>
-          </div>
-          <div class="auth-stat">
-            <div class="auth-stat__val">5<em>+</em></div>
-            <div class="auth-stat__lbl">{{ __('auth.stat_years') }}</div>
-          </div>
-        </div>
+  {{-- Top bar --}}
+  <div class="topbar">
+    <a href="{{ url('/') }}" class="topbar__back">
+      <i class="fas fa-arrow-left"></i> {{ __('auth.back_site') }}
+    </a>
 
-        <div class="auth-features">
-          <span class="auth-feat"><i class="fas fa-lock"></i> {{ __('auth.feature_secure') }}</span>
-          <span class="auth-feat"><i class="fas fa-globe"></i> {{ __('auth.feature_currencies') }}</span>
-          <span class="auth-feat"><i class="fas fa-certificate"></i> {{ __('auth.feature_certified') }}</span>
-          <span class="auth-feat"><i class="fas fa-clock"></i> {{ __('auth.feature_fast') }}</span>
-        </div>
-      </div>
-
-      <div class="auth-left__copy">
-        &copy; {{ date('Y') }} Credixa Invest &nbsp;·&nbsp;
-        <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;·&nbsp;
-        <a href="{{ url('/fr/privacy') }}">Confidentialité</a>
+    {{-- Language switcher --}}
+    @php
+      $cur   = app()->getLocale();
+      $langs = ['fr'=>['Français','png'],'en'=>['English','png'],'pl'=>['Polski','svg'],'es'=>['Español','png']];
+    @endphp
+    <div class="ls" x-data="{open:false}">
+      <button class="ls__btn" type="button"
+              @click="open=!open" @click.outside="open=false">
+        <img src="{{ asset('images/'.$cur.'.'.$langs[$cur][1]) }}" alt="{{ strtoupper($cur) }}">
+        <span>{{ strtoupper($cur) }}</span>
+        <i class="fas fa-chevron-down ls__chevron" :style="open?'transform:rotate(180deg)':''"></i>
+      </button>
+      <div class="ls__menu" x-show="open" x-transition style="display:none">
+        @foreach($langs as $code=>[$label,$ext])
+        <a href="{{ route('lang.switch',$code) }}"
+           class="ls__opt {{ $cur===$code ? 'cur' : '' }}">
+          <img src="{{ asset('images/'.$code.'.'.$ext) }}" alt="{{ $code }}">
+          {{ $label }}
+          @if($cur===$code)
+          <i class="fas fa-check" style="margin-left:auto;font-size:.55rem"></i>
+          @endif
+        </a>
+        @endforeach
       </div>
     </div>
   </div>
 
-  {{-- ── RIGHT PANEL ── --}}
-  <div class="col-12 col-lg-7">
-    <div class="auth-right">
+  {{-- Main content --}}
+  <div class="page-wrap">
+    <div class="card">
 
-      {{-- Top bar --}}
-      <div class="auth-topbar">
-        <a href="{{ url('/') }}" class="auth-topbar__back">
-          <i class="fas fa-arrow-left"></i> {{ __('auth.back_site') }}
-        </a>
-
-        <a href="{{ url('/') }}" class="auth-topbar__logo d-lg-none">
-          <img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa">
-        </a>
-
-        {{-- Language switcher --}}
-        @php
-          $cur = app()->getLocale();
-          $langs = [
-            'fr' => ['Français', 'png'],
-            'en' => ['English',  'png'],
-            'pl' => ['Polski',   'svg'],
-            'es' => ['Español',  'png'],
-          ];
-        @endphp
-        <div class="ls" x-data="{ open: false }">
-          <button class="ls__btn" type="button"
-                  @click="open = !open" @click.outside="open = false">
-            <img src="{{ asset('images/' . $cur . '.' . $langs[$cur][1]) }}" alt="{{ strtoupper($cur) }}">
-            <span>{{ strtoupper($cur) }}</span>
-            <i class="fas fa-chevron-down ls__chevron"
-               :style="open ? 'transform:rotate(180deg)' : 'transform:rotate(0deg)'"></i>
-          </button>
-          <div class="ls__menu" x-show="open" x-transition style="display:none">
-            @foreach($langs as $code => [$label, $ext])
-            <a href="{{ route('lang.switch', $code) }}"
-               class="ls__opt {{ $cur === $code ? 'is-cur' : '' }}">
-              <img src="{{ asset('images/' . $code . '.' . $ext) }}" alt="{{ $code }}">
-              {{ $label }}
-              @if($cur === $code)
-                <i class="fas fa-check ms-auto" style="font-size:.6rem"></i>
-              @endif
-            </a>
-            @endforeach
-          </div>
-        </div>
+      {{-- Logo --}}
+      <div class="logo-box">
+        <img src="{{ asset('assets/images/logo new.png') }}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+             alt="Credixa">
+        <span style="display:none">C</span>
       </div>
+
+      {{-- Heading --}}
+      <div class="card-head">
+        <h1 class="card-title">{{ __('auth.submit') }}</h1>
+        <p class="card-sub">{{ __('auth.client_login_sub') }}</p>
+      </div>
+
+      {{-- Error --}}
+      @if($errors->any())
+      <div class="ferr">
+        <i class="fas fa-circle-exclamation"></i>
+        <span>{{ $errors->first() }}</span>
+      </div>
+      @endif
 
       {{-- Form --}}
-      <div class="auth-form-wrap">
-        <div class="auth-form-inner">
+      <form id="login-form" action="{{ route('login.submit') }}" method="POST" novalidate>
+        @csrf
 
-          <div class="form-eyebrow">{{ __('auth.client_login_title') }}</div>
-          <h1 class="form-title">{{ __('auth.submit') }}</h1>
-          <p class="form-sub">{{ __('auth.client_login_sub') }}</p>
-
-          @if($errors->any())
-          <div class="auth-error">
-            <i class="fas fa-exclamation-circle flex-shrink-0"></i>
-            {{ $errors->first() }}
+        <div class="fgrp">
+          <label class="flabel" for="identifier">{{ __('auth.identifier') }}</label>
+          <div class="frel">
+            <i class="fas fa-envelope ficon"></i>
+            <input type="text" id="identifier" name="identifier"
+                   class="finput {{ $errors->has('identifier') ? 'err' : '' }}"
+                   value="{{ old('identifier') }}"
+                   placeholder="{{ __('auth.identifier_ph') }}"
+                   autocomplete="username" inputmode="email" required>
           </div>
-          @endif
-
-          <form action="{{ route('login.submit') }}" method="POST" novalidate>
-            @csrf
-
-            <div class="f-group">
-              <label class="f-label" for="email">{{ __('auth.email') }}</label>
-              <div class="f-wrap">
-                <i class="fas fa-envelope f-icon"></i>
-                <input type="email" id="email" name="email"
-                       class="f-input {{ $errors->has('email') ? 'is-err' : '' }}"
-                       value="{{ old('email') }}"
-                       placeholder="{{ __('auth.email_ph') }}"
-                       autocomplete="email" required>
-              </div>
-            </div>
-
-            <div class="f-group">
-              <label class="f-label" for="password">{{ __('auth.password_label') }}</label>
-              <div class="f-wrap">
-                <i class="fas fa-lock f-icon"></i>
-                <input type="password" id="password" name="password"
-                       class="f-input {{ $errors->has('password') ? 'is-err' : '' }}"
-                       placeholder="••••••••"
-                       autocomplete="current-password" required>
-                <button type="button" class="f-eye" onclick="tglPwd('password','eye1')">
-                  <i class="fas fa-eye" id="eye1"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="f-options">
-              <div class="f-check">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">{{ __('auth.remember') }}</label>
-              </div>
-            </div>
-
-            <button type="submit" class="btn-auth">
-              <i class="fas fa-sign-in-alt"></i>
-              {{ __('auth.submit') }}
-            </button>
-          </form>
-
         </div>
-      </div>
 
-      <div class="auth-footer">
-        &copy; {{ date('Y') }} Credixa Invest &nbsp;·&nbsp;
-        <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;·&nbsp;
-        <a href="{{ url('/fr/privacy') }}">Confidentialité</a>
-      </div>
+        <div class="fgrp">
+          <label class="flabel" for="password">{{ __('auth.password_label') }}</label>
+          <div class="frel">
+            <i class="fas fa-lock ficon"></i>
+            <input type="password" id="password" name="password"
+                   class="finput {{ $errors->has('password') ? 'err' : '' }}"
+                   placeholder="••••••••"
+                   autocomplete="current-password" required>
+            <button type="button" class="feye" onclick="tglPwd(this)" aria-label="Afficher le mot de passe">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="fcheck">
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">{{ __('auth.remember') }}</label>
+          </div>
+          <a href="{{ route('password.request') }}" class="fforgot">{{ __('auth.forgot_password') }}</a>
+        </div>
+
+        <button type="submit" id="submit-btn" class="fbtn">
+          <span id="btn-text">{{ __('auth.submit') }}</span>
+        </button>
+      </form>
+
+      {{-- Staff portal link --}}
+      {{-- <div class="alt-link">
+        {{ __('auth.or_staff') }}
+        <a href="{{ route('staff.login') }}">{{ __('auth.staff_portal_link') }}</a>
+      </div> --}}
+
     </div>
   </div>
 
-</div><!-- .row -->
-</div><!-- .container-fluid -->
+  <div class="pg-foot">
+    &copy; {{ date('Y') }} Credixa Invest &nbsp;·&nbsp;
+    <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;·&nbsp;
+    <a href="{{ url('/fr/privacy') }}">Confidentialité</a>
+  </div>
+
+</div>
 
 <script>
-function tglPwd(id, ico) {
-  const f = document.getElementById(id), i = document.getElementById(ico);
-  f.type = f.type === 'password' ? 'text' : 'password';
-  i.classList.toggle('fa-eye'); i.classList.toggle('fa-eye-slash');
+function tglPwd(btn) {
+  var inp = btn.closest('.frel').querySelector('.finput');
+  var ico = btn.querySelector('i');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    ico.className = 'fas fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    ico.className = 'fas fa-eye';
+  }
+}
+
+document.getElementById('login-form').addEventListener('submit', function() {
+  var btn  = document.getElementById('submit-btn');
+  var text = document.getElementById('btn-text');
+  btn.disabled = true;
+  text.innerHTML = '<span style="display:inline-block;width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(8,12,24,.3);border-top-color:#080C18;animation:spin .65s linear infinite;vertical-align:middle"></span>';
+  setTimeout(function() { document.getElementById('ld').classList.add('on'); }, 300);
+});
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(function(){});
 }
 </script>
 </body>

@@ -59,4 +59,37 @@ return [
     'role_admin'          => 'Administrateur',
     'role_admin_sub'      => 'Gestion des dossiers',
 
+    // Identifier (email or phone)
+    'identifier'          => 'Email ou téléphone',
+    'identifier_ph'       => 'votre@email.com ou +33...',
+    'forgot_password'     => 'Mot de passe oublié ?',
+    'portal_clients_only' => 'Ce portail est réservé aux clients.',
+
+    // OTP page
+    'otp_title'           => 'Vérification',
+    'otp_heading'         => 'Code de sécurité',
+    'otp_subtitle'        => 'Nous avons envoyé un code à 6 chiffres à',
+    'otp_enter'           => 'Saisissez le code reçu par email',
+    'otp_verify_btn'      => 'Vérifier',
+    'otp_resend'          => 'Renvoyer le code',
+    'otp_resend_in'       => 'Renvoyer dans',
+    'otp_back'            => 'Changer de compte',
+    'otp_invalid'         => 'Code incorrect. Il vous reste :remaining tentative(s).',
+    'otp_expired'         => 'Ce code a expiré. Demandez-en un nouveau.',
+    'otp_too_many'        => 'Trop de tentatives. Réessayez dans :seconds secondes.',
+    'otp_resend_limit'    => 'Trop de renvois. Réessayez dans quelques minutes.',
+    'otp_send_failed'     => 'Impossible d\'envoyer le code. Réessayez.',
+    'otp_session_expired' => 'Session expirée. Reconnectez-vous.',
+    'otp_resend_success'  => 'Nouveau code envoyé !',
+
+    // OTP email
+    'otp_email_subject'      => 'Votre code de connexion — Credixa',
+    'otp_email_title'        => 'Code de vérification',
+    'otp_email_intro'        => 'Voici votre code de connexion à usage unique. Ne le communiquez à personne.',
+    'otp_email_code_label'   => 'Votre code',
+    'otp_email_expiry'       => 'Ce code expire dans 10 minutes.',
+    'otp_email_notice_title' => 'Sécurité importante',
+    'otp_email_notice_body'  => 'Credixa ne vous demandera jamais ce code par téléphone ou par message. Si vous n\'avez pas demandé ce code, ignorez cet email.',
+    'otp_email_footer'       => 'Si vous n\'avez pas demandé ce code, ignorez cet email.',
+
 ];

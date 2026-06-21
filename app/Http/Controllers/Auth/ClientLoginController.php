@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OtpMail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class ClientLoginController extends Controller
 {
+    private const OTP_TTL = 600;
+
     public function showLoginForm()
     {
         if (Auth::check()) {
@@ -18,24 +25,41 @@ class ClientLoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
+        $request->validate([
+            'identifier' => 'required|string|max:255',
+            'password'   => 'required',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $user = Auth::user();
+        $identifier = $request->input('identifier');
 
-            if ($user->type !== 'client') {
-                Auth::logout();
-                return back()->withErrors(['email' => 'Ce portail est réservé aux clients.']);
-            }
+        $user = User::where('email', $identifier)
+                    ->orWhere('phone', $identifier)
+                    ->first();
 
-            $request->session()->regenerate();
-            return $this->redirectAuthenticated($user);
+        if (!$user || !Hash::check($request->input('password'), $user->password)) {
+            return back()
+                ->withErrors(['identifier' => __('auth.failed')])
+                ->onlyInput('identifier');
         }
 
-        return back()->withErrors(['email' => 'Email ou mot de passe incorrect.'])->onlyInput('email');
+        if ($user->type !== 'client') {
+            return back()->withErrors(['identifier' => __('auth.portal_clients_only')]);
+        }
+
+        // Generate OTP
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        Cache::put('otp_' . $user->id, Hash::make($otp), self::OTP_TTL);
+
+        $request->session()->put('otp_user_id', $user->id);
+        $request->session()->put('otp_remember', $request->boolean('remember'));
+
+        try {
+            Mail::to($user->email)->send(new OtpMail($otp, $user));
+        } catch (\Throwable) {
+            return back()->withErrors(['identifier' => __('auth.otp_send_failed')])->onlyInput('identifier');
+        }
+
+        return redirect()->route('otp.show');
     }
 
     public function logout(Request $request)
@@ -46,10 +70,10 @@ class ClientLoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route($isStaff ? 'staff.login' : 'login');
+        return redirect($isStaff ? route('staff.login') : '/login');
     }
 
-    private function redirectAuthenticated($user)
+    private function redirectAuthenticated(User $user)
     {
         if ($user->hasRole('super-admin')) {
             return redirect()->route('super-admin.dashboard');
@@ -57,6 +81,7 @@ class ClientLoginController extends Controller
         if ($user->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         }
-        return redirect()->route('client.dashboard');
+        // Clients → PWA (client.app.home)
+        return redirect()->route('client.app.home');
     }
 }

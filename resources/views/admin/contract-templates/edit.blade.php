@@ -70,6 +70,38 @@
       </div>
     </div>
 
+    {{-- Attribution aux administrateurs (super-admin uniquement) --}}
+    @if(auth()->user()->hasRole('super-admin') && $admins->isNotEmpty())
+    <div class="card-pro mb-4">
+      <div class="card-pro-hdr">
+        <div class="card-pro-title"><span class="icon-dot"></span>Administrateurs autorisés</div>
+        <span style="font-size:.75rem;color:var(--c-muted)">Laissez vide = accessible à tous les admins</span>
+      </div>
+      <div class="card-pro-body">
+        <p style="font-size:.8rem;color:var(--c-muted);margin-bottom:.75rem">
+          Sélectionnez les administrateurs qui peuvent utiliser ce modèle de contrat.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem">
+          @foreach($admins as $adm)
+          <label style="display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;
+                        border:1.5px solid var(--c-border);border-radius:var(--radius-sm);
+                        cursor:pointer;font-size:.8125rem;transition:var(--transition)"
+                 onmouseover="this.style.borderColor='var(--c-gold)'"
+                 onmouseout="this.style.borderColor='var(--c-border)'">
+            <input type="checkbox" name="assigned_admins[]" value="{{ $adm->id }}"
+                   {{ in_array($adm->id, $assignedIds) ? 'checked' : '' }}
+                   style="accent-color:var(--c-navy);width:15px;height:15px;cursor:pointer">
+            <div>
+              <div style="font-weight:500;color:var(--c-text)">{{ $adm->name }}</div>
+              <div style="font-size:.7rem;color:var(--c-muted)">{{ $adm->email }}</div>
+            </div>
+          </label>
+          @endforeach
+        </div>
+      </div>
+    </div>
+    @endif
+
     {{-- Contenu --}}
     <div class="card-pro mb-4">
       <div class="card-pro-hdr">

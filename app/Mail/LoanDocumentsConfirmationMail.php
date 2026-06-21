@@ -18,6 +18,7 @@ class LoanDocumentsConfirmationMail extends Mailable
     public function build(): static
     {
         return $this
+            ->locale($this->lang)
             ->subject(__('message.docs_confirm_subject'))
             ->markdown('emails.loan-documents-confirmation');
     }

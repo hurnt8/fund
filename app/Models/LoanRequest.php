@@ -34,7 +34,7 @@ class LoanRequest extends Model
         'name', 'email', 'phone', 'address',
         'amount', 'interest_rate', 'currency', 'start_date',
         'monthly_payment', 'total_cost', 'total_with_interest',
-        'admin_fees', 'bank_account',
+        'admin_fees', 'bank_account', 'agent_suivi',
         'darly', 'objet', 'subject', 'npi',
         'extra_fields',
         'special_conditions',
@@ -100,13 +100,13 @@ class LoanRequest extends Model
     public function statusLabel(): string
     {
         return match($this->status) {
-            self::STATUS_DRAFT           => 'Brouillon',
-            self::STATUS_PENDING         => 'En attente',
-            self::STATUS_VALIDATED       => 'Validée',
-            self::STATUS_CONTRACT_SENT   => 'Contrat envoyé',
-            self::STATUS_CONTRACT_SIGNED => 'Contrat signé reçu',
-            self::STATUS_FINALIZED       => 'Finalisée',
-            self::STATUS_REJECTED        => 'Refusée',
+            self::STATUS_DRAFT           => __('app.status_draft'),
+            self::STATUS_PENDING         => __('app.status_pending'),
+            self::STATUS_VALIDATED       => __('app.status_validated'),
+            self::STATUS_CONTRACT_SENT   => __('app.status_sent'),
+            self::STATUS_CONTRACT_SIGNED => __('app.status_signed'),
+            self::STATUS_FINALIZED       => __('app.status_finalized'),
+            self::STATUS_REJECTED        => __('app.status_rejected'),
             default                      => $this->status,
         };
     }

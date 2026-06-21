@@ -484,6 +484,11 @@ a { text-decoration:none; }
   .metric-card__val { font-size:1.4rem; }
 }
 </style>
+@auth
+  @if(Auth::user()->hasRole('client'))
+    @vite(['resources/css/client.css','resources/js/client.js'])
+  @endif
+@endauth
 @stack('styles')
 </head>
 <body>
