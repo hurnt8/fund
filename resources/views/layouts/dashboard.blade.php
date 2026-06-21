@@ -519,7 +519,7 @@ a { text-decoration:none; }
   @auth
 
     {{-- ══ CLIENT ══ --}}
-    @if(Auth::user()->hasRole('client'))
+    @role('client')
       <span class="sidebar-label">Navigation</span>
       <a href="{{ route('client.dashboard') }}"
          class="sidebar-link {{ request()->routeIs('client.dashboard') ? 'active':'' }}">
@@ -533,9 +533,10 @@ a { text-decoration:none; }
       <a href="{{ route('home',['locale'=>app()->getLocale()]) }}" class="sidebar-link">
         <i class="fas fa-globe icon"></i> Retour au site
       </a>
+    @endrole
 
     {{-- ══ SUPER-ADMIN ══ --}}
-    @elseif(Auth::user()->hasRole('super-admin'))
+    @role('super-admin')
       <span class="sidebar-label">Tableau de bord</span>
       <a href="{{ route('super-admin.dashboard') }}"
          class="sidebar-link {{ request()->routeIs('super-admin.dashboard') ? 'active':'' }}">
@@ -552,6 +553,7 @@ a { text-decoration:none; }
         <i class="fas fa-file-signature icon"></i> Modèles de contrats
       </a>
 
+      @hasanyrole(['super-admin'])
       <span class="sidebar-label">Administration</span>
       <a href="{{ route('super-admin.roles') }}"
          class="sidebar-link {{ request()->routeIs('super-admin.roles') ? 'active':'' }}">
@@ -561,6 +563,10 @@ a { text-decoration:none; }
          class="sidebar-link {{ request()->routeIs('admin.users') ? 'active':'' }}">
         <i class="fas fa-users icon"></i> Utilisateurs
       </a>
+      @endhasanyrole
+
+      <span class="sidebar-label">Gestion financière</span>
+      @hasanyrole(['admin', 'super-admin'])
       <a href="{{ route('admin.accounts.index') }}"
          class="sidebar-link {{ request()->routeIs('admin.accounts*') ? 'active':'' }}">
         <i class="fas fa-wallet icon"></i> Comptes clients
@@ -573,27 +579,33 @@ a { text-decoration:none; }
          class="sidebar-link {{ request()->routeIs('admin.invoices*') ? 'active':'' }}">
         <i class="fas fa-file-invoice icon"></i> Factures
       </a>
-      @php $saSupUnread = \App\Models\SupportMessage::whereHas('client')->where('sender_type','client')->whereNull('read_at')->count(); @endphp
+      @endhasanyrole
+
+      @hasanyrole(['admin', 'super-admin'])
+      @php $saSupUnread = \App\Models\SupportMessage::where('sender_type','client')->whereNull('read_at')->count(); @endphp
       <a href="{{ route('admin.support.index') }}"
-         class="sidebar-link {{ request()->routeIs('admin.support*') ? 'active':'' }}"
-         style="position:relative">
+         class="sidebar-link {{ request()->routeIs('admin.support*') ? 'active':'' }}">
         <i class="fas fa-comments icon"></i> Support
         @if($saSupUnread > 0)
         <span style="margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--c-gold);color:var(--c-navy);font-size:.62rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center">{{ $saSupUnread }}</span>
         @endif
       </a>
+      @endhasanyrole
 
       <span class="sidebar-label">Compte</span>
+      @role('super-admin')
       <a href="{{ route('super-admin.profile') }}"
          class="sidebar-link {{ request()->routeIs('super-admin.profile*') ? 'active':'' }}">
         <i class="fas fa-user-circle icon"></i> Mon profil
       </a>
+      @endrole
       <a href="{{ route('home',['locale'=>app()->getLocale()]) }}" class="sidebar-link">
         <i class="fas fa-globe icon"></i> Retour au site
       </a>
+    @endrole
 
     {{-- ══ ADMIN ══ --}}
-    @elseif(Auth::user()->hasRole('admin'))
+    @role('admin')
       <span class="sidebar-label">Tableau de bord</span>
       <a href="{{ route('admin.dashboard') }}"
          class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active':'' }}">
@@ -611,6 +623,7 @@ a { text-decoration:none; }
       </a>
 
       <span class="sidebar-label">Gestion</span>
+      @hasanyrole(['admin', 'super-admin'])
       <a href="{{ route('admin.users') }}"
          class="sidebar-link {{ request()->routeIs('admin.users') ? 'active':'' }}">
         <i class="fas fa-users icon"></i> Clients &amp; Utilisateurs
@@ -627,9 +640,7 @@ a { text-decoration:none; }
          class="sidebar-link {{ request()->routeIs('admin.invoices*') ? 'active':'' }}">
         <i class="fas fa-file-invoice icon"></i> Factures
       </a>
-      @php $admSupUnread = \App\Models\SupportMessage::where('sender_type','client')->whereNull('read_at')
-            ->whereHas('client', fn($q) => $q->where('created_by', Auth::id())
-              ->orWhereHas('clientLoans', fn($q2) => $q2->where('admin_id', Auth::id())))->count(); @endphp
+      @php $admSupUnread = \App\Models\SupportMessage::where('sender_type','client')->whereNull('read_at')->count(); @endphp
       <a href="{{ route('admin.support.index') }}"
          class="sidebar-link {{ request()->routeIs('admin.support*') ? 'active':'' }}">
         <i class="fas fa-comments icon"></i> Support
@@ -637,16 +648,19 @@ a { text-decoration:none; }
         <span style="margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--c-gold);color:var(--c-navy);font-size:.62rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center">{{ $admSupUnread }}</span>
         @endif
       </a>
+      @endhasanyrole
 
       <span class="sidebar-label">Compte</span>
+      @role('admin')
       <a href="{{ route('admin.profile') }}"
          class="sidebar-link {{ request()->routeIs('admin.profile*') ? 'active':'' }}">
         <i class="fas fa-user-circle icon"></i> Mon profil
       </a>
+      @endrole
       <a href="{{ route('home',['locale'=>app()->getLocale()]) }}" class="sidebar-link">
         <i class="fas fa-globe icon"></i> Retour au site
       </a>
-    @endif
+    @endrole
 
   @endauth
   </nav>

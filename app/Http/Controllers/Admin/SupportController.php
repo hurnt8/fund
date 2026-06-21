@@ -19,17 +19,10 @@ class SupportController extends Controller
         $auth         = Auth::user();
         $isSuperAdmin = $auth->hasRole('super-admin');
 
-        $query = User::where('type', 'client')->whereHas('supportMessages');
-
-        if (! $isSuperAdmin) {
-            $adminId = $auth->id;
-            $query->where(function ($q) use ($adminId) {
-                $q->where('created_by', $adminId)
-                  ->orWhereHas('clientLoans', fn ($q2) => $q2->where('admin_id', $adminId));
-            });
-        }
-
-        $clients = $query->with(['supportMessages' => fn ($q) => $q->latest()->limit(1)])
+        // All admins see all support conversations — support is a shared inbox
+        $clients = User::where('type', 'client')
+            ->whereHas('supportMessages')
+            ->with(['supportMessages' => fn ($q) => $q->latest()->limit(1)])
             ->get()
             ->map(function (User $c) {
                 $c->last_message     = $c->supportMessages->first();
@@ -126,11 +119,7 @@ class SupportController extends Controller
 
     private function authorizeClient(User $client): void
     {
-        $auth = Auth::user();
-        if ($auth->hasRole('super-admin')) return;
-        $adminId   = $auth->id;
-        $isManaged = $client->created_by === $adminId
-            || $client->clientLoans()->where('admin_id', $adminId)->exists();
-        abort_unless($isManaged, 403);
+        // Any admin or super-admin can access any client's support conversation
+        abort_unless(Auth::user()->hasAnyRole(['admin', 'super-admin']), 403);
     }
 }

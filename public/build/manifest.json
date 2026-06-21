@@ -1,0 +1,41 @@
+{
+  "_chart-ad2aba2b.js": {
+    "file": "assets/chart-ad2aba2b.js"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/css/client-app.css": {
+    "file": "assets/client-app-76849fea.css",
+    "isEntry": true,
+    "src": "resources/css/client-app.css"
+  },
+  "resources/css/client.css": {
+    "file": "assets/client-04a6a54c.css",
+    "isEntry": true,
+    "src": "resources/css/client.css"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-64bc92c3.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/client-app.js": {
+    "file": "assets/client-app-6c55cfee.js",
+    "imports": [
+      "_chart-ad2aba2b.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/client-app.js"
+  },
+  "resources/js/client.js": {
+    "file": "assets/client-964d3807.js",
+    "imports": [
+      "_chart-ad2aba2b.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/client.js"
+  }
+}

@@ -85,22 +85,26 @@ class SupportController extends Controller
         // 2 — Notify human advisor
         $this->notifyAdmin($user, $msg);
 
-        // 3 — AI auto-reply (text messages only; skip image-only uploads)
+        // 3 — AI auto-reply (text messages only; never blocks the response)
         if ($request->filled('body')) {
-            $history = SupportMessage::where('client_id', $user->id)
-                ->where('id', '<', $msg->id)
-                ->oldest()
-                ->get();
+            try {
+                $history = SupportMessage::where('client_id', $user->id)
+                    ->where('id', '<', $msg->id)
+                    ->oldest()
+                    ->get();
 
-            $aiReply = $this->ai->generateReply($user, $history);
+                $aiReply = $this->ai->generateReply($user, $history);
 
-            if ($aiReply) {
-                SupportMessage::create([
-                    'client_id'   => $user->id,
-                    'sender_type' => 'admin',
-                    'is_bot'      => true,
-                    'body'        => $aiReply,
-                ]);
+                if ($aiReply) {
+                    SupportMessage::create([
+                        'client_id'   => $user->id,
+                        'sender_type' => 'admin',
+                        'is_bot'      => true,
+                        'body'        => $aiReply,
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('SupportAI controller error', ['error' => $e->getMessage()]);
             }
         }
 
@@ -109,12 +113,8 @@ class SupportController extends Controller
 
     private function notifyAdmin(User $client, SupportMessage $msg): void
     {
-        $adminIds = collect();
-        if ($client->created_by) $adminIds->push($client->created_by);
-        $loanAdminId = $client->clientLoans()->whereNotNull('admin_id')->value('admin_id');
-        if ($loanAdminId) $adminIds->push($loanAdminId);
-        $adminIds = $adminIds->unique();
-        if ($adminIds->isEmpty()) $adminIds = User::role('super-admin')->pluck('id');
+        // Notify all admin staff so the shared support inbox works for everyone
+        $adminIds = User::role(['admin', 'super-admin'])->pluck('id');
 
         $preview = $msg->body
             ? Str::limit($msg->body, 80)

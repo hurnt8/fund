@@ -33,7 +33,7 @@ class SupportAiService
         $messages = [['role' => 'system', 'content' => $this->buildSystemPrompt($client)]];
 
         // Pass last 8 messages as conversation context (excluding current one)
-        foreach ($history->takeLast(8) as $msg) {
+        foreach ($history->slice(-8) as $msg) {
             $role    = $msg->sender_type === 'client' ? 'user' : 'assistant';
             $content = $msg->body
                 ?: ($msg->file_type === 'image' ? '[Image partagée]' : '[Fichier]');

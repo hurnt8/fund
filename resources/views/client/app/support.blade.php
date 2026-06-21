@@ -244,7 +244,11 @@ async function sendMessage() {
   updateSend();
 
   try {
-    const r = await fetch(SEND_URL, { method:'POST', body: fd });
+    const r = await fetch(SEND_URL, {
+      method: 'POST',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      body: fd
+    });
     const d = await r.json();
     if (d.message) { renderBubble(d.message, true); scrollBottom(); }
   } catch(e) {}
