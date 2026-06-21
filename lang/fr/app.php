@@ -169,10 +169,40 @@ return [
     'send_subtitle'        => 'Virer vers un compte',
     'receive_subtitle_short' => 'Partager mon IBAN',
     'nav_label'            => 'Navigation principale',
+    'no_activity_hint'     => 'Vos transactions apparaitront ici.',
 
     // Analytique (libelles graphique)
     'monthly_schedule'     => 'Echeancier mensuel',
     'chart_capital'        => 'Capital',
     'chart_interest'       => 'Interets',
     'chart_transfers'      => 'Virements',
+
+    // Profil — edition
+    'edit_profile'         => 'Modifier le profil',
+    'change_password'      => 'Changer le mot de passe',
+    'current_password'     => 'Mot de passe actuel',
+    'new_password'         => 'Nouveau mot de passe',
+    'confirm_password'     => 'Confirmer le mot de passe',
+    'wrong_current_password' => 'Le mot de passe actuel est incorrect.',
+    'password_changed'     => 'Mot de passe modifie avec succes.',
+    'full_name'            => 'Nom complet',
+    'phone_number'         => 'Telephone',
+    'address'              => 'Adresse',
+    'save_changes'         => 'Enregistrer',
+    'profile_otp_sent'     => 'Un code de verification a ete envoye a votre adresse e-mail actuelle.',
+    'otp_confirm_change'   => 'Confirmer la modification',
+    'enter_otp_to_confirm' => 'Saisissez le code recu pour valider le changement d\'adresse e-mail.',
+
+    // Notifications
+    'notifications_title'  => 'Notifications',
+    'notifications_empty'  => 'Aucune notification',
+    'notifications_empty_sub' => 'Vous etes a jour.',
+    'mark_all_read'        => 'Tout lire',
+    'notif_transfer'       => 'Virement',
+    'notif_loan_update'    => 'Dossier',
+    'notif_system'         => 'Systeme',
+    'notif_just_now'       => 'A l\'instant',
+    'notif_minutes_ago'    => 'il y a :n min',
+    'notif_hours_ago'      => 'il y a :n h',
+    'notif_days_ago'       => 'il y a :n j',
 ];

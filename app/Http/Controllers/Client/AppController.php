@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OtpMail;
+use App\Models\ClientNotification;
 use App\Models\LoanRequest;
 use App\Models\Transfer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AppController extends Controller
 {
@@ -31,8 +37,12 @@ class AppController extends Controller
             ->limit(5)
             ->get();
 
+        $unreadCount = ClientNotification::where('user_id', $user->id)
+            ->whereNull('read_at')
+            ->count();
+
         return view('client.app.home', compact(
-            'user', 'loans', 'activeLoans', 'pendingLoans', 'recentTransfers'
+            'user', 'loans', 'activeLoans', 'pendingLoans', 'recentTransfers', 'unreadCount'
         ));
     }
 
@@ -65,7 +75,6 @@ class AppController extends Controller
             ->whereNotNull('amortization_schedule')
             ->get();
 
-        // Agreger les paiements mensuels par mois
         $monthlyData = [];
         foreach ($loans as $loan) {
             $schedule = $loan->amortization_schedule ?? [];
@@ -95,9 +104,9 @@ class AppController extends Controller
         return view('client.app.profile', compact('user', 'transfers'));
     }
 
-    public function updateProfile(\Illuminate\Http\Request $request)
+    public function updateProfile(Request $request)
     {
-        $user = Auth::user();
+        $user      = Auth::user();
         $validated = $request->validate([
             'locale' => 'nullable|in:fr,en,pl,es',
             'phone'  => 'nullable|string|max:30',
@@ -109,6 +118,150 @@ class AppController extends Controller
 
         return back()->with('success', __('app.profile_saved'));
     }
+
+    // ── Notifications ────────────────────────────────────────────────────────
+
+    public function notifications()
+    {
+        $user          = Auth::user();
+        $notifications = ClientNotification::where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        ClientNotification::where('user_id', $user->id)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return view('client.app.notifications', compact('user', 'notifications'));
+    }
+
+    public function notificationRead(int $id)
+    {
+        $user = Auth::user();
+        ClientNotification::where('id', $id)
+            ->where('user_id', $user->id)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function notificationReadAll()
+    {
+        $user = Auth::user();
+        ClientNotification::where('user_id', $user->id)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return back();
+    }
+
+    public function notificationCount()
+    {
+        $user    = Auth::user();
+        $count   = ClientNotification::where('user_id', $user->id)->whereNull('read_at')->count();
+        $newest  = ClientNotification::where('user_id', $user->id)->whereNull('read_at')->latest()->first();
+
+        return response()->json([
+            'count' => $count,
+            'type'  => $newest?->type,
+        ]);
+    }
+
+    // ── Edit profile ─────────────────────────────────────────────────────────
+
+    public function paymentMethods()
+    {
+        $user = Auth::user();
+        return view('client.app.payment-methods', compact('user'));
+    }
+
+    public function editProfile()
+    {
+        $user       = Auth::user();
+        $pendingOtp = session()->has('profile_pending');
+
+        return view('client.app.edit-profile', compact('user', 'pendingOtp'));
+    }
+
+    public function saveProfile(Request $request)
+    {
+        $user      = Auth::user();
+        $validated = $request->validate([
+            'name'    => 'required|string|max:100',
+            'phone'   => 'nullable|string|max:30',
+            'address' => 'nullable|string|max:255',
+            'email'   => 'required|email|max:191',
+        ]);
+
+        // Toujours sauvegarder nom, tel, adresse immédiatement
+        $user->update([
+            'name'    => $validated['name'],
+            'phone'   => $validated['phone'] ?? $user->phone,
+            'address' => $validated['address'] ?? $user->address,
+        ]);
+
+        // OTP uniquement si l'email est vraiment différent
+        $newEmail = strtolower(trim($validated['email']));
+        if ($newEmail !== strtolower(trim($user->email))) {
+            $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            Cache::put('profile_otp_' . $user->id, Hash::make($otp), 600);
+            session(['profile_pending' => ['email' => $newEmail]]);
+            try {
+                Mail::to($user->email)->send(new OtpMail($otp, $user));
+            } catch (\Throwable) {
+                return redirect()->route('client.app.profile')->with('success', __('app.profile_saved'));
+            }
+            return redirect()->route('client.app.profile.edit')->with('otp_sent', true);
+        }
+
+        return redirect()->route('client.app.profile')->with('success', __('app.profile_saved'));
+    }
+
+    public function confirmProfileOtp(Request $request)
+    {
+        $user    = Auth::user();
+        $otp     = $request->input('otp');
+        $pending = session('profile_pending');
+        $cached  = Cache::get('profile_otp_' . $user->id);
+
+        if (!$pending || !$cached || !Hash::check($otp, $cached)) {
+            return back()->withErrors(['otp' => __('auth.otp_invalid')]);
+        }
+
+        $user->update(['email' => $pending['email']]);
+        Cache::forget('profile_otp_' . $user->id);
+        session()->forget('profile_pending');
+
+        return redirect()->route('client.app.profile')->with('success', __('app.profile_saved'));
+    }
+
+    // ── Change password (logged in) ──────────────────────────────────────────
+
+    public function changePassword()
+    {
+        $user = Auth::user();
+        return view('client.app.change-password', compact('user'));
+    }
+
+    public function savePassword(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'current_password' => 'required',
+            'password'         => 'required|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->input('current_password'), $user->password)) {
+            return back()->withErrors(['current_password' => __('app.wrong_current_password')]);
+        }
+
+        $user->update(['password' => Hash::make($request->input('password'))]);
+
+        return redirect()->route('client.app.profile')->with('success', __('app.password_changed'));
+    }
+
+    // ── PWA ─────────────────────────────────────────────────────────────────
 
     public function manifest()
     {
@@ -160,7 +313,6 @@ self.addEventListener('fetch', e => {
 
     const url = new URL(e.request.url);
 
-    // Hashed assets (/build/assets/…) → cache-first (immutable filenames)
     if (url.pathname.startsWith('/build/assets/')) {
         e.respondWith(
             caches.open(CACHE).then(c =>
@@ -176,7 +328,6 @@ self.addEventListener('fetch', e => {
         return;
     }
 
-    // HTML navigation → network-first (always get fresh HTML with current asset hashes)
     e.respondWith(
         fetch(e.request)
             .then(resp => {

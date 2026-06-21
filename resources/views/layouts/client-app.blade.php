@@ -155,5 +155,91 @@
 </div>
 
 @stack('scripts')
+
+{{-- ══ Son & Polling notifications ══ --}}
+<script>
+// Synthese sonore Web Audio API (aucun fichier externe)
+window.CrediXaSound = (function () {
+  let ctx = null;
+  function ac() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    return ctx;
+  }
+  return {
+    coin() {
+      try {
+        const c = ac();
+        for (let i = 0; i < 3; i++) {
+          const t = c.currentTime + i * 0.13;
+          const o = c.createOscillator();
+          const g = c.createGain();
+          o.connect(g); g.connect(c.destination);
+          o.type = 'triangle';
+          o.frequency.setValueAtTime(1400, t);
+          o.frequency.exponentialRampToValueAtTime(900, t + 0.07);
+          g.gain.setValueAtTime(0.28, t);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
+          o.start(t); o.stop(t + 0.12);
+        }
+      } catch(e) {}
+    },
+    bell() {
+      try {
+        const c = ac();
+        const t = c.currentTime;
+        const o = c.createOscillator();
+        const g = c.createGain();
+        o.connect(g); g.connect(c.destination);
+        o.type = 'sine';
+        o.frequency.setValueAtTime(880, t);
+        o.frequency.exponentialRampToValueAtTime(620, t + 0.35);
+        g.gain.setValueAtTime(0.32, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
+        o.start(t); o.stop(t + 0.56);
+      } catch(e) {}
+    }
+  };
+})();
+
+// Polling des notifications toutes les 30 secondes
+(function () {
+  const POLL_MS = 30000;
+  let lastCount = parseInt(sessionStorage.getItem('cxa_notif_count') || '0', 10);
+
+  function updateDot(count) {
+    const dot = document.getElementById('notif-dot');
+    if (!dot) return;
+    dot.style.display = count > 0 ? '' : 'none';
+  }
+
+  async function poll() {
+    try {
+      const r = await fetch('/app/notifications/unread-count', {
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+      });
+      if (!r.ok) return;
+      const data = await r.json();
+      const count = data.count || 0;
+
+      updateDot(count);
+
+      if (count > lastCount) {
+        if (data.type === 'transfer') {
+          window.CrediXaSound.coin();
+        } else {
+          window.CrediXaSound.bell();
+        }
+      }
+      lastCount = count;
+      sessionStorage.setItem('cxa_notif_count', String(count));
+    } catch (e) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    poll();
+    setInterval(poll, POLL_MS);
+  });
+})();
+</script>
 </body>
 </html>

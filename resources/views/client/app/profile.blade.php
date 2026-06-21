@@ -8,7 +8,7 @@
 
 {{-- Header profil --}}
 <div class="ca-profile-header">
-  <div class="ca-profile-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+  <div class="ca-profile-avatar" style="background:url('/images/avatar.jpg') center/cover no-repeat;border:3px solid rgba(27,138,122,.4)"></div>
   <div class="ca-profile-name">{{ $user->name }}</div>
   <div class="ca-profile-badge">
     <i class="fas fa-crown" style="font-size:.65rem"></i>
@@ -41,7 +41,7 @@
       </div>
       <div class="ca-settings-item__right"><i class="fas fa-chevron-right"></i></div>
     </div>
-    <div class="ca-settings-item">
+    <a href="{{ route('client.app.payment-methods') }}" class="ca-settings-item" style="text-decoration:none">
       <div class="ca-settings-item__icon" style="background:rgba(200,169,81,.18);color:var(--ca-gold-l)">
         <i class="fas fa-credit-card"></i>
       </div>
@@ -50,7 +50,43 @@
         <div class="ca-settings-item__sub">{{ $user->bank_account ? Str::limit($user->bank_account, 22) : __('app.not_configured') }}</div>
       </div>
       <div class="ca-settings-item__right"><i class="fas fa-chevron-right"></i></div>
-    </div>
+    </a>
+  </div>
+</div>
+
+{{-- Actions rapides --}}
+<div class="ca-settings-group">
+  <div class="ca-settings-label">{{ __('app.account_settings') }}</div>
+  <div class="ca-settings-list">
+    <a href="{{ route('client.app.profile.edit') }}" class="ca-settings-item" style="text-decoration:none">
+      <div class="ca-settings-item__icon" style="background:rgba(27,138,122,.18);color:var(--ca-teal-l)">
+        <i class="fas fa-pen"></i>
+      </div>
+      <div class="ca-settings-item__text">
+        <div class="ca-settings-item__label">{{ __('app.edit_profile') }}</div>
+        <div class="ca-settings-item__sub">{{ $user->name }}</div>
+      </div>
+      <div class="ca-settings-item__right"><i class="fas fa-chevron-right"></i></div>
+    </a>
+    <a href="{{ route('client.app.profile.password') }}" class="ca-settings-item" style="text-decoration:none">
+      <div class="ca-settings-item__icon" style="background:rgba(200,169,81,.18);color:var(--ca-gold-l)">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="ca-settings-item__text">
+        <div class="ca-settings-item__label">{{ __('app.change_password') }}</div>
+        <div class="ca-settings-item__sub">••••••••</div>
+      </div>
+      <div class="ca-settings-item__right"><i class="fas fa-chevron-right"></i></div>
+    </a>
+    <a href="{{ route('client.app.notifications') }}" class="ca-settings-item" style="text-decoration:none">
+      <div class="ca-settings-item__icon" style="background:rgba(74,158,255,.18);color:var(--ca-blue)">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="ca-settings-item__text">
+        <div class="ca-settings-item__label">{{ __('app.notifications_title') }}</div>
+      </div>
+      <div class="ca-settings-item__right"><i class="fas fa-chevron-right"></i></div>
+    </a>
   </div>
 </div>
 
@@ -59,8 +95,8 @@
   <div class="ca-settings-label">{{ __('app.security') }}</div>
   <div class="ca-settings-list">
 
-    {{-- Notifications --}}
-    <div class="ca-settings-item">
+    {{-- Notifications toggle --}}
+    <div class="ca-settings-item" x-data="togglePref(true)">
       <div class="ca-settings-item__icon" style="background:rgba(74,158,255,.18);color:var(--ca-blue)">
         <i class="fas fa-bell"></i>
       </div>
@@ -68,8 +104,8 @@
         <div class="ca-settings-item__label">{{ __('app.notifications') }}</div>
       </div>
       <div class="ca-settings-item__right">
-        <label class="ca-toggle" x-data="togglePref(true)">
-          <input type="checkbox" :checked="on" @change="toggle()">
+        <label class="ca-toggle" @click.prevent="toggle()">
+          <input type="checkbox" :checked="on" readonly tabindex="-1">
           <div class="ca-toggle__track"></div>
           <div class="ca-toggle__thumb"></div>
         </label>

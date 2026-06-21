@@ -187,6 +187,18 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
     Route::get('/analytics',           [ClientAppController::class, 'analytics'])->name('analytics');
     Route::get('/profile',             [ClientAppController::class, 'profile'])->name('profile');
     Route::post('/profile',            [ClientAppController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/payment-methods',     [ClientAppController::class, 'paymentMethods'])->name('payment-methods');
+    Route::get('/profile/edit',        [ClientAppController::class, 'editProfile'])->name('profile.edit');
+    Route::post('/profile/edit',       [ClientAppController::class, 'saveProfile'])->name('profile.save');
+    Route::post('/profile/edit/otp',   [ClientAppController::class, 'confirmProfileOtp'])->name('profile.edit.otp');
+    Route::get('/profile/password',    [ClientAppController::class, 'changePassword'])->name('profile.password');
+    Route::post('/profile/password',   [ClientAppController::class, 'savePassword'])->name('profile.password.save');
+
+    // Notifications
+    Route::get('/notifications',               [ClientAppController::class, 'notifications'])->name('notifications');
+    Route::post('/notifications/read-all',     [ClientAppController::class, 'notificationReadAll'])->name('notifications.read-all');
+    Route::post('/notifications/{id}/read',    [ClientAppController::class, 'notificationRead'])->name('notifications.read');
+    Route::get('/notifications/unread-count',  [ClientAppController::class, 'notificationCount'])->name('notifications.count');
 
     // Transferts : hub central (bouton FAB nav) + sous-pages
     Route::get('/transfers',           [\App\Http\Controllers\Client\TransferController::class, 'hub'])->name('transfers');
