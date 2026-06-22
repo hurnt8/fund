@@ -259,9 +259,14 @@ class ContractDocxService
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadHTML($html)
             ->setPaper('a4', 'portrait')
             ->setOptions([
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled'      => true,
-                'defaultFont'          => 'DejaVu Sans',
+                'isHtml5ParserEnabled'  => true,
+                'isRemoteEnabled'       => false,
+                'isPhpEnabled'          => false,
+                'defaultFont'           => 'DejaVu Sans',
+                'defaultPaperSize'      => 'a4',
+                'defaultPaperOrientation' => 'portrait',
+                'dpi'                   => 150,
+                'fontHeightRatio'       => 1.1,
             ]);
 
         $filename = 'contract_' . $reference . '.pdf';
@@ -777,12 +782,49 @@ br{display:block;margin:.1em 0}
             \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
         }
 
-        $phpWord = \PhpOffice\PhpWord\IOFactory::load($docxPath);
-        $writer  = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
+        $tmpDir  = storage_path('app/temp/pw_' . uniqid());
+        $tmpHtml = $tmpDir . '/out.html';
 
-        ob_start();
-        $writer->save('php://output');
-        return ob_get_clean() ?: '';
+        if (!is_dir($tmpDir)) {
+            mkdir($tmpDir, 0755, true);
+        }
+
+        try {
+            $phpWord = \PhpOffice\PhpWord\IOFactory::load($docxPath);
+            $writer  = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
+            $writer->save($tmpHtml);
+
+            $html = file_get_contents($tmpHtml) ?: '';
+
+            // Embed all image files referenced by phpoffice as base64 data URIs
+            // so DomPDF can render them without needing file:// access.
+            $html = (string) preg_replace_callback(
+                '/\bsrc="([^"]+)"/i',
+                static function (array $m) use ($tmpDir): string {
+                    $src = $m[1];
+                    if (str_starts_with($src, 'data:')) {
+                        return $m[0];
+                    }
+                    $path = file_exists($src)
+                        ? $src
+                        : $tmpDir . '/' . basename($src);
+                    if (!file_exists($path)) {
+                        return $m[0];
+                    }
+                    $mime = mime_content_type($path) ?: 'image/png';
+                    $b64  = base64_encode((string) file_get_contents($path));
+                    return 'src="data:' . $mime . ';base64,' . $b64 . '"';
+                },
+                $html
+            );
+
+            return $html;
+        } finally {
+            foreach (glob($tmpDir . '/*') ?: [] as $f) {
+                @unlink($f);
+            }
+            @rmdir($tmpDir);
+        }
     }
 
     /**
