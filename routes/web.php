@@ -236,6 +236,13 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
 Route::get('/manifest.json', [ClientAppController::class, 'manifest'])->name('pwa.manifest');
 Route::get('/sw.js',         [ClientAppController::class, 'serviceWorker'])->name('pwa.sw');
 
+Route::get('/storage/{path}', function (string $path) {
+    $file = storage_path('app/public/' . $path);
+    abort_unless(file_exists($file) && is_file($file), 404);
+    $mime = mime_content_type($file) ?: 'application/octet-stream';
+    return response()->file($file, ['Content-Type' => $mime]);
+})->where('path', '.+')->name('storage.serve');
+
 
 // ── Admin dashboard ─────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('admin.')->group(function () {
