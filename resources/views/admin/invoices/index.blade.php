@@ -6,14 +6,16 @@
 @php $totalRevenue = $stats['paid_amount'] ?? 0; @endphp
 
 {{-- Page header ── --}}
-<div class="page-hdr">
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
+<div class="page-hdr-row">
+  <div class="page-hdr">
     <h1>Factures</h1>
+    <p>Gestion et suivi de la facturation clients</p>
+  </div>
+  <div class="page-hdr-actions">
     <a href="{{ route('admin.invoices.create') }}" class="btn-gold">
       <i class="fas fa-plus"></i> Nouvelle facture
     </a>
   </div>
-  <p>Gestion et suivi de la facturation clients</p>
 </div>
 
 @if(session('success'))
@@ -21,7 +23,7 @@
 @endif
 
 {{-- KPI ── --}}
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:1.75rem">
+<div class="metrics-grid">
   <div class="metric-card">
     <div class="metric-card__icon mi-navy"><i class="fas fa-file-invoice"></i></div>
     <div class="metric-card__val">{{ $stats['total'] }}</div>
@@ -87,7 +89,7 @@
       <p style="font-size:.9375rem;font-weight:600">Aucune facture pour le moment.</p>
     </div>
   @else
-  <div style="overflow-x:auto">
+  <div class="table-responsive-pro">
     <table class="pro-table">
       <thead>
         <tr>
@@ -116,15 +118,15 @@
           };
         @endphp
         <tr>
-          <td class="cell-mono">{{ $inv->reference }}</td>
-          <td>
+          <td data-label="Référence" class="cell-mono">{{ $inv->reference }}</td>
+          <td data-label="Client">
             <div class="cell-name">{{ $inv->client->name }}</div>
             <div class="cell-sub">{{ $inv->client->email }}</div>
           </td>
-          <td style="white-space:nowrap;color:var(--c-muted);font-size:.8125rem">
+          <td data-label="Émission" style="white-space:nowrap;color:var(--c-muted);font-size:.8125rem">
             {{ $inv->issue_date->format('d/m/Y') }}
           </td>
-          <td style="white-space:nowrap">
+          <td data-label="Échéance" style="white-space:nowrap">
             @if($inv->due_date)
               <span style="{{ $isOverdue ? 'color:var(--c-red);font-weight:700' : 'color:var(--c-muted)' }};font-size:.8125rem">
                 {{ $inv->due_date->format('d/m/Y') }}
@@ -136,16 +138,16 @@
               <span style="color:var(--c-muted)">—</span>
             @endif
           </td>
-          <td>
+          <td data-label="Montant TTC">
             <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:.9375rem;color:var(--c-navy)">
               {{ number_format($inv->total, 2, ',', ' ') }}
             </span>
             <span style="font-size:.75rem;color:var(--c-muted)"> {{ $inv->currency }}</span>
           </td>
-          <td>
+          <td data-label="Statut">
             <span class="badge-status {{ $badgeClass }}">{{ $inv->statusLabel() }}</span>
           </td>
-          <td style="text-align:right">
+          <td data-label="Actions" style="text-align:right">
             <div style="display:inline-flex;gap:.375rem">
               <a href="{{ route('admin.invoices.show', $inv) }}" class="btn-icon btn-icon-primary" title="Voir">
                 <i class="fas fa-eye"></i>

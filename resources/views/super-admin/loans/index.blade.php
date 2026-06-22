@@ -4,14 +4,16 @@
 
 @section('content')
 
-<div class="page-hdr d-flex align-items-start justify-content-between flex-wrap gap-3">
-  <div>
-    <h4>Toutes les demandes de prêt</h4>
+<div class="page-hdr-row">
+  <div class="page-hdr">
+    <h1>Toutes les demandes de prêt</h1>
     <p>Supervision globale · Tous les administrateurs · Toutes les agences</p>
   </div>
-  <a href="{{ route('super-admin.loans.create') }}" class="btn-navy btn-sm-pro">
-    <i class="fas fa-plus"></i> Nouvelle demande
-  </a>
+  <div class="page-hdr-actions">
+    <a href="{{ route('super-admin.loans.create') }}" class="btn-navy btn-sm-pro">
+      <i class="fas fa-plus"></i> Nouvelle demande
+    </a>
+  </div>
 </div>
 
 {{-- KPI --}}
@@ -64,8 +66,8 @@
 </div>
 
 <div class="card-pro">
-  <div class="table-responsive">
-    <table class="pro-table w-100">
+  <div class="table-responsive-pro">
+    <table class="pro-table">
       <thead>
         <tr>
           <th>Référence</th><th>Client</th><th>Admin responsable</th>
@@ -75,12 +77,12 @@
       <tbody>
         @forelse($loans as $loan)
         <tr>
-          <td><span class="cell-mono">{{ $loan->reference }}</span></td>
-          <td>
+          <td data-label="Référence"><span class="cell-mono">{{ $loan->reference }}</span></td>
+          <td data-label="Client">
             <div class="cell-name">{{ $loan->name }}</div>
             <div class="cell-sub">{{ $loan->email }}</div>
           </td>
-          <td>
+          <td data-label="Admin">
             <div style="display:flex;align-items:center;gap:.5rem">
               <div style="width:26px;height:26px;border-radius:50%;background:var(--c-bg);border:1.5px solid var(--c-border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--c-navy)">
                 {{ strtoupper(substr($loan->admin?->name??'?',0,1)) }}
@@ -88,12 +90,12 @@
               <span style="font-size:.8125rem">{{ $loan->admin?->name ?? '—' }}</span>
             </div>
           </td>
-          <td class="cell-amount">{{ number_format($loan->amount,2,',',' ') }} <span style="font-size:.75rem;color:var(--c-muted)">{{ $loan->currency }}</span></td>
-          <td style="font-weight:600">{{ number_format($loan->monthly_payment,2,',',' ') }} {{ $loan->currency }}</td>
-          <td><span class="badge-status bs-{{ $loan->statusColor() }}">{{ $loan->statusLabel() }}</span></td>
-          <td style="color:var(--c-muted);font-size:.78rem">{{ $loan->created_at->format('d/m/Y') }}</td>
-          <td style="text-align:right">
-            <div class="d-flex justify-content-end gap-1">
+          <td data-label="Montant" class="cell-amount">{{ number_format($loan->amount,2,',',' ') }} <span style="font-size:.75rem;color:var(--c-muted)">{{ $loan->currency }}</span></td>
+          <td data-label="Mensualité" style="font-weight:600">{{ number_format($loan->monthly_payment,2,',',' ') }} {{ $loan->currency }}</td>
+          <td data-label="Statut"><span class="badge-status bs-{{ $loan->statusColor() }}">{{ $loan->statusLabel() }}</span></td>
+          <td data-label="Date" style="color:var(--c-muted);font-size:.78rem">{{ $loan->created_at->format('d/m/Y') }}</td>
+          <td data-label="Actions" style="text-align:right">
+            <div style="display:inline-flex;gap:.25rem">
               <a href="{{ route('super-admin.loans.show',$loan) }}" class="btn-icon btn-icon-primary" title="Voir le dossier">
                 <i class="fas fa-eye"></i>
               </a>

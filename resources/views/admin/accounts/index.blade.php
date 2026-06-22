@@ -11,18 +11,20 @@
 @endphp
 
 {{-- Page header ── --}}
-<div class="page-hdr">
-  <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
-    <h1>Comptes clients</h1>
-    @if($isSuperAdmin)
-      <span class="badge-status bs-violet"><i class="fas fa-shield-alt" style="font-size:.6rem"></i> Vue globale</span>
-    @endif
+<div class="page-hdr-row">
+  <div class="page-hdr">
+    <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+      <h1>Comptes clients</h1>
+      @if($isSuperAdmin)
+        <span class="badge-status bs-violet"><i class="fas fa-shield-alt" style="font-size:.6rem"></i> Vue globale</span>
+      @endif
+    </div>
+    <p>{{ $clients->count() }} compte{{ $clients->count() > 1 ? 's' : '' }} géré{{ $clients->count() > 1 ? 's' : '' }}</p>
   </div>
-  <p>{{ $clients->count() }} compte{{ $clients->count() > 1 ? 's' : '' }} géré{{ $clients->count() > 1 ? 's' : '' }}</p>
 </div>
 
 {{-- KPI ── --}}
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:1.75rem">
+<div class="metrics-grid">
   <div class="metric-card">
     <div class="metric-card__icon mi-navy"><i class="fas fa-users"></i></div>
     <div class="metric-card__val">{{ $clients->count() }}</div>
@@ -50,8 +52,8 @@
 </div>
 
 {{-- Search + sort bar ── --}}
-<div style="display:flex;gap:.625rem;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap">
-  <div style="position:relative;flex:1;min-width:200px;max-width:320px">
+<div class="filter-bar" style="margin-bottom:1.25rem">
+  <div style="position:relative;flex:1;min-width:180px">
     <i class="fas fa-search" style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--c-muted);font-size:.75rem;pointer-events:none"></i>
     <input id="accSearch" type="text" placeholder="Nom, e-mail, IBAN…" class="form-control-pro" style="padding-left:2.25rem">
   </div>
@@ -67,7 +69,7 @@
       <p style="font-size:.9375rem;font-weight:600">Aucun compte client à gérer.</p>
     </div>
   @else
-  <div style="overflow-x:auto">
+  <div class="table-responsive-pro">
     <table class="pro-table" id="accTable">
       <thead>
         <tr>
@@ -90,7 +92,7 @@
             data-email="{{ strtolower($client->email) }}"
             data-balance="{{ $bal }}"
             data-iban="{{ strtolower($client->bank_account ?? '') }}">
-          <td>
+          <td data-label="">
             <div style="width:38px;height:38px;border-radius:50%;flex-shrink:0;
               background:linear-gradient(135deg,var(--c-navy),var(--c-navy-3));
               display:flex;align-items:center;justify-content:center;
@@ -98,26 +100,26 @@
               {{ strtoupper(substr($client->name, 0, 1)) }}
             </div>
           </td>
-          <td>
+          <td data-label="Client">
             <div class="cell-name">{{ $client->name }}</div>
             <div class="cell-sub">{{ $client->email }}</div>
             @if($client->phone)
             <div class="cell-sub">{{ $client->phone }}</div>
             @endif
           </td>
-          <td>
+          <td data-label="Solde actuel">
             <span style="font-family:'Space Grotesk',sans-serif;font-size:.9375rem;font-weight:800;color:{{ $balColor }}">
               {{ number_format($bal, 2, ',', ' ') }}
             </span>
             <span style="font-size:.75rem;color:var(--c-muted);margin-left:.25rem">{{ $cur }}</span>
           </td>
-          <td class="cell-mono">{{ $client->bank_account ? \Str::limit($client->bank_account, 22) : '—' }}</td>
-          <td>
+          <td data-label="IBAN" class="cell-mono">{{ $client->bank_account ? \Str::limit($client->bank_account, 22) : '—' }}</td>
+          <td data-label="Dossiers">
             <span class="badge-status bs-gray">
               {{ $client->client_loans_count }} dossier{{ $client->client_loans_count > 1 ? 's' : '' }}
             </span>
           </td>
-          <td style="text-align:right">
+          <td data-label="Action" style="text-align:right">
             <a href="{{ route('admin.accounts.show', $client) }}" class="btn-gold btn-sm-pro">
               <i class="fas fa-arrow-right"></i> Gérer
             </a>

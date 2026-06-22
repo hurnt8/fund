@@ -5,18 +5,20 @@
 @section('content')
 
 {{-- Page header ── --}}
-<div class="page-hdr">
-  <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
-    <h1>Transferts clients</h1>
-    @if($isSuperAdmin)
-      <span class="badge-status bs-violet"><i class="fas fa-shield-alt" style="font-size:.6rem"></i> Vue globale</span>
-    @endif
+<div class="page-hdr-row">
+  <div class="page-hdr">
+    <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+      <h1>Transferts clients</h1>
+      @if($isSuperAdmin)
+        <span class="badge-status bs-violet"><i class="fas fa-shield-alt" style="font-size:.6rem"></i> Vue globale</span>
+      @endif
+    </div>
+    <p>Validation et suivi des virements soumis par les clients</p>
   </div>
-  <p>Validation et suivi des virements soumis par les clients</p>
 </div>
 
 {{-- KPI ── --}}
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:1.75rem">
+<div class="metrics-grid">
   <div class="metric-card">
     <div class="metric-card__icon mi-amber"><i class="fas fa-hourglass-half"></i></div>
     <div class="metric-card__val" style="color:var(--c-amber)">{{ $stats['pending'] }}</div>
@@ -98,7 +100,7 @@
 <div class="card-pro" style="border-left:4px solid {{ $sm['bar'] }};{{ $trf->status === 'rejected' ? 'opacity:.8' : '' }}">
 
   {{-- Head ── --}}
-  <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:1.25rem;align-items:center;padding:1rem 1.25rem;flex-wrap:wrap">
+  <div class="trf-head" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:1.25rem;align-items:center;padding:1rem 1.25rem">
 
     {{-- Client ── --}}
     <div style="display:flex;align-items:center;gap:.75rem">

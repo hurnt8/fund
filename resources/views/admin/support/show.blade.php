@@ -178,6 +178,23 @@
 .lightbox__close:hover { background:rgba(255,255,255,.22); }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+@media(max-width:640px) {
+  .sp-shell { height:calc(100dvh - 120px); min-height:300px; }
+  .sp-hdr { padding:.625rem 1rem; }
+  .sp-hdr-actions .btn-ghost { padding:.35rem .6rem; font-size:.75rem; }
+  .sp-hdr-actions .btn-ghost span { display:none; }
+  .sp-msgs { padding:.75rem 1rem; }
+  .bubble { max-width:85%; font-size:.8rem; padding:.5rem .75rem; }
+  .sp-bar { padding:.5rem .75rem; gap:.375rem; }
+  .sp-send span { display:none; }
+  .sp-input { font-size:.8125rem; }
+}
+@media(max-width:400px) {
+  .sp-shell { height:calc(100dvh - 110px); }
+  .sp-hdr-name { font-size:.8125rem; }
+  .sp-hdr-email { font-size:.65rem; }
+}
 </style>
 @endpush
 

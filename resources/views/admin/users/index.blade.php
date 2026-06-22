@@ -5,14 +5,16 @@
 @section('content')
 
 {{-- En-tête --}}
-<div class="d-flex align-items-start justify-content-between flex-wrap gap-3 page-hdr">
-  <div>
-    <h4>{{ $isSuperAdmin ? 'Tous les utilisateurs' : 'Mes clients' }}</h4>
+<div class="page-hdr-row">
+  <div class="page-hdr">
+    <h1>{{ $isSuperAdmin ? 'Tous les utilisateurs' : 'Mes clients' }}</h1>
     <p>{{ $isSuperAdmin ? 'Vue globale — tous les comptes enregistrés sur la plateforme' : 'Uniquement les clients que vous avez créés' }}</p>
   </div>
-  <button class="btn-navy" data-bs-toggle="modal" data-bs-target="#createUserModal">
-    <i class="fas fa-user-plus"></i> Nouveau client
-  </button>
+  <div class="page-hdr-actions">
+    <button class="btn-navy" data-bs-toggle="modal" data-bs-target="#createUserModal">
+      <i class="fas fa-user-plus"></i> Nouveau client
+    </button>
+  </div>
 </div>
 
 {{-- KPIs --}}
@@ -67,8 +69,8 @@
 
 {{-- Table --}}
 <div class="card-pro">
-  <div class="table-responsive">
-    <table class="pro-table w-100">
+  <div class="table-responsive-pro">
+    <table class="pro-table">
       <thead>
         <tr>
           <th style="width:52px"></th>
@@ -84,7 +86,7 @@
         @forelse($users as $user)
         <tr>
           {{-- Avatar --}}
-          <td>
+          <td data-label="">
             <div style="width:36px;height:36px;border-radius:50%;
                         background:linear-gradient(135deg,var(--c-navy),var(--c-navy-3));
                         display:flex;align-items:center;justify-content:center;
@@ -94,13 +96,13 @@
           </td>
 
           {{-- Identité --}}
-          <td>
+          <td data-label="Identité">
             <div class="cell-name">{{ $user->name }}</div>
             <div class="cell-sub">{{ $user->email }}</div>
           </td>
 
           {{-- Contact --}}
-          <td>
+          <td data-label="Contact">
             <div style="font-size:.8125rem;color:var(--c-text)">{{ $user->phone ?? '—' }}</div>
             @if($user->address)
             <div class="cell-sub">{{ Str::limit($user->address,30) }}</div>
@@ -108,7 +110,7 @@
           </td>
 
           {{-- Statut compte --}}
-          <td>
+          <td data-label="Statut">
             @if($user->invitation_token)
               <span class="badge-status bs-amber">
                 <i class="fas fa-clock" style="font-size:.55rem"></i> En attente
@@ -121,19 +123,19 @@
           </td>
 
           {{-- Rôle --}}
-          <td>
+          <td data-label="Rôle">
             @foreach($user->getRoleNames() as $r)
             <span class="badge-status bs-blue">{{ ucfirst($r) }}</span>
             @endforeach
           </td>
 
           {{-- Date --}}
-          <td style="color:var(--c-muted);font-size:.78rem;white-space:nowrap">
+          <td data-label="Inscription" style="color:var(--c-muted);font-size:.78rem;white-space:nowrap">
             {{ $user->created_at->format('d/m/Y') }}
           </td>
 
           {{-- Actions --}}
-          <td style="text-align:right">
+          <td data-label="Actions" style="text-align:right">
             <div style="display:flex;gap:.375rem;justify-content:flex-end">
               {{-- Renvoyer invitation si pas encore activé --}}
               @if($user->invitation_token)

@@ -349,7 +349,7 @@
       Voir tous mes dossiers <i class="fas fa-arrow-right" style="font-size:.6rem"></i>
     </a>
   </div>
-  <div style="overflow-x:auto">
+  <div class="table-responsive-pro">
     <table class="pro-table">
       <thead>
         <tr>
@@ -379,22 +379,22 @@
           $clientEmail = $loan->client?->email ?? $loan->email ?? '';
         @endphp
         <tr>
-          <td class="cell-mono">{{ $loan->reference ?? '#'.$loan->id }}</td>
-          <td>
+          <td data-label="Réf." class="cell-mono">{{ $loan->reference ?? '#'.$loan->id }}</td>
+          <td data-label="Client">
             <div class="cell-name">{{ $clientName }}</div>
             <div class="cell-sub">{{ $clientEmail }}</div>
           </td>
-          <td class="cell-amount" style="color:var(--c-navy);font-weight:800">
+          <td data-label="Montant" class="cell-amount" style="color:var(--c-navy);font-weight:800">
             {{ number_format($loan->amount ?? 0, 0, ',', ' ') }}&nbsp;{{ $loan->currency ?? '€' }}
           </td>
-          <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.78rem;color:var(--c-muted)">
+          <td data-label="Objet" style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.78rem;color:var(--c-muted)">
             {{ Str::limit($loan->objet ?? '—', 28) }}
           </td>
-          <td><span class="badge-status {{ $stInfo['cls'] }}">{{ $stInfo['lbl'] }}</span></td>
-          <td style="font-size:.75rem;color:var(--c-muted);white-space:nowrap">
+          <td data-label="Statut"><span class="badge-status {{ $stInfo['cls'] }}">{{ $stInfo['lbl'] }}</span></td>
+          <td data-label="Date" style="font-size:.75rem;color:var(--c-muted);white-space:nowrap">
             {{ $loan->created_at->format('d/m/Y') }}
           </td>
-          <td>
+          <td data-label="">
             <a href="{{ route('admin.loans.show', $loan) }}" class="btn-icon btn-icon-primary" title="Voir le dossier">
               <i class="fas fa-eye"></i>
             </a>

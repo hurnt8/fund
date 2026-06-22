@@ -285,7 +285,7 @@ $roleConf = [
     </div>
   </div>
 
-  <div style="overflow-x:auto">
+  <div class="table-responsive-pro">
     <table class="pro-table" id="usersTable">
       <thead>
         <tr>
@@ -305,7 +305,7 @@ $roleConf = [
           $roleBadge = ['super-admin'=>'bs-dark','admin'=>'bs-amber','client'=>'bs-blue'][$rn] ?? 'bs-gray';
         @endphp
         <tr data-role="{{ $rn }}" data-name="{{ strtolower($u->name) }} {{ strtolower($u->email) }}">
-          <td>
+          <td data-label="Utilisateur">
             <div style="display:flex;align-items:center;gap:.75rem">
               <div class="u-avatar" style="background:{{ $avatarBg }}22;color:{{ $avatarBg }}">
                 {{ strtoupper(mb_substr($u->name, 0, 1)) }}
@@ -316,12 +316,12 @@ $roleConf = [
               </div>
             </div>
           </td>
-          <td>
+          <td data-label="Type">
             <span class="badge-status {{ $u->type === 'staff' ? 'bs-violet' : 'bs-blue' }}">
               {{ $u->type === 'staff' ? 'Personnel' : 'Client' }}
             </span>
           </td>
-          <td>
+          <td data-label="Rôle actuel">
             @if($rn)
             <span class="badge-status {{ $roleBadge }}">
               {{ ucfirst(str_replace('-',' ',$rn)) }}
@@ -330,7 +330,7 @@ $roleConf = [
             <span class="badge-status bs-gray">Aucun</span>
             @endif
           </td>
-          <td>
+          <td data-label="Changer le rôle">
             <form action="{{ route('super-admin.users.role', $u->id) }}" method="POST"
                   class="role-select-wrap" id="form-{{ $u->id }}">
               @csrf
@@ -344,7 +344,7 @@ $roleConf = [
               </select>
             </form>
           </td>
-          <td>
+          <td data-label="">
             <a href="{{ route('admin.users') }}" class="btn-icon" title="Voir le profil">
               <i class="fas fa-external-link-alt"></i>
             </a>

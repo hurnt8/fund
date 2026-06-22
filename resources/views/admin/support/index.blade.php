@@ -53,21 +53,23 @@
 @endphp
 
 {{-- Page header ── --}}
-<div class="page-hdr">
-  <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
-    <h1>Support clients</h1>
-    @if($totalUnread > 0)
-      <span class="badge-status bs-amber">
-        <i class="fas fa-bell" style="font-size:.6rem"></i>
-        {{ $totalUnread }} non lu{{ $totalUnread > 1 ? 's':'' }}
-      </span>
-    @endif
+<div class="page-hdr-row">
+  <div class="page-hdr">
+    <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+      <h1>Support clients</h1>
+      @if($totalUnread > 0)
+        <span class="badge-status bs-amber">
+          <i class="fas fa-bell" style="font-size:.6rem"></i>
+          {{ $totalUnread }} non lu{{ $totalUnread > 1 ? 's':'' }}
+        </span>
+      @endif
+    </div>
+    <p>Messagerie directe avec vos clients</p>
   </div>
-  <p>Messagerie directe avec vos clients</p>
 </div>
 
 {{-- KPI ── --}}
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:1.75rem">
+<div class="metrics-grid-3">
   <div class="metric-card">
     <div class="metric-card__icon mi-navy"><i class="fas fa-comments"></i></div>
     <div class="metric-card__val">{{ $totalConvs }}</div>
@@ -89,8 +91,8 @@
 </div>
 
 {{-- Search + filter ── --}}
-<div style="display:flex;gap:.625rem;margin-bottom:1.25rem;flex-wrap:wrap">
-  <div style="position:relative;flex:1;min-width:200px;max-width:340px">
+<div class="filter-bar" style="margin-bottom:1.25rem">
+  <div style="position:relative;flex:1;min-width:200px">
     <i class="fas fa-search" style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--c-muted);font-size:.75rem;pointer-events:none"></i>
     <input id="convSearch" type="text" placeholder="Rechercher un client…" class="form-control-pro" style="padding-left:2.25rem">
   </div>
