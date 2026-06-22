@@ -212,7 +212,24 @@ class ContractTemplateController extends Controller
         }
 
         $docxPath = Storage::path($contractTemplate->docx_path);
-        $pdfPath  = $this->docxService->convertRawDocxToPdf($docxPath);
+
+        if (!file_exists($docxPath)) {
+            abort(404, 'Fichier DOCX introuvable sur le serveur. Veuillez re-télécharger le template.');
+        }
+
+        try {
+            $pdfPath = $this->docxService->convertRawDocxToPdf($docxPath);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('previewPdf conversion failed', [
+                'template' => $contractTemplate->id,
+                'error'    => $e->getMessage(),
+            ]);
+            abort(500, 'Conversion PDF impossible : ' . $e->getMessage());
+        }
+
+        if (!file_exists($pdfPath)) {
+            abort(500, 'La conversion PDF a échoué sans générer de fichier.');
+        }
 
         return response()->file($pdfPath, [
             'Content-Type'        => 'application/pdf',

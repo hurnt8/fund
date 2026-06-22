@@ -26,14 +26,26 @@ class LoanPdfService
         $template = $loan->contractTemplate;
 
         // ── Voie DOCX ────────────────────────────────────────────────────────
-        // generatePdf() essaie LibreOffice en premier, puis phpoffice+dompdf en fallback.
-        // Si le template a été modifié via l'éditeur de prévisualisation, le filigrane
-        // personnalisé est injecté dans le rendu phpoffice.
         if ($template && $template->template_type === 'docx' && $template->docx_path) {
-            return $this->docxService->generatePdf($loan, $template);
+            $docxPath = Storage::path($template->docx_path);
+            if (file_exists($docxPath)) {
+                try {
+                    return $this->docxService->generatePdf($loan, $template);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning('DOCX PDF generation failed, falling back to DomPDF', [
+                        'loan'  => $loan->reference,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            } else {
+                \Illuminate\Support\Facades\Log::warning('DOCX template file missing on disk, falling back to DomPDF', [
+                    'loan' => $loan->reference,
+                    'path' => $docxPath,
+                ]);
+            }
         }
 
-        // ── Voie HTML (DomPDF) — pipeline existant ───────────────────────────
+        // ── Voie HTML (DomPDF) — fallback ou template HTML ───────────────────
         return $this->generateWithDomPdf($loan, $locale);
     }
 
@@ -53,9 +65,15 @@ class LoanPdfService
         $filename = 'contract_' . $loan->reference . '_' . $locale . '.pdf';
         $path     = 'contracts/' . $filename;
 
+        Storage::makeDirectory('contracts');
         Storage::put($path, $pdf->output());
 
-        return storage_path('app/' . $path);
+        $absPath = storage_path('app/' . $path);
+        if (!file_exists($absPath)) {
+            throw new \RuntimeException("Échec de l'écriture du PDF : $absPath");
+        }
+
+        return $absPath;
     }
 
     /**
