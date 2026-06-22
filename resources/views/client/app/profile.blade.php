@@ -29,7 +29,7 @@
     </div>
   </div>
   <div style="font-size:.75rem;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:.35rem">
-    Mouvements <i class="fas fa-chevron-right" style="font-size:.6rem"></i>
+    {{ __('app.movements_title') }} <i class="fas fa-chevron-right" style="font-size:.6rem"></i>
   </div>
 </div>
 </a>

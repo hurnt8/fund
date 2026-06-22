@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-title" content="Credixa">
 <meta name="theme-color" content="#080C18">
 <link rel="manifest" href="{{ route('pwa.manifest') }}">
-<link rel="apple-touch-icon" href="/images/icon-192.svg">
-<link rel="icon" type="image/svg+xml" href="/images/icon-192.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
 <title>{{ __('auth.otp_title') }} — Credixa</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +22,7 @@
 <style>
 :root{
   --bg:   #080C18;
+  --bg2:  #0C1120;
   --card: #0E1626;
   --inp:  #141C2E;
   --cyan: #0DCFDC;
@@ -36,9 +37,9 @@ html,body{
   height:100%;background:var(--bg);color:var(--text);
   font-family:'Inter',system-ui,sans-serif;font-size:15px;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  /* Empêche le resize du viewport quand le clavier natif s'ouvre */
+  overflow:hidden;
 }
-body{min-height:100vh;overflow-x:hidden}
-a{text-decoration:none;color:inherit}
 
 /* ── Loading overlay ── */
 #ld{
@@ -55,28 +56,31 @@ a{text-decoration:none;color:inherit}
 #ld.on .ld-bar{animation:ldbar 1.8s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes ldbar{0%{width:0}40%{width:60%}100%{width:92%}}
 .ld-logo{
-  width:76px;height:76px;border-radius:22px;
+  width:80px;height:80px;border-radius:24px;
   background:linear-gradient(135deg,var(--cyan),var(--cyan2));
   display:flex;align-items:center;justify-content:center;
   margin-bottom:1.5rem;position:relative;
   box-shadow:0 0 40px rgba(13,207,220,.35);
+  overflow:hidden;
 }
-.ld-logo span{
-  font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:800;color:#080C18;
-}
+.ld-logo img{width:56px;height:56px;object-fit:contain;border-radius:10px}
 .ld-ring{
-  position:absolute;inset:-8px;border-radius:30px;
+  position:absolute;inset:-8px;border-radius:32px;
   border:2px solid rgba(13,207,220,.2);border-top-color:var(--cyan);
   animation:spin .9s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.ld-lbl{font-size:.8rem;font-weight:600;color:var(--sub);letter-spacing:.06em}
-.ld-dots{display:flex;gap:.4rem;margin-top:.875rem}
-.ld-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:ldp 1.2s ease-in-out infinite}
-.ld-dot:nth-child(2){animation-delay:.18s}.ld-dot:nth-child(3){animation-delay:.36s}
+.ld-lbl{font-size:.8rem;font-weight:600;color:var(--sub);letter-spacing:.06em;margin-bottom:.875rem}
+.ld-dots{display:flex;gap:.4rem}
+.ld-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  animation:ldp 1.2s ease-in-out infinite;
+}
+.ld-dot:nth-child(2){animation-delay:.18s}
+.ld-dot:nth-child(3){animation-delay:.36s}
 @keyframes ldp{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
 
-/* ── Background ── */
+/* ── Background orbs ── */
 .bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .orb{position:absolute;border-radius:50%;filter:blur(90px)}
 .orb-1{
@@ -91,207 +95,236 @@ a{text-decoration:none;color:inherit}
 }
 @keyframes orbf{from{transform:scale(1)}to{transform:scale(1.1) translate(2%,3%)}}
 
+/* ── Full-screen layout (PWA-style) ── */
+.page-shell{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  z-index:1;
+}
+
 /* ── Top bar ── */
 .topbar{
-  position:relative;z-index:10;
-  display:flex;align-items:center;justify-content:center;
-  padding:.9rem 1.5rem;
-  padding-top:calc(.9rem + env(safe-area-inset-top,0px));
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.25rem;
+  flex-shrink:0;
 }
 .topbar__back{
-  position:absolute;left:1.5rem;
   display:inline-flex;align-items:center;gap:.45rem;
-  font-size:.78rem;font-weight:500;color:var(--sub);transition:color .18s;
+  font-size:.78rem;font-weight:500;color:var(--sub);
+  background:rgba(255,255,255,.05);border:1.5px solid var(--bdr);
+  border-radius:999px;padding:.4rem .85rem;
+  text-decoration:none;
+  transition:color .18s,background .18s;
+  -webkit-tap-highlight-color:transparent;
 }
-.topbar__back:hover{color:var(--text)}
+.topbar__back:hover{color:var(--text);background:rgba(255,255,255,.09)}
 .topbar__back i{font-size:.65rem}
-.topbar__logo img{height:28px;object-fit:contain}
+.topbar__logo img{height:26px;object-fit:contain}
 
-/* ── Page shell ── */
-.page-shell{display:flex;flex-direction:column;min-height:100vh}
-.page-wrap{
-  position:relative;z-index:1;flex:1;
+/* ── Scrollable center zone ── */
+.page-content{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
   display:flex;flex-direction:column;align-items:center;
-  padding:1.25rem 1.25rem 0;
+  /* espace pour le clavier fixé (4×68px + 3×gap + padding ≈ 330px) */
+  padding:1rem 1.25rem calc(330px + env(safe-area-inset-bottom,0px));
+  scrollbar-width:none;
 }
+.page-content::-webkit-scrollbar{display:none}
 
-/* ── Card ── */
+/* ── Card / heading ── */
 .card{width:100%;max-width:400px;text-align:center}
 
-/* Logo */
-.logo-box{
-  width:70px;height:70px;border-radius:20px;
-  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+/* Shield icon */
+.otp-icon{
+  width:76px;height:76px;border-radius:22px;
+  background:linear-gradient(135deg,rgba(13,207,220,.18),rgba(9,181,200,.18));
+  border:1.5px solid rgba(13,207,220,.25);
   display:flex;align-items:center;justify-content:center;
-  margin:0 auto 1.375rem;
-  box-shadow:0 0 32px rgba(13,207,220,.28);
+  margin:0 auto 1.25rem;
+  position:relative;
 }
-.logo-box img{height:38px;object-fit:contain;filter:brightness(0) invert(1)}
-.logo-box span{font-family:'Space Grotesk',sans-serif;font-size:1.875rem;font-weight:800;color:#080C18;line-height:1}
+.otp-icon i{font-size:2rem;color:var(--cyan)}
+.otp-icon::after{
+  content:'';
+  position:absolute;inset:-6px;border-radius:28px;
+  border:1px solid rgba(13,207,220,.12);
+  animation:pulse-ring 2.5s ease-in-out infinite;
+}
+@keyframes pulse-ring{
+  0%,100%{opacity:.4;transform:scale(1)}
+  50%{opacity:.12;transform:scale(1.04)}
+}
 
-/* Heading */
 .card-title{
   font-family:'Space Grotesk',sans-serif;
-  font-size:1.625rem;font-weight:800;color:var(--text);margin-bottom:.4rem;
+  font-size:1.55rem;font-weight:800;color:var(--text);margin-bottom:.35rem;
 }
-.card-sub{font-size:.82rem;color:var(--sub);line-height:1.65;margin-bottom:1.75rem}
+.card-sub{font-size:.82rem;color:var(--sub);line-height:1.6;margin-bottom:1.5rem}
 .card-sub strong{color:var(--cyan);font-weight:600}
 
-/* Error */
+/* ── Error ── */
 .oerr{
   display:flex;align-items:flex-start;gap:.55rem;
   background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);
   border-left:3px solid #ef4444;border-radius:10px;
-  padding:.7rem .9rem;font-size:.79rem;color:#FCA5A5;
-  margin-bottom:1.25rem;text-align:left;
+  padding:.65rem .875rem;font-size:.79rem;color:#FCA5A5;
+  margin-bottom:1rem;text-align:left;
 }
 .oerr i{margin-top:.1rem;flex-shrink:0}
 
 /* ── OTP digit circles ── */
 .odigits{
   display:flex;gap:.5rem;justify-content:center;
-  margin-bottom:1.625rem;
+  margin-bottom:1.25rem;
 }
 .odigit{
-  width:50px;height:50px;border-radius:50%;
+  width:52px;height:52px;border-radius:14px;
   background:var(--inp);
   border:2px solid rgba(255,255,255,.1);
   display:flex;align-items:center;justify-content:center;
-  font-family:'Space Grotesk',sans-serif;font-size:1.375rem;font-weight:800;
+  font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:800;
   color:var(--text);
   transition:border-color .2s,background .2s,box-shadow .2s;
-  flex-shrink:0;
+  flex-shrink:0;position:relative;
 }
 .odigit.filled{
   border-color:var(--cyan);
   background:rgba(13,207,220,.12);
-  box-shadow:0 0 0 3px rgba(13,207,220,.15);
   color:var(--cyan);
 }
 .odigit.active{
   border-color:var(--cyan);
   background:rgba(13,207,220,.08);
-  box-shadow:0 0 0 4px rgba(13,207,220,.2),0 0 16px rgba(13,207,220,.2);
+  box-shadow:0 0 0 4px rgba(13,207,220,.18),0 0 20px rgba(13,207,220,.18);
 }
 .odigit.active::after{
-  content:'|';font-size:1rem;color:var(--cyan);
+  content:'';position:absolute;
+  width:2px;height:60%;border-radius:2px;
+  background:var(--cyan);
   animation:blink .8s step-end infinite;
 }
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-@media(max-width:380px){
-  .odigit{width:42px;height:42px;font-size:1.125rem}
+.odigit.shake{animation:shake .35s ease}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-5px)}
+  40%{transform:translateX(5px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+}
+.odigit.err{
+  border-color:#ef4444;
+  background:rgba(239,68,68,.14);
+  color:#f87171;
+}
+@media(max-width:360px){
+  .odigit{width:44px;height:44px;font-size:1.25rem;border-radius:12px}
   .odigits{gap:.35rem}
 }
 
-/* Resend / timer */
-.resend-row{margin-bottom:1.5rem;font-size:.8rem;color:var(--sub);min-height:2.25rem}
-.resend-timer strong{color:var(--cyan);font-weight:700}
-.resend-btn{
-  background:none;border:none;cursor:pointer;padding:0;
-  font-size:.8rem;font-weight:600;color:var(--cyan);
-  transition:opacity .18s;
-}
-.resend-btn:hover{opacity:.75}
-.resend-btn:disabled{opacity:.4;cursor:not-allowed}
-.resend-msg{font-size:.76rem;font-weight:600;margin-top:.35rem;display:block}
-.resend-msg.ok{color:#4ade80}.resend-msg.fail{color:#f87171}
-
-/* Cyan pill button */
+/* Verify button */
 .obtn{
-  width:100%;padding:.92rem 1.5rem;border:none;border-radius:999px;
+  width:100%;max-width:400px;
+  padding:.88rem 1.5rem;border:none;border-radius:999px;
   font-size:.97rem;font-weight:700;font-family:'Inter',sans-serif;
   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.625rem;
   background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan2) 100%);
   color:#080C18;letter-spacing:.01em;
   box-shadow:0 6px 28px rgba(13,207,220,.35),0 2px 8px rgba(0,0,0,.3);
   transition:filter .2s,box-shadow .2s,transform .1s;
-  margin-bottom:.25rem;
+  margin-bottom:.5rem;
 }
-.obtn:hover{
-  filter:brightness(1.08);
-  box-shadow:0 8px 36px rgba(13,207,220,.5),0 2px 10px rgba(0,0,0,.35);
-}
+.obtn:hover{filter:brightness(1.08)}
 .obtn:active{transform:scale(.975)}
-.obtn:disabled{opacity:.55;cursor:not-allowed;filter:none}
+.obtn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+
 .btn-spinner{
   display:inline-block;width:18px;height:18px;border-radius:50%;
   border:2.5px solid rgba(8,12,24,.3);border-top-color:#080C18;
   animation:spin .65s linear infinite;
 }
 
-/* Don't receive link */
-.no-otp{font-size:.76rem;color:var(--muted);margin-top:1rem}
-.no-otp a,.no-otp button{
-  background:none;border:none;padding:0;cursor:pointer;
-  color:var(--cyan);font-size:.76rem;font-weight:600;transition:opacity .18s;
+/* Timer & resend */
+.resend-row{
+  font-size:.79rem;color:var(--sub);
+  margin-bottom:1rem;min-height:1.8rem;
+  display:flex;align-items:center;justify-content:center;gap:.35rem;
+  flex-wrap:wrap;
 }
-.no-otp a:hover,.no-otp button:hover{opacity:.75}
+.resend-timer strong{color:var(--cyan);font-weight:700;font-family:'Space Grotesk',sans-serif}
+.resend-btn{
+  background:none;border:none;cursor:pointer;padding:0;
+  font-size:.79rem;font-weight:700;color:var(--cyan);
+  transition:opacity .18s;
+}
+.resend-btn:hover{opacity:.75}
+.resend-btn:disabled{opacity:.35;cursor:not-allowed}
+.resend-msg{
+  display:block;font-size:.74rem;font-weight:600;margin-top:.2rem;
+  text-align:center;
+}
+.resend-msg.ok{color:#4ade80}.resend-msg.fail{color:#f87171}
 
-/* ── Numeric keypad ── */
-.keypad-wrap{
-  width:100%;max-width:400px;
-  padding:1.375rem 1.5rem 0;
+/* ── Numeric keypad (fixé en bas, hors du flux flex) ── */
+.keypad-zone{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:20;
+  background:linear-gradient(to bottom,transparent 0,var(--bg) 14px);
+  padding:.625rem 1.25rem calc(.875rem + env(safe-area-inset-bottom,0px));
 }
 .keypad{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:.625rem;
+  gap:.5rem;
+  max-width:400px;
+  margin:0 auto;
 }
 .kbtn{
-  aspect-ratio:1;border-radius:50%;
+  height:68px;border-radius:18px;
   background:rgba(255,255,255,.05);
-  border:1.5px solid rgba(255,255,255,.08);
+  border:1.5px solid rgba(255,255,255,.07);
   color:var(--text);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  cursor:pointer;
-  transition:background .12s,border-color .12s,transform .08s,box-shadow .12s;
+  cursor:pointer;gap:.1rem;
+  transition:background .1s,border-color .1s,transform .08s;
   -webkit-tap-highlight-color:transparent;
   user-select:none;-webkit-user-select:none;
-  position:relative;overflow:hidden;
 }
-.kbtn:active{
-  transform:scale(.9);
-  background:rgba(13,207,220,.12);
-  border-color:rgba(13,207,220,.4);
-  box-shadow:0 0 12px rgba(13,207,220,.2);
+.kbtn:active,.kbtn.pressed{
+  transform:scale(.92);
+  background:rgba(13,207,220,.15);
+  border-color:rgba(13,207,220,.35);
+  box-shadow:0 0 14px rgba(13,207,220,.2);
 }
-.kbtn:disabled{opacity:.35;cursor:not-allowed}
+.kbtn:disabled{opacity:.3;cursor:not-allowed}
 .knum{
   font-family:'Space Grotesk',sans-serif;
-  font-size:1.25rem;font-weight:700;line-height:1;
+  font-size:1.375rem;font-weight:700;line-height:1;
 }
 .ksub{
-  font-size:.42rem;font-weight:500;letter-spacing:.1em;
+  font-size:.4rem;font-weight:600;letter-spacing:.12em;
   color:var(--muted);font-family:'Inter',sans-serif;
   text-transform:uppercase;
 }
-.kbtn-del{
-  background:transparent;border-color:transparent;
-}
-.kbtn-del i{font-size:1.1rem;color:var(--sub)}
-.kbtn-del:active{
-  background:rgba(255,255,255,.06);border-color:var(--bdr);
+.kbtn-del{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.05)}
+.kbtn-del i{font-size:1.15rem;color:rgba(255,255,255,.5)}
+.kbtn-del:active,.kbtn-del.pressed{
+  background:rgba(255,100,100,.1);border-color:rgba(255,100,100,.25);
 }
 .kbtn-empty{pointer-events:none;background:none;border:none}
 
-/* Spacer bottom */
-.pg-foot{
-  padding:.875rem 1.5rem 1.25rem;text-align:center;
-  padding-bottom:calc(1.25rem + env(safe-area-inset-bottom,0px));
-  font-size:.68rem;color:rgba(255,255,255,.22);
-  position:relative;z-index:1;
-}
-.pg-foot a{color:rgba(255,255,255,.28)}.pg-foot a:hover{color:rgba(255,255,255,.55)}
-
-/* Entrance */
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.logo-box  {animation:fadeUp .4s ease .05s both}
-.card-title{animation:fadeUp .4s ease .1s  both}
-.card-sub  {animation:fadeUp .4s ease .15s both}
-.odigits   {animation:fadeUp .4s ease .18s both}
-.resend-row{animation:fadeUp .4s ease .22s both}
-.obtn      {animation:fadeUp .4s ease .25s both}
-.no-otp    {animation:fadeUp .4s ease .28s both}
-.keypad-wrap{animation:fadeUp .4s ease .3s  both}
+/* Entrance animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.otp-icon  {animation:fadeUp .35s ease .05s both}
+.card-title{animation:fadeUp .35s ease .1s  both}
+.card-sub  {animation:fadeUp .35s ease .15s both}
+.oerr      {animation:fadeUp .35s ease .08s both}
+.odigits   {animation:fadeUp .35s ease .18s both}
+.resend-row{animation:fadeUp .35s ease .2s  both}
+.obtn      {animation:fadeUp .35s ease .22s both}
+.keypad-zone{animation:fadeUp .4s ease .28s both}
 </style>
 </head>
 <body>
@@ -299,10 +332,15 @@ a{text-decoration:none;color:inherit}
 {{-- Loading overlay --}}
 <div id="ld" role="status">
   <div class="ld-bar"></div>
-  <div class="ld-logo"><span>C</span><div class="ld-ring"></div></div>
-  <p class="ld-lbl">Vérification…</p>
+  <div class="ld-logo">
+    <img src="/images/icon-192.png" alt="Credixa">
+    <div class="ld-ring"></div>
+  </div>
+  <p class="ld-lbl">{{ __('auth.otp_verifying') ?? 'Vérification…' }}</p>
   <div class="ld-dots">
-    <div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
   </div>
 </div>
 
@@ -312,29 +350,27 @@ a{text-decoration:none;color:inherit}
   <div class="orb orb-2"></div>
 </div>
 
-<div class="page-shell" x-data="otpApp()" x-init="startTimer()">
+{{-- ══ PAGE SHELL ══ --}}
+<div class="page-shell" x-data="otpApp()">
 
   {{-- Top bar --}}
   <div class="topbar">
     <a href="/login" class="topbar__back">
-      <i class="fas fa-arrow-left"></i> {{ __('auth.otp_back') }}
+      <i class="fas fa-chevron-left"></i> {{ __('auth.otp_back') }}
     </a>
     <a href="{{ url('/') }}" class="topbar__logo">
-      <img src="{{ asset('assets/images/logo new.png') }}"
+      <img src="{{ asset('assets/images/logo%20new.png') }}"
            onerror="this.style.display='none'" alt="Credixa">
     </a>
   </div>
 
-  {{-- Content --}}
-  <div class="page-wrap">
+  {{-- Scrollable content --}}
+  <div class="page-content">
     <div class="card">
 
-      {{-- Logo --}}
-      <div class="logo-box">
-        <img src="{{ asset('assets/images/logo new.png') }}"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
-             alt="Credixa">
-        <span style="display:none">C</span>
+      {{-- Shield icon --}}
+      <div class="otp-icon">
+        <i class="fas fa-shield-halved"></i>
       </div>
 
       {{-- Heading --}}
@@ -344,99 +380,95 @@ a{text-decoration:none;color:inherit}
         <strong>{{ $masked }}</strong>
       </p>
 
-      {{-- Error --}}
-      @if($errors->has('code'))
-      <div class="oerr">
+      {{-- Error (inline, géré par Alpine) --}}
+      <div class="oerr" x-show="errorMsg" x-transition style="display:none">
         <i class="fas fa-circle-exclamation"></i>
-        <span>{{ $errors->first('code') }}</span>
+        <span x-text="errorMsg"></span>
       </div>
-      @endif
 
       {{-- OTP form --}}
       <form id="otp-form" action="{{ route('otp.verify') }}" method="POST" novalidate>
         @csrf
         <input type="hidden" name="code" :value="digits.join('')">
 
+        {{-- Input invisible pour le remplissage automatique SMS (sans déclencher le clavier) --}}
+        <input id="otp-real"
+               type="text"
+               inputmode="none"
+               autocomplete="one-time-code"
+               maxlength="6"
+               tabindex="-1"
+               aria-hidden="true"
+               style="position:fixed;opacity:0;width:1px;height:1px;pointer-events:none;top:-100px"
+               @input="onSmsAutofill($event)">
+
         {{-- Digit circles --}}
-        <div class="odigits">
+        <div class="odigits" id="odigits-row">
           <template x-for="(d, i) in digits" :key="i">
             <div class="odigit"
-                 :class="{filled: d !== '', active: d === '' && i === activeIndex}">
+                 :class="{filled: d !== '' && !hasErr, active: d === '' && i === activeIndex && !hasErr, err: hasErr, shake: hasErr}">
               <span x-text="d" x-show="d !== ''"></span>
-              <span x-show="d === '' && i === activeIndex">|</span>
             </div>
           </template>
         </div>
 
-        {{-- Hidden real input for physical keyboard --}}
-        <input id="otp-real" type="tel" inputmode="numeric" pattern="[0-9]*"
-               maxlength="6" autocomplete="one-time-code"
-               style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"
-               @input="onRealInput($event)" @keydown="onRealKey($event)">
-
-        {{-- Timer --}}
+        {{-- Timer & Resend --}}
         <div class="resend-row">
-          <span class="resend-timer" x-show="timeLeft > 0">
-            {{ __('auth.otp_resend_in') }} <strong x-text="fmtTime()"></strong>
+          <span x-show="timeLeft > 0">
+            {{ __('auth.otp_resend_in') }}
+            <strong x-text="fmtTime()"></strong>
           </span>
-          <span x-show="timeLeft <= 0 && !resending">
-            {{ __('auth.otp_resend') }}
-          </span>
-          <span x-show="resendMsg" class="resend-msg" :class="resendOk ? 'ok' : 'fail'" x-text="resendMsg"></span>
+          <template x-if="timeLeft <= 0 && !resending">
+            <button type="button" class="resend-btn" @click="resend()">
+              {{ __('auth.otp_resend') }}
+            </button>
+          </template>
+          <template x-if="resending">
+            <span><i class="fas fa-circle-notch fa-spin" style="color:var(--cyan)"></i></span>
+          </template>
         </div>
+        <span class="resend-msg" :class="resendOk ? 'ok' : 'fail'" x-show="resendMsg" x-text="resendMsg"></span>
 
         {{-- Verify button --}}
         <button type="submit" class="obtn"
-                :disabled="digits.join('').length < 6 || submitting">
-          <span x-show="!submitting"><i class="fas fa-check"></i> {{ __('auth.otp_verify_btn') }}</span>
-          <span x-show="submitting" class="btn-spinner"></span>
+                :disabled="digits.join('').length < 6 || submitting"
+                @click.prevent="doSubmit()">
+          <template x-if="!submitting">
+            <span><i class="fas fa-check" style="margin-right:.4rem"></i>{{ __('auth.otp_verify_btn') }}</span>
+          </template>
+          <template x-if="submitting">
+            <span class="btn-spinner"></span>
+          </template>
         </button>
       </form>
 
-      {{-- Resend / don't receive --}}
-      <div class="no-otp">
-        {{ __('auth.otp_resend') . ' ?' }}
-        <button type="button" @click="resend()" :disabled="timeLeft > 0 || resending">
-          <span x-show="!resending">{{ __('auth.otp_resend') }}</span>
-          <span x-show="resending"><i class="fas fa-circle-notch fa-spin"></i></span>
-        </button>
-      </div>
-
     </div>
-
-    {{-- Keypad --}}
-    <div class="keypad-wrap">
-      <div class="keypad">
-        @foreach([['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ']] as [$n,$s])
-        <button type="button" class="kbtn"
-                @click="press('{{ $n }}')"
-                :disabled="digits.join('').length >= 6 || submitting">
-          <span class="knum">{{ $n }}</span>
-          @if($s)<span class="ksub">{{ $s }}</span>@endif
-        </button>
-        @endforeach
-        {{-- Row 4: backspace | 0 | empty --}}
-        <button type="button" class="kbtn kbtn-del"
-                @click="del()" :disabled="submitting">
-          <i class="fas fa-delete-left"></i>
-        </button>
-        <button type="button" class="kbtn"
-                @click="press('0')"
-                :disabled="digits.join('').length >= 6 || submitting">
-          <span class="knum">0</span>
-        </button>
-        <div class="kbtn kbtn-empty"></div>
-      </div>
-    </div>
-
   </div>
 
-  <div class="pg-foot">
-    &copy; {{ date('Y') }} Credixa Invest &nbsp;·&nbsp;
-    <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;·&nbsp;
-    <a href="{{ url('/fr/privacy') }}">Confidentialité</a>
-  </div>
 
+</div>{{-- /.page-shell --}}
+
+{{-- ── Clavier numérique (fixé en bas, hors du flux flex) ── --}}
+<div class="keypad-zone" x-data x-ref="kpad">
+  <div class="keypad">
+    @foreach([['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ']] as [$n,$s])
+    <button type="button" class="kbtn"
+            @pointerdown.prevent="$dispatch('otp-press', '{{ $n }}')">
+      <span class="knum">{{ $n }}</span>
+      @if($s)<span class="ksub">{{ $s }}</span>@endif
+    </button>
+    @endforeach
+    {{-- Ligne 4 : supprimer | 0 | vide --}}
+    <button type="button" class="kbtn kbtn-del"
+            @pointerdown.prevent="$dispatch('otp-del')">
+      <i class="fas fa-delete-left"></i>
+    </button>
+    <button type="button" class="kbtn"
+            @pointerdown.prevent="$dispatch('otp-press', '0')">
+      <span class="knum">0</span>
+    </button>
+    <div class="kbtn kbtn-empty"></div>
+  </div>
 </div>
 
 <script>
@@ -450,15 +482,25 @@ function otpApp() {
     submitting:  false,
     resendMsg:   '',
     resendOk:    true,
+    errorMsg:    '',
+    hasErr:      false,
+
+    init() {
+      this.startTimer();
+      document.addEventListener('keydown', (e) => {
+        if (this.submitting || this.hasErr) return;
+        if (e.key >= '0' && e.key <= '9') { e.preventDefault(); this.press(e.key); }
+        if (e.key === 'Backspace')         { e.preventDefault(); this.del(); }
+        if (e.key === 'Enter')             { e.preventDefault(); this.doSubmit(); }
+      });
+      window.addEventListener('otp-press', (e) => { if (!this.submitting && !this.hasErr) this.press(e.detail); });
+      window.addEventListener('otp-del',   ()  => { if (!this.submitting && !this.hasErr) this.del(); });
+    },
 
     startTimer() {
       clearInterval(this.timer);
       this.timeLeft = 120;
       this.timer = setInterval(() => { if (this.timeLeft > 0) this.timeLeft--; }, 1000);
-      this.$nextTick(() => {
-        var ri = document.getElementById('otp-real');
-        if (ri) ri.focus();
-      });
     },
 
     fmtTime() {
@@ -479,22 +521,14 @@ function otpApp() {
 
     del() {
       if (this.submitting) return;
-      var idx = this.activeIndex > 0 && this.digits[this.activeIndex] === ''
-                ? this.activeIndex - 1 : this.activeIndex;
+      var idx = this.activeIndex - 1;
       if (idx < 0) return;
       this.digits[idx] = '';
       this.digits = [...this.digits];
-      this.activeIndex = Math.max(idx, 0);
+      this.activeIndex = idx;
     },
 
-    doSubmit() {
-      if (this.digits.join('').length < 6 || this.submitting) return;
-      this.submitting = true;
-      document.getElementById('ld').classList.add('on');
-      document.getElementById('otp-form').submit();
-    },
-
-    onRealInput(e) {
+    onSmsAutofill(e) {
       var val = (e.target.value || '').replace(/\D/g,'').slice(0,6);
       e.target.value = val;
       for (var i = 0; i < 6; i++) this.digits[i] = val[i] || '';
@@ -503,29 +537,71 @@ function otpApp() {
       if (val.length === 6) this.$nextTick(() => this.doSubmit());
     },
 
-    onRealKey(e) {
-      if (e.key === 'Backspace') { e.preventDefault(); this.del(); }
+    showError(msg) {
+      this.errorMsg   = msg;
+      this.hasErr     = true;
+      this.submitting = false;
+      /* Après l'animation shake (350ms), on vide les cases et on remet le curseur */
+      setTimeout(() => {
+        this.hasErr     = false;
+        this.digits     = ['','','','','',''];
+        this.activeIndex = 0;
+      }, 500);
+    },
+
+    async doSubmit() {
+      if (this.digits.join('').length < 6 || this.submitting) return;
+      this.submitting = true;
+      this.errorMsg   = '';
+      try {
+        var resp = await fetch('{{ route("otp.verify") }}', {
+          method:  'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept':       'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          },
+          body: JSON.stringify({ code: this.digits.join('') }),
+        });
+        var data = await resp.json();
+
+        if (data.status === 'success') {
+          document.getElementById('ld').classList.add('on');
+          window.location.href = data.url;
+          return;
+        }
+        if (data.status === 'blocked' || data.status === 'redirect') {
+          document.getElementById('ld').classList.add('on');
+          window.location.href = data.url || '/login';
+          return;
+        }
+        /* Mauvais code */
+        this.showError(data.message || '{{ __("auth.otp_invalid", ["remaining" => 1]) }}');
+      } catch(err) {
+        this.showError('{{ __("auth.otp_send_failed") }}');
+      }
     },
 
     async resend() {
       if (this.resending || this.timeLeft > 0) return;
-      this.resending = true;
-      this.resendMsg = '';
+      this.resending  = true;
+      this.resendMsg  = '';
       try {
         var resp = await fetch('{{ route("otp.resend") }}', {
-          method: 'POST',
+          method:  'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json',
+            'Accept':       'application/json',
           },
         });
         var data = await resp.json();
         if (resp.ok) {
-          this.resendOk  = true;
-          this.resendMsg = data.message || '{{ __("auth.otp_resend_success") }}';
-          this.digits    = ['','','','','',''];
+          this.resendOk    = true;
+          this.resendMsg   = data.message || '{{ __("auth.otp_resend_success") }}';
+          this.digits      = ['','','','','',''];
           this.activeIndex = 0;
+          this.errorMsg    = '';
           this.startTimer();
         } else {
           this.resendOk  = false;

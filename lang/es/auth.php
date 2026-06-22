@@ -72,6 +72,7 @@ return [
     'otp_resend'          => 'Reenviar código',
     'otp_resend_in'       => 'Reenviar en',
     'otp_back'            => 'Cambiar cuenta',
+    'otp_verifying'       => 'Verificando…',
     'otp_invalid'         => 'Código incorrecto. Le quedan :remaining intento(s).',
     'otp_expired'         => 'Este código ha caducado. Solicite uno nuevo.',
     'otp_too_many'        => 'Demasiados intentos. Vuelva a intentarlo en :seconds segundos.',
@@ -79,6 +80,25 @@ return [
     'otp_send_failed'     => 'No se pudo enviar el código. Inténtelo de nuevo.',
     'otp_session_expired' => 'Sesión caducada. Por favor, inicie sesión de nuevo.',
     'otp_resend_success'  => '¡Nuevo código enviado!',
+
+    // Cuenta recordada
+    'change_account' => 'Cambiar de cuenta',
+
+    // Cuenta bloqueada
+    'account_blocked'                     => 'Su cuenta ha sido bloqueada tras demasiados intentos incorrectos. Consulte su email para recibir el enlace de desbloqueo.',
+    'account_blocked_notified'            => 'Demasiados intentos incorrectos. Su cuenta ha sido bloqueada. Se ha enviado un enlace de desbloqueo a su email.',
+    'account_unblocked'                   => 'Su cuenta ha sido desbloqueada con éxito. Ahora puede iniciar sesión.',
+    'unblock_invalid'                     => 'Este enlace de desbloqueo no es válido o ha caducado. Contacte con el soporte.',
+
+    'account_blocked_email_subject'       => 'Su cuenta Credixa ha sido bloqueada',
+    'account_blocked_email_title'         => 'Cuenta temporalmente bloqueada',
+    'account_blocked_email_intro'         => 'Su cuenta ha sido temporalmente bloqueada tras varios intentos de inicio de sesión incorrectos.',
+    'account_blocked_email_reason_title'  => '¿Por qué este bloqueo?',
+    'account_blocked_email_reason_body'   => 'Se introdujeron 4 códigos OTP incorrectos consecutivos durante un intento de acceso. Por seguridad, el acceso ha sido suspendido.',
+    'account_blocked_email_btn'           => 'Desbloquear mi cuenta',
+    'account_blocked_email_fallback'      => 'Si el botón no funciona, copie este enlace en su navegador:',
+    'account_blocked_email_notice'        => 'Si no ha realizado estos intentos, no haga clic en este enlace y contacte inmediatamente con el soporte de Credixa.',
+    'account_blocked_email_footer'        => 'Enlace válido durante 48 horas.',
 
     'otp_email_subject'      => 'Su código de acceso — Credixa',
     'otp_email_title'        => 'Código de verificación',

@@ -191,7 +191,7 @@
 
 /* ── Quick actions ── */
 .h-actions{
-  display:grid;grid-template-columns:repeat(4,1fr);
+  display:grid;grid-template-columns:repeat(3,1fr);
   gap:.5rem;
   padding:1.25rem 1.25rem .25rem;
 }
@@ -429,7 +429,13 @@
     <div class="h-action__ico" style="background:rgba(200,169,81,.15);border:1px solid rgba(200,169,81,.3);color:var(--ca-gold-l)">
       <i class="fas fa-list-ul"></i>
     </div>
-    <span class="h-action__lbl">Mouvements</span>
+    <span class="h-action__lbl">{{ __('app.movements_title') }}</span>
+  </a>
+  <a href="{{ route('client.app.invoices') }}" class="h-action">
+    <div class="h-action__ico" style="background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.3);color:#60a5fa">
+      <i class="fas fa-file-invoice"></i>
+    </div>
+    <span class="h-action__lbl">{{ __('app.action_invoices') }}</span>
   </a>
 </div>
 
@@ -453,66 +459,68 @@
 </div>
 
 <div class="h-txn-list">
-
-  @foreach($activeLoans->take(3) as $loan)
+  @forelse($recentActivity as $mv)
   @php
-    $badgeCls = match($loan->status){
-      'finalized'       => 'h-badge--final',
-      'contract_signed' => 'h-badge--signed',
-      default           => 'h-badge--loan'
-    };
-  @endphp
-  <a href="{{ route('client.app.loans.show', $loan) }}" class="h-txn">
-    <div class="h-txn__ico" style="background:rgba(27,138,122,.15)">
-      <i class="fas fa-file-contract" style="color:var(--ca-teal-l)"></i>
-    </div>
-    <div class="h-txn__info">
-      <div class="h-txn__title">{{ $loan->reference }}</div>
-      <div class="h-txn__sub">
-        <span class="h-badge {{ $badgeCls }}">{{ $loan->statusLabel() }}</span>
-      </div>
-    </div>
-    <div class="h-txn__right">
-      <div class="h-txn__amount h-txn__amount--pos">+{{ number_format($loan->amount, 0, ',', ' ') }}</div>
-      <div class="h-txn__date">{{ $loan->currency }}</div>
-    </div>
-  </a>
-  @endforeach
+    $isCredit  = $mv->type === 'credit';
+    $isPending = in_array($mv->status, ['pending', 'fee_required']);
+    $isRejected= $mv->status === 'rejected';
 
-  @foreach($recentTransfers->take(2) as $trf)
-  @php
-    $isPending = in_array($trf->status, [\App\Models\Transfer::STATUS_PENDING, \App\Models\Transfer::STATUS_FEE_REQUIRED]);
+    if ($isPending) {
+        $icoStyle = 'background:rgba(245,158,11,.12)';
+        $icoColor = 'color:#f59e0b';
+        $icoIcon  = 'fa-clock';
+        $amtCls   = 'h-txn__amount--neu';
+        $prefix   = $isCredit ? '+' : '-';
+    } elseif ($isRejected) {
+        $icoStyle = 'background:rgba(148,163,184,.12)';
+        $icoColor = 'color:#94a3b8';
+        $icoIcon  = 'fa-ban';
+        $amtCls   = 'h-txn__amount--neu';
+        $prefix   = '';
+    } elseif ($isCredit) {
+        $icoStyle = 'background:rgba(74,222,128,.12)';
+        $icoColor = 'color:#4ade80';
+        $icoIcon  = 'fa-arrow-down';
+        $amtCls   = 'h-txn__amount--pos';
+        $prefix   = '+';
+    } else {
+        $icoStyle = 'background:rgba(255,90,90,.1)';
+        $icoColor = 'color:var(--ca-negative)';
+        $icoIcon  = 'fa-arrow-up';
+        $amtCls   = 'h-txn__amount--neg';
+        $prefix   = '-';
+    }
   @endphp
   <a href="{{ route('client.app.movements') }}" class="h-txn">
-    <div class="h-txn__ico" style="background:rgba(255,90,90,.1)">
-      <i class="fas fa-paper-plane" style="color:var(--ca-negative)"></i>
+    <div class="h-txn__ico" style="{{ $icoStyle }}">
+      <i class="fas {{ $icoIcon }}" style="{{ $icoColor }}"></i>
     </div>
     <div class="h-txn__info">
-      <div class="h-txn__title">{{ $trf->beneficiary_name }}</div>
-      <div class="h-txn__sub">
-        {{ $trf->reference }}
+      <div class="h-txn__title">{{ $mv->label }}</div>
+      @if($mv->sub)
+      <div class="h-txn__sub">{{ Str::limit($mv->sub, 38) }}
         @if($isPending)
-          &nbsp;<span style="font-size:.6rem;background:rgba(245,158,11,.2);color:#f59e0b;padding:.1rem .4rem;border-radius:999px;font-weight:700">En attente</span>
+          &nbsp;<span style="font-size:.58rem;background:rgba(245,158,11,.18);color:#f59e0b;padding:.1rem .38rem;border-radius:999px;font-weight:700;white-space:nowrap">En attente</span>
+        @elseif($isRejected)
+          &nbsp;<span style="font-size:.58rem;background:rgba(148,163,184,.18);color:#94a3b8;padding:.1rem .38rem;border-radius:999px;font-weight:700;white-space:nowrap">Rejeté</span>
         @endif
       </div>
+      @endif
     </div>
     <div class="h-txn__right">
-      <div class="h-txn__amount h-txn__amount--neg">-{{ number_format($trf->amount, 0, ',', ' ') }}</div>
-      <div class="h-txn__date">{{ $trf->created_at->format('d/m · H:i') }}</div>
+      <div class="h-txn__amount {{ $amtCls }}" style="{{ $isRejected ? 'text-decoration:line-through;opacity:.55' : '' }}">
+        {{ $prefix }}{{ number_format($mv->amount, 2, ',', ' ') }}
+      </div>
+      <div class="h-txn__date">{{ $mv->created_at?->format('d/m · H:i') }}</div>
     </div>
   </a>
-  @endforeach
-
-  @if($activeLoans->isEmpty() && $recentTransfers->isEmpty())
-  <div class="h-txn-list">
-    <div class="h-empty">
-      <div class="h-empty__ico"><i class="fas fa-receipt"></i></div>
-      <div class="h-empty__title">{{ __('app.no_activity') }}</div>
-      <div class="h-empty__sub">{{ __('app.no_activity_hint', [], app()->getLocale()) ?? 'Vos transactions apparaîtront ici.' }}</div>
-    </div>
+  @empty
+  <div class="h-empty">
+    <div class="h-empty__ico"><i class="fas fa-receipt"></i></div>
+    <div class="h-empty__title">{{ __('app.no_activity') }}</div>
+    <div class="h-empty__sub">{{ __('app.no_activity_hint') }}</div>
   </div>
-  @endif
-
+  @endforelse
 </div>
 
 {{-- ── Pending loans ─────────────────────────────────────────────── --}}

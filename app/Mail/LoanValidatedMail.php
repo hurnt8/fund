@@ -14,12 +14,18 @@ class LoanValidatedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $mailLocale;
+    public string $amortizationPdfPath;
+
     public function __construct(
         public LoanRequest $loan,
         public string      $pdfPath,
-        public string      $locale = 'fr',
-        public string      $amortizationPdfPath = '',
-    ) {}
+        string             $locale = 'fr',
+        string             $amortizationPdfPath = '',
+    ) {
+        $this->mailLocale          = $locale;
+        $this->amortizationPdfPath = $amortizationPdfPath;
+    }
 
     public function envelope(): Envelope
     {
@@ -30,14 +36,14 @@ class LoanValidatedMail extends Mailable
             'es' => 'Validación de su solicitud N°' . $this->loan->reference . ' — CREDIXA INVESTI',
         ];
 
-        return new Envelope(subject: $subjects[$this->locale] ?? $subjects['fr']);
+        return new Envelope(subject: $subjects[$this->mailLocale] ?? $subjects['fr']);
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.loan-validated',
-            with: ['loan' => $this->loan, 'locale' => $this->locale],
+            view: 'emails.loan-validated',
+            with: ['loan' => $this->loan, 'locale' => $this->mailLocale],
         );
     }
 

@@ -13,10 +13,14 @@ class SignedContractAcknowledgementMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $mailLocale;
+
     public function __construct(
         public LoanRequest $loan,
-        public string      $locale = 'fr',
-    ) {}
+        string             $locale = 'fr',
+    ) {
+        $this->mailLocale = $locale;
+    }
 
     public function envelope(): Envelope
     {
@@ -27,14 +31,19 @@ class SignedContractAcknowledgementMail extends Mailable
             'es' => 'Recepción de su contrato firmado N°' . $this->loan->reference . ' — CREDIXA INVESTI',
         ];
 
-        return new Envelope(subject: $subjects[$this->locale] ?? $subjects['fr']);
+        return new Envelope(subject: $subjects[$this->mailLocale] ?? $subjects['fr']);
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.signed-contract-acknowledgement',
-            with: ['loan' => $this->loan, 'locale' => $this->locale],
+            view: 'emails.signed-contract-acknowledgement',
+            with: ['loan' => $this->loan, 'locale' => $this->mailLocale],
         );
+    }
+
+    public function attachments(): array
+    {
+        return [];
     }
 }

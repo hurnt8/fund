@@ -154,14 +154,18 @@ Route::get('/invitation/{token}',  [InvitationController::class, 'show'])->name(
 Route::post('/invitation/{token}', [InvitationController::class, 'activate'])->name('invitation.activate');
 
 // Client login
-Route::get('/login',  [ClientLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/login', [ClientLoginController::class, 'login'])->name('login.submit')->middleware('guest');
-Route::post('/logout',[ClientLoginController::class, 'logout'])->name('logout');
+Route::get('/login',        [ClientLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login',       [ClientLoginController::class, 'login'])->name('login.submit')->middleware('guest');
+Route::post('/logout',      [ClientLoginController::class, 'logout'])->name('logout');
+Route::get('/login/forget', [ClientLoginController::class, 'forgetAccount'])->name('login.forget');
 
 // OTP verification
 Route::get('/otp-verify',  [OtpController::class, 'show'])->name('otp.show');
 Route::post('/otp-verify', [OtpController::class, 'verify'])->name('otp.verify');
 Route::post('/otp-resend', [OtpController::class, 'resend'])->name('otp.resend');
+
+// Account unblock (via email link)
+Route::get('/account/unblock/{token}', [OtpController::class, 'unblock'])->name('account.unblock');
 
 // Forgot / reset password (clients)
 Route::get('/forgot-password',         [ForgotPasswordController::class, 'show'])->name('password.request')->middleware('guest');
@@ -205,6 +209,10 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
 
     // Mouvements de compte
     Route::get('/movements', [ClientAppController::class, 'movements'])->name('movements');
+
+    // Factures
+    Route::get('/invoices',            [ClientAppController::class, 'invoices'])->name('invoices');
+    Route::get('/invoices/{invoice}',  [ClientAppController::class, 'invoiceShow'])->name('invoices.show');
 
     // Transferts : hub central (bouton FAB nav) + sous-pages
     Route::get('/transfers',           [\App\Http\Controllers\Client\TransferController::class, 'hub'])->name('transfers');

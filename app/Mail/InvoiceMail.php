@@ -17,17 +17,27 @@ class InvoiceMail extends Mailable
 
     public function envelope(): Envelope
     {
-        $ref = $this->invoice->reference;
-        return new Envelope(
-            subject: 'Facture ' . $ref . ' — CREDIXA INVESTI',
-        );
+        $ref    = $this->invoice->reference;
+        $locale = $this->invoice->client->locale ?? 'fr';
+
+        $subjects = [
+            'fr' => 'Facture ' . $ref . ' — CREDIXA INVESTI',
+            'en' => 'Invoice ' . $ref . ' — CREDIXA INVESTI',
+            'es' => 'Factura ' . $ref . ' — CREDIXA INVESTI',
+            'pl' => 'Faktura ' . $ref . ' — CREDIXA INVESTI',
+        ];
+
+        return new Envelope(subject: $subjects[$locale] ?? $subjects['fr']);
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.invoice',
-            with: ['invoice' => $this->invoice],
+            view: 'emails.invoice',
+            with: [
+                'invoice' => $this->invoice,
+                'locale'  => $this->invoice->client->locale ?? 'fr',
+            ],
         );
     }
 

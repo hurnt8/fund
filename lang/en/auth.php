@@ -72,6 +72,7 @@ return [
     'otp_resend'          => 'Resend code',
     'otp_resend_in'       => 'Resend in',
     'otp_back'            => 'Change account',
+    'otp_verifying'       => 'Verifying…',
     'otp_invalid'         => 'Invalid code. :remaining attempt(s) remaining.',
     'otp_expired'         => 'This code has expired. Request a new one.',
     'otp_too_many'        => 'Too many attempts. Try again in :seconds seconds.',
@@ -79,6 +80,25 @@ return [
     'otp_send_failed'     => 'Unable to send code. Please try again.',
     'otp_session_expired' => 'Session expired. Please log in again.',
     'otp_resend_success'  => 'New code sent!',
+
+    // Remembered account
+    'change_account' => 'Switch account',
+
+    // Account blocked
+    'account_blocked'                     => 'Your account has been blocked after too many incorrect attempts. Check your email for the unblock link.',
+    'account_blocked_notified'            => 'Too many incorrect attempts. Your account has been blocked. An unblock link has been sent to your email.',
+    'account_unblocked'                   => 'Your account has been successfully unblocked. You can now log in.',
+    'unblock_invalid'                     => 'This unblock link is invalid or has expired. Please contact support.',
+
+    'account_blocked_email_subject'       => 'Your Credixa account has been blocked',
+    'account_blocked_email_title'         => 'Account temporarily blocked',
+    'account_blocked_email_intro'         => 'Your account has been temporarily blocked following several incorrect login attempts.',
+    'account_blocked_email_reason_title'  => 'Why was my account blocked?',
+    'account_blocked_email_reason_body'   => '4 incorrect OTP codes were entered consecutively during a login attempt. As a security measure, access has been suspended.',
+    'account_blocked_email_btn'           => 'Unblock my account',
+    'account_blocked_email_fallback'      => 'If the button does not work, copy this link into your browser:',
+    'account_blocked_email_notice'        => 'If you did not make these attempts, do not click this link and contact Credixa support immediately.',
+    'account_blocked_email_footer'        => 'Link valid for 48 hours.',
 
     'otp_email_subject'      => 'Your login code — Credixa',
     'otp_email_title'        => 'Verification code',

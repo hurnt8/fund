@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -20,7 +21,17 @@ class ClientLoginController extends Controller
         if (Auth::check()) {
             return $this->redirectAuthenticated(Auth::user());
         }
-        return view('auth.login-client');
+
+        $remembered = null;
+        $raw = request()->cookie('credixa_remembered');
+        if ($raw) {
+            $decoded = json_decode($raw, true);
+            if (isset($decoded['name'], $decoded['email'])) {
+                $remembered = $decoded;
+            }
+        }
+
+        return view('auth.login-client', compact('remembered'));
     }
 
     public function login(Request $request)
@@ -46,6 +57,12 @@ class ClientLoginController extends Controller
             return back()->withErrors(['identifier' => __('auth.portal_clients_only')]);
         }
 
+        if ($user->is_blocked) {
+            return back()
+                ->withErrors(['identifier' => __('auth.account_blocked')])
+                ->onlyInput('identifier');
+        }
+
         // Generate OTP
         $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         Cache::put('otp_' . $user->id, Hash::make($otp), self::OTP_TTL);
@@ -59,7 +76,18 @@ class ClientLoginController extends Controller
             return back()->withErrors(['identifier' => __('auth.otp_send_failed')])->onlyInput('identifier');
         }
 
-        return redirect()->route('otp.show');
+        $cookie = Cookie::make(
+            'credixa_remembered',
+            json_encode(['name' => $user->name, 'email' => $user->email]),
+            60 * 24 * 30
+        );
+
+        return redirect()->route('otp.show')->withCookie($cookie);
+    }
+
+    public function forgetAccount()
+    {
+        return redirect('/login')->withCookie(Cookie::forget('credixa_remembered'));
     }
 
     public function logout(Request $request)

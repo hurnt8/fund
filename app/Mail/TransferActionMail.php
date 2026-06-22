@@ -15,20 +15,39 @@ class TransferActionMail extends Mailable
 
     public function __construct(
         public Transfer $transfer,
-        public string $action  // 'approved' | 'rejected' | 'fee_required'
+        public string   $action  // 'approved' | 'rejected' | 'fee_required'
     ) {}
 
     public function envelope(): Envelope
     {
+        $locale = $this->transfer->user->locale ?? 'fr';
         $ref    = $this->transfer->reference;
         $amount = number_format($this->transfer->amount, 2, ',', ' ') . ' ' . $this->transfer->currency;
 
-        $subject = match ($this->action) {
-            'approved'     => "Virement {$ref} ({$amount}) — Validé",
-            'rejected'     => "Virement {$ref} ({$amount}) — Rejeté",
-            'fee_required' => "Virement {$ref} — Frais requis",
-            default        => "Mise à jour de votre virement {$ref}",
-        };
+        $subjects = [
+            'approved' => [
+                'fr' => "Virement {$ref} ({$amount}) — Validé",
+                'en' => "Transfer {$ref} ({$amount}) — Approved",
+                'es' => "Transferencia {$ref} ({$amount}) — Aprobada",
+                'pl' => "Przelew {$ref} ({$amount}) — Zatwierdzony",
+            ],
+            'rejected' => [
+                'fr' => "Virement {$ref} ({$amount}) — Rejeté",
+                'en' => "Transfer {$ref} ({$amount}) — Rejected",
+                'es' => "Transferencia {$ref} ({$amount}) — Rechazada",
+                'pl' => "Przelew {$ref} ({$amount}) — Odrzucony",
+            ],
+            'fee_required' => [
+                'fr' => "Virement {$ref} — Frais requis",
+                'en' => "Transfer {$ref} — Fees required",
+                'es' => "Transferencia {$ref} — Comisiones requeridas",
+                'pl' => "Przelew {$ref} — Wymagane opłaty",
+            ],
+        ];
+
+        $subject = $subjects[$this->action][$locale]
+                ?? $subjects[$this->action]['fr']
+                ?? "Mise à jour de votre virement {$ref}";
 
         return new Envelope(subject: $subject);
     }
@@ -36,10 +55,11 @@ class TransferActionMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.transfer-action',
+            view: 'emails.transfer-action',
             with: [
                 'transfer' => $this->transfer,
                 'action'   => $this->action,
+                'locale'   => $this->transfer->user->locale ?? 'fr',
             ],
         );
     }

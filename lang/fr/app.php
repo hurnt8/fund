@@ -69,6 +69,7 @@ return [
     'action_receive'  => 'Recevoir',
     'action_loans'    => 'Dossiers',
     'action_analytics'=> 'Analytique',
+    'action_invoices' => 'Factures',
 
     // Transfert
     'send_title'         => 'Envoyer',
@@ -137,7 +138,25 @@ return [
     'nav_loans'       => 'Dossiers',
     'nav_transfer'    => 'Transfert',
     'nav_analytics'   => 'Analytique',
+    'nav_invoices'    => 'Factures',
     'nav_profile'     => 'Profil',
+    'invoices_title'     => 'Mes Factures',
+    'invoice_detail'     => 'Détail de la facture',
+    'invoice_ref'        => 'Référence',
+    'invoice_date'       => 'Date d\'émission',
+    'invoice_due'        => 'Date d\'échéance',
+    'invoice_status'     => 'Statut',
+    'invoice_subtotal'   => 'Sous-total',
+    'invoice_tax'        => 'TVA',
+    'invoice_total'      => 'Total',
+    'invoice_items'      => 'Prestations',
+    'invoice_note'       => 'Note',
+    'invoice_empty'      => 'Aucune facture',
+    'invoice_empty_sub'  => 'Vos factures apparaîtront ici lorsque votre conseiller en émettra une.',
+    'invoice_status_sent'      => 'Envoyée',
+    'invoice_status_paid'      => 'Payée',
+    'invoice_status_cancelled' => 'Annulée',
+    'invoice_download'   => 'Télécharger PDF',
 
     // PWA
     'install'         => 'Installer l\'application',
@@ -240,7 +259,11 @@ return [
     'dos_rejected'    => 'Rejetés',
 
     // Mouvements
-    'movements_title'    => 'Mouvements',
+    'movements_title'      => 'Mouvements',
+    'mv_credit_label'      => 'Crédit compte',
+    'mv_debit_label'       => 'Débit compte',
+    'mv_transfer_sent'     => 'Virement vers',
+    'mv_transfer_received' => 'Virement reçu',
     'mv_balance_current' => 'Solde actuel',
     'mv_total_in'        => 'Total recus',
     'mv_total_out'       => 'Total envoyes',

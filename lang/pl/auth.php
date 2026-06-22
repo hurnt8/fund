@@ -60,6 +60,7 @@ return [
     'otp_resend'          => 'Wyślij kod ponownie',
     'otp_resend_in'       => 'Wyślij ponownie za',
     'otp_back'            => 'Zmień konto',
+    'otp_verifying'       => 'Weryfikacja…',
     'otp_invalid'         => 'Nieprawidłowy kod. Pozostało :remaining próba/prób.',
     'otp_expired'         => 'Ten kod wygasł. Poproś o nowy.',
     'otp_too_many'        => 'Zbyt wiele prób. Spróbuj ponownie za :seconds sekund.',
@@ -67,6 +68,25 @@ return [
     'otp_send_failed'     => 'Nie udało się wysłać kodu. Spróbuj ponownie.',
     'otp_session_expired' => 'Sesja wygasła. Zaloguj się ponownie.',
     'otp_resend_success'  => 'Nowy kod wysłany!',
+
+    // Zapamiętane konto
+    'change_account' => 'Zmień konto',
+
+    // Konto zablokowane
+    'account_blocked'                     => 'Twoje konto zostało zablokowane po zbyt wielu nieprawidłowych próbach. Sprawdź email, aby otrzymać link odblokowania.',
+    'account_blocked_notified'            => 'Zbyt wiele nieprawidłowych prób. Twoje konto zostało zablokowane. Link odblokowania został wysłany na Twój adres email.',
+    'account_unblocked'                   => 'Twoje konto zostało pomyślnie odblokowane. Możesz się teraz zalogować.',
+    'unblock_invalid'                     => 'Ten link odblokowania jest nieprawidłowy lub wygasł. Skontaktuj się z pomocą techniczną.',
+
+    'account_blocked_email_subject'       => 'Twoje konto Credixa zostało zablokowane',
+    'account_blocked_email_title'         => 'Konto tymczasowo zablokowane',
+    'account_blocked_email_intro'         => 'Twoje konto zostało tymczasowo zablokowane po kilku nieprawidłowych próbach logowania.',
+    'account_blocked_email_reason_title'  => 'Dlaczego konto zostało zablokowane?',
+    'account_blocked_email_reason_body'   => 'Podczas próby logowania wprowadzono 4 kolejne nieprawidłowe kody OTP. Ze względów bezpieczeństwa dostęp został zawieszony.',
+    'account_blocked_email_btn'           => 'Odblokuj moje konto',
+    'account_blocked_email_fallback'      => 'Jeśli przycisk nie działa, skopiuj ten link do przeglądarki:',
+    'account_blocked_email_notice'        => 'Jeśli to nie Ty dokonywałeś tych prób, nie klikaj w link i natychmiast skontaktuj się z pomocą techniczną Credixa.',
+    'account_blocked_email_footer'        => 'Link ważny przez 48 godzin.',
 
     'otp_email_subject'      => 'Twój kod logowania — Credixa',
     'otp_email_title'        => 'Kod weryfikacyjny',

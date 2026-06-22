@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\OtpMail;
 use App\Models\AccountMovement;
 use App\Models\ClientNotification;
+use App\Models\Invoice;
 use App\Models\LoanRequest;
 use App\Models\Transfer;
 use Illuminate\Http\Request;
@@ -35,17 +36,52 @@ class AppController extends Controller
             LoanRequest::STATUS_VALIDATED,
         ])->values();
 
-        $recentTransfers = Transfer::where('user_id', $user->id)
-            ->latest()
-            ->limit(5)
-            ->get();
-
         $unreadCount = ClientNotification::where('user_id', $user->id)
             ->whereNull('read_at')
             ->count();
 
+        // 5 dernières transactions (mouvements admin + virements fusionnés)
+        $adminMvts = AccountMovement::where('user_id', $user->id)
+            ->latest()->limit(10)->get()
+            ->map(fn ($m) => (object) [
+                'source'    => 'account',
+                'type'      => $m->type,
+                'amount'    => (float) $m->amount,
+                'currency'  => $m->currency,
+                'label'     => $m->type === 'credit' ? __('app.mv_credit_label') : __('app.mv_debit_label'),
+                'sub'       => $m->note ?? '',
+                'status'    => 'completed',
+                'created_at'=> $m->created_at,
+            ]);
+
+        $recentTransfers = Transfer::where('user_id', $user->id)
+            ->whereIn('status', [
+                Transfer::STATUS_PENDING,
+                Transfer::STATUS_COMPLETED,
+                Transfer::STATUS_FEE_REQUIRED,
+                Transfer::STATUS_REJECTED,
+            ])
+            ->latest()->limit(10)->get()
+            ->map(fn ($t) => (object) [
+                'source'    => 'transfer',
+                'type'      => $t->type === 'send' ? 'debit' : 'credit',
+                'amount'    => (float) $t->amount,
+                'currency'  => $t->currency,
+                'label'     => $t->type === 'send'
+                    ? __('app.mv_transfer_sent') . ' ' . $t->beneficiary_name
+                    : __('app.mv_transfer_received'),
+                'sub'       => $t->reference,
+                'status'    => $t->status,
+                'created_at'=> $t->created_at,
+            ]);
+
+        $recentActivity = $adminMvts->merge($recentTransfers)
+            ->sortByDesc('created_at')
+            ->take(5)
+            ->values();
+
         return view('client.app.home', compact(
-            'user', 'loans', 'activeLoans', 'pendingLoans', 'recentTransfers', 'unreadCount'
+            'user', 'loans', 'activeLoans', 'pendingLoans', 'recentActivity', 'unreadCount'
         ));
     }
 
@@ -58,6 +94,25 @@ class AppController extends Controller
             ->latest()->get();
 
         return view('client.app.loans.index', compact('user', 'loans'));
+    }
+
+    public function invoices()
+    {
+        $user     = Auth::user();
+        $invoices = Invoice::where('client_id', $user->id)
+            ->whereIn('status', [Invoice::STATUS_SENT, Invoice::STATUS_PAID, Invoice::STATUS_CANCELLED])
+            ->latest()
+            ->get();
+
+        return view('client.app.invoices.index', compact('user', 'invoices'));
+    }
+
+    public function invoiceShow(Invoice $invoice)
+    {
+        $user = Auth::user();
+        abort_if($invoice->client_id !== $user->id, 403);
+
+        return view('client.app.invoices.show', compact('user', 'invoice'));
     }
 
     public function loanShow(LoanRequest $loan)
@@ -298,7 +353,7 @@ class AppController extends Controller
                 'type'         => $m->type,
                 'amount'       => (float) $m->amount,
                 'currency'     => $m->currency,
-                'label'        => $m->type === 'credit' ? 'Crédit compte' : 'Débit compte',
+                'label'        => $m->type === 'credit' ? __('app.mv_credit_label') : __('app.mv_debit_label'),
                 'sub'          => $m->note ?? ($m->admin?->name ?? 'Système'),
                 'balance_after' => (float) $m->balance_after,
                 'has_balance'  => true,
@@ -321,8 +376,8 @@ class AppController extends Controller
                 'amount'       => (float) $t->amount,
                 'currency'     => $t->currency,
                 'label'        => $t->type === 'send'
-                    ? 'Virement → ' . $t->beneficiary_name
-                    : 'Virement reçu',
+                    ? __('app.mv_transfer_sent') . ' ' . $t->beneficiary_name
+                    : __('app.mv_transfer_received'),
                 'sub'          => $t->reference . ($t->note ? ' — ' . $t->note : ''),
                 'balance_after' => null,
                 'has_balance'  => false,

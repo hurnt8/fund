@@ -17,14 +17,17 @@ class User extends Authenticatable
         'name', 'email', 'password', 'type', 'gender', 'created_by', 'invitation_token',
         'phone', 'address', 'birth_date', 'id_type', 'id_number', 'currency', 'locale', 'balance',
         'bank_account', 'bic',
+        'is_blocked', 'unblock_token', 'unblock_token_expires_at',
     ];
 
     protected $hidden = ['password', 'remember_token'];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'birth_date'        => 'date',
-        'balance'           => 'decimal:2',
+        'email_verified_at'        => 'datetime',
+        'birth_date'               => 'date',
+        'balance'                  => 'decimal:2',
+        'is_blocked'               => 'boolean',
+        'unblock_token_expires_at' => 'datetime',
     ];
 
     // Demandes créées par cet admin

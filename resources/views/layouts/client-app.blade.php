@@ -155,12 +155,12 @@
     <span>{{ __('app.nav_transfer') }}</span>
   </a>
 
-  {{-- Analytique --}}
-  <a href="{{ route('client.app.analytics') }}"
-     class="ca-nav-item {{ request()->routeIs('client.app.analytics') ? 'active' : '' }}"
-     aria-label="{{ __('app.nav_analytics') }}">
-    <i class="fas fa-chart-pie"></i>
-    <span>{{ __('app.nav_analytics') }}</span>
+  {{-- Factures --}}
+  <a href="{{ route('client.app.invoices') }}"
+     class="ca-nav-item {{ request()->routeIs('client.app.invoices*') ? 'active' : '' }}"
+     aria-label="{{ __('app.nav_invoices') }}">
+    <i class="fas fa-file-invoice"></i>
+    <span>{{ __('app.nav_invoices') }}</span>
   </a>
 
   {{-- Profil --}}

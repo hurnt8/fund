@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-title" content="Credixa">
 <meta name="theme-color" content="#080C18">
 <link rel="manifest" href="{{ route('pwa.manifest') }}">
-<link rel="apple-touch-icon" href="/images/icon-192.svg">
-<link rel="icon" type="image/svg+xml" href="/images/icon-192.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
 <title>{{ __('auth.client_login_title') }} — Credixa</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -266,6 +266,27 @@ a{text-decoration:none;color:inherit}
 .alt-link a{color:rgba(13,207,220,.75);font-weight:600;transition:color .18s}
 .alt-link a:hover{color:var(--cyan)}
 
+/* ── Quick-login avatar block ── */
+.qlogin{display:flex;flex-direction:column;align-items:center;gap:.6rem;margin-bottom:2rem}
+.qavatar{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:800;
+  color:#080C18;letter-spacing:.02em;
+  box-shadow:0 0 0 4px rgba(13,207,220,.18);
+}
+.qname{font-size:.93rem;font-weight:700;color:var(--text)}
+.qemail{font-size:.78rem;color:var(--sub)}
+.qchange{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.74rem;font-weight:600;color:var(--muted);
+  border:1.5px solid var(--bdr);border-radius:8px;
+  padding:.28rem .65rem;margin-top:.15rem;
+  transition:color .18s,border-color .18s;
+}
+.qchange:hover{color:var(--sub);border-color:rgba(255,255,255,.18)}
+
 /* Footer */
 .pg-foot{
   padding:.75rem 1.5rem 1.25rem;text-align:center;
@@ -292,7 +313,8 @@ a{text-decoration:none;color:inherit}
 <div id="ld" role="status" aria-label="Connexion en cours">
   <div class="ld-bar"></div>
   <div class="ld-logo">
-    <span>C</span>
+    <img src="/images/icon-192.png" alt="Credixa"
+         style="width:48px;height:48px;object-fit:contain;border-radius:10px">
     <div class="ld-ring"></div>
   </div>
   <p class="ld-lbl">Connexion en cours…</p>
@@ -362,6 +384,14 @@ a{text-decoration:none;color:inherit}
         <p class="card-sub">{{ __('auth.client_login_sub') }}</p>
       </div>
 
+      {{-- Unblock success --}}
+      @if(session('unblock_success'))
+      <div class="ferr" style="background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.25);border-left-color:#4ade80;color:#86efac">
+        <i class="fas fa-circle-check" style="color:#4ade80"></i>
+        <span>{{ session('unblock_success') }}</span>
+      </div>
+      @endif
+
       {{-- Error --}}
       @if($errors->any())
       <div class="ferr">
@@ -374,17 +404,35 @@ a{text-decoration:none;color:inherit}
       <form id="login-form" action="{{ route('login.submit') }}" method="POST" novalidate>
         @csrf
 
-        <div class="fgrp">
-          <label class="flabel" for="identifier">{{ __('auth.identifier') }}</label>
-          <div class="frel">
-            <i class="fas fa-envelope ficon"></i>
-            <input type="text" id="identifier" name="identifier"
-                   class="finput {{ $errors->has('identifier') ? 'err' : '' }}"
-                   value="{{ old('identifier') }}"
-                   placeholder="{{ __('auth.identifier_ph') }}"
-                   autocomplete="username" inputmode="email" required>
+        @if($remembered ?? null)
+          {{-- Quick login: avatar + only password --}}
+          @php
+            $initials = collect(explode(' ', $remembered['name']))->take(2)->map(fn($w) => strtoupper(mb_substr($w,0,1)))->implode('');
+          @endphp
+          <div class="qlogin">
+            <div class="qavatar">{{ $initials }}</div>
+            <div class="qname">{{ $remembered['name'] }}</div>
+            <div class="qemail">{{ $remembered['email'] }}</div>
+            <a href="{{ route('login.forget') }}" class="qchange">
+              <i class="fas fa-repeat" style="font-size:.6rem"></i>
+              {{ __('auth.change_account') }}
+            </a>
           </div>
-        </div>
+          <input type="hidden" name="identifier" value="{{ $remembered['email'] }}">
+        @else
+          {{-- Full login form --}}
+          <div class="fgrp">
+            <label class="flabel" for="identifier">{{ __('auth.identifier') }}</label>
+            <div class="frel">
+              <i class="fas fa-envelope ficon"></i>
+              <input type="text" id="identifier" name="identifier"
+                     class="finput {{ $errors->has('identifier') ? 'err' : '' }}"
+                     value="{{ old('identifier') }}"
+                     placeholder="{{ __('auth.identifier_ph') }}"
+                     autocomplete="username" inputmode="email" required>
+            </div>
+          </div>
+        @endif
 
         <div class="fgrp">
           <label class="flabel" for="password">{{ __('auth.password_label') }}</label>
@@ -401,10 +449,14 @@ a{text-decoration:none;color:inherit}
         </div>
 
         <div class="frow">
+          @if(!($remembered ?? null))
           <div class="fcheck">
             <input type="checkbox" id="remember" name="remember">
             <label for="remember">{{ __('auth.remember') }}</label>
           </div>
+          @else
+          <div></div>
+          @endif
           <a href="{{ route('password.request') }}" class="fforgot">{{ __('auth.forgot_password') }}</a>
         </div>
 
