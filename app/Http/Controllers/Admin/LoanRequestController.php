@@ -330,11 +330,12 @@ class LoanRequestController extends Controller
 
         // Notification in-app au client
         if ($loan->client_id) {
-            ClientNotification::forUser(
-                $loan->client_id,
+            ClientNotification::notifyUser(
+                $loan->client,
                 'loan_update',
-                'Contrat envoyé par e-mail',
-                'Votre contrat ' . $loan->reference . ' a été envoyé à votre adresse e-mail. Veuillez le signer et nous le retourner.',
+                'app.notif_loan_contract',
+                'app.notif_loan_contract_body',
+                ['reference' => $loan->reference],
                 ['loan_id' => $loan->id, 'reference' => $loan->reference]
             );
         }
@@ -382,12 +383,12 @@ class LoanRequestController extends Controller
 
             if ($loan->client_id) {
                 $cur = $loan->currency ?? config('credixa.default_currency');
-                ClientNotification::forUser(
-                    $loan->client_id,
+                ClientNotification::notifyUser(
+                    $loan->client,
                     'credit',
-                    'Financement débloqué',
-                    number_format((float) $loan->amount, 2, ',', ' ') . ' ' . $cur
-                        . ' ont été crédités sur votre compte (dossier ' . $loan->reference . ').',
+                    'app.notif_loan_funded',
+                    'app.notif_loan_funded_body',
+                    ['amount' => number_format((float) $loan->amount, 2, ',', ' '), 'currency' => $cur],
                     ['loan_id' => $loan->id, 'amount' => $loan->amount, 'currency' => $cur]
                 );
             }

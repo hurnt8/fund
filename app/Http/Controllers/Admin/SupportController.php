@@ -112,7 +112,13 @@ class SupportController extends Controller
             ? Str::limit($msg->body, 80)
             : ($msg->file_type === 'image' ? '📷 Image' : '🎤 Audio');
 
-        ClientNotification::forUser($client->id, 'system', 'Réponse de votre conseiller', $preview, ['type' => 'support']);
+        ClientNotification::forUser(
+            $client->id,
+            'system',
+            __('app.notif_support_reply', [], $client->locale ?? 'fr'),
+            $preview,
+            ['type' => 'support']
+        );
 
         return response()->json(['message' => $msg->toChat()]);
     }

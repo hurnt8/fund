@@ -1,6 +1,6 @@
 @extends('layouts.client-app')
 @section('title', __('app.movements_title', [], $user->locale ?? 'fr') . ' — Credixa')
-@section('page_title', 'Mouvements')
+@section('page_title', __('app.movements_title'))
 @section('back_btn', true)
 @section('back_url', route('client.app.profile'))
 
@@ -50,15 +50,15 @@
 {{-- Summary --}}
 <div class="mv-summary">
   <div class="mv-summary__item">
-    <div class="mv-summary__lbl">Solde actuel</div>
+    <div class="mv-summary__lbl">{{ __('app.mv_balance_current') }}</div>
     <div class="mv-summary__val">{{ number_format((float)$user->balance, 2, ',', ' ') }} {{ $cur }}</div>
   </div>
   <div class="mv-summary__item">
-    <div class="mv-summary__lbl">Total reçus</div>
+    <div class="mv-summary__lbl">{{ __('app.mv_total_in') }}</div>
     <div class="mv-summary__val mv-summary__val--green">+{{ number_format($totalIn, 2, ',', ' ') }}</div>
   </div>
   <div class="mv-summary__item">
-    <div class="mv-summary__lbl">Total envoyés</div>
+    <div class="mv-summary__lbl">{{ __('app.mv_total_out') }}</div>
     <div class="mv-summary__val mv-summary__val--red">-{{ number_format($totalOut, 2, ',', ' ') }}</div>
   </div>
 </div>
@@ -66,8 +66,8 @@
 @if($merged->isEmpty())
   <div class="mv-empty">
     <div class="mv-empty__ico"><i class="fas fa-wallet"></i></div>
-    <div class="mv-empty__title">Aucun mouvement</div>
-    <div class="mv-empty__body">Aucune opération n'a encore été effectuée sur votre compte.</div>
+    <div class="mv-empty__title">{{ __('app.mv_empty') }}</div>
+    <div class="mv-empty__body">{{ __('app.mv_empty_body') }}</div>
   </div>
 @else
 
@@ -78,8 +78,8 @@
 @foreach($merged as $mvt)
 @php
   $dateLabel = $mvt->created_at->isToday()
-      ? "Aujourd'hui"
-      : ($mvt->created_at->isYesterday() ? 'Hier' : $mvt->created_at->format('d/m/Y'));
+      ? __('app.mv_today')
+      : ($mvt->created_at->isYesterday() ? __('app.mv_yesterday') : $mvt->created_at->format('d/m/Y'));
 
   $isPending  = $mvt->status === 'pending';
   $isRejected = $mvt->status === 'rejected';
@@ -107,11 +107,11 @@
     <div class="mv-title">
       {{ $mvt->label }}
       @if($isPending)
-        <span class="mv-status-pill mv-status-pill--pending">En attente</span>
+        <span class="mv-status-pill mv-status-pill--pending">{{ __('app.mv_status_pending') }}</span>
       @elseif($isFee)
-        <span class="mv-status-pill mv-status-pill--fee_required">Frais requis</span>
+        <span class="mv-status-pill mv-status-pill--fee_required">{{ __('app.mv_status_fee') }}</span>
       @elseif($isRejected)
-        <span class="mv-status-pill mv-status-pill--rejected">Rejeté</span>
+        <span class="mv-status-pill mv-status-pill--rejected">{{ __('app.mv_status_rejected') }}</span>
       @endif
     </div>
     @if($mvt->sub)
@@ -124,7 +124,7 @@
       {{ $prefix }}{{ number_format($mvt->amount, 2, ',', ' ') }} {{ $mvt->currency }}
     </div>
     @if($mvt->has_balance)
-      <div class="mv-bal">Solde : {{ number_format($mvt->balance_after, 2, ',', ' ') }}</div>
+      <div class="mv-bal">{{ __('app.mv_balance_after') }} {{ number_format($mvt->balance_after, 2, ',', ' ') }}</div>
     @endif
   </div>
 </div>

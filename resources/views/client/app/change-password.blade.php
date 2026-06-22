@@ -79,7 +79,7 @@
 {{-- Info --}}
 <div class="cp-info">
   <i class="fas fa-circle-info"></i>
-  <span>Choisissez un mot de passe fort avec au moins 8 caracteres, une majuscule et un chiffre. Vous resterez connecte apres la modification.</span>
+  <span>{{ __('app.cp_info_text') }}</span>
 </div>
 
 {{-- Erreur globale --}}
@@ -107,7 +107,7 @@
       <input :type="showCur ? 'text' : 'password'" id="cp-cur" name="current_password"
              class="cp-input" style="@error('current_password') border-color:var(--ca-negative) @enderror"
              autocomplete="current-password" required>
-      <button type="button" class="cp-eye" @click="showCur = !showCur" :aria-label="showCur ? 'Masquer' : 'Afficher'">
+      <button type="button" class="cp-eye" @click="showCur = !showCur" :aria-label="showCur ? '{{ __('app.cp_hide') }}' : '{{ __('app.cp_show') }}'"  >
         <i :class="showCur ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
       </button>
     </div>
@@ -125,7 +125,7 @@
              class="cp-input"
              x-model="pw" @input="strength()"
              autocomplete="new-password" required minlength="8">
-      <button type="button" class="cp-eye" @click="showNew = !showNew" :aria-label="showNew ? 'Masquer' : 'Afficher'">
+      <button type="button" class="cp-eye" @click="showNew = !showNew" :aria-label="showNew ? '{{ __('app.cp_hide') }}' : '{{ __('app.cp_show') }}'"  >
         <i :class="showNew ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
       </button>
     </div>
@@ -147,15 +147,15 @@
              class="cp-input"
              x-model="pwc"
              autocomplete="new-password" required>
-      <button type="button" class="cp-eye" @click="showConfirm = !showConfirm" :aria-label="showConfirm ? 'Masquer' : 'Afficher'">
+      <button type="button" class="cp-eye" @click="showConfirm = !showConfirm" :aria-label="showConfirm ? '{{ __('app.cp_hide') }}' : '{{ __('app.cp_show') }}'"  >
         <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
       </button>
     </div>
     <div class="cp-hint" x-show="pwc.length > 0 && pw !== pwc" style="color:var(--ca-negative)">
-      <i class="fas fa-triangle-exclamation"></i> Les mots de passe ne correspondent pas.
+      <i class="fas fa-triangle-exclamation"></i> {{ __('app.cp_nomatch') }}
     </div>
     <div class="cp-hint" x-show="pwc.length > 0 && pw === pwc" style="color:var(--ca-positive)">
-      <i class="fas fa-check"></i> Les mots de passe correspondent.
+      <i class="fas fa-check"></i> {{ __('app.cp_match') }}
     </div>
   </div>
 
@@ -175,7 +175,7 @@ function cpForm() {
     showCur: false, showNew: false, showConfirm: false,
     pw: '', pwc: '', score: 0,
     colors: ['', '#ef4444','#f97316','#eab308','#22c55e'],
-    labels: ['', 'Faible','Moyen','Bon','Fort'],
+    labels: ['', @json(__('app.cp_strength_weak')), @json(__('app.cp_strength_fair')), @json(__('app.cp_strength_good')), @json(__('app.cp_strength_strong'))],
     strength() {
       const p = this.pw;
       let s = 0;

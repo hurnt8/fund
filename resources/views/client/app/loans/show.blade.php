@@ -1,6 +1,6 @@
 @extends('layouts.client-app')
 @section('title', $loan->reference . ' — Credixa')
-@section('page_title', 'Dossier')
+@section('page_title', $loan->reference)
 @section('back_btn', true)
 @section('back_url', route('client.app.loans'))
 

@@ -24,6 +24,12 @@ class ClientNotification extends Model
         return is_null($this->read_at);
     }
 
+    public static function notifyUser(User $user, string $type, string $titleKey, string $bodyKey, array $params = [], array $data = []): self
+    {
+        $locale = $user->locale ?? config('app.locale', 'fr');
+        return self::forUser($user->id, $type, __($titleKey, $params, $locale), __($bodyKey, $params, $locale), $data);
+    }
+
     public static function forUser(int $userId, string $type, string $title, string $body, array $data = []): self
     {
         $iconMap = [

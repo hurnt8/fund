@@ -246,13 +246,12 @@ class InvoiceController extends Controller
         }
 
         // Notification in-app au client
-        ClientNotification::forUser(
-            $invoice->client_id,
+        ClientNotification::notifyUser(
+            $invoice->client,
             'system',
-            'Nouvelle facture reçue',
-            'La facture ' . $invoice->reference . ' d\'un montant de '
-                . number_format($invoice->total, 2, ',', ' ') . ' ' . $invoice->currency
-                . ' vous a été envoyée par e-mail.',
+            'app.notif_invoice_new',
+            'app.notif_invoice_new_body',
+            ['reference' => $invoice->reference, 'amount' => number_format($invoice->total, 2, ',', ' '), 'currency' => $invoice->currency],
             ['invoice_id' => $invoice->id, 'reference' => $invoice->reference]
         );
 
@@ -273,13 +272,12 @@ class InvoiceController extends Controller
         ]);
 
         // Notification in-app au client
-        ClientNotification::forUser(
-            $invoice->client_id,
+        ClientNotification::notifyUser(
+            $invoice->client,
             'system',
-            'Paiement enregistré',
-            'Le paiement de la facture ' . $invoice->reference . ' ('
-                . number_format($invoice->total, 2, ',', ' ') . ' ' . $invoice->currency
-                . ') a bien été enregistré.',
+            'app.notif_invoice_paid',
+            'app.notif_invoice_paid_body',
+            ['reference' => $invoice->reference, 'amount' => number_format($invoice->total, 2, ',', ' '), 'currency' => $invoice->currency],
             ['invoice_id' => $invoice->id]
         );
 

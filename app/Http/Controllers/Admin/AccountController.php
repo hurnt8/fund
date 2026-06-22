@@ -70,12 +70,14 @@ class AccountController extends Controller
                 'note'           => $validated['note'] ?? null,
             ]);
 
+            $locale = $account->locale ?? 'fr';
+            $body   = __('app.notif_account_credited_body', ['amount' => number_format($validated['amount'], 2, ',', ' '), 'currency' => $cur], $locale);
+            if ($validated['note']) $body .= ' — ' . $validated['note'];
             ClientNotification::forUser(
                 $account->id,
                 'system',
-                'Compte crédité',
-                '+' . number_format($validated['amount'], 2, ',', ' ') . ' ' . $cur
-                    . ($validated['note'] ? ' — ' . $validated['note'] : ''),
+                __('app.notif_account_credited', [], $locale),
+                $body,
                 ['amount' => $validated['amount'], 'currency' => $cur]
             );
         });
@@ -109,12 +111,14 @@ class AccountController extends Controller
                 'note'           => $validated['note'] ?? null,
             ]);
 
+            $locale = $account->locale ?? 'fr';
+            $body   = __('app.notif_account_debited_body', ['amount' => number_format($validated['amount'], 2, ',', ' '), 'currency' => $cur], $locale);
+            if ($validated['note']) $body .= ' — ' . $validated['note'];
             ClientNotification::forUser(
                 $account->id,
                 'system',
-                'Mouvement sur votre compte',
-                '-' . number_format($validated['amount'], 2, ',', ' ') . ' ' . $cur
-                    . ($validated['note'] ? ' — ' . $validated['note'] : ''),
+                __('app.notif_account_debited', [], $locale),
+                $body,
                 ['amount' => $validated['amount'], 'currency' => $cur]
             );
         });

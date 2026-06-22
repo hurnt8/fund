@@ -605,6 +605,22 @@ a { text-decoration:none; }
   .pro-table tbody tr:hover td { background:transparent; }
   .table-responsive-pro { overflow-x:visible; border-radius:0; }
 
+  /* Cellule actions : sans label, boutons touch-friendly */
+  .pro-table tbody td:last-child {
+    justify-content:flex-end;
+    gap:.5rem;
+    flex-wrap:wrap;
+    padding-top:.5rem;
+    padding-bottom:.375rem;
+  }
+  .pro-table tbody td:last-child::before { display:none; }
+  .pro-table tbody td:last-child > div,
+  .pro-table tbody td:last-child > a,
+  .pro-table tbody td:last-child > form { flex-shrink:0; }
+  .pro-table tbody td:last-child .btn-icon { width:40px; height:40px; font-size:.9rem; }
+  .pro-table tbody td:last-child .btn-gold.btn-sm-pro,
+  .pro-table tbody td:last-child .btn-navy.btn-sm-pro { min-height:40px; padding:.55rem 1rem; }
+
   /* Transfer card header: empilé sur mobile */
   .trf-head { grid-template-columns:auto 1fr !important; }
   .trf-head > div:nth-child(3),

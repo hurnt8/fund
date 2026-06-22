@@ -78,11 +78,12 @@ class TransferValidationController extends Controller
         $cur    = $transfer->currency;
         $amount = number_format($transfer->amount, 2, ',', ' ');
 
-        ClientNotification::forUser(
-            $client->id,
+        ClientNotification::notifyUser(
+            $client,
             'transfer',
-            'Virement validé',
-            "Votre virement {$transfer->reference} de {$amount} {$cur} vers {$transfer->beneficiary_name} a été validé.",
+            'app.notif_transfer_approved',
+            'app.notif_transfer_approved_body',
+            ['reference' => $transfer->reference, 'amount' => $amount, 'currency' => $cur, 'name' => $transfer->beneficiary_name],
             ['transfer_id' => $transfer->id, 'reference' => $transfer->reference]
         );
 
@@ -122,12 +123,20 @@ class TransferValidationController extends Controller
             $client->increment('balance', $amount);
         });
 
+        $locale    = $client->locale ?? 'fr';
+        $notifBody = __('app.notif_transfer_rejected_body', [
+            'reference' => $transfer->reference,
+            'amount'    => number_format($amount, 2, ',', ' '),
+            'currency'  => $cur,
+        ], $locale);
+        if ($request->admin_note) {
+            $notifBody .= ' ' . $request->admin_note;
+        }
         ClientNotification::forUser(
             $client->id,
             'transfer',
-            'Virement rejeté',
-            "Votre virement {$transfer->reference} de " . number_format($amount, 2, ',', ' ') . " {$cur} a été rejeté. Vos fonds ont été recrédités."
-                . ($request->admin_note ? ' Motif : ' . $request->admin_note : ''),
+            __('app.notif_transfer_rejected', [], $locale),
+            $notifBody,
             ['transfer_id' => $transfer->id, 'reference' => $transfer->reference]
         );
 
@@ -191,11 +200,12 @@ class TransferValidationController extends Controller
 
         $invoice = Invoice::where('client_id', $client->id)->latest()->first();
 
-        ClientNotification::forUser(
-            $client->id,
+        ClientNotification::notifyUser(
+            $client,
             'system',
-            'Frais requis pour votre virement',
-            "Des frais de " . number_format($data['fee_amount'], 2, ',', ' ') . " {$currency} sont requis pour traiter votre virement {$transfer->reference}. Consultez votre espace facturation.",
+            'app.notif_fees_required',
+            'app.notif_fees_required_body',
+            ['amount' => number_format($data['fee_amount'], 2, ',', ' '), 'currency' => $currency, 'reference' => $transfer->reference],
             ['transfer_id' => $transfer->id, 'reference' => $transfer->reference]
         );
 
