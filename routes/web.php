@@ -224,6 +224,10 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
     // Support client (page principale)
     Route::get('/support', [ClientSupportController::class, 'index'])->name('support');
 
+    // ── Push notifications ──────────────────────────────────────────────────
+    Route::post('/push/subscribe',   [\App\Http\Controllers\Client\PushController::class, 'subscribe'])->name('push.subscribe');
+    Route::post('/push/unsubscribe', [\App\Http\Controllers\Client\PushController::class, 'unsubscribe'])->name('push.unsubscribe');
+
     // ── Endpoints AJAX internes (rate-limited + sécurisés) ──────────────────
     Route::middleware(['ajax.secure', 'throttle:60,1'])->group(function () {
         Route::get('/support/poll',              [ClientSupportController::class, 'poll'])->name('support.poll');

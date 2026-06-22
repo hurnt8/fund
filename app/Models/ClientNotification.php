@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\PushService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -40,7 +41,7 @@ class ClientNotification extends Model
             'system'      => 'bell',
         ];
 
-        return self::create([
+        $notification = self::create([
             'user_id' => $userId,
             'type'    => $type,
             'icon'    => $iconMap[$type] ?? 'bell',
@@ -48,5 +49,16 @@ class ClientNotification extends Model
             'body'    => $body,
             'data'    => $data ?: null,
         ]);
+
+        // Envoyer une push notification si l'utilisateur a des subscriptions
+        try {
+            $user = $notification->user;
+            if ($user && PushSubscription::where('user_id', $userId)->exists()) {
+                $url = $data['url'] ?? '/app/notifications';
+                (new PushService())->sendToUser($user, $title, $body, $url, $type);
+            }
+        } catch (\Throwable) {}
+
+        return $notification;
     }
 }

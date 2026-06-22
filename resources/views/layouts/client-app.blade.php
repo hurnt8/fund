@@ -199,6 +199,127 @@
 
 @stack('scripts')
 
+{{-- ══ Push Notifications ══ --}}
+<div id="cxa-push-banner" style="display:none;position:fixed;bottom:calc(62px + env(safe-area-inset-bottom,0px) + .75rem);left:.875rem;right:.875rem;z-index:9000;background:#0E1A2E;border:1px solid rgba(27,138,122,.35);border-radius:16px;padding:.875rem 1rem;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;align-items:center;gap:.875rem">
+  <div style="width:42px;height:42px;border-radius:13px;background:rgba(27,138,122,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+    <i class="fas fa-bell" style="color:var(--ca-teal-l);font-size:1.1rem"></i>
+  </div>
+  <div style="flex:1;min-width:0">
+    <div style="font-size:.84rem;font-weight:700;color:#fff;margin-bottom:.15rem">Activer les notifications</div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.4">Recevez vos virements, factures et mises à jour en temps réel.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:.4rem;flex-shrink:0">
+    <button id="cxa-push-allow" style="background:linear-gradient(90deg,var(--ca-teal-l),var(--ca-teal));color:#fff;border:none;padding:.42rem .875rem;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap">Activer</button>
+    <button id="cxa-push-later" style="background:none;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);padding:.38rem .875rem;border-radius:8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Plus tard</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const PUSH_PUBLIC_KEY = '{{ config("services.vapid.public_key") }}';
+  const CSRF            = '{{ csrf_token() }}';
+  const STORAGE_KEY     = 'cxa_push_asked';
+
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const raw     = window.atob(base64);
+    return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+  }
+
+  async function subscribe(reg) {
+    try {
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly:      true,
+        applicationServerKey: urlBase64ToUint8Array(PUSH_PUBLIC_KEY),
+      });
+      const key  = sub.getKey('p256dh');
+      const auth = sub.getKey('auth');
+
+      await fetch('/app/push/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
+        body:    JSON.stringify({
+          endpoint:   sub.endpoint,
+          public_key: key  ? btoa(String.fromCharCode(...new Uint8Array(key)))  : '',
+          auth_token: auth ? btoa(String.fromCharCode(...new Uint8Array(auth))) : '',
+        }),
+      });
+      localStorage.setItem(STORAGE_KEY, 'granted');
+    } catch (err) {
+      localStorage.setItem(STORAGE_KEY, 'denied');
+    }
+  }
+
+  async function unsubscribe(reg) {
+    const sub = await reg.pushManager.getSubscription();
+    if (!sub) return;
+    await fetch('/app/push/unsubscribe', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
+      body:    JSON.stringify({ endpoint: sub.endpoint }),
+    });
+    await sub.unsubscribe();
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+    const reg = await navigator.serviceWorker.ready;
+
+    // Déjà abonné → synchroniser avec le serveur si nécessaire
+    const existing = await reg.pushManager.getSubscription();
+    if (existing) {
+      localStorage.setItem(STORAGE_KEY, 'granted');
+      return;
+    }
+
+    // Permission déjà refusée
+    if (Notification.permission === 'denied') return;
+
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'denied') return;
+
+    // Déjà accepté → abonner directement
+    if (stored === 'granted') {
+      await subscribe(reg);
+      return;
+    }
+
+    // "Plus tard" → vérifier si les 7 jours sont écoulés
+    if (stored && stored.startsWith('later:')) {
+      const retryAt = parseInt(stored.split(':')[1], 10);
+      if (Date.now() < retryAt) return;
+      // Délai expiré → retirer et montrer la bannière
+      localStorage.removeItem(STORAGE_KEY);
+    }
+
+    // Montrer la bannière après 3 secondes (ne pas déranger au chargement)
+    setTimeout(function () {
+      const banner = document.getElementById('cxa-push-banner');
+      if (banner) banner.style.display = 'flex';
+    }, 3000);
+
+    document.getElementById('cxa-push-allow')?.addEventListener('click', async function () {
+      document.getElementById('cxa-push-banner').style.display = 'none';
+      const perm = await Notification.requestPermission();
+      if (perm === 'granted') {
+        await subscribe(reg);
+      } else {
+        localStorage.setItem(STORAGE_KEY, 'denied');
+      }
+    });
+
+    document.getElementById('cxa-push-later')?.addEventListener('click', function () {
+      document.getElementById('cxa-push-banner').style.display = 'none';
+      // Redemander dans 7 jours
+      const retry = Date.now() + 7 * 24 * 3600 * 1000;
+      localStorage.setItem(STORAGE_KEY, 'later:' + retry);
+    });
+  });
+})();
+</script>
+
 {{-- ══ Son & Polling notifications ══ --}}
 <script>
 // Synthese sonore Web Audio API (aucun fichier externe)
