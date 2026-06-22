@@ -206,6 +206,12 @@ return [
     'notif_loan_rejected'          => 'Solicitud rechazada',
     'notif_loan_rejected_body'     => 'Su solicitud :reference ha sido rechazada. Contacte a su asesor.',
 
+    'loans_title'     => 'Mis expedientes',
+    'dos_all'         => 'Todos',
+    'dos_ongoing'     => 'En curso',
+    'dos_contract'    => 'Contrato',
+    'dos_rejected'    => 'Rechazados',
+
     'movements_title'    => 'Movimientos',
     'mv_balance_current' => 'Saldo actual',
     'mv_total_in'        => 'Total recibido',

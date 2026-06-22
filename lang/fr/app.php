@@ -232,6 +232,13 @@ return [
     'notif_loan_rejected'          => 'Demande refusee',
     'notif_loan_rejected_body'     => 'Votre demande :reference a ete refusee. Contactez votre conseiller pour plus d\'informations.',
 
+    // Dossiers (liste)
+    'loans_title'     => 'Mes dossiers',
+    'dos_all'         => 'Tous',
+    'dos_ongoing'     => 'En cours',
+    'dos_contract'    => 'Contrat',
+    'dos_rejected'    => 'Rejetés',
+
     // Mouvements
     'movements_title'    => 'Mouvements',
     'mv_balance_current' => 'Solde actuel',

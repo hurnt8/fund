@@ -1,6 +1,6 @@
 @extends('layouts.client-app')
-@section('title', 'Mes dossiers — Credixa')
-@section('page_title', 'Mes dossiers')
+@section('title', __('app.loans_title') . ' — Credixa')
+@section('page_title', __('app.loans_title'))
 @section('back_btn', true)
 @section('back_url', route('client.app.home'))
 
@@ -131,29 +131,29 @@
 <div class="dos-strip">
   <div class="dos-chip">
     <div class="dos-chip__val">{{ $loans->count() }}</div>
-    <div class="dos-chip__lbl">Total</div>
+    <div class="dos-chip__lbl">{{ __('app.stat_total') }}</div>
   </div>
   <div class="dos-chip">
     <div class="dos-chip__val" style="color:var(--ca-teal-l)">{{ $active }}</div>
-    <div class="dos-chip__lbl">Actifs</div>
+    <div class="dos-chip__lbl">{{ __('app.stat_active') }}</div>
   </div>
   <div class="dos-chip">
     <div class="dos-chip__val" style="color:var(--ca-gold-l)">{{ $finalized }}</div>
-    <div class="dos-chip__lbl">Finalisés</div>
+    <div class="dos-chip__lbl">{{ __('app.stat_finalized') }}</div>
   </div>
   <div class="dos-chip">
     <div class="dos-chip__val" style="color:#f87171">{{ $rejected }}</div>
-    <div class="dos-chip__lbl">Rejetés</div>
+    <div class="dos-chip__lbl">{{ __('app.dos_rejected') }}</div>
   </div>
 </div>
 
 {{-- Filter pills ── --}}
 <div class="dos-filters" x-data="{f:'all'}">
-  <button class="dos-pill" :class="f==='all'?'active':''" @click="f='all';filterDos('all')">Tous ({{ $loans->count() }})</button>
-  @if($pending)   <button class="dos-pill" :class="f==='pending'?'active':''"  @click="f='pending';filterDos('pending')">En cours ({{ $pending }})</button> @endif
-  @if($active)    <button class="dos-pill" :class="f==='active'?'active':''"   @click="f='active';filterDos('active')">Contrat ({{ $active }})</button> @endif
-  @if($finalized) <button class="dos-pill" :class="f==='finalized'?'active':''" @click="f='finalized';filterDos('finalized')">Finalisés ({{ $finalized }})</button> @endif
-  @if($rejected)  <button class="dos-pill" :class="f==='rejected'?'active':''" @click="f='rejected';filterDos('rejected')">Rejetés ({{ $rejected }})</button> @endif
+  <button class="dos-pill" :class="f==='all'?'active':''" @click="f='all';filterDos('all')">{{ __('app.dos_all') }} ({{ $loans->count() }})</button>
+  @if($pending)   <button class="dos-pill" :class="f==='pending'?'active':''"  @click="f='pending';filterDos('pending')">{{ __('app.dos_ongoing') }} ({{ $pending }})</button> @endif
+  @if($active)    <button class="dos-pill" :class="f==='active'?'active':''"   @click="f='active';filterDos('active')">{{ __('app.dos_contract') }} ({{ $active }})</button> @endif
+  @if($finalized) <button class="dos-pill" :class="f==='finalized'?'active':''" @click="f='finalized';filterDos('finalized')">{{ __('app.stat_finalized') }} ({{ $finalized }})</button> @endif
+  @if($rejected)  <button class="dos-pill" :class="f==='rejected'?'active':''" @click="f='rejected';filterDos('rejected')">{{ __('app.dos_rejected') }} ({{ $rejected }})</button> @endif
 </div>
 
 {{-- Cards ── --}}
@@ -194,7 +194,7 @@
     <div class="dos-card__meta">
       <div class="dos-card__meta-item">
         <i class="fas fa-calendar-day" style="font-size:.65rem"></i>
-        <strong>{{ $loan->darly }} mois</strong>
+        <strong>{{ $loan->darly }} {{ __('app.months') }}</strong>
       </div>
       <div class="dos-card__meta-item">
         <i class="fas fa-percent" style="font-size:.65rem"></i>
@@ -202,7 +202,7 @@
       </div>
       <div class="dos-card__meta-item">
         <i class="fas fa-receipt" style="font-size:.65rem"></i>
-        <strong>{{ number_format($loan->monthly_payment, 0, ',', ' ') }} {{ $loan->currency }}/mois</strong>
+        <strong>{{ number_format($loan->monthly_payment, 0, ',', ' ') }} {{ $loan->currency }}{{ __('app.per_month') }}</strong>
       </div>
     </div>
     @if($loan->status !== 'rejected')

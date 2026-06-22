@@ -1,4 +1,6 @@
-const CACHE = 'credixa-v7';
+const CACHE = 'credixa-v8';
+const ICON  = '/images/icon-192.png';
+const BADGE = '/images/icon-badge.png';
 const SHELL = ['/app', '/login'];
 
 self.addEventListener('install', e => {
@@ -24,13 +26,9 @@ self.addEventListener('fetch', e => {
 
     const url = new URL(e.request.url);
 
-    /* Ignorer extensions navigateur */
     if (!url.protocol.startsWith('http')) return;
-
-    /* NE JAMAIS cacher storage/ — fichiers dynamiques uploadés */
     if (url.pathname.startsWith('/storage/')) return;
 
-    /* Assets Vite hashés — cache-first (immutables) */
     if (url.pathname.startsWith('/build/assets/')) {
         e.respondWith(
             caches.open(CACHE).then(c =>
@@ -49,7 +47,6 @@ self.addEventListener('fetch', e => {
         return;
     }
 
-    /* Tout le reste — network-first, fallback cache */
     e.respondWith(
         fetch(e.request)
             .then(resp => {
@@ -63,5 +60,39 @@ self.addEventListener('fetch', e => {
                 caches.match(e.request)
                     .then(cached => cached || caches.match('/app'))
             )
+    );
+});
+
+/* ── Push notifications ── */
+self.addEventListener('push', e => {
+    let data = { title: 'Credixa', body: '' };
+    try { data = e.data ? e.data.json() : data; } catch (_) {}
+
+    e.waitUntil(
+        self.registration.showNotification(data.title || 'Credixa', {
+            body:     data.body  || '',
+            icon:     ICON,
+            badge:    BADGE,
+            vibrate:  [200, 100, 200],
+            tag:      data.tag || 'credixa-notif',
+            renotify: true,
+            data:     { url: data.url || '/app/notifications' },
+        })
+    );
+});
+
+self.addEventListener('notificationclick', e => {
+    e.notification.close();
+    const target = (e.notification.data && e.notification.data.url) || '/app/notifications';
+    e.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+            for (const c of list) {
+                if (c.url.includes('/app') && 'focus' in c) {
+                    c.navigate(target);
+                    return c.focus();
+                }
+            }
+            if (clients.openWindow) return clients.openWindow(target);
+        })
     );
 });

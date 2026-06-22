@@ -209,6 +209,13 @@ return [
     'notif_loan_rejected'          => 'Request rejected',
     'notif_loan_rejected_body'     => 'Your request :reference has been rejected. Please contact your advisor for more information.',
 
+    // Loans list
+    'loans_title'     => 'My Loans',
+    'dos_all'         => 'All',
+    'dos_ongoing'     => 'In progress',
+    'dos_contract'    => 'Contract',
+    'dos_rejected'    => 'Rejected',
+
     // Movements page
     'movements_title'    => 'Movements',
     'mv_balance_current' => 'Current balance',

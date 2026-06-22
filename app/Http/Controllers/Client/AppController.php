@@ -352,8 +352,14 @@ class AppController extends Controller
             'theme_color'      => '#C8A951',
             'lang'             => app()->getLocale(),
             'icons'            => [
-                ['src' => '/images/icon-192.svg', 'sizes' => '192x192', 'type' => 'image/svg+xml', 'purpose' => 'any maskable'],
-                ['src' => '/images/icon-512.svg', 'sizes' => '512x512', 'type' => 'image/svg+xml', 'purpose' => 'any maskable'],
+                ['src' => '/images/apple-touch-icon.png', 'sizes' => '180x180', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/images/icon-192.png',         'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/images/icon-192.png',         'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'maskable'],
+                ['src' => '/images/icon-512.png',         'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/images/icon-512.png',         'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
+            ],
+            'screenshots'      => [
+                ['src' => '/images/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'form_factor' => 'narrow'],
             ],
         ];
 
@@ -365,7 +371,9 @@ class AppController extends Controller
     public function serviceWorker()
     {
         $js = <<<'JS'
-const CACHE = 'credixa-v7';
+const CACHE = 'credixa-v8';
+const ICON  = '/images/icon-192.png';
+const BADGE = '/images/icon-badge.png';
 const SHELL = ['/app', '/login'];
 
 self.addEventListener('install', e => {
@@ -426,6 +434,40 @@ self.addEventListener('fetch', e => {
                 caches.match(e.request)
                     .then(cached => cached || caches.match('/app'))
             )
+    );
+});
+
+/* ── Push notifications ── */
+self.addEventListener('push', e => {
+    let data = { title: 'Credixa', body: '' };
+    try { data = e.data ? e.data.json() : data; } catch (_) {}
+
+    e.waitUntil(
+        self.registration.showNotification(data.title || 'Credixa', {
+            body:    data.body  || '',
+            icon:    ICON,
+            badge:   BADGE,
+            vibrate: [200, 100, 200],
+            tag:     data.tag || 'credixa-notif',
+            renotify: true,
+            data:    { url: data.url || '/app/notifications' },
+        })
+    );
+});
+
+self.addEventListener('notificationclick', e => {
+    e.notification.close();
+    const target = (e.notification.data && e.notification.data.url) || '/app/notifications';
+    e.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+            for (const c of list) {
+                if (c.url.includes('/app') && 'focus' in c) {
+                    c.navigate(target);
+                    return c.focus();
+                }
+            }
+            if (clients.openWindow) return clients.openWindow(target);
+        })
     );
 });
 JS;

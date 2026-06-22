@@ -14,8 +14,9 @@
   <title>@yield('title', 'Credixa')</title>
 
   <link rel="manifest" href="{{ route('pwa.manifest') }}">
-  <link rel="apple-touch-icon" href="/images/icon-192.svg">
-  <link rel="icon" type="image/svg+xml" href="/images/icon-192.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,6 +36,48 @@
   @stack('styles')
 </head>
 <body x-data>
+
+{{-- ══ SPLASH SCREEN ══ --}}
+<div id="cxa-splash" aria-hidden="true">
+  <img src="/assets/images/logo%20new.png" alt="Credixa" id="cxa-splash-logo">
+</div>
+<style>
+#cxa-splash{
+  position:fixed;inset:0;z-index:9999;
+  background:#0A1628;
+  display:flex;align-items:center;justify-content:center;
+  animation:splashFade 0.4s ease 1.4s forwards;
+  pointer-events:none;
+}
+#cxa-splash-logo{
+  width:180px;max-width:55vw;
+  animation:splashLogo 0.55s cubic-bezier(.22,1,.36,1) 0.1s both;
+}
+@keyframes splashLogo{
+  from{opacity:0;transform:scale(.7)}
+  to  {opacity:1;transform:scale(1)}
+}
+@keyframes splashFade{
+  to{opacity:0;visibility:hidden}
+}
+</style>
+<script>
+(function(){
+  /* Ne montrer le splash qu'au lancement PWA standalone ou premier chargement */
+  var shown = sessionStorage.getItem('cxa_splash');
+  var isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                   || window.navigator.standalone === true;
+  if (shown && !isStandalone) {
+    document.getElementById('cxa-splash').style.display = 'none';
+  } else {
+    sessionStorage.setItem('cxa_splash', '1');
+    setTimeout(function(){
+      var s = document.getElementById('cxa-splash');
+      if (s) s.remove();
+    }, 2000);
+  }
+})();
+</script>
 
 {{-- ══ SHELL (scroll container — sans overflow:hidden) ══ --}}
 <div class="ca-shell">

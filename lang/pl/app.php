@@ -206,6 +206,12 @@ return [
     'notif_loan_rejected'          => 'Wniosek odrzucony',
     'notif_loan_rejected_body'     => 'Twoj wniosek :reference zostal odrzucony. Skontaktuj sie z doradca.',
 
+    'loans_title'     => 'Moje wnioski',
+    'dos_all'         => 'Wszystkie',
+    'dos_ongoing'     => 'W toku',
+    'dos_contract'    => 'Umowa',
+    'dos_rejected'    => 'Odrzucone',
+
     'movements_title'    => 'Ruchy na koncie',
     'mv_balance_current' => 'Aktualne saldo',
     'mv_total_in'        => 'Lacznie otrzymane',
