@@ -225,8 +225,9 @@ class LoanPdfService
         $filename = 'amortization_' . $loan->reference . '_' . $locale . '.pdf';
         $path     = 'contracts/' . $filename;
 
-        Storage::put($path, $pdf->output());
+        Storage::disk('local')->makeDirectory('contracts');
+        Storage::disk('local')->put($path, $pdf->output());
 
-        return storage_path('app/' . $path);
+        return Storage::disk('local')->path($path);
     }
 }
