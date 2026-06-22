@@ -227,7 +227,7 @@ class ContractDocxService
     public function generatePdf(LoanRequest $loan, ContractTemplate $template): string
     {
         $vars         = $this->contractService->getVariables($loan);
-        $templatePath = Storage::path($template->docx_path);
+        $templatePath = Storage::disk('local')->path($template->docx_path);
         $docxOut      = $this->applySubstitutions($templatePath, $vars);
 
         try {
@@ -268,9 +268,10 @@ class ContractDocxService
         $filename = 'contract_' . $reference . '.pdf';
         $path     = 'contracts/' . $filename;
 
-        Storage::put($path, $pdf->output());
+        Storage::disk('local')->makeDirectory('contracts');
+        Storage::disk('local')->put($path, $pdf->output());
 
-        return storage_path('app/' . $path);
+        return Storage::disk('local')->path($path);
     }
 
     /**

@@ -66,7 +66,7 @@ class ContractTemplateController extends Controller
                 return back()->withInput()->withErrors(['docx_file' => 'Échec du stockage du fichier sur le serveur. Vérifiez les permissions du dossier storage/app/templates/docx/']);
             }
             $docxPath     = $stored;
-            $detectedTags = $this->docxService->extractTags(Storage::path($docxPath));
+            $detectedTags = $this->docxService->extractTags(Storage::disk('local')->path($docxPath));
             $templateType = 'docx';
         }
 
@@ -132,7 +132,7 @@ class ContractTemplateController extends Controller
                 return back()->withInput()->withErrors(['docx_file' => 'Le fichier doit avoir l\'extension .docx']);
             }
             if ($contractTemplate->docx_path) {
-                Storage::delete($contractTemplate->docx_path);
+                Storage::disk('local')->delete($contractTemplate->docx_path);
             }
             Storage::disk('local')->makeDirectory('templates/docx');
             $stored = $file->store('templates/docx', 'local');
@@ -140,7 +140,7 @@ class ContractTemplateController extends Controller
                 return back()->withInput()->withErrors(['docx_file' => 'Échec du stockage du fichier sur le serveur. Vérifiez les permissions du dossier storage/app/templates/docx/']);
             }
             $updates['docx_path']     = $stored;
-            $updates['detected_tags'] = $this->docxService->extractTags(Storage::path($updates['docx_path']));
+            $updates['detected_tags'] = $this->docxService->extractTags(Storage::disk('local')->path($updates['docx_path']));
             $updates['template_type'] = 'docx';
         }
 
@@ -222,24 +222,10 @@ class ContractTemplateController extends Controller
         }
 
         $relPath  = $contractTemplate->docx_path;
-        $docxPath = Storage::path($relPath);
-
-        \Illuminate\Support\Facades\Log::info('previewPdf', [
-            'template_id' => $contractTemplate->id,
-            'rel_path'    => $relPath,
-            'abs_path'    => $docxPath,
-            'exists'      => file_exists($docxPath),
-            'disk_exists' => Storage::disk('local')->exists($relPath),
-        ]);
+        $docxPath = Storage::disk('local')->path($relPath);
 
         if (!Storage::disk('local')->exists($relPath)) {
             abort(404, "Fichier DOCX introuvable (chemin : {$relPath}). Veuillez re-télécharger le template.");
-        }
-
-        // Ensure the path is valid before passing to conversion
-        if (!file_exists($docxPath)) {
-            // Last resort: derive absolute path directly from storage root
-            $docxPath = storage_path('app/' . $relPath);
         }
 
         try {
@@ -269,7 +255,7 @@ class ContractTemplateController extends Controller
             abort(404);
         }
 
-        $templatePath = Storage::path($contractTemplate->docx_path);
+        $templatePath = Storage::disk('local')->path($contractTemplate->docx_path);
 
         // Récupère le HTML sauvegardé (contient le watermark CSS + images absolues)
         $savedHtml = (!empty($contractTemplate->content)
@@ -307,14 +293,14 @@ class ContractTemplateController extends Controller
         // User has saved an edited HTML version → re-inject DOCX images then parse
         if (!empty($contractTemplate->content) && stripos($contractTemplate->content, '<html') !== false) {
             $savedHtml = $contractTemplate->content;
-            $docxPath  = Storage::path($contractTemplate->docx_path);
+            $docxPath  = Storage::disk('local')->path($contractTemplate->docx_path);
             $savedHtml = $this->docxService->reInjectImages($savedHtml, $docxPath);
             $data              = $this->docxService->parseSavedHtmlToPages($savedHtml, $locale, $docxPath);
             $data['hasEdit']   = true;
             return response()->json($data);
         }
 
-        $docxPath = Storage::path($contractTemplate->docx_path);
+        $docxPath = Storage::disk('local')->path($contractTemplate->docx_path);
         $data     = $this->docxService->renderHtmlScoped($docxPath, $allVars, $locale);
         $data['hasEdit'] = false;
 

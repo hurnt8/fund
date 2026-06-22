@@ -27,7 +27,7 @@ class LoanPdfService
 
         // ── Voie DOCX ────────────────────────────────────────────────────────
         if ($template && $template->template_type === 'docx' && $template->docx_path) {
-            $docxPath = Storage::path($template->docx_path);
+            $docxPath = Storage::disk('local')->path($template->docx_path);
             if (file_exists($docxPath)) {
                 try {
                     return $this->docxService->generatePdf($loan, $template);
@@ -65,10 +65,10 @@ class LoanPdfService
         $filename = 'contract_' . $loan->reference . '_' . $locale . '.pdf';
         $path     = 'contracts/' . $filename;
 
-        Storage::makeDirectory('contracts');
-        Storage::put($path, $pdf->output());
+        Storage::disk('local')->makeDirectory('contracts');
+        Storage::disk('local')->put($path, $pdf->output());
 
-        $absPath = storage_path('app/' . $path);
+        $absPath = Storage::disk('local')->path($path);
         if (!file_exists($absPath)) {
             throw new \RuntimeException("Échec de l'écriture du PDF : $absPath");
         }
