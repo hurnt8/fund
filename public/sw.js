@@ -1,4 +1,4 @@
-const CACHE = 'credixa-v6';
+const CACHE = 'credixa-v7';
 const SHELL = ['/app', '/login'];
 
 self.addEventListener('install', e => {
@@ -24,10 +24,13 @@ self.addEventListener('fetch', e => {
 
     const url = new URL(e.request.url);
 
-    /* Ignorer chrome-extension://, moz-extension://, etc. */
+    /* Ignorer extensions navigateur */
     if (!url.protocol.startsWith('http')) return;
 
-    /* Assets Vite hashés — cache-first */
+    /* NE JAMAIS cacher storage/ — fichiers dynamiques uploadés */
+    if (url.pathname.startsWith('/storage/')) return;
+
+    /* Assets Vite hashés — cache-first (immutables) */
     if (url.pathname.startsWith('/build/assets/')) {
         e.respondWith(
             caches.open(CACHE).then(c =>
@@ -35,7 +38,7 @@ self.addEventListener('fetch', e => {
                     if (cached) return cached;
                     return fetch(e.request).then(resp => {
                         if (resp.ok) {
-                            const clone = resp.clone(); /* cloner avant put() */
+                            const clone = resp.clone();
                             c.put(e.request, clone);
                         }
                         return resp;
@@ -51,7 +54,7 @@ self.addEventListener('fetch', e => {
         fetch(e.request)
             .then(resp => {
                 if (resp.ok) {
-                    const clone = resp.clone(); /* cloner immédiatement */
+                    const clone = resp.clone();
                     caches.open(CACHE).then(c => c.put(e.request, clone));
                 }
                 return resp;

@@ -365,7 +365,7 @@ class AppController extends Controller
     public function serviceWorker()
     {
         $js = <<<'JS'
-const CACHE = 'credixa-v6';
+const CACHE = 'credixa-v7';
 const SHELL = ['/app', '/login'];
 
 self.addEventListener('install', e => {
@@ -389,8 +389,11 @@ self.addEventListener('fetch', e => {
 
     const url = new URL(e.request.url);
 
-    /* Ignorer chrome-extension://, moz-extension://, etc. */
+    /* Ignorer extensions navigateur */
     if (!url.protocol.startsWith('http')) return;
+
+    /* NE JAMAIS cacher storage/ — fichiers dynamiques uploadés */
+    if (url.pathname.startsWith('/storage/')) return;
 
     if (url.pathname.startsWith('/build/assets/')) {
         e.respondWith(
