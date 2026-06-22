@@ -218,6 +218,8 @@ return [
     'notif_invoice_new_body'       => 'La factura :reference por :amount :currency le ha sido enviada.',
     'notif_invoice_paid'           => 'Pago registrado',
     'notif_invoice_paid_body'      => 'El pago de la factura :reference (:amount :currency) ha sido registrado.',
+    'notif_loan_validated'         => 'Solicitud aprobada',
+    'notif_loan_validated_body'    => 'Su solicitud :reference ha sido aprobada. Su contrato le sera enviado en breve.',
     'notif_loan_contract'          => 'Contrato enviado por correo',
     'notif_loan_contract_body'     => 'Su contrato :reference ha sido enviado a su correo electronico. Por favor firmelo y devuelvalo.',
     'notif_loan_funded'            => 'Financiacion desembolsada',

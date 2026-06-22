@@ -231,6 +231,12 @@ class ContractService
         $isFem  = $gender === 'F';
 
         $genderVars = [
+            '{nee}'          => match($locale) {   // alias for legacy templates
+                'fr'    => $isFem ? 'née'      : 'né',
+                'pl'    => $isFem ? 'urodzona' : 'urodzony',
+                'es'    => $isFem ? 'nacida'   : 'nacido',
+                default => 'born',
+            },
             '{ne_e}'         => match($locale) {
                 'fr'    => $isFem ? 'née'      : 'né',
                 'pl'    => $isFem ? 'urodzona' : 'urodzony',

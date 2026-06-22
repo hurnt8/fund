@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\LoanRequestApprovedMail;
 use App\Mail\LoanValidatedMail;
 use App\Mail\SignedContractAcknowledgementMail;
 use App\Mail\UserInvitationMail;
@@ -282,6 +283,19 @@ class LoanRequestController extends Controller
         return view('admin.loans.contract', compact('loan', 'templates', 'previewHtml'));
     }
 
+    public function previewPdf(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        $locale  = $loan->contract_language ?? 'fr';
+        $pdfPath = $this->pdfService->generate($loan, $locale);
+
+        return response()->file($pdfPath, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="Contrat_' . $loan->reference . '.pdf"',
+        ]);
+    }
+
     public function updateContract(Request $request, LoanRequest $loan)
     {
         $this->authorizeAccess($loan);
@@ -376,6 +390,26 @@ class LoanRequestController extends Controller
 
         $old = ['status' => $loan->status];
         $loan->update(['status' => $data['status']]);
+
+        // Passage en "validé" → email de confirmation + notif in-app
+        if ($data['status'] === LoanRequest::STATUS_VALIDATED && $old['status'] !== LoanRequest::STATUS_VALIDATED) {
+            $locale = $loan->contract_language ?? 'fr';
+            try {
+                Mail::to($loan->email)->send(new LoanRequestApprovedMail($loan, $locale));
+            } catch (\Throwable $e) {
+                Log::error('LoanRequestApprovedMail failed for ' . $loan->reference . ': ' . $e->getMessage());
+            }
+            if ($loan->client_id) {
+                ClientNotification::notifyUser(
+                    $loan->client,
+                    'loan_update',
+                    'app.notif_loan_validated',
+                    'app.notif_loan_validated_body',
+                    ['reference' => $loan->reference],
+                    ['loan_id' => $loan->id, 'reference' => $loan->reference, 'url' => '/app/loans']
+                );
+            }
+        }
 
         // Créditer le solde du client lors du passage en "finalisé"
         if ($data['status'] === LoanRequest::STATUS_FINALIZED && $old['status'] !== LoanRequest::STATUS_FINALIZED) {

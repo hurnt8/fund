@@ -244,6 +244,8 @@ return [
     'notif_invoice_new_body'       => 'La facture :reference d\'un montant de :amount :currency vous a ete envoyee.',
     'notif_invoice_paid'           => 'Paiement enregistre',
     'notif_invoice_paid_body'      => 'Le paiement de la facture :reference (:amount :currency) a ete enregistre.',
+    'notif_loan_validated'         => 'Demande approuvee',
+    'notif_loan_validated_body'    => 'Votre demande :reference a ete approuvee. Votre contrat vous sera envoye prochainement.',
     'notif_loan_contract'          => 'Contrat envoye par e-mail',
     'notif_loan_contract_body'     => 'Votre contrat :reference a ete envoye a votre adresse e-mail. Veuillez le signer et nous le retourner.',
     'notif_loan_funded'            => 'Financement debloque',

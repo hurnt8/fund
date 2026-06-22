@@ -221,6 +221,8 @@ return [
     'notif_invoice_new_body'       => 'Invoice :reference for :amount :currency has been sent to you.',
     'notif_invoice_paid'           => 'Payment recorded',
     'notif_invoice_paid_body'      => 'Payment for invoice :reference (:amount :currency) has been recorded.',
+    'notif_loan_validated'         => 'Application approved',
+    'notif_loan_validated_body'    => 'Your application :reference has been approved. Your contract will be sent to you shortly.',
     'notif_loan_contract'          => 'Contract sent by email',
     'notif_loan_contract_body'     => 'Your contract :reference has been sent to your email address. Please sign and return it.',
     'notif_loan_funded'            => 'Financing disbursed',

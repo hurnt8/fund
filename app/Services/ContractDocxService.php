@@ -89,6 +89,10 @@ class ContractDocxService
 
     private function mergeAdjacentRuns(string $xml): string
     {
+        // Remove spell/grammar checker markers — they sit between runs and prevent merging
+        // e.g. <w:proofErr w:type="gramEnd"/> splits {agent_suivi} into 3 separate runs
+        $xml = preg_replace('/<w:proofErr\b[^>]*\/>/', '', $xml) ?? $xml;
+
         // Pass 1: join adjacent <w:t> within the same run
         $xml = preg_replace('/<\/w:t>(<w:t(?:\s[^>]*)?>)/', '$1', $xml) ?? $xml;
 
@@ -138,9 +142,24 @@ class ContractDocxService
                             . htmlspecialchars($combined, ENT_XML1, 'UTF-8')
                             . '</w:t></w:r>';
 
-                        $origSeq = implode('', array_slice($runs, $i, $j - $i + 1));
-                        $pXml    = str_replace($origSeq, $mergedRun, $pXml);
-                        $merged  = true;
+                        // Use position-based replacement to handle any XML elements
+                        // (proofErr, bookmarks, etc.) that may sit between the runs
+                        $startPos = strpos($pXml, $runs[$i]);
+                        $lastRun  = $runs[$j];
+                        if ($startPos !== false) {
+                            $endPos = strpos($pXml, $lastRun, $startPos);
+                            if ($endPos !== false) {
+                                $endPos += strlen($lastRun);
+                                $pXml   = substr($pXml, 0, $startPos) . $mergedRun . substr($pXml, $endPos);
+                                $merged = true;
+                            }
+                        }
+                        if (!$merged) {
+                            // Fallback: direct concatenation (no inter-run elements)
+                            $origSeq = implode('', array_slice($runs, $i, $j - $i + 1));
+                            $pXml    = str_replace($origSeq, $mergedRun, $pXml);
+                            $merged  = true;
+                        }
                         break 2; // restart scan
                     }
                 }
@@ -150,6 +169,15 @@ class ContractDocxService
         }
 
         return $pXml;
+    }
+
+    public function convertRawDocxToPdf(string $docxPath): string
+    {
+        if ($this->resolveLoBinary()) {
+            return $this->convertToPdf($docxPath);
+        }
+        $html = $this->convertWithPhpWord($docxPath);
+        return $this->savePdfFromHtml($html, 'tpl_' . uniqid());
     }
 
     // ── Conversion LibreOffice ────────────────────────────────────────────────
@@ -203,7 +231,7 @@ class ContractDocxService
         $docxOut      = $this->applySubstitutions($templatePath, $vars);
 
         try {
-            // LibreOffice preferred when available
+            // LibreOffice preferred — direct DOCX→PDF (best fidelity)
             if ($this->resolveLoBinary()) {
                 return $this->convertToPdf($docxOut);
             }
@@ -1094,45 +1122,6 @@ br{display:block;margin:.1em 0}
         $result .= substr($body, $offset);
 
         return $pre . $result . $post;
-    }
-
-    private function convertWithLibreOffice(string $docxPath, ?string $binary = null): string
-    {
-        $outDir = storage_path('app/temp');
-        if (!is_dir($outDir)) mkdir($outDir, 0755, true);
-
-        $binary ??= $this->resolveLoBinary() ?? env('LIBREOFFICE_BIN', 'soffice');
-        $cmd    = sprintf('"%s" --headless --convert-to html --outdir "%s" "%s" 2>&1',
-                          $binary, $outDir, $docxPath);
-        exec($cmd, $out, $code);
-
-        $htmlFile = $outDir . '/' . pathinfo($docxPath, PATHINFO_FILENAME) . '.html';
-        if ($code !== 0 || !file_exists($htmlFile)) {
-            return '<html><body><p style="color:red">Conversion LibreOffice échouée (code ' . $code . ').</p></body></html>';
-        }
-
-        $html = file_get_contents($htmlFile) ?: '';
-        @unlink($htmlFile);
-
-        // LibreOffice extracts images as separate files alongside the HTML.
-        // Embed them as base64 so the HTML is self-contained.
-        $html = (string) preg_replace_callback(
-            '/<img\b([^>]*)src="([^"#][^"]*)"([^>]*)>/i',
-            static function ($m) use ($outDir) {
-                $src = $m[2];
-                if (str_starts_with($src, 'data:') || preg_match('#^https?://#i', $src)) return $m[0];
-                $imgPath = $outDir . '/' . ltrim($src, '/\\');
-                if (!file_exists($imgPath)) return $m[0];
-                $ext  = strtolower(pathinfo($imgPath, PATHINFO_EXTENSION));
-                $mime = match ($ext) { 'jpg', 'jpeg' => 'image/jpeg', 'gif' => 'image/gif', default => 'image/png' };
-                $b64  = base64_encode(file_get_contents($imgPath));
-                @unlink($imgPath);
-                return '<img' . $m[1] . 'src="data:' . $mime . ';base64,' . $b64 . '" data-docx-auto="1"' . $m[3] . '>';
-            },
-            $html
-        );
-
-        return $html ?: '<html><body><p>Fichier HTML vide.</p></body></html>';
     }
 
     private function extractPlainTextFull(string $docxPath): string

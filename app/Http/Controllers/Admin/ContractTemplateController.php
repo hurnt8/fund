@@ -188,105 +188,39 @@ class ContractTemplateController extends Controller
         return back()->with('success', 'Modèle supprimé.');
     }
 
-    public function preview(ContractTemplate $contractTemplate, Request $request)
+    public function preview(ContractTemplate $contractTemplate)
     {
-        $locale = in_array($request->get('locale'), ['fr','en','pl','es'])
-                ? $request->get('locale') : 'fr';
-        $isFem  = $request->get('gender') === 'F';
-
-        [$allVars] = $this->buildAllVars($locale, $isFem);
-
-        $baseUrl     = route('admin.contract-templates.preview', $contractTemplate);
-        $editUrl     = route('admin.contract-templates.edit', $contractTemplate);
-        $genderParam = $isFem ? 'F' : 'M';
-
-        // ── Barre commune ─────────────────────────────────────────────────────
-        $langTabs = '';
-        foreach (['fr' => 'FR', 'en' => 'EN', 'pl' => 'PL', 'es' => 'ES'] as $lc => $label) {
-            $active    = $lc === $locale ? ' pv-lang-active' : '';
-            $href      = $baseUrl . '?locale=' . $lc . '&gender=' . $genderParam;
-            $langTabs .= '<a href="' . $href . '" class="pv-lang' . $active . '" data-lc="' . $lc . '">' . $label . '</a>';
-        }
-
-        $mUrl = $baseUrl . '?locale=' . $locale . '&gender=M';
-        $fUrl = $baseUrl . '?locale=' . $locale . '&gender=F';
-        $genderBtns = '<a href="' . $mUrl . '" class="pv-gen' . (!$isFem ? ' pv-gen-active' : '') . '" data-g="M" title="Masculin">♂</a>'
-                    . '<a href="' . $fUrl . '" class="pv-gen' . ($isFem  ? ' pv-gen-active' : '') . '" data-g="F" title="Féminin">♀</a>';
-
-        $typeBadge = $contractTemplate->template_type === 'docx'
-            ? '<span class="pv-type">DOCX</span>'
-            : '<span class="pv-type pv-type-html">HTML</span>';
-
-        $editIcon = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-
-        $barHtml = '<div id="pv-bar">'
-            . '<span class="pv-badge">Aperçu</span>' . $typeBadge
-            . '<span class="pv-name">' . e($contractTemplate->name) . '</span>'
-            . '<span class="pv-div"></span>'
-            . '<div class="pv-langs">' . $langTabs . '</div>'
-            . '<div class="pv-gens">' . $genderBtns . '</div>'
-            . '<span class="pv-spacer"></span>'
-            . '<a href="' . $editUrl . '" class="pv-act pv-act-gold">' . $editIcon . ' Modifier</a>'
-            . '<button onclick="window.close()" class="pv-act pv-act-close">✕</button>'
-            . '</div>';
-
-        // ── Images (HTML templates) ───────────────────────────────────────────
-        $imgs = [];
-        foreach (['watermark_path','logo_left_path','logo_right_path','stamp_path','signature_admin_path','signature_agent_path'] as $f) {
-            $imgs[$f] = $contractTemplate->$f ? asset('storage/' . $contractTemplate->$f) : null;
-        }
-
         $isDocx = $contractTemplate->template_type === 'docx' && $contractTemplate->docx_path;
 
-        if ($isDocx) {
-            // Balises détectées avec info connue/inconnue
-            $allVarNames     = array_map(fn($d) => $d, $this->variablesList()); // key => desc
-            $detectedBalises = [];
-            foreach (($contractTemplate->detected_tags ?? []) as $tag) {
-                $detectedBalises[$tag] = $allVarNames[$tag] ?? null;
-            }
-
-            $downloadUrl  = route('admin.contract-templates.download-docx', $contractTemplate);
-            $docxFrameUrl = route('admin.contract-templates.docx-frame', $contractTemplate)
-                          . '?locale=' . $locale . '&gender=' . $genderParam;
-
-            return view('admin.contract-templates.preview', [
-                'template'         => $contractTemplate,
-                'isDocx'           => true,
-                'locale'           => $locale,
-                'isFem'            => $isFem,
-                'barHtml'          => $barHtml,
-                'docxFrameUrl'     => $docxFrameUrl,
-                'docxFrameBase'    => route('admin.contract-templates.docx-frame', $contractTemplate),
-                'detectedBalises'  => $detectedBalises,
-                'downloadUrl'      => $downloadUrl,
-            ]);
+        $knownVars       = $this->variablesList();
+        $detectedBalises = [];
+        foreach (($contractTemplate->detected_tags ?? []) as $tag) {
+            $detectedBalises[$tag] = $knownVars[$tag] ?? null;
         }
 
-        // ── HTML template ─────────────────────────────────────────────────────
-        // Convertir les {balises} en chips éditables
-        $editableContent = preg_replace(
-            '/\{([a-zA-Z_][a-zA-Z0-9_]*)\}/',
-            '<span class="balise-chip" contenteditable="false">{$1}</span>',
-            $contractTemplate->content
-        );
-
         return view('admin.contract-templates.preview', [
-            'template'         => $contractTemplate,
-            'isDocx'           => false,
-            'locale'           => $locale,
-            'isFem'            => $isFem,
-            'barHtml'          => $barHtml,
-            'editableContent'  => $editableContent,
-            'rawContent'       => $contractTemplate->content,
-            'sampleVars'       => $allVars,
-            'categorizedVars'  => $this->categorizedVariables(),
-            'imgs'             => $imgs,
-            'saveUrl'          => route('admin.contract-templates.save-content', $contractTemplate),
+            'template'        => $contractTemplate,
+            'isDocx'          => $isDocx,
+            'detectedBalises' => $detectedBalises,
         ]);
     }
 
-    public function downloadDocx(ContractTemplate $contractTemplate, Request $request)
+    public function previewPdf(ContractTemplate $contractTemplate)
+    {
+        if (!$contractTemplate->docx_path) {
+            abort(404, 'Aucun fichier DOCX disponible.');
+        }
+
+        $docxPath = Storage::path($contractTemplate->docx_path);
+        $pdfPath  = $this->docxService->convertRawDocxToPdf($docxPath);
+
+        return response()->file($pdfPath, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . Str::slug($contractTemplate->name) . '.pdf"',
+        ])->deleteFileAfterSend(true);
+    }
+
+    public function downloadDocx(ContractTemplate $contractTemplate)
     {
         if (!$contractTemplate->docx_path) {
             abort(404);

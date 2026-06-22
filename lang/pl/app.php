@@ -218,6 +218,8 @@ return [
     'notif_invoice_new_body'       => 'Faktura :reference na kwote :amount :currency zostala do Ciebie wyslana.',
     'notif_invoice_paid'           => 'Platnosc zarejestrowana',
     'notif_invoice_paid_body'      => 'Platnosc za fakture :reference (:amount :currency) zostala zarejestrowana.',
+    'notif_loan_validated'         => 'Wniosek zatwierdzony',
+    'notif_loan_validated_body'    => 'Twoj wniosek :reference zostal zatwierdzony. Umowa zostanie wyslana wkrotce.',
     'notif_loan_contract'          => 'Umowa wyslana e-mailem',
     'notif_loan_contract_body'     => 'Twoja umowa :reference zostala wyslana na Twoj adres e-mail. Podpisz ja i odesl.',
     'notif_loan_funded'            => 'Finansowanie uruchomione',
