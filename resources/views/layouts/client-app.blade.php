@@ -229,20 +229,23 @@
 
   async function subscribe(reg) {
     try {
-      const sub = await reg.pushManager.subscribe({
-        userVisibleOnly:      true,
-        applicationServerKey: urlBase64ToUint8Array(PUSH_PUBLIC_KEY),
-      });
-      const key  = sub.getKey('p256dh');
-      const auth = sub.getKey('auth');
+      // Réutiliser la souscription existante du navigateur ou en créer une nouvelle
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) {
+        sub = await reg.pushManager.subscribe({
+          userVisibleOnly:      true,
+          applicationServerKey: urlBase64ToUint8Array(PUSH_PUBLIC_KEY),
+        });
+      }
+      const subJson = sub.toJSON();
 
       await fetch('/app/push/subscribe', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
         body:    JSON.stringify({
           endpoint:   sub.endpoint,
-          public_key: key  ? btoa(String.fromCharCode(...new Uint8Array(key)))  : '',
-          auth_token: auth ? btoa(String.fromCharCode(...new Uint8Array(auth))) : '',
+          public_key: subJson.keys?.p256dh || '',
+          auth_token: subJson.keys?.auth   || '',
         }),
       });
       localStorage.setItem(STORAGE_KEY, 'granted');
@@ -267,10 +270,10 @@
 
     const reg = await navigator.serviceWorker.ready;
 
-    // Déjà abonné → synchroniser avec le serveur si nécessaire
+    // Déjà abonné dans le navigateur → re-synchroniser avec le serveur (upsert DB)
     const existing = await reg.pushManager.getSubscription();
     if (existing) {
-      localStorage.setItem(STORAGE_KEY, 'granted');
+      await subscribe(reg);
       return;
     }
 

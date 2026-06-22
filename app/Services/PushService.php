@@ -44,8 +44,8 @@ class PushService
             $subscription = Subscription::create([
                 'endpoint'        => $sub->endpoint,
                 'keys'            => [
-                    'p256dh' => $sub->public_key,
-                    'auth'   => $sub->auth_token,
+                    'p256dh' => $this->toBase64Url($sub->public_key),
+                    'auth'   => $this->toBase64Url($sub->auth_token),
                 ],
             ]);
             $this->webPush->queueNotification($subscription, $payload);
@@ -61,5 +61,15 @@ class PushService
         if (!empty($stale)) {
             PushSubscription::whereIn('endpoint', $stale)->delete();
         }
+    }
+
+    private function toBase64Url(string $key): string
+    {
+        // Accepte base64 standard ou base64url, retourne toujours base64url sans padding
+        $decoded = base64_decode(strtr($key, '-_', '+/'), true);
+        if ($decoded === false) {
+            return $key; // Déjà dans un format inconnu, passer tel quel
+        }
+        return rtrim(strtr(base64_encode($decoded), '+/', '-_'), '=');
     }
 }
