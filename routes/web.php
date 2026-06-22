@@ -236,19 +236,6 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
 Route::get('/manifest.json', [ClientAppController::class, 'manifest'])->name('pwa.manifest');
 Route::get('/sw.js',         [ClientAppController::class, 'serviceWorker'])->name('pwa.sw');
 
-/*
- * Servir les fichiers storage avec le bon Content-Type
- * Contourne le problème mod_mime sur hébergement mutualisé
- */
-Route::get('/storage/{path}', function (string $path) {
-    $filePath = storage_path('app/public/' . $path);
-
-    abort_unless(file_exists($filePath) && is_file($filePath), 404);
-
-    $mime = mime_content_type($filePath) ?: 'application/octet-stream';
-
-    return response()->file($filePath, ['Content-Type' => $mime]);
-})->where('path', '.+')->name('storage.serve');
 
 // ── Admin dashboard ─────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('admin.')->group(function () {
