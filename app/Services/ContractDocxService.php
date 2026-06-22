@@ -14,8 +14,7 @@ use ZipArchive;
 class ContractDocxService
 {
     public function __construct(
-        private ContractService        $contractService,
-        private GroqDocxRendererService $groqRenderer,
+        private ContractService $contractService,
     ) {}
 
     // ── Extraction des balises ────────────────────────────────────────────────
@@ -784,9 +783,7 @@ br{display:block;margin:.1em 0}
 
         ob_start();
         $writer->save('php://output');
-        $html = ob_get_clean() ?: '';
-
-        return $this->injectDocxImages($html, $docxPath);
+        return ob_get_clean() ?: '';
     }
 
     /**
@@ -891,47 +888,10 @@ br{display:block;margin:.1em 0}
             );
         }
 
-        // ── wp:anchor images — positionnement via agent Groq ─────────────────
-        // Groq analyse XML (EMU, relativeFrom, paragraphes) et retourne des
-        // positions CSS pixel précises. Le zip est déjà ouvert : on génère les
-        // <img> directement sans second appel I/O.
-        $groqResult = $this->groqRenderer->analyzeAndPosition($docxPath);
-        $anchorRids = [];
-
-        foreach ($groqResult['images'] ?? [] as $pos) {
-            $rid = $pos['rid'] ?? null;
-            if (!$rid) continue;
-            $target = $relMap[$rid] ?? null;
-            if (!$target) continue;
-            $imgPath = 'word/' . ltrim($target, '/');
-            $imgData = $zip->getFromName($imgPath);
-            if (!$imgData) continue;
-
-            $ext  = strtolower(pathinfo($imgPath, PATHINFO_EXTENSION));
-            $mime = match($ext) { 'jpg','jpeg' => 'image/jpeg', 'gif' => 'image/gif', default => 'image/png' };
-            $src  = 'data:' . $mime . ';base64,' . base64_encode($imgData);
-
-            $left    = max(0, (int)($pos['left']    ?? 0));
-            $top     = max(0, (int)($pos['top']     ?? 0));
-            $width   = max(1, (int)($pos['width']   ?? 80));
-            $height  = max(1, (int)($pos['height']  ?? 80));
-            $zIndex  = (int)($pos['zIndex']   ?? 10);
-            $opacity = number_format((float)($pos['opacity'] ?? 1.0), 2);
-
-            $anchorRids[]  = $rid;
-            $pageNum       = max(0, (int)($pos['page'] ?? 0));
-            $textBoxDivs  .= sprintf(
-                '<img class="crx-auto-img" src="%s" data-docx-auto="1" data-docx-page="%d" '
-                . 'style="position:absolute;left:%dpx;top:%dpx;width:%dpx;height:%dpx;'
-                . 'z-index:%d;opacity:%s;object-fit:contain;cursor:grab">',
-                $src, $pageNum, $left, $top, $width, $height, $zIndex, $opacity
-            );
-        }
-
-        // Inline body images (blips) — skip rIds déjà utilisés (textboxes + anchors Groq)
+        // Inline body images (blips) — skip rIds déjà utilisés par les textboxes
         preg_match_all('/<a:blip[^>]+r:embed="([^"]+)"/', $docXml, $blips);
         $uniqueRids  = array_values(array_unique($blips[1]));
-        $inlineRids  = array_diff($uniqueRids, $textBoxRids, $anchorRids);
+        $inlineRids  = array_diff($uniqueRids, $textBoxRids);
 
         $imagesHtml = '';
         foreach ($inlineRids as $rid) {
