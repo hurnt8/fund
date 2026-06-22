@@ -60,7 +60,12 @@ class ContractTemplateController extends Controller
             if (strtolower($file->getClientOriginalExtension()) !== 'docx') {
                 return back()->withInput()->withErrors(['docx_file' => 'Le fichier doit avoir l\'extension .docx']);
             }
-            $docxPath     = $file->store('templates/docx', 'local');
+            Storage::disk('local')->makeDirectory('templates/docx');
+            $stored = $file->store('templates/docx', 'local');
+            if (!$stored) {
+                return back()->withInput()->withErrors(['docx_file' => 'Échec du stockage du fichier sur le serveur. Vérifiez les permissions du dossier storage/app/templates/docx/']);
+            }
+            $docxPath     = $stored;
             $detectedTags = $this->docxService->extractTags(Storage::path($docxPath));
             $templateType = 'docx';
         }
@@ -129,7 +134,12 @@ class ContractTemplateController extends Controller
             if ($contractTemplate->docx_path) {
                 Storage::delete($contractTemplate->docx_path);
             }
-            $updates['docx_path']     = $file->store('templates/docx', 'local');
+            Storage::disk('local')->makeDirectory('templates/docx');
+            $stored = $file->store('templates/docx', 'local');
+            if (!$stored) {
+                return back()->withInput()->withErrors(['docx_file' => 'Échec du stockage du fichier sur le serveur. Vérifiez les permissions du dossier storage/app/templates/docx/']);
+            }
+            $updates['docx_path']     = $stored;
             $updates['detected_tags'] = $this->docxService->extractTags(Storage::path($updates['docx_path']));
             $updates['template_type'] = 'docx';
         }
@@ -211,10 +221,25 @@ class ContractTemplateController extends Controller
             abort(404, 'Aucun fichier DOCX disponible.');
         }
 
-        $docxPath = Storage::path($contractTemplate->docx_path);
+        $relPath  = $contractTemplate->docx_path;
+        $docxPath = Storage::path($relPath);
 
+        \Illuminate\Support\Facades\Log::info('previewPdf', [
+            'template_id' => $contractTemplate->id,
+            'rel_path'    => $relPath,
+            'abs_path'    => $docxPath,
+            'exists'      => file_exists($docxPath),
+            'disk_exists' => Storage::disk('local')->exists($relPath),
+        ]);
+
+        if (!Storage::disk('local')->exists($relPath)) {
+            abort(404, "Fichier DOCX introuvable (chemin : {$relPath}). Veuillez re-télécharger le template.");
+        }
+
+        // Ensure the path is valid before passing to conversion
         if (!file_exists($docxPath)) {
-            abort(404, 'Fichier DOCX introuvable sur le serveur. Veuillez re-télécharger le template.');
+            // Last resort: derive absolute path directly from storage root
+            $docxPath = storage_path('app/' . $relPath);
         }
 
         try {
@@ -222,6 +247,7 @@ class ContractTemplateController extends Controller
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('previewPdf conversion failed', [
                 'template' => $contractTemplate->id,
+                'path'     => $docxPath,
                 'error'    => $e->getMessage(),
             ]);
             abort(500, 'Conversion PDF impossible : ' . $e->getMessage());
