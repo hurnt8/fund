@@ -587,14 +587,13 @@ br{display:block;margin:.1em 0}
         try {
             $loBin = $this->resolveLoBinary();
 
-            // ── LibreOffice + Groq (pipeline prioritaire) ──────────────────────
-            // LibreOffice : texte haute fidélité, tableaux, polices, alignements.
-            // Groq        : positionnement précis des images ancrées (EMU → px).
+            // ── LibreOffice (pipeline prioritaire) ────────────────────────────
+            // Texte haute fidélité, tableaux, polices, alignements.
             if (in_array($renderer, ['libreoffice', 'lo', 'lo+groq'], true) && $loBin) {
                 return $this->convertWithLibreOfficeAndGroq($tempDocx, $loBin);
             }
 
-            // ── phpoffice + Groq ────────────────────────────────────────────────
+            // ── phpoffice ───────────────────────────────────────────────────────
             if (in_array($renderer, ['phpoffice', 'php'], true)
                 && class_exists(\PhpOffice\PhpWord\IOFactory::class)) {
                 $tempDocxMarked = $this->addListMarkersToDocx($tempDocx);
@@ -933,21 +932,16 @@ br{display:block;margin:.1em 0}
         return $html;
     }
 
-    /**
-     * Re-injects DOCX images into previously-saved HTML (for edit reload).
-     */
     public function reInjectImages(string $html, string $docxPath): string
     {
-        return $this->injectDocxImages($html, $docxPath);
+        return $html;
     }
 
     /**
-     * Pipeline combiné LibreOffice + Groq :
-     *  1. LibreOffice  → HTML texte haute fidélité (polices, tableaux, listes, alignements)
-     *  2. Strip images LO (sd-abs-pos) — elles sont mal référencées dans leur système de coordonnées
-     *  3. Groq         → positions pixel précises pour chaque image ancrée (depuis XML DOCX)
-     *  4. DOCX zip     → données image base64 (même source de vérité que les positions Groq)
-     *  5. Injection    → watermark CSS + images Groq positionnées en overlay absolu
+     * Pipeline LibreOffice :
+     *  1. LibreOffice → HTML texte haute fidélité (polices, tableaux, listes, alignements)
+     *  2. Strip images LO (sd-abs-pos) et nettoyage HTML
+     *  3. Injection des marqueurs de saut de page
      */
     private function convertWithLibreOfficeAndGroq(string $docxPath, ?string $binary = null): string
     {
@@ -1009,10 +1003,6 @@ br{display:block;margin:.1em 0}
 
         // ── Pagination LO : injection de marqueurs aux sauts de page ──────────
         $html = $this->injectLoPageBreaks($html, $docxPath);
-
-        // ── Watermark (header DOCX) + images Groq ────────────────────────────
-        // injectDocxImages() gère : watermark header, images Groq, textboxes mc:AC
-        $html = $this->injectDocxImages($html, $docxPath);
 
         return $html;
     }
