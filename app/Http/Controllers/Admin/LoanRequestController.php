@@ -13,6 +13,7 @@ use App\Models\LoanHistory;
 use App\Models\LoanRequest;
 use App\Models\User;
 use App\Services\ContractService;
+use App\Services\DocumentArchive;
 use App\Services\LoanPdfService;
 use App\Services\LoanService;
 use Illuminate\Http\Request;
@@ -96,6 +97,7 @@ class LoanRequestController extends Controller
             'admin_fees'        => 'nullable|numeric|min:0',
             'bank_account'      => 'nullable|string|max:255',
             'agent_suivi'       => 'nullable|string|max:255',
+            'directeur'         => 'nullable|string|max:255',
             'special_conditions'=> 'nullable|string',
             'contract_template_id' => 'nullable|exists:contract_templates,id',
             // Balises personnalisées du template (modale)
@@ -174,6 +176,7 @@ class LoanRequestController extends Controller
             'admin_fees'           => $data['admin_fees'] ?? null,
             'bank_account'         => $data['bank_account'] ?? null,
             'agent_suivi'          => $data['agent_suivi'] ?? null,
+            'directeur'            => $data['directeur'] ?? null,
             'monthly_payment'      => $calc['monthly_payment'],
             'total_cost'           => $calc['total_cost'],
             'total_with_interest'  => $calc['total_with_interest'],
@@ -206,8 +209,9 @@ class LoanRequestController extends Controller
     public function show(LoanRequest $loan)
     {
         $this->authorizeAccess($loan);
-        $loan->load(['client', 'admin', 'history.admin']);
-        return view('admin.loans.show', compact('loan'));
+        $loan->load(['client', 'admin', 'history.admin', 'contractTemplate']);
+        $generatedDocs = $loan->generatedDocuments()->with('generatedBy')->get();
+        return view('admin.loans.show', compact('loan', 'generatedDocs'));
     }
 
     public function edit(LoanRequest $loan)
@@ -240,6 +244,7 @@ class LoanRequestController extends Controller
             'admin_fees'           => 'nullable|numeric|min:0',
             'bank_account'         => 'nullable|string|max:255',
             'agent_suivi'          => 'nullable|string|max:255',
+            'directeur'            => 'nullable|string|max:255',
             'special_conditions'   => 'nullable|string',
             'contract_template_id' => 'nullable|exists:contract_templates,id',
             'contract_language'    => 'nullable|in:fr,en,pl,es',
@@ -287,13 +292,78 @@ class LoanRequestController extends Controller
     {
         $this->authorizeAccess($loan);
 
-        $locale  = $loan->contract_language ?? 'fr';
-        $pdfPath = $this->pdfService->generate($loan, $locale);
+        if (!$loan->contract_pdf_path) {
+            return back()->with('error', 'Aucun PDF uploadé pour ce dossier.');
+        }
 
-        return response()->file($pdfPath, [
+        $absPath = storage_path('app/private/' . $loan->contract_pdf_path);
+        if (!file_exists($absPath)) {
+            return back()->with('error', 'Fichier PDF introuvable sur le serveur.');
+        }
+
+        return response()->file($absPath, [
             'Content-Type'        => 'application/pdf',
             'Content-Disposition' => 'inline; filename="Contrat_' . $loan->reference . '.pdf"',
         ]);
+    }
+
+    public function uploadContractPdf(Request $request, LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        $request->validate([
+            'contract_pdf' => 'required|file|mimes:pdf|max:20480',
+        ], [
+            'contract_pdf.required' => 'Veuillez sélectionner un fichier PDF.',
+            'contract_pdf.mimes'    => 'Seuls les fichiers PDF sont acceptés.',
+            'contract_pdf.max'      => 'Le fichier PDF ne doit pas dépasser 20 Mo.',
+        ]);
+
+        // Supprimer l'ancien PDF s'il existe
+        if ($loan->contract_pdf_path) {
+            $old = storage_path('app/private/' . $loan->contract_pdf_path);
+            if (file_exists($old)) {
+                @unlink($old);
+            }
+        }
+
+        $file    = $request->file('contract_pdf');
+        $relPath = 'contract-pdfs/' . $loan->id . '/' . $loan->reference . '.pdf';
+        $absDir  = storage_path('app/private/contract-pdfs/' . $loan->id);
+
+        if (!is_dir($absDir)) {
+            mkdir($absDir, 0755, true);
+        }
+
+        $file->move($absDir, $loan->reference . '.pdf');
+
+        $loan->update(['contract_pdf_path' => $relPath]);
+
+        $this->logHistory($loan, 'pdf_uploaded', [], ['pdf' => $relPath]);
+
+        return back()->with('success', 'PDF du contrat uploadé avec succès. Il sera joint à l\'email envoyé au client.');
+    }
+
+    public function downloadDocx(LoanRequest $loan, DocumentArchive $archive)
+    {
+        $this->authorizeAccess($loan);
+
+        $template = $loan->contractTemplate
+            ?? ContractTemplate::where('is_default', true)->first();
+
+        if (!$template || !$template->hasDocxTemplate()) {
+            return back()->with('error', 'Aucun template DOCX disponible pour ce dossier. Uploadez un template DOCX depuis la gestion des modèles.');
+        }
+
+        $locale = $loan->contract_language ?? 'fr';
+
+        try {
+            $path = $archive->getOrGenerate($loan, $template, $locale);
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Génération DOCX impossible : ' . $e->getMessage());
+        }
+
+        return response()->download($path, 'Contrat_' . $loan->reference . '.docx');
     }
 
     public function updateContract(Request $request, LoanRequest $loan)

@@ -97,6 +97,7 @@ $historyIconMap = [
     'signed_received'   => ['fa-file-signature', '#8b5cf6', 'rgba(139,92,246,.1)'],
     'status_changed'    => ['fa-exchange-alt', '#f59e0b', 'rgba(245,158,11,.1)'],
     'contract_edited'   => ['fa-edit', '#3b82f6', 'rgba(59,130,246,.1)'],
+    'pdf_uploaded'      => ['fa-file-pdf', '#dc2626', 'rgba(220,38,38,.1)'],
 ];
 $historyLabels = [
     'created'           => 'Dossier créé',
@@ -105,8 +106,16 @@ $historyLabels = [
     'signed_received'   => 'Contrat signé reçu',
     'status_changed'    => 'Statut modifié',
     'contract_edited'   => 'Contrat édité',
+    'pdf_uploaded'      => 'PDF du contrat uploadé',
 ];
 @endphp
+
+@if(session('error'))
+<div class="flash flash-err mb-3"><i class="fas fa-exclamation-triangle"></i> {{ session('error') }}</div>
+@endif
+@if(session('success'))
+<div class="flash flash-ok mb-3"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
+@endif
 
 {{-- Hero --}}
 <div class="loan-hero">
@@ -131,6 +140,11 @@ $historyLabels = [
       <a href="{{ route('admin.loans.contract', $loan) }}" class="btn-ghost btn-sm-pro" style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)">
         <i class="fas fa-file-contract"></i> Contrat
       </a>
+      @if($loan->contractTemplate?->hasDocxTemplate() || \App\Models\ContractTemplate::where('is_default',true)->where('docx_template_path','!=',null)->exists())
+      <a href="{{ route('admin.loans.contract.docx', $loan) }}" class="btn-ghost btn-sm-pro" style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)">
+        <i class="fas fa-file-word"></i> DOCX
+      </a>
+      @endif
     </div>
   </div>
 
@@ -281,6 +295,37 @@ $historyLabels = [
           @endif
         </div>
 
+        {{-- Documents DOCX --}}
+        @php
+          $tpl = $loan->contractTemplate;
+          $hasDocxTpl = $tpl?->hasDocxTemplate()
+            ?? \App\Models\ContractTemplate::where('is_default',true)
+               ->whereNotNull('docx_template_path')->exists();
+        @endphp
+        @if($hasDocxTpl)
+        <div class="action-btn-group" style="margin-top:0">
+          <a href="{{ route('admin.loans.contract.docx', $loan) }}"
+             class="btn-ghost btn-sm-pro" style="width:100%;justify-content:center">
+            <i class="fas fa-file-word me-1" style="color:#1D4ED8"></i>
+            Télécharger DOCX
+            @if($generatedDocs->count())
+            <span style="margin-left:.4rem;font-size:.62rem;padding:.1rem .35rem;
+                         border-radius:8px;background:#DBEAFE;color:#1D4ED8;font-weight:700">
+              {{ $generatedDocs->count() }}
+            </span>
+            @endif
+          </a>
+        </div>
+        @endif
+        @if($loan->contract_pdf_path)
+        <div class="action-btn-group" style="margin-top:0">
+          <a href="{{ route('admin.loans.contract.pdf', $loan) }}"
+             class="btn-ghost btn-sm-pro" style="width:100%;justify-content:center" target="_blank">
+            <i class="fas fa-file-pdf me-1" style="color:#dc2626"></i>Voir PDF
+          </a>
+        </div>
+        @endif
+
         <hr class="action-divider">
 
         {{-- Changer statut --}}
@@ -348,6 +393,7 @@ $historyLabels = [
             ['Frais admin.',    $loan->admin_fees ? number_format($loan->admin_fees, 2, ',', ' ') . ' ' . $loan->currency : '—'],
             ['Coût du crédit',  number_format($loan->total_cost, 2, ',', ' ') . ' ' . $loan->currency],
             ['Agent suivi',     $loan->agent_suivi ?? '—'],
+            ['Directeur',       $loan->directeur ?? '—'],
           ] as [$lbl, $val])
           <div class="detail-item">
             <div class="detail-lbl">{{ $lbl }}</div>
@@ -426,6 +472,227 @@ $historyLabels = [
   </div>
 </div>
 @endif
+
+{{-- Modèle de contrat associé --}}
+@php $tpl = $loan->contractTemplate; @endphp
+<div class="card-pro mb-4">
+  <div class="card-pro-hdr">
+    <div class="card-pro-title"><span class="icon-dot"></span>Modèle de contrat</div>
+    @if($tpl)
+    <a href="{{ route('admin.contract-templates.edit', $tpl) }}"
+       class="btn-ghost btn-sm-pro" style="margin-left:auto">
+      <i class="fas fa-pen me-1"></i>Modifier
+    </a>
+    @endif
+  </div>
+  <div class="card-pro-body">
+    @if($tpl)
+    <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:180px">
+        <div style="font-weight:700;color:var(--c-navy);font-size:.875rem;margin-bottom:.3rem">
+          {{ $tpl->name }}
+        </div>
+        <div style="display:flex;gap:.35rem;flex-wrap:wrap">
+          @if($tpl->is_default)
+          <span class="badge-status bs-amber" style="font-size:.6rem">Par défaut</span>
+          @endif
+          @if($tpl->hasDocxTemplate())
+          <span style="font-size:.62rem;padding:.1rem .4rem;border-radius:4px;
+                       background:#F0FDF4;color:#166534;border:1px solid #86EFAC;font-weight:700">
+            <i class="fas fa-file-word" style="margin-right:.2rem"></i>DOCX v{{ $tpl->docx_version }}
+          </span>
+          @else
+          <span style="font-size:.62rem;padding:.1rem .4rem;border-radius:4px;
+                       background:#FEF9C3;color:#713F12;border:1px solid #FDE047">
+            Pas de DOCX
+          </span>
+          @endif
+          @if($tpl->locale)
+          <span style="font-size:.62rem;color:var(--c-muted)">{{ strtoupper($tpl->locale) }}</span>
+          @endif
+        </div>
+      </div>
+      @if($tpl->hasDocxTemplate())
+      <a href="{{ route('admin.loans.contract.docx', $loan) }}"
+         class="btn-navy btn-sm-pro">
+        <i class="fas fa-file-word me-1"></i>Générer DOCX
+      </a>
+      @else
+      <a href="{{ route('admin.contract-templates.edit', $tpl) }}"
+         class="btn-ghost btn-sm-pro">
+        <i class="fas fa-upload me-1"></i>Uploader DOCX
+      </a>
+      @endif
+    </div>
+
+    @if($tpl->hasDocxTemplate() && count($tpl->docx_detected_vars ?? []) > 0)
+    <div style="margin-top:.75rem;padding:.5rem .75rem;background:#F8FAFC;
+                border:1px solid var(--c-border);border-radius:6px">
+      <div style="font-size:.68rem;color:var(--c-muted);margin-bottom:.3rem">
+        <i class="fas fa-tags me-1" style="color:var(--c-gold)"></i>
+        {{ count($tpl->docx_detected_vars) }} variable(s) dans le template DOCX
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:.2rem">
+        @foreach($tpl->docx_detected_vars as $v)
+        <code style="font-size:.6rem;padding:.08rem .3rem;border-radius:3px;
+                     background:#fff;border:1px solid var(--c-border);color:var(--c-navy)">{{"{"}}{{ $v }}{{"}"}}</code>
+        @endforeach
+      </div>
+    </div>
+    @endif
+
+    @else
+    <div style="padding:.625rem .75rem;background:#FEF9C3;border:1px solid #FDE047;
+                border-radius:8px;font-size:.8rem;color:#713F12">
+      <i class="fas fa-exclamation-triangle me-1"></i>
+      Aucun modèle de contrat assigné — le template par défaut sera utilisé.
+      <a href="{{ route('admin.loans.edit', $loan) }}" style="color:#713F12;font-weight:600;margin-left:.4rem">
+        Assigner un modèle <i class="fas fa-arrow-right ms-1"></i>
+      </a>
+    </div>
+    @endif
+  </div>
+</div>
+
+{{-- Documents DOCX générés --}}
+@if($generatedDocs->count())
+<div class="card-pro mb-4">
+  <div class="card-pro-hdr">
+    <div class="card-pro-title">
+      <span class="icon-dot"></span>Documents DOCX générés
+      <span style="margin-left:.5rem;font-size:.68rem;padding:.15rem .5rem;border-radius:10px;
+                   background:#DBEAFE;color:#1D4ED8;font-weight:600">{{ $generatedDocs->count() }}</span>
+    </div>
+    <a href="{{ route('admin.loans.contract.docx', $loan) }}"
+       class="btn-navy btn-sm-pro" style="margin-left:auto">
+      <i class="fas fa-plus me-1"></i>Régénérer
+    </a>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="pro-table w-100">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Modèle</th>
+          <th>Version</th>
+          <th>Langue</th>
+          <th>Généré par</th>
+          <th>Checksum</th>
+          <th style="width:80px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($generatedDocs as $doc)
+        @php
+          $absPath = storage_path('app/' . $doc->docx_path);
+          $exists  = file_exists($absPath);
+        @endphp
+        <tr style="{{ !$exists ? 'opacity:.5' : '' }}">
+          <td style="font-size:.78rem;white-space:nowrap">{{ $doc->created_at->format('d/m/Y H:i') }}</td>
+          <td style="font-size:.78rem">{{ $doc->contractTemplate?->name ?? '—' }}</td>
+          <td style="text-align:center">
+            <span style="font-size:.68rem;padding:.1rem .4rem;border-radius:8px;
+                         background:#DBEAFE;color:#1D4ED8;font-weight:700">v{{ $doc->template_version }}</span>
+          </td>
+          <td style="text-align:center;font-size:.78rem;font-weight:600">{{ strtoupper($doc->locale) }}</td>
+          <td style="font-size:.78rem">{{ $doc->generatedBy?->name ?? '—' }}</td>
+          <td style="font-size:.68rem;color:var(--c-muted);font-family:monospace">
+            {{ substr($doc->checksum ?? '', 0, 10) }}…
+          </td>
+          <td>
+            @if($exists)
+            <a href="{{ route('admin.loans.contract.docx', $loan) }}"
+               class="btn-ghost btn-sm-pro" style="padding:.3rem .6rem"
+               title="Télécharger cette version">
+              <i class="fas fa-download"></i>
+            </a>
+            @else
+            <span style="font-size:.68rem;color:#dc2626" title="Fichier supprimé">
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+            @endif
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+</div>
+@endif
+
+{{-- PDF du contrat (upload manuel) --}}
+<div class="card-pro mb-4">
+  <div class="card-pro-hdr">
+    <div class="card-pro-title">
+      <span class="icon-dot" style="background:#dc2626"></span>PDF du contrat
+    </div>
+    @if($loan->contract_pdf_path)
+    <a href="{{ route('admin.loans.contract.pdf', $loan) }}"
+       class="btn-ghost btn-sm-pro" target="_blank">
+      <i class="fas fa-eye me-1"></i>Voir le PDF
+    </a>
+    @endif
+  </div>
+  <div class="card-pro-body">
+
+    @if($loan->contract_pdf_path)
+    {{-- PDF déjà uploadé --}}
+    <div style="display:flex;align-items:center;gap:.875rem;padding:.75rem 1rem;
+                background:#FFF1F2;border:1px solid #FECDD3;border-radius:8px;margin-bottom:1.25rem">
+      <i class="fas fa-file-pdf" style="color:#dc2626;font-size:1.375rem;flex-shrink:0"></i>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.825rem;font-weight:700;color:#9F1239">
+          PDF actuel : {{ $loan->reference }}.pdf
+        </div>
+        <div style="font-size:.72rem;color:#be123c;margin-top:.2rem">
+          <i class="fas fa-check-circle me-1"></i>
+          Sera joint à l'email envoyé au client · Remplacer si besoin ci-dessous
+        </div>
+      </div>
+      <a href="{{ route('admin.loans.contract.pdf', $loan) }}"
+         class="btn-ghost btn-sm-pro" style="flex-shrink:0" target="_blank">
+        <i class="fas fa-download me-1"></i>Télécharger
+      </a>
+    </div>
+    @else
+    <div style="padding:.75rem 1rem;background:#FEF9C3;border:1px solid #FDE047;
+                border-radius:8px;margin-bottom:1.25rem;font-size:.8125rem;color:#713F12">
+      <i class="fas fa-exclamation-triangle me-1"></i>
+      <strong>Aucun PDF uploadé.</strong>
+      Générez d'abord le contrat en DOCX, signez-le si nécessaire, puis uploadez le PDF final ci-dessous.
+      Il sera automatiquement joint à l'email de contrat envoyé au client.
+    </div>
+    @endif
+
+    <form action="{{ route('admin.loans.contract.pdf.upload', $loan) }}"
+          method="POST" enctype="multipart/form-data">
+      @csrf
+      <div style="display:flex;align-items:flex-end;gap:.75rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <label class="form-label-pro">
+            <i class="fas fa-upload me-1" style="color:#dc2626"></i>
+            {{ $loan->contract_pdf_path ? 'Remplacer le PDF' : 'Uploader le PDF du contrat' }}
+          </label>
+          <input type="file" name="contract_pdf" accept=".pdf"
+                 class="form-control-pro" style="font-size:.82rem" required>
+          @error('contract_pdf')
+          <div style="font-size:.72rem;color:#dc2626;margin-top:.3rem">
+            <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
+          </div>
+          @enderror
+        </div>
+        <button type="submit" class="btn-navy" style="background:#dc2626;border-color:#dc2626;white-space:nowrap">
+          <i class="fas fa-upload me-1"></i>{{ $loan->contract_pdf_path ? 'Remplacer' : 'Uploader' }}
+        </button>
+      </div>
+      <div style="margin-top:.5rem;font-size:.72rem;color:var(--c-muted)">
+        <i class="fas fa-info-circle me-1"></i>
+        PDF max 20 Mo · Ce fichier remplace le précédent s'il existe
+      </div>
+    </form>
+
+  </div>
+</div>
 
 {{-- Historique --}}
 @if($loan->history->count())

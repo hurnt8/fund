@@ -47,7 +47,8 @@ class LoanRequestController extends Controller
 
     public function show(LoanRequest $loan)
     {
-        $loan->load(['client', 'admin', 'history.admin']);
-        return view('admin.loans.show', compact('loan'));
+        $loan->load(['client', 'admin', 'history.admin', 'contractTemplate']);
+        $generatedDocs = $loan->generatedDocuments()->with('generatedBy')->get();
+        return view('admin.loans.show', compact('loan', 'generatedDocs'));
     }
 }

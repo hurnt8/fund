@@ -45,9 +45,9 @@
       {{ $template->name }}
     </div>
     <div style="font-size:.78rem;color:var(--c-muted);margin-top:.2rem">
-      Modèle {{ strtoupper($template->template_type ?? 'html') }}
-      @if($template->detected_tags)
-        · {{ count($template->detected_tags) }} variable(s) détectée(s)
+      Modèle HTML — DomPDF (Times New Roman)
+      @if(count($detectedBalises))
+        · {{ count($detectedBalises) }} variable(s) détectée(s)
       @endif
     </div>
   </div>
@@ -69,13 +69,9 @@
     {{-- Bannière modèle --}}
     <div class="tpl-banner">
       <div class="tpl-banner-name">{{ $template->name }}</div>
-      <div class="tpl-banner-type {{ $template->template_type === 'html' ? 'html-type' : '' }}">
-        <i class="fas fa-{{ $template->template_type === 'docx' ? 'file-word' : 'code' }}"></i>
-        {{ strtoupper($template->template_type ?? 'HTML') }}
-      </div>
       <div class="meta-row">
         <span class="meta-lbl">Variables</span>
-        <span class="meta-val">{{ count($template->detected_tags ?? []) }}</span>
+        <span class="meta-val">{{ count($detectedBalises) }}</span>
       </div>
       <div class="meta-row">
         <span class="meta-lbl">Créé le</span>
@@ -93,19 +89,17 @@
         <div class="card-pro-title"><span class="icon-dot"></span>Fichiers</div>
       </div>
       <div class="card-pro-body" style="display:flex;flex-direction:column;gap:.5rem">
-        @if($isDocx)
         <a href="{{ route('admin.contract-templates.preview-pdf', $template) }}"
            target="_blank"
            class="btn-ghost btn-sm-pro"
            style="justify-content:center;text-align:center">
           <i class="fas fa-file-pdf" style="color:#ef4444"></i> Ouvrir PDF dans un onglet
         </a>
-        <a href="{{ route('admin.contract-templates.download-docx', $template) }}"
-           class="btn-ghost btn-sm-pro"
+        <a href="{{ route('admin.contract-templates.edit', $template) }}"
+           class="btn-navy btn-sm-pro"
            style="justify-content:center;text-align:center">
-          <i class="fas fa-file-word" style="color:#2563eb"></i> Télécharger DOCX original
+          <i class="fas fa-pen"></i> Modifier le template
         </a>
-        @endif
       </div>
     </div>
 
@@ -136,25 +130,22 @@
 
   </div>
 
-  {{-- ── Zone principale ── --}}
+  {{-- ── Zone principale : PDF --}}
   <div>
-    @if($isDocx)
-    {{-- Visionneuse PDF --}}
     <div class="pdf-wrap">
       <div class="pdf-toolbar">
         <div class="pdf-toolbar-title">
           <i class="fas fa-file-pdf" style="color:#ef4444"></i>
-          Aperçu du document
+          Aperçu PDF du contrat
         </div>
         <div class="pdf-toolbar-actions">
           <a href="{{ route('admin.contract-templates.preview-pdf', $template) }}"
-             target="_blank"
-             class="btn-ghost btn-sm-pro">
-            <i class="fas fa-external-link-alt"></i> Ouvrir dans un onglet
+             target="_blank" class="btn-ghost btn-sm-pro">
+            <i class="fas fa-external-link-alt"></i> Onglet
           </a>
-          <a href="{{ route('admin.contract-templates.download-docx', $template) }}"
+          <a href="{{ route('admin.contract-templates.edit', $template) }}"
              class="btn-ghost btn-sm-pro">
-            <i class="fas fa-download"></i> Télécharger DOCX
+            <i class="fas fa-pen"></i> Modifier
           </a>
         </div>
       </div>
@@ -165,27 +156,6 @@
         loading="lazy"
       ></iframe>
     </div>
-
-    @else
-    {{-- HTML template : affichage brut --}}
-    <div class="pdf-wrap">
-      <div class="pdf-toolbar">
-        <div class="pdf-toolbar-title">
-          <i class="fas fa-code" style="color:#22a396"></i>
-          Contenu HTML du modèle
-        </div>
-        <div class="pdf-toolbar-actions">
-          <a href="{{ route('admin.contract-templates.edit', $template) }}"
-             class="btn-ghost btn-sm-pro">
-            <i class="fas fa-pen"></i> Modifier
-          </a>
-        </div>
-      </div>
-      <div class="html-preview">
-        {!! $template->content !!}
-      </div>
-    </div>
-    @endif
   </div>
 
 </div>

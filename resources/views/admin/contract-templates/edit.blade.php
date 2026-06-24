@@ -1,18 +1,43 @@
 @extends('layouts.dashboard')
-@section('title','Modifier — '.$template->name)
+@section('title','Modifier le modèle')
 @section('page_title','Modifier le modèle')
 
 @section('content')
 
 <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 page-hdr">
   <div>
-    <h4>Modifier — {{ $template->name }}</h4>
-    <p>Les modifications s'appliquent aux prochaines générations de contrats</p>
+    <h4>{{ $template->name }}</h4>
+    <div style="display:flex;align-items:center;gap:.5rem;margin-top:.35rem;flex-wrap:wrap">
+      @if($template->is_default)
+      <span class="badge-status bs-amber" style="font-size:.65rem">Par défaut</span>
+      @endif
+      @if($template->hasDocxTemplate())
+      <span style="font-size:.68rem;padding:.15rem .5rem;border-radius:4px;font-weight:700;
+                   background:#F0FDF4;color:#166534;border:1px solid #86EFAC">
+        <i class="fas fa-file-word me-1"></i>DOCX v{{ $template->docx_version }} actif
+      </span>
+      @else
+      <span style="font-size:.68rem;padding:.15rem .5rem;border-radius:4px;
+                   background:#FEF9C3;color:#713F12;border:1px solid #FDE047">
+        <i class="fas fa-file-word me-1"></i>Pas de DOCX
+      </span>
+      @endif
+      @if($template->locale)
+      <span style="font-size:.68rem;color:var(--c-muted);font-weight:600">{{ strtoupper($template->locale) }}</span>
+      @endif
+    </div>
   </div>
-  <div class="d-flex gap-2">
-    <a href="{{ route('admin.contract-templates.preview',$template) }}" class="btn-ghost btn-sm-pro" target="_blank">
-      <i class="fas fa-eye"></i> Aperçu
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+    @if($template->hasDocxTemplate())
+    <a href="{{ route('admin.contract-templates.docx.preview', $template) }}"
+       class="btn-ghost btn-sm-pro" target="_blank">
+      <i class="fas fa-file-word me-1"></i>Aperçu DOCX
     </a>
+    <a href="{{ route('admin.contract-templates.docx.download', $template) }}"
+       class="btn-ghost btn-sm-pro">
+      <i class="fas fa-download me-1"></i>Télécharger
+    </a>
+    @endif
     <a href="{{ route('admin.contract-templates.index') }}" class="btn-ghost btn-sm-pro">
       <i class="fas fa-arrow-left"></i> Retour
     </a>
@@ -22,281 +47,287 @@
 @if($errors->any())
 <div class="flash flash-err mb-4"><i class="fas fa-exclamation-triangle"></i> {{ $errors->first() }}</div>
 @endif
+@if(session('success'))
+<div class="flash flash-ok mb-4"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
+@endif
 
 <div class="row g-4">
 
+  {{-- ── Colonne principale ── --}}
   <div class="col-xl-8">
-    @php $initMode = old('template_type', $template->template_type === 'docx' ? 'docx' : 'html'); @endphp
-    <form action="{{ route('admin.contract-templates.update',$template) }}" method="POST"
-          id="tplForm" enctype="multipart/form-data"
-          x-data="{ mode: '{{ $initMode }}' }"
-          x-init="$watch('mode', v => document.getElementById('templateTypeInput').value = v)">
-    @csrf @method('PUT')
-    <input type="hidden" name="template_type" id="templateTypeInput" value="{{ $initMode }}">
 
-    {{-- Informations --}}
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
+    {{-- FORMULAIRE PRINCIPAL (nom, langue, défaut, admins)             --}}
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
+    <form action="{{ route('admin.contract-templates.update', $template) }}"
+          method="POST" id="tplForm">
+    @csrf @method('PUT')
+
     <div class="card-pro mb-4">
       <div class="card-pro-hdr">
-        <div class="card-pro-title"><span class="icon-dot"></span>Informations du modèle</div>
+        <div class="card-pro-title"><span class="icon-dot"></span>Informations générales</div>
       </div>
       <div class="card-pro-body">
         <div class="row g-3">
           <div class="col-sm-8">
             <label class="form-label-pro">Nom du modèle *</label>
             <input type="text" name="name" class="form-control-pro"
-                   value="{{ old('name',$template->name) }}" required>
+                   value="{{ old('name', $template->name) }}" required>
           </div>
           <div class="col-sm-4">
-            <label class="form-label-pro">Langue</label>
+            <label class="form-label-pro">Langue par défaut</label>
             <select name="locale" class="form-control-pro">
-              <option value="">— Toutes langues —</option>
-              <option value="fr" {{ old('locale',$template->locale)==='fr'?'selected':'' }}>🇫🇷 Français</option>
-              <option value="en" {{ old('locale',$template->locale)==='en'?'selected':'' }}>🇬🇧 English</option>
-              <option value="pl" {{ old('locale',$template->locale)==='pl'?'selected':'' }}>🇵🇱 Polski</option>
-              <option value="es" {{ old('locale',$template->locale)==='es'?'selected':'' }}>🇪🇸 Español</option>
+              <option value="">Automatique (langue du client)</option>
+              @foreach(['fr'=>'Français','en'=>'English','pl'=>'Polski','es'=>'Español'] as $code=>$label)
+              <option value="{{ $code }}" {{ old('locale', $template->locale)==$code?'selected':'' }}>{{ $label }}</option>
+              @endforeach
             </select>
           </div>
           <div class="col-12">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="is_default" id="is_default" value="1"
-                     {{ old('is_default',$template->is_default)?'checked':'' }}>
-              <label class="form-check-label" for="is_default"
-                     style="font-size:.8125rem;font-weight:500;color:var(--c-navy)">
-                Modèle par défaut
-              </label>
-            </div>
+            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.85rem">
+              <input type="checkbox" name="is_default" value="1"
+                     {{ old('is_default', $template->is_default)?'checked':'' }}
+                     style="width:16px;height:16px;accent-color:var(--c-navy)">
+              <span>Modèle par défaut</span>
+            </label>
           </div>
         </div>
       </div>
     </div>
 
-    {{-- Attribution aux administrateurs (super-admin uniquement) --}}
-    @if(auth()->user()->hasRole('super-admin') && $admins->isNotEmpty())
+    {{-- ── Admins assignés (super-admin) ── --}}
+    @if(auth()->user()->hasRole('super-admin') && $admins->count())
     <div class="card-pro mb-4">
       <div class="card-pro-hdr">
-        <div class="card-pro-title"><span class="icon-dot"></span>Administrateurs autorisés</div>
-        <span style="font-size:.75rem;color:var(--c-muted)">Laissez vide = accessible à tous les admins</span>
+        <div class="card-pro-title"><span class="icon-dot"></span>Admins assignés</div>
       </div>
       <div class="card-pro-body">
-        <p style="font-size:.8rem;color:var(--c-muted);margin-bottom:.75rem">
-          Sélectionnez les administrateurs qui peuvent utiliser ce modèle de contrat.
-        </p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem">
-          @foreach($admins as $adm)
-          <label style="display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;
-                        border:1.5px solid var(--c-border);border-radius:var(--radius-sm);
-                        cursor:pointer;font-size:.8125rem;transition:var(--transition)"
-                 onmouseover="this.style.borderColor='var(--c-gold)'"
-                 onmouseout="this.style.borderColor='var(--c-border)'">
-            <input type="checkbox" name="assigned_admins[]" value="{{ $adm->id }}"
-                   {{ in_array($adm->id, $assignedIds) ? 'checked' : '' }}
-                   style="accent-color:var(--c-navy);width:15px;height:15px;cursor:pointer">
-            <div>
-              <div style="font-weight:500;color:var(--c-text)">{{ $adm->name }}</div>
-              <div style="font-size:.7rem;color:var(--c-muted)">{{ $adm->email }}</div>
-            </div>
-          </label>
+        <div style="font-size:.75rem;color:var(--c-muted);margin-bottom:.75rem">
+          Laissez tous décochés = accessible à tous les admins.
+        </div>
+        <div class="row g-2">
+          @foreach($admins as $admin)
+          <div class="col-sm-6 col-md-4">
+            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.83rem">
+              <input type="checkbox" name="assigned_admins[]" value="{{ $admin->id }}"
+                     {{ in_array($admin->id, $assignedIds) ? 'checked' : '' }}
+                     style="width:15px;height:15px;accent-color:var(--c-navy)">
+              {{ $admin->name }}
+            </label>
+          </div>
           @endforeach
         </div>
       </div>
     </div>
     @endif
 
-    {{-- Contenu --}}
-    <div class="card-pro mb-4">
+    <div style="display:flex;gap:.75rem;justify-content:flex-end;margin-bottom:1.5rem">
+      <a href="{{ route('admin.contract-templates.index') }}" class="btn-ghost">Annuler</a>
+      <button type="submit" class="btn-navy">
+        <i class="fas fa-save me-1"></i>Enregistrer
+      </button>
+    </div>
+    </form>
+
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
+    {{-- SECTION DOCX (formulaire séparé)                               --}}
+    {{-- ═══════════════════════════════════════════════════════════════ --}}
+    <div class="card-pro" id="docx-section">
       <div class="card-pro-hdr">
-        <div class="card-pro-title"><span class="icon-dot"></span>Contenu du modèle</div>
-        <div style="display:flex;gap:.5rem">
-          <button type="button" @click="mode='html'"
-            :class="mode==='html'?'btn-navy btn-sm-pro':'btn-ghost btn-sm-pro'">
-            <i class="fas fa-code"></i> HTML / Texte
-          </button>
-          <button type="button" @click="mode='docx'"
-            :class="mode==='docx'?'btn-navy btn-sm-pro':'btn-ghost btn-sm-pro'">
-            <i class="fas fa-file-word"></i> Fichier DOCX
-          </button>
-        </div>
-      </div>
-
-      {{-- Mode HTML --}}
-      <div x-show="mode==='html'" style="padding:1.25rem">
-        <textarea name="content" id="contractEditor"
-                  style="width:100%;min-height:500px;font-family:'Courier New',monospace;font-size:.78rem;
-                         line-height:1.7;padding:1.25rem;
-                         border:1.5px solid var(--c-border);border-radius:var(--radius-sm);
-                         background:#1A2332;color:#E2E8F0;resize:vertical"
-                  onfocus="this.style.borderColor='var(--c-gold)'"
-                  onblur="this.style.borderColor='var(--c-border)'"
-                  >{{ old('content',$template->content) }}</textarea>
-      </div>
-
-      {{-- Mode DOCX --}}
-      <div x-show="mode==='docx'" style="padding:1.25rem">
-
-        {{-- Fichier DOCX actuel --}}
-        @if($template->template_type === 'docx' && $template->docx_path)
-        <div style="display:flex;align-items:center;gap:.75rem;background:var(--c-bg);
-                    border:1px solid var(--c-border);border-radius:var(--radius-sm);
-                    padding:.75rem 1rem;margin-bottom:1rem">
-          <i class="fas fa-file-word" style="color:#2B579A;font-size:1.25rem;flex-shrink:0"></i>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:.8125rem;font-weight:600;color:var(--c-navy)">Fichier DOCX actuel</div>
-            <div style="font-size:.72rem;color:var(--c-muted);word-break:break-all">
-              {{ basename($template->docx_path) }}
-            </div>
-          </div>
-          <span class="badge-status bs-green" style="flex-shrink:0">Actif</span>
-        </div>
-
-        {{-- Balises détectées --}}
-        @if($template->detected_tags)
-        <div style="margin-bottom:1rem">
-          <div style="font-size:.75rem;font-weight:700;color:var(--c-navy);margin-bottom:.5rem">
-            <i class="fas fa-tags me-1" style="color:var(--c-gold)"></i>
-            {{ count($template->detected_tags) }} balise(s) détectée(s) dans ce DOCX
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:.375rem">
-            @foreach($template->detected_tags as $tag)
-            @php $known = array_key_exists($tag, $variables); @endphp
-            <span style="font-size:.72rem;font-family:monospace;font-weight:700;
-                         padding:.2rem .55rem;border-radius:5px;
-                         background:{{ $known ? '#F0FDF4' : '#FFF7ED' }};
-                         border:1px solid {{ $known ? '#86EFAC' : '#FED7AA' }};
-                         color:{{ $known ? '#166534' : '#92400E' }}">
-              {{ $tag }}
-              @if(!$known)<i class="fas fa-exclamation-triangle ms-1" title="Balise non reconnue"></i>@endif
+        <div>
+          <div class="card-pro-title">
+            <span class="icon-dot" style="background:#1D4ED8"></span>
+            Template Word (.docx)
+            @if($template->hasDocxTemplate())
+            <span style="margin-left:.5rem;font-size:.68rem;padding:.15rem .5rem;
+                         border-radius:10px;background:#DBEAFE;color:#1D4ED8;font-weight:700">
+              v{{ $template->docx_version }} actif
             </span>
+            @endif
+          </div>
+          <div style="font-size:.72rem;color:var(--c-muted);margin-top:.15rem">
+            Génération DOCX via ZipArchive — polices, tableaux, filigrane et signatures préservés à 100 %
+          </div>
+        </div>
+        @if($template->hasDocxTemplate())
+        <div style="display:flex;gap:.5rem;margin-left:auto;align-items:center;flex-wrap:wrap">
+          <a href="{{ route('admin.contract-templates.docx.download', $template) }}"
+             class="btn-ghost btn-sm-pro">
+            <i class="fas fa-download me-1"></i>Télécharger
+          </a>
+          <a href="{{ route('admin.contract-templates.docx.preview', $template) }}"
+             class="btn-ghost btn-sm-pro" target="_blank">
+            <i class="fas fa-file-word me-1"></i>Aperçu données démo
+          </a>
+        </div>
+        @endif
+      </div>
+
+      <div class="card-pro-body">
+
+        @if($template->hasDocxTemplate())
+        <div style="padding:.75rem 1rem;background:#F0FDF4;border:1px solid #86EFAC;
+                    border-radius:8px;margin-bottom:1.25rem">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+            <i class="fas fa-check-circle" style="color:#16A34A"></i>
+            <span style="font-size:.8125rem;font-weight:700;color:#166534">
+              Template DOCX actif — {{ count($template->docx_detected_vars ?? []) }} variable(s) détectée(s)
+            </span>
+          </div>
+          @if(count($template->docx_detected_vars ?? []) > 0)
+          <div style="display:flex;flex-wrap:wrap;gap:.25rem">
+            @foreach($template->docx_detected_vars as $var)
+            <button type="button" onclick="copyVar('{{"{"}}{{ $var }}{{"}"}}' )"
+                    style="font-size:.67rem;padding:.12rem .4rem;border-radius:4px;
+                           border:1px solid #86EFAC;background:#fff;color:#166534;
+                           cursor:pointer;font-family:monospace">{{"{"}}{{ $var }}{{"}"}}</button>
             @endforeach
           </div>
-          <p style="font-size:.7rem;color:var(--c-muted);margin-top:.5rem">
-            <span style="color:#166534">■</span> Reconnue &nbsp;
-            <span style="color:#92400E">■</span> Inconnue (sera laissée telle quelle)
-          </p>
+          <div style="font-size:.7rem;color:#166534;margin-top:.5rem">
+            <i class="fas fa-info-circle me-1"></i>Cliquez sur une variable pour la copier.
+          </div>
+          @endif
+        </div>
+        @else
+        <div style="padding:.875rem 1rem;background:#FEF9C3;border:1px solid #FDE047;
+                    border-radius:8px;margin-bottom:1.25rem;font-size:.8125rem;color:#713F12">
+          <i class="fas fa-exclamation-triangle me-1"></i>
+          <strong>Aucun template DOCX uploadé.</strong>
+          Uploadez un fichier <code>.docx</code> contenant des placeholders
+          <code>{variable}</code> pour activer la génération de contrats Word.
         </div>
         @endif
-        @endif
 
-        <label class="form-label-pro">
-          {{ $template->template_type === 'docx' ? 'Remplacer par un nouveau fichier DOCX' : 'Fichier DOCX balisé' }}
-        </label>
-        <input type="file" name="docx_file" accept=".docx"
-               class="form-control-pro" style="padding:.5rem .875rem;cursor:pointer">
-        <p style="font-size:.72rem;color:var(--c-muted);margin-top:.35rem">
-          <i class="fas fa-shield-alt me-1"></i>Format .docx uniquement · Max 10 Mo · Prérequis PDF : LibreOffice + LIBREOFFICE_BIN dans .env
-        </p>
+        <form action="{{ route('admin.contract-templates.docx.upload', $template) }}"
+              method="POST" enctype="multipart/form-data">
+          @csrf
+
+          <div style="display:flex;align-items:flex-end;gap:.75rem;flex-wrap:wrap">
+            <div style="flex:1;min-width:220px">
+              <label class="form-label-pro">
+                <i class="fas fa-upload me-1" style="color:#1D4ED8"></i>
+                @if($template->hasDocxTemplate()) Remplacer le template DOCX @else Uploader un template DOCX @endif
+              </label>
+              <input type="file" name="docx_file" accept=".docx"
+                     class="form-control-pro" style="font-size:.82rem" required>
+              @error('docx_file')
+              <div style="font-size:.72rem;color:#dc2626;margin-top:.3rem">
+                <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
+              </div>
+              @enderror
+            </div>
+            <button type="submit" class="btn-navy" style="white-space:nowrap">
+              <i class="fas fa-upload me-1"></i>
+              @if($template->hasDocxTemplate()) Mettre à jour (v{{ $template->docx_version + 1 }}) @else Uploader @endif
+            </button>
+          </div>
+
+          <div style="margin-top:.625rem;padding:.5rem .75rem;background:#F8FAFC;
+                      border:1px solid var(--c-border);border-radius:6px;font-size:.72rem;
+                      color:var(--c-muted);line-height:1.6">
+            <i class="fas fa-lightbulb me-1" style="color:var(--c-gold)"></i>
+            Fichier <code>.docx</code> max 20 Mo · Placeholders au format <code>{variable}</code> (accolades simples) ·
+            En-têtes et pieds de page également analysés ·
+            @if($template->hasDocxTemplate())
+            Chaque upload <strong>incrémente la version</strong> et archive l'ancien fichier.
+            @endif
+          </div>
+        </form>
+
       </div>
     </div>
 
-    {{-- Images du modèle --}}
-    <div class="card-pro mb-4">
+  </div>
+
+  {{-- ── Référence des variables DOCX (sidebar) ── --}}
+  <div class="col-xl-4">
+    <div class="card-pro" style="position:sticky;top:1.5rem">
       <div class="card-pro-hdr">
-        <div class="card-pro-title"><span class="icon-dot"></span>Images du modèle <span style="font-size:.7rem;color:var(--c-muted);font-weight:400">(filigrane, logos, cachets, signatures)</span></div>
+        <div class="card-pro-title"><span class="icon-dot"></span>Variables disponibles</div>
       </div>
-      <div class="card-pro-body">
-        <div class="row g-3">
-          @php
-          $imgInputs = [
-            'watermark'       => ['label' => 'Filigrane',        'icon' => 'fa-tint',     'col' => 'watermark_path'],
-            'logo_left'       => ['label' => 'Logo gauche',      'icon' => 'fa-image',    'col' => 'logo_left_path'],
-            'logo_right'      => ['label' => 'Logo droit',       'icon' => 'fa-image',    'col' => 'logo_right_path'],
-            'stamp'           => ['label' => 'Cachet',           'icon' => 'fa-stamp',    'col' => 'stamp_path'],
-            'signature_admin' => ['label' => 'Sig. société',     'icon' => 'fa-pen-nib',  'col' => 'signature_admin_path'],
-            'signature_agent' => ['label' => 'Sig. agent',       'icon' => 'fa-pen-nib',  'col' => 'signature_agent_path'],
+      <div class="card-pro-body" style="max-height:72vh;overflow-y:auto">
+        <div style="font-size:.75rem;color:var(--c-muted);margin-bottom:.75rem">
+          Cliquez pour copier — utilisez ces balises dans votre fichier .docx.
+        </div>
+
+        @php
+          $groups = [
+            'Données dossier' => array_filter($variables, fn($k) => in_array($k, [
+              '{reference}','{archive}','{nom_client}','{adresse_client}','{date_naissance}',
+              '{type_identite}','{numero_identite}','{agent_suivi}','{directeur}',
+              '{montant}','{devise}','{duree}','{mensualite}','{taux}',
+              '{frais_admin}','{compte_bancaire}','{date}','{societe}',
+            ]), ARRAY_FILTER_USE_KEY),
+            'Accord de genre' => array_filter($variables, fn($k) => in_array($k, [
+              '{ne_e}','{nee}','{denomme_e}','{zamieszkal_a}','{e}',
+            ]), ARRAY_FILTER_USE_KEY),
           ];
-          @endphp
-          @foreach($imgInputs as $field => $cfg)
-          @php $existing = $template->{$cfg['col']}; @endphp
-          <div class="col-md-4">
-            <div style="border:1.5px dashed var(--c-border);border-radius:var(--radius-sm);padding:.875rem;text-align:center;position:relative;transition:border-color .2s"
-                 onmouseover="this.style.borderColor='var(--c-gold)'" onmouseout="this.style.borderColor='var(--c-border)'">
-              <div style="font-size:1rem;color:var(--c-muted);margin-bottom:.3rem"><i class="fas {{ $cfg['icon'] }}"></i></div>
-              <div style="font-size:.7rem;font-weight:700;color:var(--c-navy);margin-bottom:.5rem">{{ $cfg['label'] }}</div>
+        @endphp
 
-              @if($existing)
-              <div id="prev_{{ $field }}" style="margin-bottom:.5rem">
-                <img src="{{ asset('storage/'.$existing) }}" style="max-height:52px;max-width:100%;object-fit:contain;border-radius:4px">
-                <div style="margin-top:.3rem">
-                  <label style="font-size:.62rem;color:#DC2626;cursor:pointer;display:inline-flex;align-items:center;gap:.25rem">
-                    <input type="checkbox" name="remove_{{ $field }}" value="1"> Supprimer
-                  </label>
-                </div>
-              </div>
-              @else
-              <div id="prev_{{ $field }}" style="margin-bottom:.5rem;display:none">
-                <img style="max-height:52px;max-width:100%;object-fit:contain;border-radius:4px">
-              </div>
-              @endif
-
-              <label style="display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .65rem;background:var(--c-bg);border:1px solid var(--c-border);border-radius:5px;font-size:.68rem;cursor:pointer;color:var(--c-navy);font-weight:600">
-                <i class="fas fa-{{ $existing ? 'sync' : 'upload' }}" style="font-size:.62rem"></i>
-                {{ $existing ? 'Remplacer' : 'Choisir' }}
-                <input type="file" name="{{ $field }}" accept="image/*" style="display:none"
-                       onchange="previewImg(this,'prev_{{ $field }}')">
-              </label>
-            </div>
+        @foreach($groups as $groupName => $groupVars)
+        <div style="margin-bottom:1rem">
+          <div style="font-size:.7rem;font-weight:700;color:var(--c-navy);text-transform:uppercase;
+                      letter-spacing:.6px;margin-bottom:.4rem;padding-bottom:.3rem;
+                      border-bottom:1px solid var(--c-border)">{{ $groupName }}</div>
+          @foreach($groupVars as $tag => $desc)
+          <div style="display:flex;align-items:flex-start;gap:.5rem;margin-bottom:.3rem">
+            <button type="button" onclick="copyVar('{{ $tag }}')"
+                    style="font-size:.67rem;padding:.15rem .4rem;border-radius:4px;
+                           border:1px solid #cbd5e1;background:#f8fafc;color:var(--c-navy);
+                           cursor:pointer;white-space:nowrap;flex-shrink:0;
+                           font-family:monospace">{{ $tag }}</button>
+            <span style="font-size:.7rem;color:var(--c-muted);line-height:1.4;padding-top:.15rem">{{ $desc }}</span>
           </div>
           @endforeach
         </div>
-      </div>
-    </div>
-
-    <div class="d-flex justify-content-end gap-3">
-      <a href="{{ route('admin.contract-templates.index') }}" class="btn-ghost">Annuler</a>
-      <button type="submit" class="btn-navy"><i class="fas fa-save"></i> Enregistrer les modifications</button>
-    </div>
-    </form>
-  </div>
-
-  {{-- Référence variables --}}
-  <div class="col-xl-4">
-    <div class="card-pro" style="position:sticky;top:80px">
-      <div class="card-pro-hdr">
-        <div class="card-pro-title"><span class="icon-dot"></span>Balises disponibles</div>
-      </div>
-      <div style="max-height:calc(100vh - 200px);overflow-y:auto;padding:.75rem">
-        @foreach($variables as $var=>$desc)
-        <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;
-                    border-radius:var(--radius-sm);margin-bottom:.25rem;
-                    border:1px solid var(--c-border);background:var(--c-bg);transition:var(--transition)"
-             onmouseover="this.style.borderColor='var(--c-gold)';this.style.background='#fff'"
-             onmouseout="this.style.borderColor='var(--c-border)';this.style.background='var(--c-bg)'">
-          <div style="flex:1;min-width:0">
-            <code style="font-size:.7rem;color:var(--c-gold-d);font-weight:700;display:block">{{ $var }}</code>
-            <span style="font-size:.68rem;color:var(--c-muted)">{{ $desc }}</span>
-          </div>
-          <button type="button" onclick="insertVar('{{ $var }}')"
-                  style="width:26px;height:26px;border:none;background:none;color:var(--c-muted);cursor:pointer;font-size:.75rem;border-radius:5px;flex-shrink:0"
-                  title="Insérer dans l'éditeur">
-            <i class="fas fa-arrow-left"></i>
-          </button>
-        </div>
         @endforeach
+
+        @if($template->hasDocxTemplate())
+        <div style="margin-top:.5rem;padding:.65rem .75rem;background:#EFF6FF;
+                    border-radius:6px;border:1px solid #BFDBFE">
+          <div style="font-size:.72rem;font-weight:700;color:#1D4ED8;margin-bottom:.25rem">
+            <i class="fas fa-file-word me-1"></i>Variables DOCX détectées
+          </div>
+          <div style="font-size:.7rem;color:#1e40af;line-height:1.5;margin-bottom:.4rem">
+            Présentes dans le template Word uploadé :
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.2rem">
+            @forelse($template->docx_detected_vars ?? [] as $dv)
+            <button type="button" onclick="copyVar('{{"{"}}{{ $dv }}{{"}"}}' )"
+                    style="font-size:.65rem;padding:.1rem .35rem;border-radius:3px;
+                           border:1px solid #BFDBFE;background:#fff;color:#1D4ED8;
+                           cursor:pointer;font-family:monospace">{{"{"}}{{ $dv }}{{"}"}}</button>
+            @empty
+            <span style="font-size:.7rem;color:var(--c-muted);font-style:italic">Aucune</span>
+            @endforelse
+          </div>
+        </div>
+        @endif
+
       </div>
     </div>
   </div>
 
 </div>
-@endsection
+
+<div id="copyToast"
+     style="position:fixed;bottom:1.5rem;right:1.5rem;background:#0B1A2E;color:#fff;
+            padding:.5rem 1rem;border-radius:8px;font-size:.8rem;
+            opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999">
+  Copié !
+</div>
 
 @push('scripts')
 <script>
-function insertVar(text) {
-  const ta = document.getElementById('contractEditor');
-  if (!ta) return;
-  const s = ta.selectionStart, e = ta.selectionEnd;
-  ta.value = ta.value.slice(0,s) + text + ta.value.slice(e);
-  ta.selectionStart = ta.selectionEnd = s + text.length;
-  ta.focus();
-}
-function previewImg(input, divId) {
-  const div = document.getElementById(divId);
-  if (!input.files || !input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = div.querySelector('img');
-    if (img) { img.src = e.target.result; div.style.display = 'block'; }
-  };
-  reader.readAsDataURL(input.files[0]);
+function copyVar(tag) {
+  navigator.clipboard.writeText(tag).then(() => {
+    const t = document.getElementById('copyToast');
+    t.textContent = tag + ' copié';
+    t.style.opacity = '1';
+    setTimeout(() => t.style.opacity = '0', 1800);
+  });
 }
 </script>
 @endpush
+
+@endsection

@@ -324,6 +324,7 @@ class ContractService
             'header'  => $header,
             'loan'    => $loan,
             'tpl'     => $template,
+            'images'  => [],
         ])->render();
     }
 
@@ -404,29 +405,48 @@ class ContractService
     public function contractCss(): string
     {
         return '
-body{font-family:\'DejaVu Sans\',sans-serif;font-size:11px;color:#1a1a2e;line-height:1.7;margin:0;padding:0}
-.page{padding:30px 40px}
-.header{text-align:center;border-bottom:3px solid #0B1A2E;padding-bottom:14px;margin-bottom:20px}
-.header-country{font-size:9px;color:#555;white-space:pre-line;margin-bottom:8px}
-.header-title{font-size:18px;font-weight:bold;color:#0B1A2E;letter-spacing:1px;margin-bottom:6px}
-.header-ref{font-size:9px;color:#444}
-.section-title{font-size:10px;font-weight:bold;color:#C8A951;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #e0c97a;margin:18px 0 8px;padding-bottom:3px}
-.parties-block{margin-bottom:10px}
-.party-label{font-weight:bold;color:#0B1A2E}
-.finance-table{width:100%;border-collapse:collapse;margin:10px 0 16px}
-.finance-table td{padding:6px 10px;border:1px solid #dde;font-size:10.5px}
-.finance-table td:first-child{background:#f5f7fb;font-weight:bold;width:55%;color:#0B1A2E}
-.finance-table td:last-child{font-weight:bold;color:#C8A951;font-size:12px}
-.article{margin-bottom:14px}
-.article-title{font-weight:bold;color:#0B1A2E;font-size:10.5px;margin-bottom:5px}
-.article-body{white-space:pre-line;font-size:10px;color:#333;line-height:1.75}
-.signature-block{margin-top:30px;border-top:2px solid #0B1A2E;padding-top:14px}
-.sig-date{margin-bottom:20px;font-size:10px}
+@page{margin:20mm 22mm}
+body{font-family:"DejaVu Serif","Times New Roman",Times,Georgia,serif;font-size:11pt;color:#000;line-height:1.7;margin:0;padding:0}
+.page{padding:0}
+.crx-wm{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.06;background-size:42%;background-position:center;background-repeat:no-repeat}
+.crx-wm-text{position:fixed;top:42%;left:0;width:100%;text-align:center;font-size:60pt;font-weight:bold;color:rgba(0,0,0,.04);pointer-events:none;z-index:-1;letter-spacing:10px}
+.header{text-align:center;border-bottom:2pt solid #000;padding-bottom:12pt;margin-bottom:16pt}
+.header-country{font-size:9pt;color:#444;white-space:pre-line;margin-bottom:8pt;font-style:italic}
+.header-title{font-size:15pt;font-weight:bold;color:#000;letter-spacing:1.5px;margin-bottom:5pt;text-transform:uppercase}
+.header-ref{font-size:9pt;color:#333}
+.section-title{font-size:10pt;font-weight:bold;color:#000;text-transform:uppercase;letter-spacing:1px;border-bottom:1pt solid #888;margin:16pt 0 8pt;padding-bottom:3pt}
+.parties-block{margin-bottom:9pt;font-size:10.5pt}
+.party-label{font-weight:bold}
+.finance-table{width:100%;border-collapse:collapse;margin:8pt 0 14pt;font-size:10.5pt}
+.finance-table td{padding:5pt 9pt;border:.5pt solid #999}
+.finance-table td:first-child{background:#f5f5f5;font-weight:bold;width:55%}
+.finance-table td:last-child{font-weight:bold;font-size:11.5pt}
+.article{margin-bottom:12pt}
+.article-title{font-weight:bold;font-size:10.5pt;margin-bottom:4pt;text-decoration:underline}
+.article-body{white-space:pre-line;font-size:10.5pt;color:#111;line-height:1.75}
+.signature-block{margin-top:24pt;border-top:1.5pt solid #000;padding-top:12pt}
+.sig-date{margin-bottom:18pt;font-size:10.5pt}
 .sig-row{display:table;width:100%}
-.sig-cell{display:table-cell;width:33%;text-align:center;padding:10px 5px}
-.sig-label{font-weight:bold;font-size:9px;text-transform:uppercase;color:#0B1A2E;border-top:1px solid #ccc;padding-top:5px;margin-top:40px}
-.company-name{font-size:13px;font-weight:bold;color:#0B1A2E;letter-spacing:2px}
+.sig-cell{display:table-cell;width:33.33%;text-align:center;padding:8pt 4pt;vertical-align:bottom}
+.sig-label{font-weight:bold;font-size:8.5pt;text-transform:uppercase;border-top:.5pt solid #666;padding-top:4pt;margin-top:38pt}
+.company-name{font-size:12pt;font-weight:bold;letter-spacing:2px}
 ';
+    }
+
+    /**
+     * Retourne le tableau de traductions brut (clé sans accolades) pour une locale.
+     */
+    public function getTranslations(string $locale): array
+    {
+        return $this->translations[$locale] ?? $this->translations['fr'];
+    }
+
+    /**
+     * Retourne l'en-tête pays pour une locale.
+     */
+    public function getCountryHeader(string $locale): string
+    {
+        return $this->countryHeaders[$locale] ?? $this->countryHeaders['fr'];
     }
 
     /**
@@ -448,5 +468,15 @@ body{font-family:\'DejaVu Sans\',sans-serif;font-size:11px;color:#1a1a2e;line-he
     public function substituteVars(string $content, array $vars): string
     {
         return str_replace(array_keys($vars), array_values($vars), $content);
+    }
+
+    /**
+     * Traduit un type de pièce d'identité dans la locale donnée.
+     */
+    public function translateIdType(string $raw, string $locale): string
+    {
+        return self::ID_TYPE_LABELS[$locale][$raw]
+            ?? self::ID_TYPE_LABELS['fr'][$raw]
+            ?? $raw;
     }
 }

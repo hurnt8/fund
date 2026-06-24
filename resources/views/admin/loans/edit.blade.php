@@ -77,6 +77,13 @@
             <p class="form-help">Remplace la variable <code>{agent_suivi}</code> dans le contrat</p>
           </div>
           <div class="col-12">
+            <label class="form-label-pro">Directeur</label>
+            <input type="text" name="directeur" class="form-control-pro"
+                   value="{{ old('directeur', $loan->directeur) }}"
+                   placeholder="Nom du directeur signataire">
+            <p class="form-help">Remplace la variable <code>{directeur}</code> dans le contrat</p>
+          </div>
+          <div class="col-12">
             <label class="form-label-pro">Conditions particulières</label>
             <textarea name="special_conditions" class="form-control-pro" rows="3">{{ old('special_conditions',$loan->special_conditions) }}</textarea>
           </div>

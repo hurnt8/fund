@@ -270,25 +270,27 @@ Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('ad
     Route::delete('/loans/{loan}',                 [AdminLoanRequestController::class, 'destroy'])->name('loans.destroy');
     Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
     Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
-    Route::get('/loans/{loan}/contract/pdf',       [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
-    Route::post('/loans/{loan}/validate',          [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
-    Route::post('/loans/{loan}/signed',            [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
-    Route::patch('/loans/{loan}/status',           [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
+    Route::get('/loans/{loan}/contract/pdf',          [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
+    Route::post('/loans/{loan}/contract/pdf/upload', [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
+    Route::get('/loans/{loan}/contract/docx',         [AdminLoanRequestController::class, 'downloadDocx'])->name('loans.contract.docx');
+    Route::post('/loans/{loan}/validate',             [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
+    Route::post('/loans/{loan}/signed',               [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
+    Route::patch('/loans/{loan}/status',              [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
 
     // Modèles de contrats
-    Route::get('/contract-templates',             [ContractTemplateController::class, 'index'])->name('contract-templates.index');
-    Route::get('/contract-templates/create',      [ContractTemplateController::class, 'create'])->name('contract-templates.create');
-    Route::post('/contract-templates',            [ContractTemplateController::class, 'store'])->name('contract-templates.store');
-    Route::get('/contract-templates/{contractTemplate}/edit',    [ContractTemplateController::class, 'edit'])->name('contract-templates.edit');
-    Route::put('/contract-templates/{contractTemplate}',         [ContractTemplateController::class, 'update'])->name('contract-templates.update');
-    Route::delete('/contract-templates/{contractTemplate}',      [ContractTemplateController::class, 'destroy'])->name('contract-templates.destroy');
-    Route::get('/contract-templates/{contractTemplate}/preview',          [ContractTemplateController::class, 'preview'])->name('contract-templates.preview');
-    Route::get('/contract-templates/{contractTemplate}/preview-pdf',     [ContractTemplateController::class, 'previewPdf'])->name('contract-templates.preview-pdf');
-    Route::get('/contract-templates/{contractTemplate}/docx-frame',      [ContractTemplateController::class, 'docxFrame'])->name('contract-templates.docx-frame');
-    Route::get('/contract-templates/{contractTemplate}/download-docx',   [ContractTemplateController::class, 'downloadDocx'])->name('contract-templates.download-docx');
-    Route::post('/contract-templates/{contractTemplate}/save-content',   [ContractTemplateController::class, 'saveContent'])->name('contract-templates.save-content');
-    Route::post('/contract-templates/{contractTemplate}/reset-docx-edit',[ContractTemplateController::class, 'resetDocxEdit'])->name('contract-templates.reset-docx-edit');
-    Route::get('/contract-templates/{contractTemplate}/missing-vars',   [ContractTemplateController::class, 'missingVars'])->name('contract-templates.missing-vars');
+    Route::get('/contract-templates',                                  [ContractTemplateController::class, 'index'])->name('contract-templates.index');
+    Route::get('/contract-templates/create',                           [ContractTemplateController::class, 'create'])->name('contract-templates.create');
+    Route::post('/contract-templates',                                 [ContractTemplateController::class, 'store'])->name('contract-templates.store');
+    Route::get('/contract-templates/{contractTemplate}/edit',          [ContractTemplateController::class, 'edit'])->name('contract-templates.edit');
+    Route::put('/contract-templates/{contractTemplate}',               [ContractTemplateController::class, 'update'])->name('contract-templates.update');
+    Route::delete('/contract-templates/{contractTemplate}',            [ContractTemplateController::class, 'destroy'])->name('contract-templates.destroy');
+    Route::get('/contract-templates/{contractTemplate}/preview',       [ContractTemplateController::class, 'preview'])->name('contract-templates.preview');
+    Route::get('/contract-templates/{contractTemplate}/preview-pdf',   [ContractTemplateController::class, 'previewPdf'])->name('contract-templates.preview-pdf');
+    Route::post('/contract-templates/{contractTemplate}/save-content', [ContractTemplateController::class, 'saveContent'])->name('contract-templates.save-content');
+    Route::get('/contract-templates/{contractTemplate}/missing-vars',  [ContractTemplateController::class, 'missingVars'])->name('contract-templates.missing-vars');
+    Route::post('/contract-templates/{contractTemplate}/docx',         [ContractTemplateController::class, 'uploadDocx'])->name('contract-templates.docx.upload');
+    Route::get('/contract-templates/{contractTemplate}/docx/download', [ContractTemplateController::class, 'downloadDocx'])->name('contract-templates.docx.download');
+    Route::get('/contract-templates/{contractTemplate}/docx/preview',  [ContractTemplateController::class, 'previewDocx'])->name('contract-templates.docx.preview');
 
     // User management
     Route::get('/users',                        [UserManagementController::class, 'index'])->name('users');
@@ -363,10 +365,12 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('super-admin')->name('su
     Route::delete('/loans/{loan}',                 [AdminLoanRequestController::class, 'destroy'])->name('loans.destroy');
     Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
     Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
-    Route::get('/loans/{loan}/contract/pdf',       [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
-    Route::post('/loans/{loan}/validate',          [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
-    Route::post('/loans/{loan}/signed',            [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
-    Route::patch('/loans/{loan}/status',           [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
+    Route::get('/loans/{loan}/contract/pdf',          [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
+    Route::post('/loans/{loan}/contract/pdf/upload', [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
+    Route::get('/loans/{loan}/contract/docx',         [AdminLoanRequestController::class, 'downloadDocx'])->name('loans.contract.docx');
+    Route::post('/loans/{loan}/validate',             [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
+    Route::post('/loans/{loan}/signed',               [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
+    Route::patch('/loans/{loan}/status',              [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
 
     // Profil super-admin
     Route::get('/profile',           [\App\Http\Controllers\Admin\AdminProfileController::class, 'index'])->name('profile');

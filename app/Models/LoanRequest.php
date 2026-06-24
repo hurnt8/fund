@@ -34,11 +34,11 @@ class LoanRequest extends Model
         'name', 'email', 'phone', 'address',
         'amount', 'interest_rate', 'currency', 'start_date',
         'monthly_payment', 'total_cost', 'total_with_interest',
-        'admin_fees', 'bank_account', 'agent_suivi',
+        'admin_fees', 'bank_account', 'agent_suivi', 'directeur',
         'darly', 'objet', 'subject', 'npi',
         'extra_fields',
         'special_conditions',
-        'contract_content', 'contract_language',
+        'contract_content', 'contract_pdf_path', 'contract_language',
         'amortization_schedule',
         'status', 'notes', 'files',
         'validated_at', 'sent_at', 'signed_received_at',
@@ -84,6 +84,11 @@ class LoanRequest extends Model
     public function history()
     {
         return $this->hasMany(LoanHistory::class)->latest();
+    }
+
+    public function generatedDocuments()
+    {
+        return $this->hasMany(GeneratedDocument::class)->latest();
     }
 
     // Helpers
