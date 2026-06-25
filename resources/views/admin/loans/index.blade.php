@@ -4,108 +4,161 @@
 
 @push('styles')
 <style>
-.page-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.page-top h1{font-size:1.375rem;font-weight:800;color:var(--c-navy);margin:0 0 .2rem}
-.page-top p{font-size:.8125rem;color:var(--c-muted);margin:0}
+/* ─────────────────────────────────────────
+   LOANS INDEX — préfixe li-
+   ───────────────────────────────────────── */
 
-/* KPI strip */
-.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:1.5rem}
-@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:540px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
-.kpi-tile{background:var(--c-card,#fff);border:1px solid var(--c-border);border-radius:12px;
-          padding:.875rem 1rem;display:flex;align-items:center;gap:.75rem}
-.kpi-tile__icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;
-               justify-content:center;font-size:.8rem;flex-shrink:0}
-.kpi-tile__val{font-size:1.25rem;font-weight:800;color:var(--c-navy);line-height:1}
-.kpi-tile__lbl{font-size:.7rem;color:var(--c-muted);margin-top:.2rem}
+/* ── Header ── */
+.li-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.li-header-title{font-size:1.25rem;font-weight:800;color:var(--c-navy);margin:0 0 .2rem}
+.li-header-sub{font-size:.8rem;color:var(--c-muted);margin:0}
 
-/* Filter bar */
-.fbar{background:var(--c-card,#fff);border:1px solid var(--c-border);border-radius:12px;
-      padding:.875rem 1.25rem;display:flex;flex-wrap:wrap;gap:.625rem;align-items:center;margin-bottom:1.25rem}
-.fbar input,.fbar select{font-size:.83rem;padding:.5rem .75rem;border:1.5px solid var(--c-border);
-  border-radius:8px;color:var(--c-navy);background:#fff;outline:none;transition:border-color .15s}
-.fbar input:focus,.fbar select:focus{border-color:var(--c-navy)}
-.fbar input{min-width:220px;flex:1}
-.fbar select{min-width:160px}
+/* ── Status quick-filters ── */
+.li-filters-strip{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.li-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.375rem .875rem;border-radius:999px;font-size:.76rem;font-weight:600;border:1.5px solid var(--c-border);background:#fff;color:var(--c-muted);cursor:pointer;text-decoration:none;transition:.15s;white-space:nowrap}
+.li-chip:hover{border-color:var(--c-navy);color:var(--c-navy)}
+.li-chip.active{background:var(--c-navy);border-color:var(--c-navy);color:#fff}
+.li-chip-count{font-size:.65rem;padding:.1rem .35rem;border-radius:10px;background:rgba(0,0,0,.1);font-weight:800;min-width:18px;text-align:center}
+.li-chip.active .li-chip-count{background:rgba(255,255,255,.2)}
 
-/* Table */
-.tbl-wrap{background:var(--c-card,#fff);border:1px solid var(--c-border);border-radius:12px;overflow:hidden}
-.tbl-scroll{overflow-x:auto}
-table.dt{width:100%;border-collapse:collapse}
-table.dt thead tr{background:var(--c-bg,#f8f9fa)}
-table.dt th{font-size:.7rem;font-weight:700;color:var(--c-muted);text-transform:uppercase;
-            letter-spacing:.06em;padding:.75rem 1rem;white-space:nowrap;border-bottom:1px solid var(--c-border)}
-table.dt td{font-size:.8125rem;padding:.8125rem 1rem;border-bottom:1px solid var(--c-border);
-            color:var(--c-navy);vertical-align:middle}
-table.dt tbody tr:last-child td{border-bottom:0}
-table.dt tbody tr:hover td{background:rgba(var(--c-navy-rgb,14,30,64),.025)}
-.ref-mono{font-family:monospace;font-weight:700;font-size:.8rem;color:var(--c-navy);letter-spacing:.03em}
-.client-name{font-weight:600;color:var(--c-navy);font-size:.8375rem}
-.client-sub{font-size:.72rem;color:var(--c-muted);margin-top:.1rem}
-.amount-val{font-weight:700;color:var(--c-navy)}
-.amount-cur{font-size:.72rem;color:var(--c-muted);font-weight:500}
-.dur-val{font-size:.8125rem;color:var(--c-navy)}
-.act-cell{display:inline-flex;gap:.3rem}
-.empty-state{text-align:center;padding:4rem 1rem}
-.empty-icon{font-size:2.75rem;opacity:.2;display:block;margin-bottom:.875rem;color:var(--c-navy)}
-.empty-title{font-size:.9375rem;font-weight:700;color:var(--c-navy);margin-bottom:.3rem}
-.empty-sub{font-size:.8125rem;color:var(--c-muted);margin-bottom:1.25rem}
+/* Couleurs chips par statut */
+.li-chip[data-s="pending"]:not(.active):hover{border-color:#d97706;color:#d97706}
+.li-chip[data-s="pending"].active{background:#d97706;border-color:#d97706}
+.li-chip[data-s="validated"]:not(.active):hover{border-color:#2563eb;color:#2563eb}
+.li-chip[data-s="validated"].active{background:#2563eb;border-color:#2563eb}
+.li-chip[data-s="contract_sent"]:not(.active):hover{border-color:#0891b2;color:#0891b2}
+.li-chip[data-s="contract_sent"].active{background:#0891b2;border-color:#0891b2}
+.li-chip[data-s="contract_signed"]:not(.active):hover{border-color:#7c3aed;color:#7c3aed}
+.li-chip[data-s="contract_signed"].active{background:#7c3aed;border-color:#7c3aed}
+.li-chip[data-s="finalized"]:not(.active):hover{border-color:#059669;color:#059669}
+.li-chip[data-s="finalized"].active{background:#059669;border-color:#059669}
+.li-chip[data-s="rejected"]:not(.active):hover{border-color:#dc2626;color:#dc2626}
+.li-chip[data-s="rejected"].active{background:#dc2626;border-color:#dc2626}
 
-/* Pagination */
-.pagi-wrap{padding:.875rem 1.25rem;border-top:1px solid var(--c-border)}
+/* ── Barre de recherche ── */
+.li-search-bar{background:#fff;border:1px solid var(--c-border);border-radius:12px;padding:.75rem 1.125rem;display:flex;gap:.625rem;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap}
+.li-search-input{flex:1;min-width:200px;padding:.5rem .75rem;border:1.5px solid var(--c-border);border-radius:8px;font-size:.83rem;color:var(--c-navy);background:#f8f9fa;outline:none;transition:.15s;font-family:inherit}
+.li-search-input:focus{border-color:var(--c-gold);background:#fff;box-shadow:0 0 0 3px rgba(200,169,81,.1)}
+.li-search-input::placeholder{color:#c4cadc}
+
+/* ── Table card ── */
+.li-table-card{background:#fff;border:1px solid var(--c-border);border-radius:14px;overflow:hidden}
+.li-table-scroll{overflow-x:auto}
+
+/* ── Table header info ── */
+.li-table-info{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;border-bottom:1px solid var(--c-border);background:#fafbfc;flex-wrap:wrap;gap:.5rem}
+.li-table-count{font-size:.78rem;color:var(--c-muted);font-weight:500}
+.li-table-count strong{color:var(--c-navy)}
+
+/* ── Table ── */
+table.li-tbl{width:100%;border-collapse:collapse}
+table.li-tbl thead th{padding:.75rem 1rem;font-size:.68rem;font-weight:700;color:var(--c-muted);text-transform:uppercase;letter-spacing:.07em;background:#fafbfc;border-bottom:1px solid var(--c-border);white-space:nowrap;text-align:left}
+table.li-tbl tbody td{padding:.875rem 1rem;font-size:.82rem;color:var(--c-text);border-bottom:1px solid #f3f4f6;vertical-align:middle}
+table.li-tbl tbody tr:last-child td{border-bottom:0}
+table.li-tbl tbody tr:hover td{background:#f8faff}
+table.li-tbl tbody tr:hover td:first-child{border-left-color:var(--c-gold)}
+
+/* Left accent on hover */
+table.li-tbl tbody td:first-child{border-left:3px solid transparent;transition:border-color .15s}
+
+/* ── Cellules ── */
+.li-ref{font-family:monospace;font-weight:800;font-size:.82rem;color:var(--c-navy);letter-spacing:.03em;text-decoration:none;transition:.15s}
+.li-ref:hover{color:var(--c-gold)}
+.li-pdf-dot{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#FFF1F2;border:1px solid #FECDD3;margin-left:.35rem;vertical-align:middle}
+.li-pdf-dot i{font-size:.55rem;color:#dc2626}
+
+.li-client-avatar{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--c-navy),#1a3a6c);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;color:var(--c-gold);flex-shrink:0}
+.li-client-name{font-weight:600;color:var(--c-navy);font-size:.82rem}
+.li-client-sub{font-size:.7rem;color:var(--c-muted);margin-top:.05rem}
+
+.li-amount{font-weight:800;color:var(--c-navy);font-size:.875rem}
+.li-amount-sub{font-size:.7rem;color:var(--c-muted);margin-top:.1rem}
+
+.li-monthly{font-weight:700;color:var(--c-navy)}
+.li-monthly-sub{font-size:.7rem;color:var(--c-muted)}
+
+.li-date{font-size:.75rem;color:var(--c-muted);white-space:nowrap}
+.li-date-rel{font-size:.65rem;color:var(--c-muted);margin-top:.1rem}
+
+.li-act{display:flex;gap:.3rem;justify-content:flex-end}
+
+/* ── Empty state ── */
+.li-empty{padding:4rem 1rem;text-align:center}
+.li-empty-icon{font-size:2.5rem;color:var(--c-muted);opacity:.25;display:block;margin-bottom:.875rem}
+.li-empty-title{font-size:.9375rem;font-weight:700;color:var(--c-navy);margin-bottom:.3rem}
+.li-empty-sub{font-size:.8125rem;color:var(--c-muted);margin-bottom:1.25rem}
+
+/* ── Pagination ── */
+.li-pagi{padding:.875rem 1.25rem;border-top:1px solid var(--c-border);display:flex;align-items:center;justify-content:between;gap:1rem}
 </style>
 @endpush
 
 @section('content')
 
-<div class="page-top">
+@php
+$statusChips = [
+    ''               => ['Tous',            $stats['total'],          'fa-layer-group'],
+    'draft'          => ['Brouillons',      $stats['draft'],          'fa-pen'],
+    'pending'        => ['En attente',      $stats['pending'],        'fa-hourglass-half'],
+    'validated'      => ['Validées',        $stats['validated'],      'fa-check-circle'],
+    'contract_sent'  => ['Contrat envoyé',  $stats['contract_sent'],  'fa-paper-plane'],
+    'contract_signed'=> ['Contrat signé',   $stats['contract_signed'],'fa-file-signature'],
+    'finalized'      => ['Finalisées',      $stats['finalized'],      'fa-flag-checkered'],
+    'rejected'       => ['Rejetées',        $stats['rejected'],       'fa-ban'],
+];
+$currentStatus = request('status','');
+@endphp
+
+@if(session('success'))
+<div class="flash flash-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
+@endif
+@if(session('error'))
+<div class="flash flash-err"><i class="fas fa-exclamation-triangle"></i> {{ session('error') }}</div>
+@endif
+
+{{-- ── HEADER ── --}}
+<div class="li-header">
   <div>
-    <h1>Demandes de prêt</h1>
-    <p>{{ $stats['total'] }} dossier(s) · {{ $stats['pending'] }} en attente · {{ $stats['validated'] }} validé(s)</p>
+    <div class="li-header-title">Demandes de prêt</div>
+    <p class="li-header-sub">
+      <strong style="color:var(--c-navy)">{{ $stats['total'] }}</strong> dossier(s) au total
+      @if($stats['pending']) · <span style="color:#d97706;font-weight:600">{{ $stats['pending'] }} en attente</span>@endif
+      @if($stats['contract_sent']) · <span style="color:#0891b2;font-weight:600">{{ $stats['contract_sent'] }} contrat(s) envoyé(s)</span>@endif
+    </p>
   </div>
   <a href="{{ route('admin.loans.create') }}" class="btn-navy">
     <i class="fas fa-plus"></i> Nouvelle demande
   </a>
 </div>
 
-{{-- KPI --}}
-<div class="kpi-strip">
-  @php
-  $tiles = [
-    ['Tous',        $stats['total'],     '#EEF2FF','var(--c-navy)','fa-layer-group'],
-    ['Brouillons',  $stats['draft'],     '#F8FAFC','var(--c-muted)','fa-pen'],
-    ['En attente',  $stats['pending'],   '#FEF9C3','#b45309','fa-hourglass-half'],
-    ['Validés',     $stats['validated'], '#EFF6FF','#1d4ed8','fa-check-circle'],
-    ['Finalisés',   $stats['finalized'], '#F0FDF4','#166534','fa-flag-checkered'],
-  ];
-  @endphp
-  @foreach($tiles as [$lbl,$val,$bg,$clr,$ico])
-  <div class="kpi-tile">
-    <div class="kpi-tile__icon" style="background:{{ $bg }}">
-      <i class="fas {{ $ico }}" style="color:{{ $clr }}"></i>
-    </div>
-    <div>
-      <div class="kpi-tile__val">{{ $val }}</div>
-      <div class="kpi-tile__lbl">{{ $lbl }}</div>
-    </div>
-  </div>
+{{-- ── CHIPS DE STATUT (filtre rapide) ── --}}
+<div class="li-filters-strip">
+  @foreach($statusChips as $val => [$lbl, $count, $ico])
+  @if($count > 0 || $val === '')
+  <a href="{{ route('admin.loans.index', array_merge(request()->except('status','page'), $val ? ['status'=>$val] : [])) }}"
+     class="li-chip {{ $currentStatus === $val ? 'active' : '' }}"
+     data-s="{{ $val }}">
+    <i class="fas {{ $ico }}" style="font-size:.7rem"></i>
+    {{ $lbl }}
+    <span class="li-chip-count">{{ $count }}</span>
+  </a>
+  @endif
   @endforeach
 </div>
 
-{{-- Filtres --}}
-<form method="GET" class="fbar">
-  <input type="text" name="search" placeholder="Référence, nom, email…" value="{{ request('search') }}">
-  <select name="status">
-    <option value="">Tous les statuts</option>
-    @foreach([
-      'draft'=>'Brouillon','pending'=>'En attente','validated'=>'Validée',
-      'contract_sent'=>'Contrat envoyé','contract_signed'=>'Contrat signé',
-      'finalized'=>'Finalisée','rejected'=>'Rejetée'
-    ] as $val=>$label)
-    <option value="{{ $val }}" {{ request('status')===$val?'selected':'' }}>{{ $label }}</option>
-    @endforeach
-  </select>
-  <button type="submit" class="btn-navy btn-sm-pro"><i class="fas fa-filter"></i> Filtrer</button>
+{{-- ── BARRE DE RECHERCHE ── --}}
+<form method="GET" action="{{ route('admin.loans.index') }}" class="li-search-bar">
+  @if($currentStatus)
+  <input type="hidden" name="status" value="{{ $currentStatus }}">
+  @endif
+  <i class="fas fa-search" style="color:var(--c-muted);font-size:.85rem;flex-shrink:0"></i>
+  <input type="text" name="search" class="li-search-input"
+         placeholder="Référence, nom du client, email…"
+         value="{{ request('search') }}"
+         autocomplete="off">
+  <button type="submit" class="btn-navy btn-sm-pro">
+    <i class="fas fa-search"></i> Rechercher
+  </button>
   @if(request()->anyFilled(['search','status']))
   <a href="{{ route('admin.loans.index') }}" class="btn-ghost btn-sm-pro">
     <i class="fas fa-times"></i> Effacer
@@ -113,95 +166,141 @@ table.dt tbody tr:hover td{background:rgba(var(--c-navy-rgb,14,30,64),.025)}
   @endif
 </form>
 
-{{-- Tableau --}}
-<div class="tbl-wrap">
-  <div class="tbl-scroll">
-    <table class="dt">
+{{-- ── TABLE ── --}}
+<div class="li-table-card">
+
+  <div class="li-table-info">
+    <div class="li-table-count">
+      @if(request()->anyFilled(['search','status']))
+        <strong>{{ $loans->total() }}</strong> résultat(s) trouvé(s)
+        @if(request('search')) pour « <em>{{ request('search') }}</em> » @endif
+        @if(request('status')) — statut <em>{{ $statusChips[request('status')][0] ?? request('status') }}</em> @endif
+      @else
+        <strong>{{ $loans->total() }}</strong> dossier(s) au total
+      @endif
+    </div>
+    <div style="font-size:.72rem;color:var(--c-muted)">
+      Page {{ $loans->currentPage() }} / {{ $loans->lastPage() }}
+    </div>
+  </div>
+
+  <div class="li-table-scroll">
+    <table class="li-tbl">
       <thead>
         <tr>
           <th>Référence</th>
           <th>Client</th>
-          <th>Montant</th>
-          <th>Durée</th>
+          <th>Financement</th>
           <th>Mensualité</th>
-          <th>Agent / Directeur</th>
           <th>Statut</th>
-          <th>Date</th>
+          <th>Créé le</th>
           <th style="text-align:right">Actions</th>
         </tr>
       </thead>
       <tbody>
         @forelse($loans as $loan)
         <tr>
+
+          {{-- Référence --}}
           <td>
-            <a href="{{ route('admin.loans.show',$loan) }}" class="ref-mono"
-               style="text-decoration:none;color:var(--c-navy)">
+            <a href="{{ route('admin.loans.show',$loan) }}" class="li-ref">
               {{ $loan->reference }}
             </a>
             @if($loan->contract_pdf_path)
-            <span title="PDF uploadé" style="margin-left:.3rem;font-size:.68rem;color:#dc2626">
+            <span class="li-pdf-dot" title="PDF uploadé">
               <i class="fas fa-file-pdf"></i>
             </span>
             @endif
-          </td>
-          <td>
-            <div class="client-name">{{ $loan->name }}</div>
-            <div class="client-sub">{{ $loan->email }}</div>
-          </td>
-          <td>
-            <span class="amount-val">{{ number_format($loan->amount,0,',',' ') }}</span>
-            <span class="amount-cur">{{ $loan->currency }}</span>
-          </td>
-          <td class="dur-val">{{ $loan->darly }} mois</td>
-          <td>
-            <span style="font-weight:600">{{ number_format($loan->monthly_payment,2,',',' ') }}</span>
-            <span class="amount-cur">{{ $loan->currency }}</span>
-          </td>
-          <td>
-            <div style="font-size:.78rem;color:var(--c-navy)">{{ $loan->agent_suivi ?: '—' }}</div>
-            @if($loan->directeur)
-            <div style="font-size:.72rem;color:var(--c-muted)">Dir. {{ $loan->directeur }}</div>
+            @if($loan->archive_ref)
+            <div style="font-size:.65rem;color:var(--c-muted);margin-top:.2rem;font-family:monospace">
+              {{ $loan->archive_ref }}
+            </div>
             @endif
           </td>
+
+          {{-- Client --}}
+          <td>
+            <div style="display:flex;align-items:center;gap:.625rem">
+              <div class="li-client-avatar">{{ strtoupper(substr($loan->name,0,1)) }}</div>
+              <div>
+                <div class="li-client-name">{{ $loan->name }}</div>
+                <div class="li-client-sub">{{ $loan->email }}</div>
+              </div>
+            </div>
+          </td>
+
+          {{-- Financement --}}
+          <td>
+            <div class="li-amount">{{ number_format($loan->amount,0,',',' ') }} <span style="font-size:.72rem;font-weight:500;color:var(--c-muted)">{{ $loan->currency }}</span></div>
+            <div class="li-amount-sub">
+              <span style="background:#EFF6FF;color:#1d4ed8;font-size:.63rem;font-weight:700;padding:.1rem .35rem;border-radius:4px">{{ $loan->darly }} mois</span>
+              <span style="margin-left:.3rem;color:#6b7280">{{ $loan->interest_rate }}%</span>
+            </div>
+          </td>
+
+          {{-- Mensualité --}}
+          <td>
+            <div class="li-monthly">{{ number_format($loan->monthly_payment,2,',',' ') }}</div>
+            <div class="li-monthly-sub">{{ $loan->currency }} / mois</div>
+          </td>
+
+          {{-- Statut --}}
           <td>
             <span class="badge-status bs-{{ $loan->statusColor() }}">{{ $loan->statusLabel() }}</span>
+            @if($loan->sent_at)
+            <div style="font-size:.65rem;color:var(--c-muted);margin-top:.2rem">
+              Envoyé {{ $loan->sent_at->format('d/m/Y') }}
+            </div>
+            @endif
           </td>
-          <td style="color:var(--c-muted);font-size:.76rem;white-space:nowrap">
-            {{ $loan->created_at->format('d/m/Y') }}
-          </td>
+
+          {{-- Date --}}
           <td>
-            <div class="act-cell" style="justify-content:flex-end">
-              <a href="{{ route('admin.loans.show',$loan) }}" class="btn-icon btn-icon-primary" title="Voir">
+            <div class="li-date">{{ $loan->created_at->format('d/m/Y') }}</div>
+            <div class="li-date-rel">{{ $loan->created_at->diffForHumans() }}</div>
+          </td>
+
+          {{-- Actions --}}
+          <td>
+            <div class="li-act">
+              <a href="{{ route('admin.loans.show',$loan) }}"
+                 class="btn-icon btn-icon-primary" title="Voir le dossier">
                 <i class="fas fa-eye"></i>
               </a>
               @if($loan->isEditable())
-              <a href="{{ route('admin.loans.edit',$loan) }}" class="btn-icon" title="Modifier">
+              <a href="{{ route('admin.loans.edit',$loan) }}"
+                 class="btn-icon" title="Modifier">
                 <i class="fas fa-pen"></i>
               </a>
               @endif
-              @if($loan->canBeValidated())
+              <a href="{{ route('admin.loans.contract',$loan) }}"
+                 class="btn-icon" title="Contrat">
+                <i class="fas fa-file-contract"></i>
+              </a>
+              @if($loan->canBeValidated() && $loan->contract_pdf_path)
               <form action="{{ route('admin.loans.validate',$loan) }}" method="POST"
-                    onsubmit="return confirm('Valider et envoyer le contrat ?')">
+                    onsubmit="return confirm('Valider et envoyer le contrat à {{ $loan->email }} ?')">
                 @csrf
-                <button class="btn-icon btn-icon-success" title="Valider & Envoyer">
+                <button class="btn-icon btn-icon-success" title="Valider &amp; Envoyer">
                   <i class="fas fa-paper-plane"></i>
                 </button>
               </form>
               @endif
             </div>
           </td>
+
         </tr>
         @empty
         <tr>
-          <td colspan="9">
-            <div class="empty-state">
-              <i class="fas fa-folder-open empty-icon"></i>
-              <div class="empty-title">Aucune demande trouvée</div>
-              <div class="empty-sub">
+          <td colspan="7">
+            <div class="li-empty">
+              <i class="fas fa-folder-open li-empty-icon"></i>
+              <div class="li-empty-title">Aucune demande trouvée</div>
+              <div class="li-empty-sub">
                 @if(request()->anyFilled(['search','status']))
-                  Aucun résultat pour ces filtres.
+                  Aucun résultat pour ces critères. <a href="{{ route('admin.loans.index') }}" style="color:var(--c-navy);font-weight:600">Effacer les filtres</a>
                 @else
-                  Créez votre première demande de prêt.
+                  Aucune demande de prêt pour le moment.
                 @endif
               </div>
               <a href="{{ route('admin.loans.create') }}" class="btn-navy btn-sm-pro">
@@ -214,9 +313,13 @@ table.dt tbody tr:hover td{background:rgba(var(--c-navy-rgb,14,30,64),.025)}
       </tbody>
     </table>
   </div>
+
   @if($loans->hasPages())
-  <div class="pagi-wrap">{{ $loans->links() }}</div>
+  <div class="li-pagi">
+    {{ $loans->appends(request()->query())->links() }}
+  </div>
   @endif
+
 </div>
 
 @endsection

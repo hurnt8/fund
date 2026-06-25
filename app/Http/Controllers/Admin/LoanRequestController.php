@@ -49,12 +49,16 @@ class LoanRequestController extends Controller
 
         $loans = $query->latest()->paginate(15)->appends($request->query());
 
+        $base  = LoanRequest::where('admin_id', $admin->id);
         $stats = [
-            'total'    => LoanRequest::where('admin_id', $admin->id)->count(),
-            'draft'    => LoanRequest::where('admin_id', $admin->id)->where('status', 'draft')->count(),
-            'pending'  => LoanRequest::where('admin_id', $admin->id)->where('status', 'pending')->count(),
-            'validated'=> LoanRequest::where('admin_id', $admin->id)->where('status', 'validated')->count(),
-            'finalized'=> LoanRequest::where('admin_id', $admin->id)->where('status', 'finalized')->count(),
+            'total'           => (clone $base)->count(),
+            'draft'           => (clone $base)->where('status', 'draft')->count(),
+            'pending'         => (clone $base)->where('status', 'pending')->count(),
+            'validated'       => (clone $base)->where('status', 'validated')->count(),
+            'contract_sent'   => (clone $base)->where('status', 'contract_sent')->count(),
+            'contract_signed' => (clone $base)->where('status', 'contract_signed')->count(),
+            'finalized'       => (clone $base)->where('status', 'finalized')->count(),
+            'rejected'        => (clone $base)->where('status', 'rejected')->count(),
         ];
 
         return view('admin.loans.index', compact('loans', 'stats'));
@@ -390,8 +394,9 @@ class LoanRequestController extends Controller
             );
         }
 
-        $old    = ['status' => $loan->status];
-        $locale = $loan->contract_language ?? 'fr';
+        $old       = ['status' => $loan->status];
+        $locale    = $loan->contract_language ?? 'fr';
+        $recipient = $this->recipientEmail($loan);
 
         // ── Générer le tableau d'amortissement en PDF ─────────────────────
         set_time_limit(180);
@@ -410,7 +415,7 @@ class LoanRequestController extends Controller
 
         // ── Envoyer l'email dans la langue du client ──────────────────────
         try {
-            Mail::to($loan->email)->send(
+            Mail::to($recipient)->send(
                 new LoanValidatedMail($loan, $contractPdfAbs, $locale, $amortPdfPath ?? '')
             );
         } catch (\Throwable $e) {
@@ -427,7 +432,7 @@ class LoanRequestController extends Controller
             'sent_at' => now(),
         ]);
 
-        $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status, 'locale' => $locale]);
+        $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status, 'locale' => $locale, 'recipient' => $recipient]);
 
         // Notification in-app au client
         if ($loan->client_id) {
@@ -442,7 +447,7 @@ class LoanRequestController extends Controller
         }
 
         return redirect()->route('admin.loans.show', $loan)
-            ->with('success', 'Contrat validé — email envoyé à ' . $loan->email
+            ->with('success', 'Contrat validé — email envoyé à ' . $recipient
                 . ' en ' . strtoupper($locale)
                 . ($amortPdfPath ? ' avec tableau d\'amortissement.' : ' (tableau d\'amortissement non généré).')
             );
@@ -462,18 +467,19 @@ class LoanRequestController extends Controller
             return back()->with('error', 'Fichier PDF introuvable sur le serveur.');
         }
 
-        $locale = $loan->contract_language ?? 'fr';
+        $locale    = $loan->contract_language ?? 'fr';
+        $recipient = $this->recipientEmail($loan);
 
         try {
-            Mail::to($loan->email)->send(new LoanValidatedMail($loan, $pdfAbs, $locale));
+            Mail::to($recipient)->send(new LoanValidatedMail($loan, $pdfAbs, $locale));
         } catch (\Throwable $e) {
             Log::error('resendContractEmail failed for ' . $loan->reference . ': ' . $e->getMessage());
             return back()->with('error', 'Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
         }
 
-        $this->logHistory($loan, 'contract_edited', [], ['action' => 'email_with_pdf_resent']);
+        $this->logHistory($loan, 'contract_edited', [], ['action' => 'email_with_pdf_resent', 'recipient' => $recipient]);
 
-        return back()->with('success', 'Email avec le PDF du contrat renvoyé à ' . $loan->email . '.');
+        return back()->with('success', 'Email avec le PDF du contrat renvoyé à ' . $recipient . '.');
     }
 
     public function markSigned(LoanRequest $loan)
@@ -519,7 +525,8 @@ class LoanRequestController extends Controller
                 );
             }
 
-            $locale = $loan->contract_language ?? 'fr';
+            $locale    = $loan->contract_language ?? 'fr';
+            $recipient = $this->recipientEmail($loan);
 
             set_time_limit(180);
             $amortPdfPath = null;
@@ -530,7 +537,7 @@ class LoanRequestController extends Controller
             }
 
             try {
-                Mail::to($loan->email)->send(
+                Mail::to($recipient)->send(
                     new LoanValidatedMail($loan, $contractPdfAbs, $locale, $amortPdfPath ?? '')
                 );
             } catch (\Throwable $e) {
@@ -558,10 +565,10 @@ class LoanRequestController extends Controller
                 );
             }
 
-            $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status, 'locale' => $locale]);
+            $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status, 'locale' => $locale, 'recipient' => $recipient]);
 
             return redirect()->route('admin.loans.show', $loan)
-                ->with('success', 'Contrat validé — email envoyé à ' . $loan->email
+                ->with('success', 'Contrat validé — email envoyé à ' . $recipient
                     . ' en ' . strtoupper($locale)
                     . ($amortPdfPath ? ' avec tableau d\'amortissement.' : '.'));
         }
@@ -659,5 +666,14 @@ class LoanRequestController extends Controller
             'old_value'       => $old,
             'new_value'       => $new,
         ]);
+    }
+
+    /**
+     * Retourne l'email actuel du client lié au dossier.
+     * Priorité : email du compte User (toujours à jour) → email copié sur le dossier.
+     */
+    private function recipientEmail(LoanRequest $loan): string
+    {
+        return $loan->client?->email ?? $loan->email;
     }
 }
