@@ -136,6 +136,10 @@ class UserManagementController extends Controller
             return back()->with('error', 'Vous n\'êtes pas autorisé à assigner ce rôle.');
         }
 
+        // Mémoriser les anciennes valeurs avant mise à jour
+        $oldEmail = $user->email;
+        $oldName  = $user->name;
+
         $user->update([
             'name'       => $data['name'],
             'email'      => $data['email'],
@@ -150,6 +154,14 @@ class UserManagementController extends Controller
         ]);
 
         $user->syncRoles([$data['role']]);
+
+        // Synchroniser email et nom sur tous les dossiers de ce client
+        if ($user->hasRole('client') && ($data['email'] !== $oldEmail || $data['name'] !== $oldName)) {
+            \App\Models\LoanRequest::where('client_id', $user->id)->update([
+                'email' => $data['email'],
+                'name'  => $data['name'],
+            ]);
+        }
 
         return back()->with('success', "Utilisateur {$user->name} mis à jour.");
     }
