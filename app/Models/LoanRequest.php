@@ -94,7 +94,12 @@ class LoanRequest extends Model
     // Helpers
     public function isEditable(): bool
     {
-        return in_array($this->status, [self::STATUS_DRAFT, self::STATUS_PENDING]);
+        return in_array($this->status, [
+            self::STATUS_DRAFT,
+            self::STATUS_PENDING,
+            self::STATUS_VALIDATED,
+            self::STATUS_CONTRACT_SENT,
+        ]);
     }
 
     public function canBeValidated(): bool

@@ -407,49 +407,44 @@ $stepMap = [
                 <i class="fas fa-eye"></i>
               </a>
 
-              @if($loan->status === 'draft' || $loan->status === 'pending')
-                {{-- Brouillon / En attente → Modifier + Contrat --}}
+              @if($loan->isEditable())
+                {{-- Modifiable → bouton Modifier --}}
                 <a href="{{ route('admin.loans.edit',$loan) }}"
                    class="btn-icon" title="Modifier">
                   <i class="fas fa-pen"></i>
                 </a>
+              @endif
+
+              @if(in_array($loan->status, ['draft','pending','validated']))
+                {{-- Accès au contrat pour préparer / valider --}}
                 <a href="{{ route('admin.loans.contract',$loan) }}"
-                   class="btn-icon" title="Préparer le contrat" style="color:#d97706">
+                   class="btn-icon" title="Contrat" style="color:#d97706">
                   <i class="fas fa-file-contract"></i>
                 </a>
 
               @elseif($loan->status === 'contract_sent')
-                {{-- Contrat envoyé → accès au contrat pour renvoyer ou marquer signé --}}
+                {{-- Contrat envoyé → renvoyer depuis la page contrat --}}
                 <a href="{{ route('admin.loans.contract',$loan) }}"
-                   class="btn-icon" title="Accès au contrat" style="color:#0891b2">
+                   class="btn-icon" title="Renvoyer le contrat" style="color:#0891b2">
                   <i class="fas fa-paper-plane"></i>
                 </a>
 
               @elseif($loan->status === 'contract_signed')
-                {{-- Contrat signé → accès pour finaliser --}}
+                {{-- Contrat signé → finaliser --}}
                 <a href="{{ route('admin.loans.contract',$loan) }}"
                    class="btn-icon" title="Finaliser le dossier" style="color:#7c3aed">
                   <i class="fas fa-file-signature"></i>
                 </a>
 
               @elseif($loan->status === 'finalized')
-                {{-- Finalisé → lecture seule --}}
                 <span class="btn-icon" style="opacity:.3;cursor:default" title="Dossier finalisé">
                   <i class="fas fa-flag-checkered"></i>
                 </span>
 
               @elseif($loan->status === 'rejected')
-                {{-- Rejeté → lecture seule --}}
                 <span class="btn-icon" style="opacity:.3;cursor:default;color:#dc2626" title="Dossier rejeté">
                   <i class="fas fa-ban"></i>
                 </span>
-
-              @else
-                {{-- validated → accès contrat --}}
-                <a href="{{ route('admin.loans.contract',$loan) }}"
-                   class="btn-icon" title="Contrat">
-                  <i class="fas fa-file-contract"></i>
-                </a>
               @endif
 
             </div>
