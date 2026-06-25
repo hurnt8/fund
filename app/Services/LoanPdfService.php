@@ -112,11 +112,17 @@ class LoanPdfService
         $texts    = $translations[$locale] ?? $translations['fr'];
         $schedule = $loan->amortization_schedule ?? [];
 
+        $logoPath   = public_path('assets/images/logo new.png');
+        $logoBase64 = file_exists($logoPath)
+            ? 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath))
+            : null;
+
         $html = view('pdfs.amortization-table', [
-            'loan'     => $loan,
-            'locale'   => $locale,
-            'texts'    => $texts,
-            'schedule' => $schedule,
+            'loan'        => $loan,
+            'locale'      => $locale,
+            'texts'       => $texts,
+            'schedule'    => $schedule,
+            'logoBase64'  => $logoBase64,
         ])->render();
 
         $pdf = Pdf::loadHTML($html)

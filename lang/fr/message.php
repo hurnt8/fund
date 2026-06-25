@@ -35,7 +35,8 @@ return [
     'docs_doc_type'  => 'Type de document',
     'docs_recto'     => 'Face recto (avant)',
     'docs_verso'     => 'Face verso (arrière)',
-    'docs_success'   => 'Vos documents ont été envoyés. Notre équipe les examinera dans les plus brefs délais.',
+    'docs_success'       => 'Vos documents ont été envoyés. Notre équipe les examinera dans les plus brefs délais.',
+    'docs_already_sent'  => 'Vos documents ont déjà été envoyés ou le formulaire a expiré. Si vous souhaitez renvoyer vos documents, veuillez recharger cette page.',
 
     'doc_type_id_card'   => 'Pièce d\'identité',
     'doc_type_passport'  => 'Passeport',

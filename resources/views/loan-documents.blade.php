@@ -113,8 +113,19 @@
                     <p style="color:#666;margin-bottom:1.5rem;">{{ __('loan.complete_desc') }}</p>
 
                     @if (session('success'))
-                        <div class="alert alert-success mb-4">{{ session('success') }}</div>
+                        <div class="alert alert-success mb-4">
+                            <i class="fas fa-check-circle" style="margin-right:.4rem;"></i>
+                            {{ session('success') }}
+                        </div>
                     @endif
+
+                    @if (session('docs_already_sent'))
+                        <div class="alert alert-warning mb-4">
+                            <i class="fas fa-exclamation-triangle" style="margin-right:.4rem;"></i>
+                            @lang('message.docs_already_sent')
+                        </div>
+                    @endif
+
                     @if ($errors->any())
                         <div class="alert alert-danger mb-4">
                             <ul class="mb-0" style="padding-left:1.1rem;">
@@ -128,6 +139,7 @@
                     <form method="POST" action="{{ route('loan.documents') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="locale" value="{{ $locale }}">
+                        <input type="hidden" name="submission_token" value="{{ $submissionToken }}">
 
                         {{-- ① Coordonnées --}}
                         <div class="mb-4">

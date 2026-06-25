@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'success_contact' => 'message sent successfully',
@@ -26,7 +26,7 @@ return [
     'loan_complete_btn'      => 'Complete my application',
     'loan_complete_intro'    => 'To finalise your application, please click the button below to send us your full address and a copy of your ID.',
 
-    'docs_subject'   => 'Documents — Loan application',
+    'docs_subject'   => 'Documents â€” Loan application',
     'docs_intro'     => 'The client has submitted their documents to complete their loan application.',
     'docs_name'      => 'Name',
     'docs_email'     => 'Email',
@@ -36,6 +36,7 @@ return [
     'docs_recto'     => 'Front side',
     'docs_verso'     => 'Back side',
     'docs_success'   => 'Your documents have been sent. Our team will review them as soon as possible.',
+    'docs_already_sent'  => 'Your documents have already been sent or the form has expired. Please reload this page if you wish to resubmit.',
 
     'doc_type_id_card'   => 'National ID card',
     'doc_type_passport'  => 'Passport',

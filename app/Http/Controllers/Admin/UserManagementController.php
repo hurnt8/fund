@@ -51,7 +51,11 @@ class UserManagementController extends Controller
             'staff'  => $isSuperAdmin ? User::where('type', 'staff')->count() : 0,
         ];
 
-        return view('admin.users.index', compact('users', 'roles', 'stats', 'isSuperAdmin'));
+        $admins = $isSuperAdmin
+            ? User::where('type', 'staff')->whereHas('roles', fn($q) => $q->whereIn('name', ['admin', 'super-admin']))->orderBy('name')->get()
+            : collect();
+
+        return view('admin.users.index', compact('users', 'roles', 'stats', 'isSuperAdmin', 'admins'));
     }
 
     public function store(Request $request)
@@ -164,6 +168,32 @@ class UserManagementController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', "Erreur d'envoi : " . $e->getMessage());
         }
+    }
+
+    public function assignAdmin(Request $request, User $user)
+    {
+        abort_unless(Auth::user()->hasRole('super-admin'), 403);
+        abort_unless($user->hasRole('client'), 422, 'Seuls les clients peuvent être réaffectés à un admin.');
+
+        $data = $request->validate([
+            'admin_id'       => 'required|exists:users,id',
+            'reassign_loans' => 'nullable|boolean',
+        ]);
+
+        $admin = User::findOrFail($data['admin_id']);
+        abort_unless(
+            $admin->hasRole('admin') || $admin->hasRole('super-admin'),
+            422,
+            'L\'utilisateur sélectionné n\'est pas un administrateur.'
+        );
+
+        $user->update(['created_by' => $admin->id]);
+
+        if ($request->boolean('reassign_loans')) {
+            $user->clientLoans()->update(['admin_id' => $admin->id]);
+        }
+
+        return back()->with('success', "Client {$user->name} réaffecté à {$admin->name} avec succès.");
     }
 
     public function destroy(User $user)

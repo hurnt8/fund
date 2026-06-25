@@ -12,7 +12,6 @@ use App\Models\ContractTemplate;
 use App\Models\LoanHistory;
 use App\Models\LoanRequest;
 use App\Models\User;
-use App\Services\ContractService;
 use App\Services\DocumentArchive;
 use App\Services\LoanPdfService;
 use App\Services\LoanService;
@@ -26,9 +25,8 @@ use Illuminate\Support\Str;
 class LoanRequestController extends Controller
 {
     public function __construct(
-        private LoanService      $loanService,
-        private ContractService  $contractService,
-        private LoanPdfService   $pdfService,
+        private LoanService     $loanService,
+        private LoanPdfService  $pdfService,
     ) {}
 
     public function index(Request $request)
@@ -186,10 +184,6 @@ class LoanRequestController extends Controller
             'extra_fields'         => !empty($data['extra_fields']) ? $data['extra_fields'] : null,
         ]);
 
-        // Générer le contrat (aperçu FR stocké)
-        $loan->contract_content = $this->contractService->generateFr($loan);
-        $loan->save();
-
         // Envoyer l'email d'activation si nouveau client
         if ($sendActivationEmail && $activationUrl) {
             try {
@@ -211,7 +205,13 @@ class LoanRequestController extends Controller
         $this->authorizeAccess($loan);
         $loan->load(['client', 'admin', 'history.admin', 'contractTemplate']);
         $generatedDocs = $loan->generatedDocuments()->with('generatedBy')->get();
-        return view('admin.loans.show', compact('loan', 'generatedDocs'));
+        $isSuperAdmin  = Auth::user()->hasRole('super-admin');
+        $admins        = $isSuperAdmin
+            ? \App\Models\User::where('type', 'staff')
+                ->whereHas('roles', fn($q) => $q->whereIn('name', ['admin', 'super-admin']))
+                ->orderBy('name')->get()
+            : collect();
+        return view('admin.loans.show', compact('loan', 'generatedDocs', 'isSuperAdmin', 'admins'));
     }
 
     public function edit(LoanRequest $loan)
@@ -268,11 +268,6 @@ class LoanRequestController extends Controller
             'extra_fields'         => !empty($data['extra_fields']) ? $data['extra_fields'] : null,
         ]));
 
-        // Régénérer l'aperçu dans la langue choisie
-        $loan->refresh();
-        $loan->contract_content = $this->contractService->generateForClient($loan);
-        $loan->save();
-
         $this->logHistory($loan, 'updated', $old, $loan->only(['amount','darly','status','contract_template_id']));
 
         return redirect()->route('admin.loans.show', $loan)
@@ -283,8 +278,7 @@ class LoanRequestController extends Controller
     {
         $this->authorizeAccess($loan);
         $templates   = $this->templatesForAdmin(Auth::user());
-        $previewHtml = $loan->contract_content
-            ?? $this->contractService->generateFr($loan);
+        $previewHtml = $loan->contract_content ?? '';
         return view('admin.loans.contract', compact('loan', 'templates', 'previewHtml'));
     }
 
@@ -383,34 +377,57 @@ class LoanRequestController extends Controller
         $this->authorizeAccess($loan);
         abort_unless($loan->canBeValidated(), 403, 'Cette demande ne peut pas être validée.');
 
-        $old = ['status' => $loan->status];
+        // ── Bloquer si le contrat PDF n'est pas encore uploadé ────────────
+        $contractPdfAbs = $loan->contract_pdf_path
+            ? storage_path('app/private/' . $loan->contract_pdf_path)
+            : null;
 
+        if (!$contractPdfAbs || !file_exists($contractPdfAbs)) {
+            return back()->with(
+                'error',
+                'Impossible de valider : aucun contrat PDF n\'a été uploadé pour ce dossier. '
+                . 'Uploadez le contrat signé (section "PDF du contrat") avant de valider.'
+            );
+        }
+
+        $old    = ['status' => $loan->status];
+        $locale = $loan->contract_language ?? 'fr';
+
+        // ── Générer le tableau d'amortissement en PDF ─────────────────────
+        set_time_limit(180);
+        $amortPdfPath = null;
+        try {
+            $amortPdfPath = $this->pdfService->generateAmortizationPdf($loan, $locale);
+        } catch (\Throwable $e) {
+            Log::warning('Amortization PDF generation failed for ' . $loan->reference . ': ' . $e->getMessage());
+        }
+
+        // ── Mettre à jour le statut ───────────────────────────────────────
         $loan->update([
             'status'       => LoanRequest::STATUS_VALIDATED,
             'validated_at' => now(),
         ]);
 
-        // Générer PDFs traduits dans la langue du client
-        $locale          = $loan->contract_language ?? 'fr';
-        $contractPdf     = $this->pdfService->generate($loan, $locale);
-        $amortizationPdf = $this->pdfService->generateAmortizationPdf($loan, $locale);
-
-        // Envoyer email au client avec contrat + tableau d'amortissement
+        // ── Envoyer l'email dans la langue du client ──────────────────────
         try {
             Mail::to($loan->email)->send(
-                new LoanValidatedMail($loan, $contractPdf, $locale, $amortizationPdf)
+                new LoanValidatedMail($loan, $contractPdfAbs, $locale, $amortPdfPath ?? '')
             );
         } catch (\Throwable $e) {
             Log::error('LoanValidatedMail failed for ' . $loan->reference . ': ' . $e->getMessage());
+        } finally {
+            if ($amortPdfPath && file_exists($amortPdfPath)) {
+                @unlink($amortPdfPath);
+            }
         }
 
-        // Mettre à jour statut → contract_sent
+        // ── Passer au statut contract_sent ────────────────────────────────
         $loan->update([
             'status'  => LoanRequest::STATUS_CONTRACT_SENT,
             'sent_at' => now(),
         ]);
 
-        $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status]);
+        $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status, 'locale' => $locale]);
 
         // Notification in-app au client
         if ($loan->client_id) {
@@ -424,12 +441,39 @@ class LoanRequestController extends Controller
             );
         }
 
-        // Supprimer PDFs temporaires
-        @unlink($contractPdf);
-        @unlink($amortizationPdf);
-
         return redirect()->route('admin.loans.show', $loan)
-                         ->with('success', 'Contrat validé et envoyé au client (avec tableau d\'amortissement).');
+            ->with('success', 'Contrat validé — email envoyé à ' . $loan->email
+                . ' en ' . strtoupper($locale)
+                . ($amortPdfPath ? ' avec tableau d\'amortissement.' : ' (tableau d\'amortissement non généré).')
+            );
+    }
+
+    public function resendContractEmail(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        if (!$loan->contract_pdf_path) {
+            return back()->with('error', 'Aucun PDF uploadé pour ce dossier. Uploadez le PDF avant de renvoyer l\'email.');
+        }
+
+        $pdfAbs = storage_path('app/private/' . $loan->contract_pdf_path);
+
+        if (!file_exists($pdfAbs)) {
+            return back()->with('error', 'Fichier PDF introuvable sur le serveur.');
+        }
+
+        $locale = $loan->contract_language ?? 'fr';
+
+        try {
+            Mail::to($loan->email)->send(new LoanValidatedMail($loan, $pdfAbs, $locale));
+        } catch (\Throwable $e) {
+            Log::error('resendContractEmail failed for ' . $loan->reference . ': ' . $e->getMessage());
+            return back()->with('error', 'Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
+        }
+
+        $this->logHistory($loan, 'contract_edited', [], ['action' => 'email_with_pdf_resent']);
+
+        return back()->with('success', 'Email avec le PDF du contrat renvoyé à ' . $loan->email . '.');
     }
 
     public function markSigned(LoanRequest $loan)
@@ -459,27 +503,71 @@ class LoanRequestController extends Controller
         ]);
 
         $old = ['status' => $loan->status];
-        $loan->update(['status' => $data['status']]);
 
-        // Passage en "validé" → email de confirmation + notif in-app
+        // ── Passage en "validé" : flux complet (contrat + tableau + email) ─
         if ($data['status'] === LoanRequest::STATUS_VALIDATED && $old['status'] !== LoanRequest::STATUS_VALIDATED) {
-            $locale = $loan->contract_language ?? 'fr';
-            try {
-                Mail::to($loan->email)->send(new LoanRequestApprovedMail($loan, $locale));
-            } catch (\Throwable $e) {
-                Log::error('LoanRequestApprovedMail failed for ' . $loan->reference . ': ' . $e->getMessage());
+
+            $contractPdfAbs = $loan->contract_pdf_path
+                ? storage_path('app/private/' . $loan->contract_pdf_path)
+                : null;
+
+            if (!$contractPdfAbs || !file_exists($contractPdfAbs)) {
+                return back()->with(
+                    'error',
+                    'Impossible de valider : aucun contrat PDF n\'a été uploadé pour ce dossier. '
+                    . 'Uploadez le contrat signé (section "PDF du contrat") avant de valider.'
+                );
             }
+
+            $locale = $loan->contract_language ?? 'fr';
+
+            set_time_limit(180);
+            $amortPdfPath = null;
+            try {
+                $amortPdfPath = $this->pdfService->generateAmortizationPdf($loan, $locale);
+            } catch (\Throwable $e) {
+                Log::warning('Amortization PDF generation failed for ' . $loan->reference . ': ' . $e->getMessage());
+            }
+
+            try {
+                Mail::to($loan->email)->send(
+                    new LoanValidatedMail($loan, $contractPdfAbs, $locale, $amortPdfPath ?? '')
+                );
+            } catch (\Throwable $e) {
+                Log::error('LoanValidatedMail failed for ' . $loan->reference . ': ' . $e->getMessage());
+            } finally {
+                if ($amortPdfPath && file_exists($amortPdfPath)) {
+                    @unlink($amortPdfPath);
+                }
+            }
+
+            $loan->update([
+                'status'       => LoanRequest::STATUS_CONTRACT_SENT,
+                'validated_at' => now(),
+                'sent_at'      => now(),
+            ]);
+
             if ($loan->client_id) {
                 ClientNotification::notifyUser(
                     $loan->client,
                     'loan_update',
-                    'app.notif_loan_validated',
-                    'app.notif_loan_validated_body',
+                    'app.notif_loan_contract',
+                    'app.notif_loan_contract_body',
                     ['reference' => $loan->reference],
-                    ['loan_id' => $loan->id, 'reference' => $loan->reference, 'url' => '/app/loans']
+                    ['loan_id' => $loan->id, 'reference' => $loan->reference]
                 );
             }
+
+            $this->logHistory($loan, 'validated_and_sent', $old, ['status' => $loan->status, 'locale' => $locale]);
+
+            return redirect()->route('admin.loans.show', $loan)
+                ->with('success', 'Contrat validé — email envoyé à ' . $loan->email
+                    . ' en ' . strtoupper($locale)
+                    . ($amortPdfPath ? ' avec tableau d\'amortissement.' : '.'));
         }
+
+        // ── Autres changements de statut ──────────────────────────────────
+        $loan->update(['status' => $data['status']]);
 
         // Créditer le solde du client lors du passage en "finalisé"
         if ($data['status'] === LoanRequest::STATUS_FINALIZED && $old['status'] !== LoanRequest::STATUS_FINALIZED) {
@@ -509,6 +597,28 @@ class LoanRequestController extends Controller
         abort_unless($loan->status === LoanRequest::STATUS_DRAFT, 403, 'Seuls les brouillons peuvent être supprimés.');
         $loan->delete();
         return redirect()->route('admin.loans.index')->with('success', 'Demande supprimée.');
+    }
+
+    public function assignAdmin(Request $request, LoanRequest $loan)
+    {
+        abort_unless(Auth::user()->hasRole('super-admin'), 403);
+
+        $data = $request->validate([
+            'admin_id' => 'required|exists:users,id',
+        ]);
+
+        $admin = \App\Models\User::findOrFail($data['admin_id']);
+        abort_unless(
+            $admin->hasRole('admin') || $admin->hasRole('super-admin'),
+            422,
+            'L\'utilisateur sélectionné n\'est pas un administrateur.'
+        );
+
+        $old = ['admin_id' => $loan->admin_id, 'admin_name' => $loan->admin?->name];
+        $loan->update(['admin_id' => $admin->id]);
+        $this->logHistory($loan, 'admin_assigned', $old, ['admin_id' => $admin->id, 'admin_name' => $admin->name]);
+
+        return back()->with('success', "Dossier réaffecté à {$admin->name}.");
     }
 
     private function clientsForAdmin(\App\Models\User $admin): \Illuminate\Support\Collection

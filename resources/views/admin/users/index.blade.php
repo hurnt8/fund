@@ -147,6 +147,17 @@
               </form>
               @endif
 
+              {{-- Affecter à un admin (super-admin uniquement, clients seulement) --}}
+              @if($isSuperAdmin && $user->hasRole('client'))
+              <button class="btn-icon"
+                      style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);color:#7c3aed"
+                      data-bs-toggle="modal"
+                      data-bs-target="#assignModal{{ $user->id }}"
+                      title="Affecter à un admin">
+                <i class="fas fa-user-tag"></i>
+              </button>
+              @endif
+
               <button class="btn-icon btn-icon-primary"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal{{ $user->id }}"
@@ -291,6 +302,82 @@
           </div>
         </div>
         {{-- /Modal Édition --}}
+
+        {{-- ── Modal Affectation Admin (super-admin uniquement) ── --}}
+        @if($isSuperAdmin && $user->hasRole('client'))
+        @php $currentAdmin = $admins->firstWhere('id', $user->created_by); @endphp
+        <div class="modal fade" id="assignModal{{ $user->id }}" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:var(--radius);border:none;box-shadow:var(--shadow)">
+
+              <div class="modal-header" style="border-bottom:1px solid var(--c-border);padding:1.125rem 1.5rem">
+                <div style="display:flex;align-items:center;gap:.875rem">
+                  <div style="width:38px;height:38px;border-radius:50%;
+                              background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);
+                              display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <i class="fas fa-user-tag" style="color:#7c3aed;font-size:.85rem"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:.9375rem;font-weight:700;color:var(--c-navy)">Affecter à un administrateur</div>
+                    <div style="font-size:.75rem;color:var(--c-muted)">{{ $user->name }} — {{ $user->email }}</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <form action="{{ route('admin.users.assign-admin', $user->id) }}" method="POST">
+                @csrf
+                <div class="modal-body" style="padding:1.5rem">
+
+                  {{-- Admin actuel --}}
+                  <div style="background:var(--c-bg);border:1px solid var(--c-border);border-radius:8px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.8125rem">
+                    <span style="color:var(--c-muted);font-weight:500">Admin actuel :</span>
+                    <strong style="color:var(--c-navy);margin-left:.375rem">
+                      {{ $currentAdmin?->name ?? 'Non affecté' }}
+                    </strong>
+                  </div>
+
+                  <div style="margin-bottom:1rem">
+                    <label class="form-label-pro">Nouvel administrateur *</label>
+                    <select name="admin_id" class="form-control-pro" required>
+                      <option value="">— Sélectionner un administrateur</option>
+                      @foreach($admins as $admin)
+                      <option value="{{ $admin->id }}" {{ $user->created_by == $admin->id ? 'selected' : '' }}>
+                        {{ $admin->name }} — {{ $admin->email }}
+                        ({{ $admin->getRoleNames()->first() }})
+                      </option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div style="display:flex;align-items:flex-start;gap:.625rem;
+                              background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;
+                              padding:.75rem 1rem">
+                    <input type="checkbox" name="reassign_loans" value="1" id="reassignLoans{{ $user->id }}"
+                           style="margin-top:.2rem;flex-shrink:0">
+                    <label for="reassignLoans{{ $user->id }}" style="font-size:.8125rem;color:#92400e;cursor:pointer;line-height:1.5">
+                      <strong>Réaffecter aussi tous les dossiers de prêt</strong> de ce client au nouvel admin
+                      <span style="display:block;font-size:.73rem;font-weight:400;margin-top:.15rem">
+                        Si non coché, seule la propriété du compte client sera transférée.
+                      </span>
+                    </label>
+                  </div>
+
+                </div>
+
+                <div class="modal-footer" style="border-top:1px solid var(--c-border);padding:.875rem 1.5rem;gap:.5rem">
+                  <button type="button" class="btn-ghost" data-bs-dismiss="modal">Annuler</button>
+                  <button type="submit" class="btn-navy" style="background:#7c3aed;border-color:#7c3aed">
+                    <i class="fas fa-user-tag"></i> Confirmer l'affectation
+                  </button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+        @endif
+        {{-- /Modal Affectation --}}
 
         @empty
         <tr>

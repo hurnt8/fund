@@ -10,6 +10,7 @@ use App\Services\LoanService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class LoanController extends Controller
 {
@@ -78,17 +79,40 @@ class LoanController extends Controller
 
     public function showDocuments(Request $request)
     {
+        // Nouveau jeton à chaque affichage du formulaire
+        $token = Str::uuid()->toString();
+        session(['doc_submission_token' => $token]);
+
         return view('loan-documents', [
-            'prefillName'  => $request->query('name'),
-            'prefillEmail' => $request->query('email'),
+            'prefillName'     => $request->query('name'),
+            'prefillEmail'    => $request->query('email'),
+            'submissionToken' => $token,
         ]);
     }
 
     public function sendDocuments(Request $request)
     {
-        $needsVerso = in_array($request->input('doc_type'), ['id_card', 'license', 'residence'], true);
+        $locale = $request->input('locale', 'fr');
+        if (!in_array($locale, ['fr', 'en', 'pl', 'es'], true)) {
+            $locale = 'fr';
+        }
+        App::setLocale($locale);
 
-        $fileRules = ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'];
+        // ── Protection anti-doublon ──────────────────────────────────────────
+        $submitted    = $request->input('submission_token', '');
+        $sessionToken = session('doc_submission_token');
+
+        if (!$submitted || !$sessionToken || !hash_equals($sessionToken, $submitted)) {
+            return redirect()->route('loan.complete', ['locale' => $locale])
+                ->with('docs_already_sent', true);
+        }
+
+        // Consommer le jeton AVANT tout envoi
+        session()->forget('doc_submission_token');
+
+        // ── Validation ───────────────────────────────────────────────────────
+        $needsVerso = in_array($request->input('doc_type'), ['id_card', 'license', 'residence'], true);
+        $fileRules  = ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'];
 
         $data = $request->validate([
             'name'           => ['required', 'string', 'max:255'],
@@ -99,16 +123,10 @@ class LoanController extends Controller
             'id_photo_verso' => array_merge($needsVerso ? ['required'] : ['nullable'], $fileRules),
         ]);
 
-        $locale = $request->input('locale', 'fr');
-        if (!in_array($locale, ['fr', 'en', 'pl', 'es'], true)) {
-            $locale = 'fr';
-        }
-        App::setLocale($locale);
-
+        // ── Stockage temporaire des fichiers ─────────────────────────────────
         $tempFiles   = [];
         $attachments = [];
 
-        // Recto (toujours présent)
         $recto = $request->file('id_photo_recto');
         if ($recto instanceof \Illuminate\Http\UploadedFile) {
             $stored = $recto->store('temp-docs', 'local');
@@ -119,7 +137,6 @@ class LoanController extends Controller
             }
         }
 
-        // Verso (si requis et fourni)
         $verso = $request->file('id_photo_verso');
         if ($verso instanceof \Illuminate\Http\UploadedFile) {
             $stored = $verso->store('temp-docs', 'local');
@@ -130,17 +147,19 @@ class LoanController extends Controller
             }
         }
 
+        // ── Envoi des emails ─────────────────────────────────────────────────
         try {
             Mail::to('contact@credixa.eu')->send(new LoanDocumentsMail($data, $attachments, $locale));
             Mail::to($data['email'])->send(new LoanDocumentsConfirmationMail($data, $locale));
         } finally {
             foreach ($tempFiles as $p) {
                 if (file_exists($p)) {
-                    unlink($p);
+                    @unlink($p);
                 }
             }
         }
 
-        return back()->with('success', __('message.docs_success'));
+        return redirect()->route('loan.complete', ['locale' => $locale])
+            ->with('success', __('message.docs_success'));
     }
 }

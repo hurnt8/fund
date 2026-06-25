@@ -271,11 +271,13 @@ Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('ad
     Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
     Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
     Route::get('/loans/{loan}/contract/pdf',          [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
-    Route::post('/loans/{loan}/contract/pdf/upload', [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
+    Route::post('/loans/{loan}/contract/pdf/upload',  [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
+    Route::post('/loans/{loan}/contract/pdf/resend',  [AdminLoanRequestController::class, 'resendContractEmail'])->name('loans.contract.pdf.resend');
     Route::get('/loans/{loan}/contract/docx',         [AdminLoanRequestController::class, 'downloadDocx'])->name('loans.contract.docx');
     Route::post('/loans/{loan}/validate',             [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
     Route::post('/loans/{loan}/signed',               [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
     Route::patch('/loans/{loan}/status',              [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
+    Route::patch('/loans/{loan}/assign-admin',        [AdminLoanRequestController::class, 'assignAdmin'])->name('loans.assign-admin')->middleware('role:super-admin');
 
     // Modèles de contrats
     Route::get('/contract-templates',                                  [ContractTemplateController::class, 'index'])->name('contract-templates.index');
@@ -298,6 +300,7 @@ Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('ad
     Route::put('/users/{user}',                 [UserManagementController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}',              [UserManagementController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{user}/resend-invite',  [UserManagementController::class, 'resendInvitation'])->name('users.resend-invite');
+    Route::post('/users/{user}/assign-admin',   [UserManagementController::class, 'assignAdmin'])->name('users.assign-admin')->middleware('role:super-admin');
 
     // Account management (credit / debit)
     Route::get('/accounts',                        [AccountController::class, 'index'])->name('accounts.index');
@@ -366,11 +369,13 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('super-admin')->name('su
     Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
     Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
     Route::get('/loans/{loan}/contract/pdf',          [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
-    Route::post('/loans/{loan}/contract/pdf/upload', [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
+    Route::post('/loans/{loan}/contract/pdf/upload',  [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
+    Route::post('/loans/{loan}/contract/pdf/resend',  [AdminLoanRequestController::class, 'resendContractEmail'])->name('loans.contract.pdf.resend');
     Route::get('/loans/{loan}/contract/docx',         [AdminLoanRequestController::class, 'downloadDocx'])->name('loans.contract.docx');
     Route::post('/loans/{loan}/validate',             [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
     Route::post('/loans/{loan}/signed',               [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
     Route::patch('/loans/{loan}/status',              [AdminLoanRequestController::class, 'updateStatus'])->name('loans.status');
+    Route::patch('/loans/{loan}/assign-admin',        [AdminLoanRequestController::class, 'assignAdmin'])->name('loans.assign-admin');
 
     // Profil super-admin
     Route::get('/profile',           [\App\Http\Controllers\Admin\AdminProfileController::class, 'index'])->name('profile');
