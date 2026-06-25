@@ -69,7 +69,7 @@
                     </div>
                     <div class="footer-contact-item">
                         <div class="icon"><i class="fas fa-phone-alt"></i></div>
-                        <a href="tel:+34613853614">+34 613 85 36 14</a>
+                        <a href="tel:+34613853614">+31 6 57341120</a>
                     </div>
                     <div class="footer-contact-item">
                         <div class="icon"><i class="fas fa-envelope"></i></div>

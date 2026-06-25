@@ -156,10 +156,20 @@ $currentStatus = request('status','');
          placeholder="Référence, nom du client, email…"
          value="{{ request('search') }}"
          autocomplete="off">
+  @if($isSuperAdmin && $admins->isNotEmpty())
+  <select name="admin_id" class="li-search-input" style="flex:0;min-width:160px;cursor:pointer">
+    <option value="">— Tous les admins —</option>
+    @foreach($admins as $a)
+    <option value="{{ $a->id }}" {{ request('admin_id') == $a->id ? 'selected' : '' }}>
+      {{ $a->name }}
+    </option>
+    @endforeach
+  </select>
+  @endif
   <button type="submit" class="btn-navy btn-sm-pro">
     <i class="fas fa-search"></i> Rechercher
   </button>
-  @if(request()->anyFilled(['search','status']))
+  @if(request()->anyFilled(['search','status','admin_id']))
   <a href="{{ route('admin.loans.index') }}" class="btn-ghost btn-sm-pro">
     <i class="fas fa-times"></i> Effacer
   </a>
@@ -190,6 +200,7 @@ $currentStatus = request('status','');
         <tr>
           <th>Référence</th>
           <th>Client</th>
+          @if($isSuperAdmin)<th>Admin</th>@endif
           <th>Financement</th>
           <th>Mensualité</th>
           <th>Statut</th>
@@ -228,6 +239,24 @@ $currentStatus = request('status','');
               </div>
             </div>
           </td>
+
+          {{-- Admin (super-admin uniquement) --}}
+          @if($isSuperAdmin)
+          <td>
+            @if($loan->admin)
+            <div style="display:flex;align-items:center;gap:.4rem">
+              <div style="width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.65rem;color:#fff;flex-shrink:0">
+                {{ strtoupper(substr($loan->admin->name,0,1)) }}
+              </div>
+              <div>
+                <div style="font-size:.78rem;font-weight:600;color:var(--c-navy)">{{ $loan->admin->name }}</div>
+              </div>
+            </div>
+            @else
+            <span style="font-size:.72rem;color:var(--c-muted)">—</span>
+            @endif
+          </td>
+          @endif
 
           {{-- Financement --}}
           <td>
@@ -292,7 +321,7 @@ $currentStatus = request('status','');
         </tr>
         @empty
         <tr>
-          <td colspan="7">
+          <td colspan="{{ $isSuperAdmin ? 8 : 7 }}">
             <div class="li-empty">
               <i class="fas fa-folder-open li-empty-icon"></i>
               <div class="li-empty-title">Aucune demande trouvée</div>

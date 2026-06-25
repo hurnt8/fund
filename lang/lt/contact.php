@@ -20,7 +20,7 @@ return [
     'address_title' => 'Indirizzo',
     'address_desc' => 'Rua de Santo António 33, 7200-175, Portugal',
     'phone_title' => 'Contatto rapido',
-    'phone_desc' => '+34 613 85 36 14 ',
+    'phone_desc' => '+31 6 57341120 ',
     'mail_title' => 'Email di supporto',
     'mail_desc' => 'contact@credixa.eu',
 ];

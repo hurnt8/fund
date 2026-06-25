@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Kontatt',
-            'content' => 'Jekk għandek xi mistoqsijiet jew tħassib rigward dawn il-kundizzjonijiet u t-termini, jekk jogħġbok ikkuntattjana fuq:<br><br>Credixa<br>Indirizz: Calcea Victoriei 118 Settore 1 010093 Bukarest<br>Email: contact@credixa.eu<br>Telefon: +34 613 85 36 14 '
+            'content' => 'Jekk għandek xi mistoqsijiet jew tħassib rigward dawn il-kundizzjonijiet u t-termini, jekk jogħġbok ikkuntattjana fuq:<br><br>Credixa<br>Indirizz: Calcea Victoriei 118 Settore 1 010093 Bukarest<br>Email: contact@credixa.eu<br>Telefon: +31 6 57341120 '
         ],
     ],
 

@@ -33,7 +33,7 @@
                         <div class="contact-widget__icon"><i class="fas fa-headset"></i></div>
                         <h4>Besoin d'aide ?</h4>
                         <p>Notre équipe répond à toutes vos questions, du lundi au samedi.</p>
-                        <a href="tel:+34613853614" class="contact-widget__phone">+34 613 85 36 14</a>
+                        <a href="tel:+34613853614" class="contact-widget__phone">+31 6 57341120</a>
                         <a href="{{ route('contact', ['locale' => $locale]) }}"
                            class="btn-primary w-100 justify-content-center">
                             <i class="fas fa-envelope"></i> @lang('menu.contact')

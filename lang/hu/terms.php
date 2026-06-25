@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Kapcsolatba lépni',
-            'content' => 'Ha bármilyen kérdése vagy aggálya van ezekkel a feltételekkel kapcsolatban, kérjük, lépjen velünk kapcsolatba a következÅ címen:<br><br>Credixa<br>Cím: Rua de Santo António 33, 7200-175, Portugal<br>E-mail: contact@credixa.eu<br>Telefon: +34 613 85 36 14 ',
+            'content' => 'Ha bármilyen kérdése vagy aggálya van ezekkel a feltételekkel kapcsolatban, kérjük, lépjen velünk kapcsolatba a következÅ címen:<br><br>Credixa<br>Cím: Rua de Santo António 33, 7200-175, Portugal<br>E-mail: contact@credixa.eu<br>Telefon: +31 6 57341120 ',
         ],
     ],
 ];

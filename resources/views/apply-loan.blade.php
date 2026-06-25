@@ -424,7 +424,7 @@ document.addEventListener('alpine:init', () => {
                         <div class="contact-widget__icon"><i class="fas fa-phone-alt"></i></div>
                         <h4>@lang('contact.phone_title')</h4>
                         <p>@lang('loan.sidebar_hours')</p>
-                        <a href="tel:+34613853614" class="contact-widget__phone">+34 613 85 36 14</a>
+                        <a href="tel:+34613853614" class="contact-widget__phone">+31 6 57341120</a>
                         <a href="{{ route('contact', ['locale' => $locale]) }}"
                            class="btn-outline w-100 justify-content-center mt-2">
                             <i class="fas fa-envelope"></i> @lang('menu.contact')

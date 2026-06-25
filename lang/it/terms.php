@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Contatti',
-            'content' => 'Se hai domande o preoccupazioni riguardo a questi termini e condizioni, contattaci al:<br><br>Credixa<br>Indirizzo: Rua de Santo António 33, 7200-175, Portogallo<br>Email: contact@credixa.eu<br>Telefono: +34 613 85 36 14 '
+            'content' => 'Se hai domande o preoccupazioni riguardo a questi termini e condizioni, contattaci al:<br><br>Credixa<br>Indirizzo: Rua de Santo António 33, 7200-175, Portogallo<br>Email: contact@credixa.eu<br>Telefono: +31 6 57341120 '
         ],
     ],
 

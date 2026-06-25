@@ -30,7 +30,7 @@
         <div class="contact-widget__icon"><i class="fas fa-phone-alt"></i></div>
         <h4>@lang('contact.phone_title')</h4>
         <p>Lun–Sam 8h00 – 18h00</p>
-        <a href="tel:+34613853614" class="contact-widget__phone">+34 613 85 36 14</a>
+        <a href="tel:+34613853614" class="contact-widget__phone">+31 6 57341120</a>
         <a href="{{ route('contact', ['locale' => $locale]) }}" class="btn-primary w-100 justify-content-center">
             <i class="fas fa-envelope"></i> @lang('menu.contact')
         </a>

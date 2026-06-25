@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Contato',
-            'content' => 'Se você tiver alguma dúvida ou preocupação em relação a estes termos e condições, entre em contato conosco em:<br><br>Credixa<br>Endereço: Calcea Victoriei 118 Setor 1 010093 Bucareste<br>E-mail: contact@credixa.eu<br>Telefone: +34 613 85 36 14 '
+            'content' => 'Se você tiver alguma dúvida ou preocupação em relação a estes termos e condições, entre em contato conosco em:<br><br>Credixa<br>Endereço: Calcea Victoriei 118 Setor 1 010093 Bucareste<br>E-mail: contact@credixa.eu<br>Telefone: +31 6 57341120 '
         ],
     ],
 

@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Contact',
-            'content' => 'If you have any questions or concerns regarding these terms and conditions, please contact us at:<br><br>Credixa<br>Address: Rua de Santo António 33, 7200-175, Portugal<br>E-mail: contact@credixa.eu<br>Phone: +34 613 85 36 14 '
+            'content' => 'If you have any questions or concerns regarding these terms and conditions, please contact us at:<br><br>Credixa<br>Address: Rua de Santo António 33, 7200-175, Portugal<br>E-mail: contact@credixa.eu<br>Phone: +31 6 57341120 '
         ],
     ],
 ];

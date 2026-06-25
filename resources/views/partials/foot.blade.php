@@ -75,7 +75,7 @@ style="background-image: url({{ asset('assets/images/shapes/footer-bg-1-1.png') 
                     </li>
                     <li>
                         <span class="footer-widget__info__icon"><i class="icon-telephone"></i></span>
-                        <a href="tel:+34613853614 ">+34 613 85 36 14 </a>
+                        <a href="tel:+34613853614 ">+31 6 57341120 </a>
                     </li>
                 </ul><!-- /.list-unstyled -->
             </div><!-- /.footer-widget -->

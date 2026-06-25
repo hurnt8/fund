@@ -47,6 +47,6 @@ return [
         'Credixa',
         'Endereço: Calcea Victoriei 118 Sector 1 010093 Bucareste',
         'E-mail: contact@credixa.eu',
-        'Telefone: +34 613 85 36 14 ',
+        'Telefone: +31 6 57341120 ',
     ],
 ];

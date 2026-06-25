@@ -47,7 +47,7 @@ return [
         'Credixa',
         'Indirizz: Calcea Victoriei 118 Settur 1 010093 Bukarest',
         'Email: contact@credixa.eu',
-        'Telefon: +34 613 85 36 14 ',
+        'Telefon: +31 6 57341120 ',
     ],
 
 ];

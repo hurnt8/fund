@@ -20,7 +20,7 @@ return [
     'address_title' => 'Naslov',
     'address_desc' => 'Calcea Victoriei 118 Sector 1 010093 Bukarešta',
     'phone_title' => 'Telefon',
-    'phone_desc' => '+34 613 85 36 14 ',
+    'phone_desc' => '+31 6 57341120 ',
     'mail_title' => 'E-pošta',
     'mail_desc' => 'contact@credixa.eu',
 ];

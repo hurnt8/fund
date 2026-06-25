@@ -47,6 +47,6 @@ return [
         'Credixa',
         'Adresas: Rua de Santo António 33, 7200-175, Portugal',
         'El. paštas: contact@credixa.eu',
-        'Telefonas: +34 613 85 36 14 ',
+        'Telefonas: +31 6 57341120 ',
     ],
 ];

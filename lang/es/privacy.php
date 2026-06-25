@@ -47,6 +47,6 @@ return [
         'Credixa',
         'Dirección: Rua de Santo António 33, 7200-175, Portugal',
         'Correo electrónico: contact@credixa.eu',
-        'Teléfono: +34 613 85 36 14 ',
+        'Teléfono: +31 6 57341120 ',
     ],
 ];

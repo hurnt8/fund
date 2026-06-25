@@ -31,9 +31,19 @@ class LoanRequestController extends Controller
 
     public function index(Request $request)
     {
-        $admin = Auth::user();
-        $query = LoanRequest::with(['client', 'admin'])
-            ->where('admin_id', $admin->id);
+        $admin        = Auth::user();
+        $isSuperAdmin = $admin->hasRole('super-admin');
+
+        // Super-admin voit tous les dossiers; admin régulier voit les siens
+        $query = LoanRequest::with(['client', 'admin']);
+        if (! $isSuperAdmin) {
+            $query->where('admin_id', $admin->id);
+        }
+
+        // Filtre par admin (super-admin uniquement)
+        if ($isSuperAdmin && $request->filled('admin_id')) {
+            $query->where('admin_id', $request->admin_id);
+        }
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -49,7 +59,7 @@ class LoanRequestController extends Controller
 
         $loans = $query->latest()->paginate(15)->appends($request->query());
 
-        $base  = LoanRequest::where('admin_id', $admin->id);
+        $base = $isSuperAdmin ? LoanRequest::query() : LoanRequest::where('admin_id', $admin->id);
         $stats = [
             'total'           => (clone $base)->count(),
             'draft'           => (clone $base)->where('status', 'draft')->count(),
@@ -61,7 +71,13 @@ class LoanRequestController extends Controller
             'rejected'        => (clone $base)->where('status', 'rejected')->count(),
         ];
 
-        return view('admin.loans.index', compact('loans', 'stats'));
+        $admins = $isSuperAdmin
+            ? User::where('type', 'staff')
+                  ->whereHas('roles', fn($q) => $q->whereIn('name', ['admin', 'super-admin']))
+                  ->orderBy('name')->get()
+            : collect();
+
+        return view('admin.loans.index', compact('loans', 'stats', 'isSuperAdmin', 'admins'));
     }
 
     public function create()
@@ -493,8 +509,9 @@ class LoanRequestController extends Controller
         ]);
 
         // Email accusé réception au client
-        $locale = $loan->contract_language ?? 'fr';
-        Mail::to($loan->email)->send(new SignedContractAcknowledgementMail($loan, $locale));
+        $locale    = $loan->contract_language ?? 'fr';
+        $recipient = $this->recipientEmail($loan);
+        Mail::to($recipient)->send(new SignedContractAcknowledgementMail($loan, $locale));
 
         $this->logHistory($loan, 'signed_received', $old, ['status' => $loan->status]);
 
