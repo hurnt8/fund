@@ -1,15 +1,19 @@
 @extends('layouts.dashboard')
-@section('title', 'Super Administration')
-@section('page_title', 'Vue d\'ensemble')
+@section('title', 'Super Administration — Credixa')
+@section('page_title', 'Vue d\'ensemble système')
 
 @push('styles')
 <style>
-/* ── Banner ──────────────────────────────────────── */
-.sa-banner {
-  background: linear-gradient(135deg, #0B1A2E 0%, #1a3a5c 55%, #0f2847 100%);
-  border-radius: var(--radius);
-  padding: 1.75rem 2rem;
-  margin-bottom: 1.75rem;
+/* ══════════════════════════════════════════
+   SUPER ADMIN DASHBOARD — préfixe sadb-
+   ══════════════════════════════════════════ */
+
+/* ── Hero ── */
+.sadb-hero {
+  background: linear-gradient(135deg, #050f20 0%, #0b1f42 55%, #091830 100%);
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,415 +22,446 @@
   position: relative;
   overflow: hidden;
 }
-.sa-banner::before {
+.sadb-hero::before {
   content: '';
-  position: absolute;
-  top: -40px; right: -40px;
-  width: 220px; height: 220px;
-  border-radius: 50%;
-  background: rgba(200,169,81,.07);
+  position: absolute; top: -60px; right: -60px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,169,81,.12) 0%, transparent 70%);
   pointer-events: none;
 }
-.sa-banner::after {
+.sadb-hero::after {
   content: '';
-  position: absolute;
-  bottom: -60px; right: 80px;
-  width: 160px; height: 160px;
-  border-radius: 50%;
-  background: rgba(200,169,81,.04);
+  position: absolute; bottom: -80px; left: 30%;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,.08) 0%, transparent 70%);
   pointer-events: none;
 }
-.sa-banner__eyebrow {
-  font-size: .62rem; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--c-gold); margin-bottom: .35rem;
-}
-.sa-banner__title {
-  font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0 0 .3rem; line-height: 1.2;
-}
-.sa-banner__sub { font-size: .78rem; color: rgba(255,255,255,.45); }
-.sa-banner__kpis {
-  display: flex; gap: 2rem; flex-shrink: 0;
-}
-.sa-banner__kpi { text-align: center; position: relative; z-index: 1; }
-.sa-banner__kpi-val {
-  display: block; font-size: 1.6rem; font-weight: 800; color: var(--c-gold); line-height: 1;
-}
-.sa-banner__kpi-lbl {
-  display: block; font-size: .65rem; color: rgba(255,255,255,.4); margin-top: .3rem; white-space: nowrap;
-}
-.sa-banner__divider { width: 1px; background: rgba(255,255,255,.1); align-self: stretch; }
 
-/* ── Metric grid ─────────────────────────────────── */
-.metric-grid {
+.sadb-hero-left { position: relative; z-index: 1; }
+.sadb-hero-tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .6rem; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--c-gold);
+  background: rgba(200,169,81,.12); border: 1px solid rgba(200,169,81,.2);
+  border-radius: 999px; padding: .2rem .6rem;
+  margin-bottom: .5rem;
+}
+.sadb-hero-title { font-size: 1.5rem; font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: .35rem; }
+.sadb-hero-sub   { font-size: .78rem; color: rgba(255,255,255,.35); }
+
+.sadb-hero-stats {
+  display: flex; align-items: stretch; gap: 0;
+  position: relative; z-index: 1;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; overflow: hidden;
+}
+.sadb-hero-stat {
+  padding: 1rem 1.625rem; text-align: center;
+}
+.sadb-hero-stat + .sadb-hero-stat {
+  border-left: 1px solid rgba(255,255,255,.1);
+}
+.sadb-hero-stat-val {
+  display: block; font-size: 1.625rem; font-weight: 900; color: var(--c-gold); line-height: 1;
+}
+.sadb-hero-stat-lbl {
+  display: block; font-size: .62rem; color: rgba(255,255,255,.35); margin-top: .3rem; white-space: nowrap;
+}
+
+/* ── User type badges ── */
+.sadb-hero-users {
+  display: flex; gap: .625rem; margin-top: .75rem; flex-wrap: wrap;
+}
+.sadb-user-chip {
+  display: flex; align-items: center; gap: .35rem;
+  font-size: .65rem; font-weight: 700; padding: .2rem .55rem;
+  border-radius: 999px; white-space: nowrap;
+}
+.sadb-user-chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* ── KPI grid ── */
+.sadb-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-@media (max-width: 991px) { .metric-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 575px) { .metric-grid { grid-template-columns: 1fr; } }
+@media(max-width:1100px) { .sadb-kpi-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:575px)  { .sadb-kpi-grid { grid-template-columns: 1fr 1fr; } }
 
-.metric-card {
+.sadb-kpi {
   background: var(--c-surface);
-  border-radius: var(--radius);
   border: 1px solid var(--c-border);
+  border-radius: 14px;
   padding: 1.25rem 1.375rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
   position: relative; overflow: hidden;
-  transition: var(--transition);
-  display: flex; align-items: flex-start; gap: 1rem;
+  transition: box-shadow .15s, transform .15s;
 }
-.metric-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
-.metric-card__icon {
-  width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0;
+.sadb-kpi:hover { box-shadow: 0 6px 20px rgba(0,0,0,.08); transform: translateY(-2px); }
+.sadb-kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: .75rem; }
+.sadb-kpi-ico {
+  width: 46px; height: 46px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center; font-size: 1rem;
 }
-.metric-card__body { flex: 1; min-width: 0; }
-.metric-card__val { font-size: 1.7rem; font-weight: 800; color: var(--c-navy); line-height: 1; }
-.metric-card__lbl { font-size: .72rem; color: var(--c-muted); font-weight: 500; margin-top: .25rem; }
-.metric-card__trend {
-  font-size: .65rem; margin-top: .5rem; display: inline-flex; align-items: center; gap: .3rem;
-  padding: .15rem .45rem; border-radius: 999px; font-weight: 600;
-}
-.metric-card__accent {
-  position: absolute; top: 0; right: 0;
-  width: 90px; height: 90px; border-radius: 0 var(--radius) 0 90px; opacity: .06;
-}
+.sadb-kpi-val { font-size: 2.125rem; font-weight: 900; color: var(--c-navy); line-height: 1; margin-bottom: .2rem; }
+.sadb-kpi-lbl { font-size: .72rem; color: var(--c-muted); font-weight: 500; }
+.sadb-kpi-sub { margin-top: .5rem; display: flex; gap: .35rem; flex-wrap: wrap; }
+.sadb-kpi-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; border-radius: 0 0 14px 14px; }
 
-/* ── Status bar chart ────────────────────────────── */
-.status-bar-wrap { display: flex; flex-direction: column; gap: .75rem; }
-.status-bar-row { display: flex; align-items: center; gap: .875rem; }
-.status-bar-label { font-size: .75rem; font-weight: 600; color: var(--c-text); width: 80px; flex-shrink: 0; }
-.status-bar-track {
-  flex: 1; height: 8px; background: var(--c-bg); border-radius: 999px; overflow: hidden;
-}
-.status-bar-fill { height: 100%; border-radius: 999px; transition: width .6s ease; }
-.status-bar-count { font-size: .72rem; font-weight: 700; color: var(--c-navy); width: 28px; text-align: right; flex-shrink: 0; }
+/* icon colors */
+.sadb-ico-navy { background: rgba(11,26,46,.08); color: var(--c-navy); }
+.sadb-ico-gold { background: rgba(200,169,81,.12); color: #a07d20; }
+.sadb-ico-amber{ background: rgba(217,119,6,.1);  color: #D97706; }
+.sadb-ico-green{ background: rgba(5,150,105,.1);  color: #059669; }
+.sadb-ico-blue { background: rgba(37,99,235,.1);  color: #2563EB; }
+.sadb-ico-violet{ background: rgba(124,58,237,.1); color: #7C3AED; }
 
-/* ── User list ───────────────────────────────────── */
-.user-row {
-  display: flex; align-items: center; gap: .875rem;
-  padding: .75rem 0;
-  border-bottom: 1px solid var(--c-border);
+/* ── Middle row ── */
+.sadb-mid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
-.user-row:last-child { border-bottom: none; }
-.user-avatar {
-  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: .78rem; color: var(--c-navy);
-}
-.user-info { flex: 1; min-width: 0; }
-.user-name { font-size: .825rem; font-weight: 600; color: var(--c-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.user-email { font-size: .7rem; color: var(--c-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.user-since { font-size: .68rem; color: var(--c-muted); flex-shrink: 0; }
+@media(max-width:991px) { .sadb-mid { grid-template-columns: 1fr; } }
 
-/* ── Loan list ───────────────────────────────────── */
-.loan-row {
-  display: flex; align-items: center; gap: .875rem;
+/* ── Card ── */
+.sadb-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  display: flex; flex-direction: column;
+}
+.sadb-card-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--c-border); flex-shrink: 0;
+}
+.sadb-card-title {
+  font-size: .825rem; font-weight: 800; color: var(--c-navy);
+  display: flex; align-items: center; gap: .5rem;
+}
+.sadb-card-title-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.sadb-card-body { padding: 1.125rem 1.25rem; flex: 1; }
+.sadb-view-all {
+  font-size: .7rem; font-weight: 700; color: var(--c-muted);
+  text-decoration: none; display: flex; align-items: center; gap: .3rem; transition: .15s;
+}
+.sadb-view-all:hover { color: var(--c-navy); }
+
+/* ── Donut ── */
+.sadb-ring-wrap { display: flex; align-items: center; gap: 1.375rem; margin-bottom: 1.25rem; }
+.sadb-ring-legend { flex: 1; display: flex; flex-direction: column; gap: .5rem; }
+.sadb-ring-item { display: flex; align-items: center; gap: .5rem; font-size: .75rem; }
+.sadb-ring-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.sadb-ring-lbl { flex: 1; color: var(--c-text); }
+.sadb-ring-val { font-weight: 700; color: var(--c-navy); }
+
+.sadb-sbars { display: flex; flex-direction: column; gap: .625rem; }
+.sadb-sbar-row { display: flex; align-items: center; gap: .75rem; }
+.sadb-sbar-lbl { font-size: .7rem; font-weight: 600; color: var(--c-text); width: 86px; flex-shrink: 0; }
+.sadb-sbar-track { flex: 1; height: 6px; background: var(--c-bg); border-radius: 999px; overflow: hidden; }
+.sadb-sbar-fill  { height: 100%; border-radius: 999px; }
+.sadb-sbar-cnt { font-size: .7rem; font-weight: 700; color: var(--c-navy); width: 24px; text-align: right; flex-shrink: 0; }
+
+/* ── User rows ── */
+.sadb-user-row {
+  display: flex; align-items: center; gap: .75rem;
   padding: .75rem 0; border-bottom: 1px solid var(--c-border);
 }
-.loan-row:last-child { border-bottom: none; }
-.loan-icon {
-  width: 36px; height: 36px; border-radius: var(--radius-sm); flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; font-size: .8rem;
+.sadb-user-row:last-child { border-bottom: 0; }
+.sadb-user-av {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .8rem;
 }
-.loan-info { flex: 1; min-width: 0; }
-.loan-name { font-size: .825rem; font-weight: 600; color: var(--c-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.loan-date { font-size: .7rem; color: var(--c-muted); }
-.loan-amount { font-size: .875rem; font-weight: 800; color: var(--c-navy); flex-shrink: 0; white-space: nowrap; }
+.sadb-user-info { flex: 1; min-width: 0; }
+.sadb-user-name  { font-size: .8rem; font-weight: 600; color: var(--c-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sadb-user-email { font-size: .68rem; color: var(--c-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sadb-user-since { font-size: .65rem; color: var(--c-muted); flex-shrink: 0; white-space: nowrap; }
 
-/* ── Donut ring (CSS only) ───────────────────────── */
-.ring-wrap { display: flex; align-items: center; gap: 1.5rem; }
-.ring-svg { flex-shrink: 0; }
-.ring-legend { flex: 1; display: flex; flex-direction: column; gap: .5rem; }
-.ring-legend-item { display: flex; align-items: center; gap: .5rem; font-size: .75rem; }
-.ring-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.ring-lbl { flex: 1; color: var(--c-text); }
-.ring-pct { font-weight: 700; color: var(--c-navy); }
-
-/* ── View all link ───────────────────────────────── */
-.view-all {
-  display: inline-flex; align-items: center; gap: .35rem;
-  font-size: .72rem; font-weight: 600; color: var(--c-gold-d);
-  text-decoration: none; transition: color .15s;
+/* ── Table card ── */
+.sadb-table-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  overflow: hidden;
 }
-.view-all:hover { color: var(--c-navy); }
+.sadb-table-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--c-border);
+}
+
+/* ── Empty ── */
+.sadb-empty { padding: 2.5rem; text-align: center; }
+.sadb-empty i { font-size: 2rem; color: var(--c-muted); opacity: .25; display: block; margin-bottom: .75rem; }
+.sadb-empty p { font-size: .8rem; color: var(--c-muted); }
+
+@media(max-width:575px) { .sadb-hero-stats { display: none; } }
 </style>
 @endpush
 
 @section('content')
-
 @php
-  $total  = max($stats['total_loans'], 1);
-  $pct_p  = round($stats['pending_loans']  / $total * 100);
-  $pct_a  = round($stats['approved_loans'] / $total * 100);
-  $pct_r  = round($stats['rejected_loans'] / $total * 100);
-  $pct_rv = round($stats['review_loans']   / $total * 100);
+  $total = max($stats['total_loans'], 1);
+
+  /* Map actual statuses for display */
+  $statuses = [
+    ['lbl' => 'En attente',  'key' => 'pending_loans',   'color' => '#D97706'],
+    ['lbl' => 'Approuvés',   'key' => 'approved_loans',  'color' => '#059669'],
+    ['lbl' => 'En révision', 'key' => 'review_loans',    'color' => '#2563EB'],
+    ['lbl' => 'Refusés',     'key' => 'rejected_loans',  'color' => '#DC2626'],
+  ];
+
+  $cx = 60; $cy = 60; $r = 46; $circ = 2 * 3.14159 * $r;
+  $offset = 0; $svgSegs = [];
+  foreach ($statuses as $s) {
+    $v   = $stats[$s['key']] ?? 0;
+    $len = $v > 0 ? ($v / $total) * $circ : 0;
+    $svgSegs[] = array_merge($s, [
+      'val'   => $v,
+      'pct'   => $total > 0 ? round($v / $total * 100) : 0,
+      'dash'  => $len,
+      'dashoffset' => $circ - $offset,
+    ]);
+    $offset += $len;
+  }
+
+  $avatarPalette = ['#2563EB','#059669','#D97706','#7C3AED','#DC2626','#0D9488','#C8A951'];
+
+  $stMap = [
+    'draft'           => ['lbl' => 'Brouillon',      'cls' => 'bs-gray'],
+    'pending'         => ['lbl' => 'En attente',     'cls' => 'bs-amber'],
+    'validated'       => ['lbl' => 'Validé',         'cls' => 'bs-blue'],
+    'contract_sent'   => ['lbl' => 'Contrat envoyé', 'cls' => 'bs-violet'],
+    'contract_signed' => ['lbl' => 'Contrat signé',  'cls' => 'bs-emerald'],
+    'finalized'       => ['lbl' => 'Finalisé',       'cls' => 'bs-green'],
+    'rejected'        => ['lbl' => 'Refusé',         'cls' => 'bs-red'],
+  ];
 @endphp
 
-{{-- ── BANNER ────────────────────────────────────────────────────── --}}
-<div class="sa-banner">
-  <div style="position:relative;z-index:1">
-    <div class="sa-banner__eyebrow">Credixa Invest — Panneau Super Admin</div>
-    <div class="sa-banner__title">Vue d'ensemble du système</div>
-    <div class="sa-banner__sub">{{ now()->isoFormat('dddd D MMMM YYYY') }}</div>
+{{-- ── HERO ── --}}
+<div class="sadb-hero">
+  <div class="sadb-hero-left">
+    <div class="sadb-hero-tag">
+      <i class="fas fa-shield-alt" style="font-size:.6rem"></i>
+      Super Administration
+    </div>
+    <div class="sadb-hero-title">Panneau de contrôle</div>
+    <div class="sadb-hero-sub">{{ now()->isoFormat('dddd D MMMM YYYY') }}</div>
+    <div class="sadb-hero-users">
+      <span class="sadb-user-chip" style="background:rgba(37,99,235,.15);color:#93c5fd">
+        <span class="sadb-user-chip-dot" style="background:#2563EB"></span>
+        {{ $stats['total_clients'] }} clients
+      </span>
+      <span class="sadb-user-chip" style="background:rgba(124,58,237,.15);color:#c4b5fd">
+        <span class="sadb-user-chip-dot" style="background:#7C3AED"></span>
+        {{ $stats['total_staff'] }} staff
+      </span>
+      <span class="sadb-user-chip" style="background:rgba(200,169,81,.15);color:var(--c-gold)">
+        <span class="sadb-user-chip-dot" style="background:var(--c-gold)"></span>
+        {{ $stats['total_users'] }} total
+      </span>
+    </div>
   </div>
-  <div class="sa-banner__kpis" style="position:relative;z-index:1">
-    <div class="sa-banner__kpi">
-      <span class="sa-banner__kpi-val">{{ $stats['total_users'] }}</span>
-      <span class="sa-banner__kpi-lbl">Utilisateurs</span>
+
+  <div class="sadb-hero-stats">
+    <div class="sadb-hero-stat">
+      <span class="sadb-hero-stat-val">{{ $stats['total_loans'] }}</span>
+      <span class="sadb-hero-stat-lbl">Dossiers</span>
     </div>
-    <div class="sa-banner__divider"></div>
-    <div class="sa-banner__kpi">
-      <span class="sa-banner__kpi-val">{{ $stats['month_loans'] }}</span>
-      <span class="sa-banner__kpi-lbl">Dossiers ce mois</span>
+    <div class="sadb-hero-stat">
+      <span class="sadb-hero-stat-val">{{ $stats['month_loans'] }}</span>
+      <span class="sadb-hero-stat-lbl">Ce mois</span>
     </div>
-    <div class="sa-banner__divider"></div>
-    <div class="sa-banner__kpi">
-      <span class="sa-banner__kpi-val">{{ $stats['total_amount'] > 0 ? number_format($stats['total_amount'] / 1000, 0, ',', ' ') . 'k' : '0' }}</span>
-      <span class="sa-banner__kpi-lbl">Volume total (€)</span>
+    <div class="sadb-hero-stat">
+      <span class="sadb-hero-stat-val">
+        {{ $stats['total_amount'] > 0 ? number_format($stats['total_amount'] / 1000, 0, ',', ' ') . 'k' : '0' }}€
+      </span>
+      <span class="sadb-hero-stat-lbl">Volume</span>
     </div>
   </div>
 </div>
 
-{{-- ── METRIC CARDS ──────────────────────────────────────────────── --}}
-<div class="metric-grid">
+{{-- ── KPI CARDS ── --}}
+<div class="sadb-kpi-grid">
 
-  {{-- Utilisateurs --}}
-  <div class="metric-card">
-    <div class="metric-card__icon mi-navy"><i class="fas fa-users"></i></div>
-    <div class="metric-card__body">
-      <div class="metric-card__val">{{ $stats['total_users'] }}</div>
-      <div class="metric-card__lbl">Utilisateurs totaux</div>
-      <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap">
-        <span class="badge-status bs-blue">{{ $stats['total_clients'] }} clients</span>
-        <span class="badge-status bs-violet">{{ $stats['total_staff'] }} staff</span>
-      </div>
+  <div class="sadb-kpi">
+    <div class="sadb-kpi-top">
+      <div class="sadb-kpi-ico sadb-ico-navy"><i class="fas fa-users"></i></div>
     </div>
-    <div class="metric-card__accent" style="background:var(--c-navy)"></div>
+    <div class="sadb-kpi-val">{{ $stats['total_users'] }}</div>
+    <div class="sadb-kpi-lbl">Utilisateurs totaux</div>
+    <div class="sadb-kpi-sub">
+      <span class="badge-status bs-blue">{{ $stats['total_clients'] }} clients</span>
+      <span class="badge-status bs-violet">{{ $stats['total_staff'] }} staff</span>
+    </div>
+    <div class="sadb-kpi-bar" style="background:var(--c-navy)"></div>
   </div>
 
-  {{-- Demandes totales --}}
-  <div class="metric-card">
-    <div class="metric-card__icon mi-gold"><i class="fas fa-file-invoice-dollar"></i></div>
-    <div class="metric-card__body">
-      <div class="metric-card__val">{{ $stats['total_loans'] }}</div>
-      <div class="metric-card__lbl">Demandes de prêt</div>
-      <span class="metric-card__trend" style="background:var(--c-amber-l);color:var(--c-amber)">
-        <i class="fas fa-clock" style="font-size:.58rem"></i>
+  <div class="sadb-kpi">
+    <div class="sadb-kpi-top">
+      <div class="sadb-kpi-ico sadb-ico-gold"><i class="fas fa-file-invoice-dollar"></i></div>
+      <span style="font-size:.65rem;font-weight:700;background:rgba(200,169,81,.1);color:#a07d20;padding:.18rem .45rem;border-radius:999px">
         {{ $stats['month_loans'] }} ce mois
       </span>
     </div>
-    <div class="metric-card__accent" style="background:var(--c-gold)"></div>
+    <div class="sadb-kpi-val">{{ $stats['total_loans'] }}</div>
+    <div class="sadb-kpi-lbl">Dossiers de prêt</div>
+    <div class="sadb-kpi-bar" style="background:var(--c-gold)"></div>
   </div>
 
-  {{-- En attente --}}
-  <div class="metric-card">
-    <div class="metric-card__icon mi-amber"><i class="fas fa-hourglass-half"></i></div>
-    <div class="metric-card__body">
-      <div class="metric-card__val">{{ $stats['pending_loans'] }}</div>
-      <div class="metric-card__lbl">En attente de traitement</div>
-      @if($stats['pending_loans'] > 0)
-      <span class="metric-card__trend" style="background:#FEF3C7;color:#D97706">
-        <i class="fas fa-exclamation-triangle" style="font-size:.58rem"></i>
-        Nécessitent une action
-      </span>
-      @else
-      <span class="metric-card__trend" style="background:var(--c-green-l);color:var(--c-green)">
-        <i class="fas fa-check" style="font-size:.58rem"></i>
-        File d'attente vide
+  <div class="sadb-kpi">
+    <div class="sadb-kpi-top">
+      <div class="sadb-kpi-ico sadb-ico-amber"><i class="fas fa-hourglass-half"></i></div>
+      @if(($stats['pending_loans'] ?? 0) > 0)
+      <span style="font-size:.65rem;font-weight:700;background:#FEF3C7;color:#D97706;padding:.18rem .45rem;border-radius:999px">
+        <i class="fas fa-exclamation-triangle" style="font-size:.5rem"></i> Urgent
       </span>
       @endif
     </div>
-    <div class="metric-card__accent" style="background:var(--c-amber)"></div>
+    <div class="sadb-kpi-val">{{ $stats['pending_loans'] ?? 0 }}</div>
+    <div class="sadb-kpi-lbl">En attente de traitement</div>
+    <div class="sadb-kpi-bar" style="background:#D97706"></div>
   </div>
 
-  {{-- Approuvées --}}
-  <div class="metric-card">
-    <div class="metric-card__icon mi-green"><i class="fas fa-check-circle"></i></div>
-    <div class="metric-card__body">
-      <div class="metric-card__val">{{ $stats['approved_loans'] }}</div>
-      <div class="metric-card__lbl">Demandes approuvées</div>
-      <span class="metric-card__trend" style="background:var(--c-green-l);color:var(--c-green)">
-        {{ $pct_a }}% du total
+  <div class="sadb-kpi">
+    <div class="sadb-kpi-top">
+      <div class="sadb-kpi-ico sadb-ico-green"><i class="fas fa-check-double"></i></div>
+      <span style="font-size:.65rem;font-weight:700;background:rgba(5,150,105,.1);color:#059669;padding:.18rem .45rem;border-radius:999px">
+        {{ $total > 0 ? round(($stats['approved_loans'] ?? 0) / $total * 100) : 0 }}% du total
       </span>
     </div>
-    <div class="metric-card__accent" style="background:var(--c-green)"></div>
-  </div>
-
-  {{-- En révision --}}
-  <div class="metric-card">
-    <div class="metric-card__icon mi-blue"><i class="fas fa-search"></i></div>
-    <div class="metric-card__body">
-      <div class="metric-card__val">{{ $stats['review_loans'] }}</div>
-      <div class="metric-card__lbl">En cours d'analyse</div>
-      <span class="metric-card__trend" style="background:var(--c-blue-l);color:var(--c-blue)">
-        {{ $pct_rv }}% du total
-      </span>
-    </div>
-    <div class="metric-card__accent" style="background:var(--c-blue)"></div>
-  </div>
-
-  {{-- Refusées --}}
-  <div class="metric-card">
-    <div class="metric-card__icon mi-red"><i class="fas fa-times-circle"></i></div>
-    <div class="metric-card__body">
-      <div class="metric-card__val">{{ $stats['rejected_loans'] }}</div>
-      <div class="metric-card__lbl">Demandes refusées</div>
-      <span class="metric-card__trend" style="background:var(--c-red-l);color:var(--c-red)">
-        {{ $pct_r }}% du total
-      </span>
-    </div>
-    <div class="metric-card__accent" style="background:var(--c-red)"></div>
+    <div class="sadb-kpi-val">{{ $stats['approved_loans'] ?? 0 }}</div>
+    <div class="sadb-kpi-lbl">Approuvés / Finalisés</div>
+    <div class="sadb-kpi-bar" style="background:#059669"></div>
   </div>
 
 </div>
 
-{{-- ── ROW 2 : Répartition + Utilisateurs récents ────────────────── --}}
-<div class="row g-4 mb-4">
+{{-- ── MIDDLE ROW ── --}}
+<div class="sadb-mid">
 
-  {{-- Répartition des statuts --}}
-  <div class="col-lg-5">
-    <div class="card-pro h-100">
-      <div class="card-pro-hdr">
-        <div class="card-pro-title">
-          <span class="icon-dot"></span>Répartition des demandes
-        </div>
-        <span class="badge-status bs-gray">{{ $stats['total_loans'] }} total</span>
+  {{-- Répartition statuts --}}
+  <div class="sadb-card">
+    <div class="sadb-card-hdr">
+      <div class="sadb-card-title">
+        <div class="sadb-card-title-dot" style="background:var(--c-navy)"></div>
+        Répartition des demandes
       </div>
-      <div class="card-pro-body">
-
-        @if($stats['total_loans'] === 0)
-        <div style="text-align:center;padding:2rem;color:var(--c-muted)">
-          <i class="fas fa-inbox" style="font-size:2rem;margin-bottom:.75rem;display:block;opacity:.3"></i>
-          Aucune demande enregistrée
-        </div>
-        @else
-
-        {{-- Donut ring SVG --}}
-        @php
-          $cx=60; $cy=60; $r=46; $circ=2*3.14159*$r;
-          $colors = ['#2563EB','#059669','#D97706','#DC2626'];
-          $vals   = [$stats['pending_loans'],$stats['approved_loans'],$stats['review_loans'],$stats['rejected_loans']];
-          $labels = ['En attente','Approuvées','En révision','Refusées'];
-          $offset = 0;
-          $segments = [];
-          foreach ($vals as $i => $v) {
-            $len = $total > 0 ? ($v / $total) * $circ : 0;
-            $segments[] = ['color'=>$colors[$i],'dash'=>$len,'offset'=>$circ-$offset,'val'=>$v,'label'=>$labels[$i],'pct'=>$total>0?round($v/$total*100):0];
-            $offset += $len;
-          }
-        @endphp
-
-        <div class="ring-wrap">
-          <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
-            <circle cx="{{ $cx }}" cy="{{ $cy }}" r="{{ $r }}" fill="none" stroke="#F3F4F6" stroke-width="14"/>
-            @foreach($segments as $seg)
-            @if($seg['val'] > 0)
-            <circle cx="{{ $cx }}" cy="{{ $cy }}" r="{{ $r }}" fill="none"
-              stroke="{{ $seg['color'] }}" stroke-width="14"
-              stroke-dasharray="{{ $seg['dash'] }} {{ $circ - $seg['dash'] }}"
-              stroke-dashoffset="{{ $seg['offset'] }}"
-              stroke-linecap="round"
-              transform="rotate(-90 {{ $cx }} {{ $cy }})"/>
-            @endif
-            @endforeach
-            <text x="{{ $cx }}" y="{{ $cy - 4 }}" text-anchor="middle" font-size="16" font-weight="800" fill="#0B1A2E">{{ $stats['total_loans'] }}</text>
-            <text x="{{ $cx }}" y="{{ $cy + 11 }}" text-anchor="middle" font-size="8" fill="#6B7280">dossiers</text>
-          </svg>
-          <div class="ring-legend">
-            @foreach($segments as $seg)
-            <div class="ring-legend-item">
-              <div class="ring-dot" style="background:{{ $seg['color'] }}"></div>
-              <span class="ring-lbl">{{ $seg['label'] }}</span>
-              <span class="ring-pct">{{ $seg['val'] }}</span>
-            </div>
-            @endforeach
-          </div>
-        </div>
-
-        <div style="margin-top:1.5rem" class="status-bar-wrap">
-          @foreach($segments as $seg)
-          <div class="status-bar-row">
-            <span class="status-bar-label">{{ $seg['label'] }}</span>
-            <div class="status-bar-track">
-              <div class="status-bar-fill" style="width:{{ $seg['pct'] }}%;background:{{ $seg['color'] }}"></div>
-            </div>
-            <span class="status-bar-count">{{ $seg['val'] }}</span>
+      <span style="font-size:.7rem;font-weight:700;color:var(--c-muted)">{{ $stats['total_loans'] }} total</span>
+    </div>
+    <div class="sadb-card-body">
+      @if($stats['total_loans'] === 0)
+      <div class="sadb-empty">
+        <i class="fas fa-inbox"></i>
+        <p>Aucune demande enregistrée</p>
+      </div>
+      @else
+      <div class="sadb-ring-wrap">
+        <svg width="110" height="110" viewBox="0 0 120 120" style="flex-shrink:0">
+          <circle cx="{{ $cx }}" cy="{{ $cy }}" r="{{ $r }}" fill="none" stroke="var(--c-bg)" stroke-width="14"/>
+          @foreach($svgSegs as $seg)
+          @if($seg['val'] > 0)
+          <circle cx="{{ $cx }}" cy="{{ $cy }}" r="{{ $r }}" fill="none"
+            stroke="{{ $seg['color'] }}" stroke-width="14"
+            stroke-dasharray="{{ $seg['dash'] }} {{ $circ - $seg['dash'] }}"
+            stroke-dashoffset="{{ $seg['dashoffset'] }}"
+            stroke-linecap="butt"
+            transform="rotate(-90 {{ $cx }} {{ $cy }})"/>
+          @endif
+          @endforeach
+          <text x="{{ $cx }}" y="{{ $cy - 3 }}" text-anchor="middle" font-size="15" font-weight="800" fill="#0B1A2E">{{ $stats['total_loans'] }}</text>
+          <text x="{{ $cx }}" y="{{ $cy + 12 }}" text-anchor="middle" font-size="7.5" fill="#9CA3AF">dossiers</text>
+        </svg>
+        <div class="sadb-ring-legend">
+          @foreach($svgSegs as $seg)
+          <div class="sadb-ring-item">
+            <div class="sadb-ring-dot" style="background:{{ $seg['color'] }}"></div>
+            <span class="sadb-ring-lbl">{{ $seg['lbl'] }}</span>
+            <span class="sadb-ring-val">{{ $seg['val'] }}</span>
           </div>
           @endforeach
         </div>
-
-        @endif
       </div>
+      <div class="sadb-sbars">
+        @foreach($svgSegs as $seg)
+        <div class="sadb-sbar-row">
+          <span class="sadb-sbar-lbl">{{ $seg['lbl'] }}</span>
+          <div class="sadb-sbar-track">
+            <div class="sadb-sbar-fill" style="width:{{ $seg['pct'] }}%;background:{{ $seg['color'] }}"></div>
+          </div>
+          <span class="sadb-sbar-cnt">{{ $seg['val'] }}</span>
+        </div>
+        @endforeach
+      </div>
+      @endif
     </div>
   </div>
 
   {{-- Derniers utilisateurs --}}
-  <div class="col-lg-7">
-    <div class="card-pro h-100">
-      <div class="card-pro-hdr">
-        <div class="card-pro-title">
-          <span class="icon-dot"></span>Derniers utilisateurs inscrits
-        </div>
-        <a href="{{ route('admin.users') }}" class="view-all">
-          Voir tout <i class="fas fa-arrow-right" style="font-size:.6rem"></i>
-        </a>
+  <div class="sadb-card">
+    <div class="sadb-card-hdr">
+      <div class="sadb-card-title">
+        <div class="sadb-card-title-dot" style="background:#7C3AED"></div>
+        Derniers inscrits
       </div>
-      <div class="card-pro-body" style="padding:.75rem 1.25rem">
-        @forelse($recentUsers as $u)
-        @php
-          $avatarColors = ['#2563EB','#059669','#D97706','#7C3AED','#DC2626','#0D9488','#C8A951','#0B1A2E'];
-          $avatarBg = $avatarColors[crc32($u->email) % count($avatarColors)];
-        @endphp
-        <div class="user-row">
-          <div class="user-avatar" style="background:{{ $avatarBg }}20;color:{{ $avatarBg }}">
-            {{ strtoupper(mb_substr($u->name, 0, 1)) }}
-          </div>
-          <div class="user-info">
-            <div class="user-name">{{ $u->name }}</div>
-            <div class="user-email">{{ $u->email }}</div>
-          </div>
-          @if($u->getRoleNames()->first())
-          @php
-            $rn = $u->getRoleNames()->first();
-            $rc = ['super-admin'=>'bs-dark','admin'=>'bs-amber','client'=>'bs-blue'][$rn] ?? 'bs-gray';
-          @endphp
-          <span class="badge-status {{ $rc }}">{{ ucfirst(str_replace('-',' ',$rn)) }}</span>
-          @else
-          <span class="badge-status bs-gray">—</span>
-          @endif
-          <span class="user-since">{{ $u->created_at->diffForHumans(null, true) }}</span>
+      <a href="{{ route('admin.users') }}" class="sadb-view-all">
+        Voir tout <i class="fas fa-arrow-right" style="font-size:.55rem"></i>
+      </a>
+    </div>
+    <div class="sadb-card-body" style="padding:.75rem 1.25rem">
+      @forelse($recentUsers as $u)
+      @php
+        $bg = $avatarPalette[crc32($u->email) % count($avatarPalette)];
+        $rn = $u->getRoleNames()->first();
+        $rc = ['super-admin' => ['lbl' => 'Super Admin', 'cls' => 'bs-dark'],
+               'admin'       => ['lbl' => 'Admin',       'cls' => 'bs-amber'],
+               'client'      => ['lbl' => 'Client',      'cls' => 'bs-blue']][$rn] ?? ['lbl' => '—', 'cls' => 'bs-gray'];
+      @endphp
+      <div class="sadb-user-row">
+        <div class="sadb-user-av" style="background:{{ $bg }}18;color:{{ $bg }}">
+          {{ strtoupper(mb_substr($u->name, 0, 1)) }}
         </div>
-        @empty
-        <div style="text-align:center;padding:2rem;color:var(--c-muted);font-size:.8rem">
-          Aucun utilisateur
+        <div class="sadb-user-info">
+          <div class="sadb-user-name">{{ $u->name }}</div>
+          <div class="sadb-user-email">{{ $u->email }}</div>
         </div>
-        @endforelse
+        <span class="badge-status {{ $rc['cls'] }}" style="margin-right:.375rem">{{ $rc['lbl'] }}</span>
+        <span class="sadb-user-since">{{ $u->created_at->diffForHumans(null, true) }}</span>
       </div>
+      @empty
+      <div class="sadb-empty">
+        <i class="fas fa-users"></i>
+        <p>Aucun utilisateur</p>
+      </div>
+      @endforelse
     </div>
   </div>
 
 </div>
 
-{{-- ── ROW 3 : Dernières demandes ──────────────────────────────────── --}}
-<div class="card-pro">
-  <div class="card-pro-hdr">
-    <div class="card-pro-title">
-      <span class="icon-dot"></span>Dernières demandes de prêt
+{{-- ── DERNIÈRES DEMANDES ── --}}
+<div class="sadb-table-card">
+  <div class="sadb-table-hdr">
+    <div class="sadb-card-title">
+      <div class="sadb-card-title-dot" style="background:var(--c-gold)"></div>
+      Dernières demandes de prêt
     </div>
-    <a href="{{ route('super-admin.loans.index') }}" class="view-all">
-      Voir toutes les demandes <i class="fas fa-arrow-right" style="font-size:.6rem"></i>
+    <a href="{{ route('admin.loans.index') }}" class="sadb-view-all">
+      Voir toutes <i class="fas fa-arrow-right" style="font-size:.55rem"></i>
     </a>
   </div>
   <div class="table-responsive-pro">
     <table class="pro-table">
       <thead>
         <tr>
-          <th>#</th>
+          <th>Référence</th>
           <th>Client</th>
+          <th>Admin</th>
           <th>Montant</th>
-          <th>Objet</th>
           <th>Statut</th>
           <th>Date</th>
           <th></th>
@@ -435,37 +470,41 @@
       <tbody>
         @forelse($recentLoans as $loan)
         @php
-          $st = $loan->status ?? 'pending';
-          $stMap = ['pending'=>['lbl'=>'En attente','cls'=>'bs-amber'],'approved'=>['lbl'=>'Approuvé','cls'=>'bs-green'],'rejected'=>['lbl'=>'Refusé','cls'=>'bs-red'],'review'=>['lbl'=>'En révision','cls'=>'bs-blue'],'signed'=>['lbl'=>'Signé','cls'=>'bs-emerald']];
-          $stInfo = $stMap[$st] ?? ['lbl'=>ucfirst($st),'cls'=>'bs-gray'];
+          $stInfo     = $stMap[$loan->status] ?? ['lbl' => ucfirst($loan->status ?? '—'), 'cls' => 'bs-gray'];
+          $clientName = $loan->client?->name  ?? $loan->name  ?? '—';
+          $adminName  = $loan->admin?->name   ?? '—';
         @endphp
         <tr>
-          <td data-label="#" class="cell-mono">#{{ $loan->id }}</td>
+          <td data-label="Référence" class="cell-mono" style="font-size:.75rem">
+            {{ $loan->reference ?? '#'.$loan->id }}
+          </td>
           <td data-label="Client">
-            <div class="cell-name">{{ $loan->name }}</div>
-            <div class="cell-sub">{{ $loan->email }}</div>
+            <div class="cell-name">{{ $clientName }}</div>
+            <div class="cell-sub">{{ $loan->client?->email ?? $loan->email ?? '' }}</div>
           </td>
-          <td data-label="Montant" class="cell-amount" style="color:var(--c-navy)">
-            {{ number_format($loan->amount ?? 0, 0, ',', ' ') }}&nbsp;€
+          <td data-label="Admin" style="font-size:.77rem;color:var(--c-muted)">{{ $adminName }}</td>
+          <td data-label="Montant" style="font-weight:800;color:var(--c-navy);white-space:nowrap">
+            {{ number_format($loan->amount ?? 0, 0, ',', ' ') }}&nbsp;{{ $loan->currency ?? '€' }}
           </td>
-          <td data-label="Objet" style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.78rem;color:var(--c-muted)">
-            {{ Str::limit($loan->objet ?? '—', 28) }}
+          <td data-label="Statut">
+            <span class="badge-status {{ $stInfo['cls'] }}">{{ $stInfo['lbl'] }}</span>
           </td>
-          <td data-label="Statut"><span class="badge-status {{ $stInfo['cls'] }}">{{ $stInfo['lbl'] }}</span></td>
-          <td data-label="Date" style="font-size:.75rem;color:var(--c-muted);white-space:nowrap">
+          <td data-label="Date" style="font-size:.72rem;color:var(--c-muted);white-space:nowrap">
             {{ $loan->created_at->format('d/m/Y') }}
           </td>
-          <td data-label="">
-            <a href="{{ route('super-admin.loans.show', $loan) }}" class="btn-icon btn-icon-primary" title="Voir le dossier">
+          <td>
+            <a href="{{ route('admin.loans.show', $loan) }}" class="btn-icon btn-icon-primary" title="Voir">
               <i class="fas fa-eye"></i>
             </a>
           </td>
         </tr>
         @empty
         <tr>
-          <td colspan="7" style="text-align:center;padding:2.5rem;color:var(--c-muted)">
-            <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:.5rem;opacity:.3"></i>
-            Aucune demande enregistrée
+          <td colspan="7">
+            <div class="sadb-empty">
+              <i class="fas fa-inbox"></i>
+              <p>Aucune demande enregistrée</p>
+            </div>
           </td>
         </tr>
         @endforelse

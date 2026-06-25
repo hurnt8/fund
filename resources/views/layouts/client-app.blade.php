@@ -127,6 +127,7 @@
 {{-- ══════════════════════════════════════════════════════════════════
      BOTTOM NAVIGATION — hors du shell pour eviter le clip iOS Safari
      ══════════════════════════════════════════════════════════════════ --}}
+@if (!View::hasSection('no_bottom_nav'))
 <nav class="ca-nav" role="navigation" aria-label="{{ __('app.nav_label', [], app()->getLocale()) ?? 'Navigation' }}">
 
   {{-- Accueil --}}
@@ -172,6 +173,7 @@
   </a>
 
 </nav>
+@endif
 
 {{-- ══ BANNIERE PWA ══ --}}
 <div class="ca-install-banner" id="ca-install-banner" role="complementary">

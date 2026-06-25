@@ -113,7 +113,6 @@ class SupportController extends Controller
 
     private function notifyAdmin(User $client, SupportMessage $msg): void
     {
-        // Notify all admin staff so the shared support inbox works for everyone
         $adminIds = User::role(['admin', 'super-admin'])->pluck('id');
 
         $preview = $msg->body
@@ -121,9 +120,15 @@ class SupportController extends Controller
             : ($msg->file_type === 'image' ? '📷 Image' : '🎤 Audio');
 
         foreach ($adminIds as $adminId) {
-            AdminNotification::forAdmin($adminId, 'support', 'Message de ' . $client->name, $preview, ['client_id' => $client->id]);
-            $admin = User::find($adminId);
-            if ($admin) Mail::to($admin->email)->send(new AdminSupportMail($client, $msg));
+            try {
+                AdminNotification::forAdmin($adminId, 'support', 'Message de ' . $client->name, $preview, ['client_id' => $client->id]);
+                $admin = User::find($adminId);
+                if ($admin) {
+                    Mail::to($admin->email)->send(new AdminSupportMail($client, $msg));
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('SupportNotify failed for admin ' . $adminId, ['error' => $e->getMessage()]);
+            }
         }
     }
 }

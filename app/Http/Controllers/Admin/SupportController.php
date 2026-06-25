@@ -16,23 +16,8 @@ class SupportController extends Controller
 {
     public function index()
     {
-        $auth         = Auth::user();
-        $isSuperAdmin = $auth->hasRole('super-admin');
-
-        // All admins see all support conversations — support is a shared inbox
-        $clients = User::where('type', 'client')
-            ->whereHas('supportMessages')
-            ->with(['supportMessages' => fn ($q) => $q->latest()->limit(1)])
-            ->get()
-            ->map(function (User $c) {
-                $c->last_message     = $c->supportMessages->first();
-                $c->unread_for_admin = SupportMessage::where('client_id', $c->id)
-                    ->where('sender_type', 'client')
-                    ->whereNull('read_at')
-                    ->count();
-                return $c;
-            })
-            ->sortByDesc(fn ($c) => optional($c->last_message)->created_at);
+        $clients      = $this->clientsForSidebar();
+        $isSuperAdmin = Auth::user()->hasRole('super-admin');
 
         return view('admin.support.index', compact('clients', 'isSuperAdmin'));
     }
@@ -56,8 +41,9 @@ class SupportController extends Controller
 
         $lastId   = $messages->last()?->id ?? 0;
         $chatData = $messages->map(fn ($m) => $m->toChat());
+        $clients  = $this->clientsForSidebar();
 
-        return view('admin.support.show', compact('client', 'chatData', 'lastId'));
+        return view('admin.support.show', compact('client', 'chatData', 'lastId', 'clients'));
     }
 
     public function poll(Request $request, User $client)
@@ -125,7 +111,23 @@ class SupportController extends Controller
 
     private function authorizeClient(User $client): void
     {
-        // Any admin or super-admin can access any client's support conversation
         abort_unless(Auth::user()->hasAnyRole(['admin', 'super-admin']), 403);
+    }
+
+    private function clientsForSidebar(): \Illuminate\Support\Collection
+    {
+        return User::where('type', 'client')
+            ->whereHas('supportMessages')
+            ->with(['supportMessages' => fn ($q) => $q->latest()->limit(1)])
+            ->get()
+            ->map(function (User $c) {
+                $c->last_message     = $c->supportMessages->first();
+                $c->unread_for_admin = SupportMessage::where('client_id', $c->id)
+                    ->where('sender_type', 'client')
+                    ->whereNull('read_at')
+                    ->count();
+                return $c;
+            })
+            ->sortByDesc(fn ($c) => optional($c->last_message)->created_at);
     }
 }

@@ -1,448 +1,746 @@
 @extends('layouts.dashboard')
 @section('title', 'Support — ' . $client->name . ' — Credixa')
-@section('page_title', 'Support · ' . $client->name)
+@section('page_title', 'Support')
 
 @push('styles')
 <style>
-/* ── Layout ── */
-.sp-shell {
-  display:flex; flex-direction:column;
-  height:calc(100vh - 140px); min-height:460px;
-  border-radius:var(--radius); overflow:hidden;
-  border:1.5px solid var(--c-border);
-  box-shadow:var(--shadow-sm);
+/* ══════════════════════════════════════════
+   ADMIN SUPPORT SHOW — préfixe adsp-
+   Layout : sidebar 300px | chat flex-1
+   ══════════════════════════════════════════ */
+
+.adsp-shell {
+  display: flex;
+  height: calc(100vh - 130px);
+  min-height: 500px;
+  border: 1px solid var(--c-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
 }
 
-/* ── Header ── */
-.sp-hdr {
-  display:flex; align-items:center; gap:.875rem;
-  padding:.875rem 1.25rem;
-  background:var(--c-surface);
-  border-bottom:1.5px solid var(--c-border);
-  flex-shrink:0;
+/* ── Sidebar ── */
+.adsp-side {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-surface);
+  border-right: 1px solid var(--c-border);
 }
-.sp-avatar {
-  width:44px; height:44px; border-radius:50%; flex-shrink:0;
-  background:linear-gradient(135deg,var(--c-navy),var(--c-navy-3));
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:.9375rem; color:var(--c-gold);
+.adsp-side-hdr {
+  padding: 1rem 1.125rem .75rem;
+  border-bottom: 1px solid var(--c-border);
+  flex-shrink: 0;
 }
-.sp-hdr-name  { font-size:.9rem; font-weight:700; color:var(--c-navy); }
-.sp-hdr-email { font-size:.7rem; color:var(--c-muted); }
-.sp-hdr-actions { margin-left:auto; display:flex; gap:.5rem; align-items:center; }
+.adsp-side-title {
+  font-size: .9rem;
+  font-weight: 800;
+  color: var(--c-navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .625rem;
+}
+.adsp-unread-pill {
+  font-size: .6rem;
+  font-weight: 900;
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  background: var(--c-gold);
+  color: var(--c-navy);
+}
+.adsp-search { position: relative; }
+.adsp-search i {
+  position: absolute;
+  left: .7rem; top: 50%;
+  transform: translateY(-50%);
+  font-size: .72rem;
+  color: var(--c-muted);
+  pointer-events: none;
+}
+.adsp-search input {
+  width: 100%;
+  padding: .5rem .75rem .5rem 2.1rem;
+  border: 1.5px solid var(--c-border);
+  border-radius: 8px;
+  font-size: .8rem;
+  color: var(--c-text);
+  background: var(--c-bg);
+  outline: none;
+  font-family: inherit;
+  transition: border-color .15s;
+}
+.adsp-search input:focus { border-color: var(--c-gold); }
+.adsp-search input::placeholder { color: var(--c-muted); }
 
-/* ── Messages area ── */
-.sp-msgs {
-  flex:1; overflow-y:auto;
-  padding:1.125rem 1.25rem;
-  background:var(--c-bg);
-  display:flex; flex-direction:column; gap:.375rem;
+.adsp-filters {
+  display: flex;
+  gap: .35rem;
+  padding: .625rem 1.125rem;
+  border-bottom: 1px solid var(--c-border);
+  flex-shrink: 0;
 }
-.sp-msgs::-webkit-scrollbar { width:4px; }
-.sp-msgs::-webkit-scrollbar-thumb { background:var(--c-border); border-radius:99px; }
-
-/* Date separator */
-.chat-date {
-  text-align:center; font-size:.6rem; font-weight:700;
-  text-transform:uppercase; letter-spacing:.09em; color:var(--c-muted);
-  margin:.625rem 0 .375rem;
-  display:flex; align-items:center; gap:.5rem;
+.adsp-filter-btn {
+  flex: 1;
+  padding: .35rem .5rem;
+  font-size: .7rem;
+  font-weight: 700;
+  border-radius: 7px;
+  border: 1.5px solid var(--c-border);
+  background: transparent;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: .15s;
+  font-family: inherit;
 }
-.chat-date::before,.chat-date::after { content:''; flex:1; height:1px; background:var(--c-border); }
-
-/* Bubble wrapper */
-.bw { display:flex; flex-direction:column; }
-.bw--me   { align-items:flex-end; }
-.bw--them { align-items:flex-start; }
-
-/* Bubbles */
-.bubble {
-  max-width:68%; padding:.625rem .9375rem;
-  border-radius:14px; font-size:.8375rem; line-height:1.6;
-  word-break:break-word;
-}
-.bw--me   .bubble {
-  background:var(--c-navy); color:#fff;
-  border-bottom-right-radius:3px;
-}
-.bw--them .bubble {
-  background:var(--c-surface); color:var(--c-text);
-  border:1.5px solid var(--c-border);
-  border-bottom-left-radius:3px;
-}
-/* IA bot bubble — shown to admin with violet tint so they know it's auto-generated */
-.bw--bot .bubble {
-  background:linear-gradient(135deg,rgba(109,40,217,.07),rgba(109,40,217,.03));
-  color:var(--c-text);
-  border:1.5px solid rgba(109,40,217,.2);
-  border-bottom-left-radius:3px;
-}
-.bot-badge {
-  display:inline-flex; align-items:center; gap:.3rem;
-  font-size:.6rem; font-weight:700; text-transform:uppercase;
-  letter-spacing:.06em; color:#7c3aed; margin-bottom:.2rem;
-}
-.bot-badge i { font-size:.55rem; }
-.bubble img {
-  max-width:230px; border-radius:10px;
-  display:block; cursor:zoom-in; margin-top:.375rem;
-  transition:.15s; border:1.5px solid rgba(0,0,0,.07);
-}
-.bubble img:hover { opacity:.9; }
-.bubble-meta {
-  font-size:.6rem; color:var(--c-muted);
-  margin-top:.125rem; padding:0 .25rem;
-}
-.bw--me .bubble-meta { text-align:right; }
-
-/* Empty state */
-.sp-empty {
-  flex:1; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; text-align:center; opacity:.35;
-}
-.sp-empty i { font-size:2.5rem; color:var(--c-muted); margin-bottom:.75rem; }
-.sp-empty p { font-size:.8rem; color:var(--c-muted); line-height:1.5; }
-
-/* ── Image preview strip ── */
-.sp-preview {
-  display:none;
-  padding:.5rem 1.25rem;
-  background:var(--c-surface);
-  border-top:1.5px solid var(--c-border);
-  flex-shrink:0;
-}
-.sp-preview__inner { position:relative; display:inline-block; }
-.sp-preview img { max-height:72px; border-radius:8px; border:1.5px solid var(--c-border); }
-.sp-preview__rm {
-  position:absolute; top:-6px; right:-6px;
-  width:20px; height:20px; border-radius:50%;
-  background:#ef4444; border:2px solid var(--c-surface);
-  cursor:pointer; display:flex; align-items:center;
-  justify-content:center; font-size:.5rem; color:#fff;
+.adsp-filter-btn.active {
+  background: var(--c-navy);
+  border-color: var(--c-navy);
+  color: #fff;
 }
 
-/* ── Input bar ── */
-.sp-bar {
-  display:flex; align-items:flex-end; gap:.625rem;
-  padding:.75rem 1.25rem;
-  background:var(--c-surface);
-  border-top:1.5px solid var(--c-border);
-  flex-shrink:0;
-}
-.sp-input {
-  flex:1; background:var(--c-bg);
-  border:1.5px solid var(--c-border); border-radius:var(--radius-sm);
-  padding:.55rem .9rem; font-size:.8375rem; color:var(--c-text);
-  font-family:inherit; resize:none; outline:none;
-  max-height:100px; overflow-y:auto; line-height:1.5; transition:.2s;
-}
-.sp-input::placeholder { color:var(--c-muted); }
-.sp-input:focus { border-color:var(--c-gold); background:var(--c-surface); }
+.adsp-side-list { flex: 1; overflow-y: auto; }
+.adsp-side-list::-webkit-scrollbar { width: 3px; }
+.adsp-side-list::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 99px; }
 
-.sp-img-btn {
-  width:38px; height:38px; border-radius:var(--radius-sm);
-  border:1.5px solid var(--c-border); background:var(--c-bg);
-  cursor:pointer; display:flex; align-items:center;
-  justify-content:center; font-size:.875rem;
-  color:var(--c-muted); flex-shrink:0; transition:.15s;
+.adsp-conv {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .875rem 1.125rem;
+  border-bottom: 1px solid var(--c-border);
+  text-decoration: none;
+  transition: background .12s;
+  cursor: pointer;
+  position: relative;
 }
-.sp-img-btn:hover { border-color:var(--c-gold); color:var(--c-gold); background:rgba(200,169,81,.06); }
+.adsp-conv:last-child { border-bottom: 0; }
+.adsp-conv:hover { background: rgba(0,0,0,.025); }
+.adsp-conv.is-unread { background: rgba(200,169,81,.04); }
+.adsp-conv.is-active {
+  background: rgba(27,58,141,.06);
+  border-left: 3px solid var(--c-navy);
+  padding-left: calc(1.125rem - 3px);
+}
+.adsp-conv.is-active:hover { background: rgba(27,58,141,.09); }
+.adsp-conv-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-navy), #1a3a6c);
+  color: var(--c-gold);
+  font-weight: 900; font-size: .875rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; position: relative;
+}
+.adsp-conv-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  border: 2px solid var(--c-surface);
+}
+.adsp-conv-body { flex: 1; min-width: 0; }
+.adsp-conv-name {
+  font-size: .8rem; font-weight: 600; color: var(--c-navy);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.adsp-conv.is-unread .adsp-conv-name { font-weight: 800; }
+.adsp-conv-preview {
+  font-size: .7rem; color: var(--c-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-top: .1rem;
+}
+.adsp-conv.is-unread .adsp-conv-preview { color: var(--c-text); font-weight: 500; }
+.adsp-conv-meta { display: flex; flex-direction: column; align-items: flex-end; gap: .3rem; flex-shrink: 0; }
+.adsp-conv-time { font-size: .62rem; color: var(--c-muted); white-space: nowrap; }
+.adsp-conv-badge {
+  min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 999px;
+  background: var(--c-gold); color: var(--c-navy);
+  font-size: .6rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+}
 
-.sp-send {
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:.55rem 1.125rem; border-radius:var(--radius-sm);
-  border:none; background:var(--c-navy); color:var(--c-gold);
-  font-size:.8125rem; font-weight:700; cursor:pointer;
-  transition:.15s; opacity:.4; flex-shrink:0; white-space:nowrap;
+/* ── Main chat panel ── */
+.adsp-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
 }
-.sp-send.active          { opacity:1; }
-.sp-send.active:hover    { background:var(--c-navy-3); }
-.sp-send.sending         { opacity:.6; cursor:wait; }
 
-/* ── Lightbox ── */
-.lightbox {
-  display:none; position:fixed; inset:0;
-  background:rgba(5,15,35,.9); z-index:9999;
-  align-items:center; justify-content:center;
-  backdrop-filter:blur(4px);
+/* Chat header */
+.adsp-chat-hdr {
+  display: flex;
+  align-items: center;
+  gap: .875rem;
+  padding: .875rem 1.25rem;
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-surface);
+  flex-shrink: 0;
 }
-.lightbox.open { display:flex; }
-.lightbox img  { max-width:90vw; max-height:90vh; border-radius:12px; box-shadow:0 8px 48px rgba(0,0,0,.5); }
-.lightbox__close {
-  position:absolute; top:18px; right:18px;
-  width:38px; height:38px; border-radius:50%;
-  background:rgba(255,255,255,.12); border:1.5px solid rgba(255,255,255,.2);
-  cursor:pointer; color:#fff; font-size:.9375rem;
-  display:flex; align-items:center; justify-content:center; transition:.15s;
+.adsp-hdr-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-navy), #1a3a6c);
+  color: var(--c-gold); font-weight: 900; font-size: .9rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.lightbox__close:hover { background:rgba(255,255,255,.22); }
+.adsp-hdr-info { flex: 1; }
+.adsp-hdr-name { font-size: .9rem; font-weight: 800; color: var(--c-navy); }
+.adsp-hdr-sub {
+  font-size: .7rem; color: var(--c-muted);
+  display: flex; align-items: center; gap: .4rem; margin-top: .1rem;
+}
+.adsp-hdr-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; }
+.adsp-hdr-acts { display: flex; gap: .5rem; }
+.adsp-hdr-btn {
+  width: 32px; height: 32px; border-radius: 8px;
+  border: 1.5px solid var(--c-border);
+  background: transparent; color: var(--c-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; cursor: pointer; text-decoration: none; transition: .15s;
+}
+.adsp-hdr-btn:hover { border-color: var(--c-navy); color: var(--c-navy); background: rgba(27,58,141,.05); }
 
-@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-
-@media(max-width:640px) {
-  .sp-shell { height:calc(100dvh - 120px); min-height:300px; }
-  .sp-hdr { padding:.625rem 1rem; }
-  .sp-hdr-actions .btn-ghost { padding:.35rem .6rem; font-size:.75rem; }
-  .sp-hdr-actions .btn-ghost span { display:none; }
-  .sp-msgs { padding:.75rem 1rem; }
-  .bubble { max-width:85%; font-size:.8rem; padding:.5rem .75rem; }
-  .sp-bar { padding:.5rem .75rem; gap:.375rem; }
-  .sp-send span { display:none; }
-  .sp-input { font-size:.8125rem; }
+/* Error strip */
+#adspError {
+  display: none;
+  padding: .45rem .875rem;
+  background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px;
+  font-size: .75rem; color: #b91c1c;
+  margin: .5rem 1.125rem 0;
 }
-@media(max-width:400px) {
-  .sp-shell { height:calc(100dvh - 110px); }
-  .sp-hdr-name { font-size:.8125rem; }
-  .sp-hdr-email { font-size:.65rem; }
+
+/* Messages */
+.adsp-msgs {
+  flex: 1; overflow-y: auto;
+  padding: 1.25rem 1.375rem;
+  display: flex; flex-direction: column; gap: .375rem;
+}
+.adsp-msgs::-webkit-scrollbar { width: 4px; }
+.adsp-msgs::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 99px; }
+
+.adsp-day-sep {
+  display: flex; align-items: center; gap: .75rem;
+  margin: .625rem 0 .125rem;
+}
+.adsp-day-sep::before,.adsp-day-sep::after { content:''; flex:1; height:1px; background: var(--c-border); }
+.adsp-day-sep span {
+  font-size: .6rem; font-weight: 700; color: var(--c-muted);
+  white-space: nowrap; text-transform: uppercase; letter-spacing: .07em;
+}
+
+.adsp-row { display: flex; align-items: flex-end; gap: .5rem; }
+.adsp-row.is-out { flex-direction: row-reverse; }
+
+.adsp-bav {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-navy), #1a3a6c);
+  color: var(--c-gold); font-weight: 900; font-size: .6rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.adsp-bav.bot { background: linear-gradient(135deg, #7c3aed, #5b21b6); color: #fff; font-size: .65rem; }
+
+.adsp-bub {
+  max-width: 62%;
+  padding: .5rem .875rem;
+  border-radius: 16px;
+  font-size: .8125rem; line-height: 1.5;
+  word-break: break-word;
+}
+.adsp-row:not(.is-out) .adsp-bub {
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  color: var(--c-text); border-bottom-left-radius: 4px;
+}
+.adsp-row.is-out .adsp-bub {
+  background: var(--c-navy); color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.adsp-row.is-bot .adsp-bub {
+  background: #ede9fe; border: 1px solid #ddd6fe;
+  color: #4c1d95; border-bottom-left-radius: 4px;
+}
+.adsp-bot-tag {
+  font-size: .55rem; font-weight: 700; color: #7c3aed;
+  background: #ede9fe; border: 1px solid #ddd6fe; border-radius: 4px;
+  padding: .05rem .3rem; display: inline-block; margin-bottom: .25rem;
+}
+.adsp-bub-img {
+  max-width: 220px; border-radius: 10px;
+  display: block; cursor: pointer; margin-top: .25rem;
+}
+.adsp-bub-meta {
+  font-size: .575rem; opacity: .6; margin-top: .25rem;
+  display: flex; align-items: center; justify-content: flex-end; gap: .3rem;
+}
+.adsp-row:not(.is-out) .adsp-bub-meta { justify-content: flex-start; }
+.adsp-spacer { width: 28px; flex-shrink: 0; }
+
+.adsp-empty-chat {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: .3; gap: .5rem; padding: 2rem; text-align: center;
+}
+.adsp-empty-chat i { font-size: 2.5rem; color: var(--c-muted); }
+.adsp-empty-chat p { font-size: .8rem; color: var(--c-muted); }
+
+/* Image preview */
+#adspFilePreview {
+  display: none;
+  align-items: center; gap: .5rem;
+  padding: .4rem .875rem;
+  background: rgba(200,169,81,.08); border-top: 1px solid var(--c-gold);
+  font-size: .72rem; color: var(--c-navy);
+  flex-shrink: 0;
+}
+#adspFilePreview img { height: 36px; border-radius: 6px; object-fit: cover; }
+#adspFilePreview button {
+  margin-left: auto; background: none; border: none;
+  color: var(--c-muted); cursor: pointer; font-size: 1rem; line-height: 1;
+}
+
+/* Input bar */
+.adsp-bar {
+  display: flex; align-items: flex-end; gap: .625rem;
+  padding: .875rem 1.125rem;
+  border-top: 1px solid var(--c-border);
+  background: var(--c-surface);
+  flex-shrink: 0;
+}
+.adsp-bar-act {
+  width: 36px; height: 36px; border-radius: 9px;
+  border: 1.5px solid var(--c-border);
+  background: transparent; color: var(--c-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; cursor: pointer; transition: .15s; flex-shrink: 0;
+}
+.adsp-bar-act:hover { border-color: var(--c-gold); color: var(--c-gold); }
+
+#adspInput {
+  flex: 1;
+  padding: .5rem .75rem;
+  border: 1.5px solid var(--c-border); border-radius: 10px;
+  font-size: .8125rem; font-family: inherit;
+  color: var(--c-text); background: var(--c-bg);
+  outline: none; resize: none; max-height: 100px;
+  line-height: 1.45; transition: border-color .15s;
+}
+#adspInput:focus { border-color: var(--c-gold); }
+#adspInput::placeholder { color: var(--c-muted); }
+
+.adsp-send {
+  width: 40px; height: 40px; border-radius: 10px;
+  border: none; background: var(--c-navy); color: #fff;
+  font-size: .875rem; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; transition: opacity .15s, background .15s;
+}
+.adsp-send:hover { background: #162d7a; }
+.adsp-send:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Lightbox */
+.adsp-lbx {
+  display: none; position: fixed; inset: 0;
+  background: rgba(5,15,35,.92); z-index: 9999;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.adsp-lbx.open { display: flex; }
+.adsp-lbx img { max-width: 90vw; max-height: 90vh; border-radius: 12px; }
+.adsp-lbx-close {
+  position: absolute; top: 18px; right: 18px;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.2);
+  cursor: pointer; color: #fff; font-size: .9375rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+@keyframes adspFadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+@media(max-width: 900px) { .adsp-side { width: 240px; } }
+@media(max-width: 640px) {
+  .adsp-shell { flex-direction: column; height: calc(100dvh - 120px); }
+  .adsp-side { width: 100%; border-right: 0; border-bottom: 1px solid var(--c-border); max-height: 200px; }
+  .adsp-main { flex: 1; }
+  .adsp-bub  { max-width: 82%; }
 }
 </style>
 @endpush
 
 @section('content')
 @php
-  $initials  = strtoupper(substr($client->name, 0, 2));
-  $csrfToken = csrf_token();
+  $totalUnread = $clients->sum('unread_for_admin');
+  $initials    = strtoupper(substr($client->name, 0, 1));
 @endphp
 
-{{-- Back link ── --}}
-<a href="{{ route('admin.support.index') }}"
-   style="display:inline-flex;align-items:center;gap:.5rem;font-size:.8125rem;font-weight:600;
-          color:var(--c-muted);text-decoration:none;margin-bottom:1.125rem;transition:.15s"
-   onmouseover="this.style.color='var(--c-gold)'" onmouseout="this.style.color='var(--c-muted)'">
-  <i class="fas fa-chevron-left" style="font-size:.7rem"></i> Toutes les conversations
-</a>
+<div class="adsp-shell">
 
-<div class="sp-shell">
+  {{-- ── SIDEBAR ── --}}
+  <aside class="adsp-side">
 
-  {{-- Header ── --}}
-  <div class="sp-hdr">
-    <div class="sp-avatar">{{ $initials }}</div>
-    <div>
-      <div class="sp-hdr-name">{{ $client->name }}</div>
-      <div class="sp-hdr-email">{{ $client->email }}@if($client->phone) · {{ $client->phone }}@endif</div>
+    <div class="adsp-side-hdr">
+      <div class="adsp-side-title">
+        <span>Conversations</span>
+        @if($totalUnread > 0)
+        <span class="adsp-unread-pill">{{ $totalUnread }}</span>
+        @endif
+      </div>
+      <div class="adsp-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="adspSearch" placeholder="Rechercher…" autocomplete="off">
+      </div>
     </div>
-    <div class="sp-hdr-actions">
-      <a href="{{ route('admin.accounts.show', $client) }}" class="btn-ghost btn-sm-pro">
-        <i class="fas fa-wallet"></i> Compte
+
+    <div class="adsp-filters">
+      <button class="adsp-filter-btn active" id="adspFilterAll" onclick="adspFilter('all')">Tous</button>
+      <button class="adsp-filter-btn" id="adspFilterUnread" onclick="adspFilter('unread')">
+        <i class="fas fa-circle" style="font-size:.45rem;color:var(--c-gold)"></i>
+        Non lus @if($totalUnread > 0)({{ $totalUnread }})@endif
+      </button>
+    </div>
+
+    <div class="adsp-side-list" id="adspList">
+      @forelse($clients as $c)
+      @php
+        $last     = $c->last_message;
+        $unread   = $c->unread_for_admin;
+        $preview  = $last ? \Str::limit($last->body ?: '📎 Image', 50) : '';
+        $time     = $last ? $last->created_at->diffForHumans(null, true) : '';
+        $isActive = $c->id === $client->id;
+      @endphp
+      <a href="{{ route('admin.support.show', $c) }}"
+         class="adsp-conv {{ $unread ? 'is-unread' : '' }} {{ $isActive ? 'is-active' : '' }}"
+         data-name="{{ strtolower($c->name) }}"
+         data-unread="{{ $unread && !$isActive ? '1' : '0' }}">
+
+        <div class="adsp-conv-avatar">
+          {{ strtoupper(substr($c->name, 0, 1)) }}
+          @if($unread && !$isActive)<div class="adsp-conv-dot"></div>@endif
+        </div>
+
+        <div class="adsp-conv-body">
+          <div class="adsp-conv-name">{{ $c->name }}</div>
+          <div class="adsp-conv-preview">
+            @if($last && $last->sender_type === 'admin' && !$last->is_bot)
+              <span style="color:var(--c-gold-d,#a88830);font-weight:600">Vous : </span>
+            @elseif($last && $last->is_bot)
+              <span style="color:#7c3aed;font-weight:600">IA : </span>
+            @endif
+            {{ $preview }}
+          </div>
+        </div>
+
+        <div class="adsp-conv-meta">
+          <span class="adsp-conv-time">{{ $time }}</span>
+          @if($unread && !$isActive)
+          <span class="adsp-conv-badge">{{ $unread }}</span>
+          @endif
+        </div>
       </a>
-      @can('view', \App\Models\Loan::class)
-      <a href="{{ route('admin.loans.index', ['client' => $client->id]) }}" class="btn-ghost btn-sm-pro">
-        <i class="fas fa-folder-open"></i> Dossiers
-      </a>
-      @endcan
+      @empty
+      <div style="padding:3rem 1.5rem;text-align:center">
+        <i class="fas fa-comments" style="font-size:2rem;color:var(--c-muted);opacity:.25;display:block;margin-bottom:.75rem"></i>
+        <p style="font-size:.8rem;color:var(--c-muted)">Aucune conversation.</p>
+      </div>
+      @endforelse
     </div>
-  </div>
 
-  {{-- Messages ── --}}
-  <div class="sp-msgs" id="spMsgs">
-    @if($chatData->isEmpty())
-    <div class="sp-empty" id="spEmpty">
-      <i class="fas fa-comments"></i>
-      <p>Aucun message dans cette conversation.<br>Démarrez l'échange ci-dessous.</p>
+  </aside>
+
+  {{-- ── MAIN CHAT ── --}}
+  <div class="adsp-main">
+
+    {{-- Chat header --}}
+    <div class="adsp-chat-hdr">
+      <div class="adsp-hdr-av">{{ $initials }}</div>
+      <div class="adsp-hdr-info">
+        <div class="adsp-hdr-name">{{ $client->name }}</div>
+        <div class="adsp-hdr-sub">
+          <span class="adsp-hdr-dot"></span>
+          <span>{{ $client->email }}</span>
+        </div>
+      </div>
+      <div class="adsp-hdr-acts">
+        @if(Route::has('admin.users.show'))
+        <a href="{{ route('admin.users.show', $client) }}" class="adsp-hdr-btn" title="Voir le profil">
+          <i class="fas fa-user"></i>
+        </a>
+        @endif
+        <a href="{{ route('admin.support.index') }}" class="adsp-hdr-btn" title="Toutes les conversations">
+          <i class="fas fa-th-list"></i>
+        </a>
+      </div>
     </div>
-    @else
-    <div id="spEmpty" style="display:none"></div>
-    @endif
-    <div id="bubblesContainer"></div>
-  </div>
 
-  {{-- Image preview ── --}}
-  <div class="sp-preview" id="spPreview">
-    <div class="sp-preview__inner" id="previewInner"></div>
-  </div>
+    {{-- Error strip --}}
+    <div id="adspError"></div>
 
-  {{-- Input bar ── --}}
-  <div class="sp-bar">
-    <input type="file" id="fileInput" accept="image/*" style="display:none">
-    <button class="sp-img-btn" title="Joindre une image"
-      onclick="document.getElementById('fileInput').click()">
-      <i class="fas fa-image"></i>
-    </button>
-    <textarea class="sp-input" id="spInput" rows="1"
-      placeholder="Répondre à {{ $client->name }}…"
-      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';updateSend()">
-    </textarea>
-    <button class="sp-send" id="sendBtn" onclick="sendMessage()">
-      <i class="fas fa-paper-plane"></i> Envoyer
-    </button>
-  </div>
+    {{-- Messages --}}
+    <div class="adsp-msgs" id="adspMsgs"></div>
 
+    {{-- File preview --}}
+    <div id="adspFilePreview">
+      <img id="adspThumb" src="" alt="">
+      <span id="adspFName"></span>
+      <button type="button" onclick="adspClearFile()" title="Retirer">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    {{-- Input bar --}}
+    <div class="adsp-bar">
+      <button class="adsp-bar-act" type="button"
+        onclick="document.getElementById('adspFileIn').click()" title="Joindre une image">
+        <i class="fas fa-image"></i>
+      </button>
+      <input type="file" id="adspFileIn" accept="image/*" style="display:none">
+
+      <textarea id="adspInput" rows="1"
+        placeholder="Répondre à {{ $client->name }}…"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();adspSend()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
+
+      <button class="adsp-send" id="adspSendBtn" type="button" onclick="adspSend()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+
+  </div>
 </div>
 
-{{-- Lightbox ── --}}
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox__close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
-  <img id="lightboxImg" src="" alt="">
+{{-- Lightbox --}}
+<div class="adsp-lbx" id="adspLbx" onclick="adspLbxClose()">
+  <button class="adsp-lbx-close" onclick="adspLbxClose()"><i class="fas fa-times"></i></button>
+  <img id="adspLbxImg" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
 @push('scripts')
 <script>
-const CSRF      = '{{ $csrfToken }}';
-const POLL_URL  = '{{ route("admin.support.poll", $client) }}';
-const SEND_URL  = '{{ route("admin.support.store", $client) }}';
-const CLIENT_NM = '{{ addslashes($client->name) }}';
-let lastId      = {{ $lastId }};
-let pendingFile = null;
-let pollTimer;
-const rendered  = new Set();
+(function () {
+  const SEND_URL  = @json(route('admin.support.store', $client));
+  const POLL_URL  = @json(route('admin.support.poll', $client));
+  const CLIENT_NM = @json($client->name);
+  const INIT      = @json($initials);
+  const CHAT_DATA = @json($chatData);
 
-/* ── Initial render ── */
-const initData  = @json($chatData);
-let lastDateKey = null;
-initData.forEach(m => renderBubble(m, false));
-scrollBottom();
-startPolling();
+  let lastId      = {{ $lastId }};
+  let pendingFile = null;
+  let pollTimer   = null;
+  let lastDay     = null;
 
-/* ── Polling ── */
-function startPolling() {
-  pollTimer = setInterval(async () => {
-    try {
-      const r = await fetch(`${POLL_URL}?after=${lastId}`, {
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      });
-      const d = await r.json();
-      if (d.messages && d.messages.length) {
-        d.messages.forEach(m => renderBubble(m, true));
-        scrollBottom();
-      }
-    } catch(e) {}
-  }, 3000);
-}
+  const msgs = document.getElementById('adspMsgs');
 
-/* ── Render bubble ── */
-function renderBubble(msg, animate) {
-  if (rendered.has(msg.id)) return;
-  rendered.add(msg.id);
-  if (msg.id > lastId) lastId = msg.id;
-  document.getElementById('spEmpty').style.display = 'none';
+  /* ── Render all initial messages ── */
+  if (CHAT_DATA && CHAT_DATA.length) {
+    CHAT_DATA.forEach(m => adspBubble(m, false));
+  } else {
+    msgs.innerHTML = `
+      <div class="adsp-empty-chat">
+        <i class="fas fa-comment-dots"></i>
+        <p>Aucun message encore.<br>Démarrez l'échange ci-dessous.</p>
+      </div>`;
+  }
+  adspScrollBottom();
 
-  const wrap  = document.getElementById('bubblesContainer');
-  const isMe  = msg.sender_type === 'admin' && !msg.is_bot;
-  const isBot = msg.is_bot === true;
+  /* ── Bubble builder ── */
+  function adspBubble(m, animate) {
+    const isOut = m.sender_type === 'admin' && !m.is_bot;
+    const isBot = !!m.is_bot;
 
-  if (msg.date_key !== lastDateKey) {
-    lastDateKey = msg.date_key;
-    const sep = document.createElement('div');
-    sep.className   = 'chat-date';
-    sep.textContent = msg.date_label;
-    wrap.appendChild(sep);
+    const day = m.date_key || '';
+    if (day !== lastDay) {
+      lastDay = day;
+      const sep = document.createElement('div');
+      sep.className = 'adsp-day-sep';
+      sep.innerHTML = `<span>${m.date_label || day}</span>`;
+      msgs.appendChild(sep);
+    }
+
+    const row = document.createElement('div');
+    row.className = 'adsp-row' + (isOut ? ' is-out' : '') + (isBot ? ' is-bot' : '');
+    row.dataset.id = m.id;
+    if (animate) row.style.animation = 'adspFadeUp .2s ease';
+
+    const time = m.time || '';
+
+    if (!isOut) {
+      const av = document.createElement('div');
+      av.className = 'adsp-bav' + (isBot ? ' bot' : '');
+      av.textContent = isBot ? '🤖' : INIT;
+      row.appendChild(av);
+    }
+
+    const bub = document.createElement('div');
+    bub.className = 'adsp-bub';
+
+    if (isBot) {
+      const tag = document.createElement('div');
+      tag.className = 'adsp-bot-tag';
+      tag.textContent = 'Assistant IA';
+      bub.appendChild(tag);
+    }
+
+    if (m.file_type === 'image' && m.file_url) {
+      const img = document.createElement('img');
+      img.src = m.file_url;
+      img.className = 'adsp-bub-img';
+      img.loading = 'lazy';
+      img.onclick = () => adspLbxOpen(m.file_url);
+      bub.appendChild(img);
+    }
+
+    if (m.body) {
+      const txt = document.createElement('div');
+      txt.textContent = m.body;
+      bub.appendChild(txt);
+    }
+
+    const meta = document.createElement('div');
+    meta.className = 'adsp-bub-meta';
+    meta.textContent = time;
+    if (isOut) meta.innerHTML += ' <i class="fas fa-check" style="font-size:.5rem"></i>';
+    bub.appendChild(meta);
+
+    row.appendChild(bub);
+
+    if (isOut) {
+      const sp = document.createElement('div');
+      sp.className = 'adsp-spacer';
+      row.appendChild(sp);
+    }
+
+    // remove empty-state placeholder if present
+    const emp = msgs.querySelector('.adsp-empty-chat');
+    if (emp) msgs.removeChild(emp);
+
+    msgs.appendChild(row);
+    if (m.id > lastId) lastId = m.id;
   }
 
-  const bw = document.createElement('div');
-  bw.className = `bw ${isMe ? 'bw--me' : (isBot ? 'bw--bot' : 'bw--them')}`;
-  if (animate) bw.style.animation = 'fadeUp .2s ease';
+  function adspScrollBottom() {
+    requestAnimationFrame(() => { msgs.scrollTop = msgs.scrollHeight; });
+  }
 
-  let inner = '';
-  if (msg.body) inner += `<div>${escHtml(msg.body)}</div>`;
-  if (msg.file_type === 'image' && msg.file_url)
-    inner += `<img src="${msg.file_url}" loading="lazy" onclick="openLightbox('${escAttr(msg.file_url)}')">`;
+  /* ── Send ── */
+  window.adspSend = function () {
+    const inp  = document.getElementById('adspInput');
+    const body = inp.value.trim();
+    if (!body && !pendingFile) return;
 
-  const badge = isBot
-    ? `<div class="bot-badge"><i class="fas fa-robot"></i> Réponse IA automatique</div>` : '';
-  const sender = isMe ? 'Vous' : (isBot ? 'Assistant IA' : CLIENT_NM);
+    const btn = document.getElementById('adspSendBtn');
+    btn.disabled = true;
 
-  bw.innerHTML = `
-    ${badge}
-    <div class="bubble">${inner}</div>
-    <div class="bubble-meta">${sender} · ${msg.time}</div>`;
-  wrap.appendChild(bw);
-}
+    const fd = new FormData();
+    if (body)        fd.append('body', body);
+    if (pendingFile) fd.append('file', pendingFile);
 
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-}
-function escAttr(s) { return s.replace(/"/g,'&quot;'); }
+    inp.value = '';
+    inp.style.height = '';
+    adspClearFile();
 
-/* ── Send ── */
-async function sendMessage() {
-  const input = document.getElementById('spInput');
-  const body  = input.value.trim();
-  if (!body && !pendingFile) return;
+    fetch(SEND_URL, {
+      method : 'POST',
+      headers: {
+        'X-CSRF-TOKEN'    : document.querySelector('meta[name="csrf-token"]').content,
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept'          : 'application/json',
+      },
+      body: fd,
+    })
+    .then(r => r.json().then(d => ({ ok: r.ok, d })))
+    .then(({ ok, d }) => {
+      if (!ok) { adspShowError(d.error || 'Erreur lors de l\'envoi.'); return; }
+      if (d.message) { adspBubble(d.message, true); adspScrollBottom(); }
+    })
+    .catch(() => adspShowError('Erreur réseau. Réessayez.'))
+    .finally(() => { btn.disabled = false; });
+  };
 
-  const btn = document.getElementById('sendBtn');
-  btn.classList.remove('active');
-  btn.classList.add('sending');
-  btn.disabled = true;
+  /* ── File attach ── */
+  document.getElementById('adspFileIn').addEventListener('change', function () {
+    const f = this.files[0];
+    if (!f) return;
+    pendingFile = f;
+    document.getElementById('adspFName').textContent = f.name;
+    const reader = new FileReader();
+    reader.onload = e => { document.getElementById('adspThumb').src = e.target.result; };
+    reader.readAsDataURL(f);
+    document.getElementById('adspFilePreview').style.display = 'flex';
+    this.value = '';
+  });
 
-  const fd = new FormData();
-  fd.append('_token', CSRF);
-  if (body)        fd.append('body', body);
-  if (pendingFile) fd.append('file', pendingFile);
+  window.adspClearFile = function () {
+    pendingFile = null;
+    document.getElementById('adspFilePreview').style.display = 'none';
+    document.getElementById('adspThumb').src = '';
+    document.getElementById('adspFName').textContent = '';
+  };
 
-  input.value = '';
-  input.style.height = 'auto';
-  clearPreview();
+  /* ── Error ── */
+  function adspShowError(msg) {
+    const el = document.getElementById('adspError');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 6000);
+  }
 
-  try {
-    const r = await fetch(SEND_URL, {
-      method: 'POST',
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
-      body: fd
+  /* ── Polling ── */
+  function adspPoll() {
+    fetch(POLL_URL + '?after=' + lastId, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+    })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data || !data.messages || !data.messages.length) return;
+      const atBottom = msgs.scrollHeight - msgs.clientHeight - msgs.scrollTop < 80;
+      data.messages.forEach(m => {
+        if (!msgs.querySelector('[data-id="' + m.id + '"]')) {
+          adspBubble(m, true);
+        }
+      });
+      if (atBottom) adspScrollBottom();
+    })
+    .catch(() => {});
+  }
+
+  pollTimer = setInterval(adspPoll, 4000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { clearInterval(pollTimer); pollTimer = null; }
+    else { pollTimer = setInterval(adspPoll, 4000); }
+  });
+  window.addEventListener('beforeunload', () => clearInterval(pollTimer));
+
+  /* ── Lightbox ── */
+  window.adspLbxOpen = function (src) {
+    document.getElementById('adspLbxImg').src = src;
+    document.getElementById('adspLbx').classList.add('open');
+  };
+  window.adspLbxClose = function () {
+    document.getElementById('adspLbx').classList.remove('open');
+    document.getElementById('adspLbxImg').src = '';
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') adspLbxClose(); });
+
+  /* ── Sidebar search / filter ── */
+  let _f = 'all';
+  document.getElementById('adspSearch').addEventListener('input', function () {
+    adspApply(this.value.toLowerCase());
+  });
+  window.adspFilter = function (f) {
+    _f = f;
+    document.getElementById('adspFilterAll').classList.toggle('active', f === 'all');
+    document.getElementById('adspFilterUnread').classList.toggle('active', f === 'unread');
+    adspApply(document.getElementById('adspSearch').value.toLowerCase());
+  };
+  function adspApply(q) {
+    document.querySelectorAll('.adsp-conv').forEach(el => {
+      const nm = el.dataset.name.includes(q);
+      const ur = _f === 'unread' ? el.dataset.unread === '1' : true;
+      el.style.display = (nm && ur) ? '' : 'none';
     });
-    const d = await r.json();
-    if (d.message) { renderBubble(d.message, true); scrollBottom(); }
-  } catch(e) {}
-
-  btn.classList.remove('sending');
-  btn.disabled = false;
-  updateSend();
-}
-
-/* ── File input ── */
-document.getElementById('fileInput').addEventListener('change', function () {
-  const f = this.files[0];
-  if (!f) return;
-  pendingFile = f;
-  const inner = document.getElementById('previewInner');
-  const url   = URL.createObjectURL(f);
-  inner.innerHTML = `<img src="${url}">
-    <button class="sp-preview__rm" onclick="clearPreview()" type="button">
-      <i class="fas fa-times"></i>
-    </button>`;
-  document.getElementById('spPreview').style.display = 'block';
-  updateSend();
-  this.value = '';
-});
-
-function clearPreview() {
-  pendingFile = null;
-  document.getElementById('previewInner').innerHTML = '';
-  document.getElementById('spPreview').style.display = 'none';
-  updateSend();
-}
-
-/* ── Helpers ── */
-function updateSend() {
-  const has = document.getElementById('spInput').value.trim() || pendingFile;
-  document.getElementById('sendBtn').classList.toggle('active', !!has);
-}
-
-function scrollBottom() {
-  const el = document.getElementById('spMsgs');
-  el.scrollTop = el.scrollHeight;
-}
-
-document.getElementById('spInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-});
-
-/* ── Lightbox ── */
-function openLightbox(src) {
-  document.getElementById('lightboxImg').src = src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.getElementById('lightboxImg').src = '';
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-/* ── Pause polling when tab hidden ── */
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) clearInterval(pollTimer);
-  else startPolling();
-});
+  }
+})();
 </script>
 @endpush
-
 @endsection

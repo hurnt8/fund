@@ -57,16 +57,25 @@ class SecureAjaxApi
     {
         $origin  = $request->header('Origin', '');
         $referer = $request->header('Referer', '');
-        $appHost = parse_url(config('app.url'), PHP_URL_HOST);
 
-        if ($origin) {
-            return parse_url($origin, PHP_URL_HOST) === $appHost;
-        }
-        if ($referer) {
-            return parse_url($referer, PHP_URL_HOST) === $appHost;
-        }
+        // Base réelle du serveur (host + port si non standard)
+        $serverBase = $request->getSchemeAndHttpHost(); // ex: "http://127.0.0.1:8000"
 
-        // Pas d'Origin ni Referer → autorisé seulement si même hôte dans la requête
-        return $request->getHost() === $appHost;
+        $baseOf = function (string $url): string {
+            $scheme = parse_url($url, PHP_URL_SCHEME) ?? 'http';
+            $host   = parse_url($url, PHP_URL_HOST)   ?? '';
+            $port   = parse_url($url, PHP_URL_PORT);
+            $base   = $scheme . '://' . $host;
+            if ($port) {
+                $base .= ':' . $port;
+            }
+            return $base;
+        };
+
+        if ($origin)  return $baseOf($origin)  === $serverBase;
+        if ($referer) return $baseOf($referer) === $serverBase;
+
+        // Pas d'Origin ni Referer → même serveur, autorisé
+        return true;
     }
 }
