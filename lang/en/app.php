@@ -227,6 +227,8 @@ return [
     'notif_loan_contract_body'     => 'Your contract :reference has been sent to your email address. Please sign and return it.',
     'notif_loan_funded'            => 'Financing disbursed',
     'notif_loan_funded_body'       => ':amount :currency has been deposited into your account.',
+    'notif_loan_signed'            => 'Signed contract received',
+    'notif_loan_signed_body'       => 'Your signed contract :reference has been received. Your file is being finalized.',
     'notif_loan_rejected'          => 'Request rejected',
     'notif_loan_rejected_body'     => 'Your request :reference has been rejected. Please contact your advisor for more information.',
 

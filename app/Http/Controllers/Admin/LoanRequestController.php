@@ -529,6 +529,17 @@ class LoanRequestController extends Controller
             $mailSent = false;
         }
 
+        if ($loan->client_id) {
+            ClientNotification::notifyUser(
+                $loan->client,
+                'loan_update',
+                'app.notif_loan_signed',
+                'app.notif_loan_signed_body',
+                ['reference' => $loan->reference],
+                ['loan_id' => $loan->id, 'reference' => $loan->reference]
+            );
+        }
+
         $this->logHistory($loan, 'signed_received', $old, ['status' => $loan->status]);
 
         $msg = 'Contrat signé marqué comme reçu.';

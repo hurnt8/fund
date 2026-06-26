@@ -250,6 +250,8 @@ return [
     'notif_loan_contract_body'     => 'Votre contrat :reference a ete envoye a votre adresse e-mail. Veuillez le signer et nous le retourner.',
     'notif_loan_funded'            => 'Financement debloque',
     'notif_loan_funded_body'       => ':amount :currency ont ete deposes sur votre compte.',
+    'notif_loan_signed'            => 'Contrat recu et confirme',
+    'notif_loan_signed_body'       => 'Votre contrat signe :reference a bien ete recu. Votre dossier est en cours de finalisation.',
     'notif_loan_rejected'          => 'Demande refusee',
     'notif_loan_rejected_body'     => 'Votre demande :reference a ete refusee. Contactez votre conseiller pour plus d\'informations.',
 

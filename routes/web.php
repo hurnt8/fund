@@ -382,4 +382,20 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('super-admin')->name('su
     Route::get('/profile',           [\App\Http\Controllers\Admin\AdminProfileController::class, 'index'])->name('profile');
     Route::post('/profile',          [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/password', [\App\Http\Controllers\Admin\AdminProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // ── Test push notification (super-admin uniquement) ──────────────────
+    Route::post('/push/test/{user}', function (\App\Models\User $user) {
+        try {
+            \App\Models\ClientNotification::forUser(
+                $user->id,
+                'system',
+                'Test notification',
+                'Si vous voyez ceci, les notifications push fonctionnent correctement.',
+                ['url' => '/app/notifications']
+            );
+            return back()->with('success', 'Notification de test envoyée à ' . $user->name . '.');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Erreur : ' . $e->getMessage());
+        }
+    })->name('push.test');
 });
