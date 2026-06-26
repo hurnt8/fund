@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\ContractTemplate;
 use App\Models\LoanRequest;
-use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
 /**
@@ -115,9 +114,10 @@ class ContractDocxRenderer
 
             $xml = $this->defragment($xml);
             $xml = $this->substitute($xml, $vars);
+            $xml = $this->substituteAcrossRuns($xml, $vars);
 
             if ($target === 'word/document.xml') {
-                $this->assertNoResidualTags($xml);
+                $this->assertNoResidualTags($xml, $vars);
             }
 
             $zip->addFromString($target, $xml);
@@ -144,7 +144,9 @@ class ContractDocxRenderer
         $v = '[a-zA-Z_][a-zA-Z0-9_]*';
 
         $rpr = '(?:<w:rPr>[^<]*(?:<(?!/w:rPr>)[^<]*)*</w:rPr>)?';
-        $run = '</w:t></w:r>\s*<w:r\b[^>]*>' . $rpr . '<w:t[^>]*>';
+        // Entre deux </w:r> et <w:r> : autorise tout élément intermédiaire
+        // (ex: <w:proofErr/>, <w:bookmarkStart/>, commentaires…) sans franchir <w:p>
+        $run = '</w:t></w:r>(?:(?!<w:r\b|<w:p\b)[\s\S])*?<w:r\b[^>]*>' . $rpr . '<w:t[^>]*>';
         // Texte avant { dans le même <w:t> (ne peut pas contenir < ni {)
         $pre = '[^<{]*';
 
@@ -224,25 +226,98 @@ class ContractDocxRenderer
         return $xml;
     }
 
+    /**
+     * Substitution de dernier recours pour les variables dont le NOM lui-même
+     * est fragmenté à travers plusieurs <w:t> adjacents (ex: "{nom_cl" + "ient}").
+     *
+     * Construit le texte virtuel par concaténation de tous les <w:t>, localise
+     * chaque {variable} et redistribue la valeur dans les runs concernés.
+     */
+    private function substituteAcrossRuns(string $xml, array $vars): string
+    {
+        preg_match_all('/(<w:t(?:[^>]*)>)([^<]*)(<\/w:t>)/', $xml, $m, PREG_OFFSET_CAPTURE);
+        $n = count($m[0]);
+        if (!$n) return $xml;
+
+        $texts   = [];
+        $xmlPos  = [];
+        $virtual = '';
+        $vStart  = [];
+
+        for ($i = 0; $i < $n; $i++) {
+            $vStart[$i] = strlen($virtual);
+            $texts[$i]  = $m[2][$i][0];
+            $xmlPos[$i] = $m[2][$i][1];
+            $virtual   .= $texts[$i];
+        }
+
+        $patches = [];
+
+        foreach ($vars as $key => $value) {
+            $kLen = strlen($key);
+            $vp   = 0;
+            while (($vp = strpos($virtual, $key, $vp)) !== false) {
+                $ve = $vp + $kLen;
+
+                $hit = [];
+                for ($i = 0; $i < $n; $i++) {
+                    $rs = $vStart[$i];
+                    $re = $rs + strlen($texts[$i]);
+                    if ($rs < $ve && $re > $vp) $hit[] = $i;
+                }
+
+                if (count($hit) > 1) {
+                    foreach ($hit as $idx => $ri) {
+                        $rs    = $vStart[$ri];
+                        $from  = max(0, $vp - $rs);
+                        $to    = min(strlen($texts[$ri]), $ve - $rs);
+                        $patch = substr($texts[$ri], 0, $from)
+                               . ($idx === 0 ? $value : '')
+                               . substr($texts[$ri], $to);
+                        $patches[] = [$xmlPos[$ri], strlen($texts[$ri]), $patch];
+                    }
+                }
+                $vp++;
+            }
+        }
+
+        if (empty($patches)) return $xml;
+
+        usort($patches, fn($a, $b) => $b[0] - $a[0]);
+
+        $seen = [];
+        foreach ($patches as [$pos, $len, $text]) {
+            if (!isset($seen[$pos])) {
+                $seen[$pos] = true;
+                $xml = substr($xml, 0, $pos) . $text . substr($xml, $pos + $len);
+            }
+        }
+
+        return $xml;
+    }
+
     // ── Validation ────────────────────────────────────────────────────────────
 
     /**
-     * Lève une exception si des balises {xxx} résiduelles sont présentes dans le document.xml.
-     * Concatène le texte des <w:t> SANS séparateur pour détecter les variables encore
-     * fragmentées sur plusieurs runs après la phase defragment().
+     * Lève une exception si des balises {xxx} connues du resolver restent non substituées.
+     * On concatène sans séparateur pour détecter les fragments encore éclatés sur
+     * plusieurs <w:t>, mais on n'alerte que sur les variables présentes dans $vars
+     * (les balises inconnues du template sont ignorées silencieusement).
      */
-    private function assertNoResidualTags(string $xml): void
+    private function assertNoResidualTags(string $xml, array $vars): void
     {
         preg_match_all('/<w:t[^>]*>([^<]*)<\/w:t>/', $xml, $m);
-        // Jointure sans espace : détecte {var} dont { et name} sont dans des <w:t> adjacents
         $texts = implode('', $m[1]);
 
         preg_match_all('/\{([a-zA-Z_][a-zA-Z0-9_]*)\}/', $texts, $found);
-        $residual = array_unique($found[0] ?? []);
+        $residual = array_filter(
+            array_unique($found[0] ?? []),
+            fn($tag) => isset($vars[$tag])
+        );
 
         if (!empty($residual)) {
             throw new \RuntimeException(
-                'Balises DOCX non résolues : ' . implode(', ', $residual)
+                'Génération DOCX impossible : Balises DOCX non résolues : ' . implode(', ', $residual)
                 . '. Vérifiez que les données du dossier sont complètes.'
             );
         }

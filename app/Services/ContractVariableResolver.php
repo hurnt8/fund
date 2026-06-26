@@ -68,6 +68,7 @@ class ContractVariableResolver
             '{archive}'         => $loan->archive_ref ?? '',
             '{nom_client}'      => $client?->name ?? $loan->name ?? '',
             '{adresse_client}'  => $client?->address ?? $loan->address ?? '',
+            '{address_client}'  => $client?->address ?? $loan->address ?? '',
             '{date_naissance}'  => $client?->birth_date?->format('d/m/Y') ?? '',
             '{type_identite}'   => $this->contractService->translateIdType(
                                     $client?->id_type ?? '', $locale),
