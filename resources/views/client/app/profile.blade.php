@@ -119,12 +119,14 @@
   <div class="ca-settings-list">
 
     {{-- Notifications toggle --}}
-    <div class="ca-settings-item" x-data="togglePref(true)">
+    <div class="ca-settings-item" x-data="togglePref()" :style="blocked ? 'opacity:.45;pointer-events:none' : ''">
       <div class="ca-settings-item__icon" style="background:rgba(74,158,255,.18);color:var(--ca-blue)">
-        <i class="fas fa-bell"></i>
+        <i class="fas fa-bell" x-show="!loading"></i>
+        <i class="fas fa-spinner fa-spin" x-show="loading" style="font-size:.85rem"></i>
       </div>
       <div class="ca-settings-item__text">
         <div class="ca-settings-item__label">{{ __('app.notifications') }}</div>
+        <div class="ca-settings-item__sub" x-show="blocked" style="color:var(--ca-negative);font-size:.68rem">Bloquées dans les paramètres du navigateur</div>
       </div>
       <div class="ca-settings-item__right">
         <label class="ca-toggle" @click.prevent="toggle()">

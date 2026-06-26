@@ -23,7 +23,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/client-app.js": {
-    "file": "assets/client-app-6c55cfee.js",
+    "file": "assets/client-app-fd1c650b.js",
     "imports": [
       "_chart-ad2aba2b.js"
     ],

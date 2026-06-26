@@ -219,9 +219,10 @@
   </div>
 </div>
 
+<script>window.CREDIXA_VAPID_KEY = '{{ config("services.vapid.public_key") }}';</script>
 <script>
 (function () {
-  const PUSH_PUBLIC_KEY = '{{ config("services.vapid.public_key") }}';
+  const PUSH_PUBLIC_KEY = window.CREDIXA_VAPID_KEY;
   const CSRF            = '{{ csrf_token() }}';
   const STORAGE_KEY     = 'cxa_push_asked';
 

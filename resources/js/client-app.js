@@ -51,10 +51,97 @@ Alpine.data('keypad', (initial = '') => ({
     reset() { this.raw = ''; },
 }));
 
-// ── Alpine toggle component (notifications, etc.) ───────────────────
-Alpine.data('togglePref', (initialValue = false) => ({
-    on: initialValue,
-    toggle() { this.on = !this.on; },
+// ── Alpine toggle component — Push Notifications ────────────────────
+Alpine.data('togglePref', () => ({
+    on:      false,
+    loading: false,
+    blocked: false,
+
+    async init() {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+            this.blocked = true;
+            return;
+        }
+        if (Notification.permission === 'denied') {
+            this.blocked = true;
+            return;
+        }
+        try {
+            const reg = await navigator.serviceWorker.ready;
+            const sub = await reg.pushManager.getSubscription();
+            this.on = !!sub && Notification.permission === 'granted';
+        } catch (e) {}
+    },
+
+    async toggle() {
+        if (this.loading || this.blocked) return;
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+        this.loading = true;
+        const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        try {
+            const reg = await navigator.serviceWorker.ready;
+
+            if (this.on) {
+                /* ── Turn OFF ── */
+                const sub = await reg.pushManager.getSubscription();
+                if (sub) {
+                    await fetch('/app/push/unsubscribe', {
+                        method:  'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+                        body:    JSON.stringify({ endpoint: sub.endpoint }),
+                    });
+                    await sub.unsubscribe();
+                }
+                this.on = false;
+                localStorage.setItem('cxa_push_asked', 'denied');
+
+            } else {
+                /* ── Turn ON ── */
+                if (Notification.permission === 'denied') {
+                    this.blocked = true;
+                    return;
+                }
+                const perm = Notification.permission === 'granted'
+                    ? 'granted'
+                    : await Notification.requestPermission();
+
+                if (perm !== 'granted') {
+                    localStorage.setItem('cxa_push_asked', 'denied');
+                    return;
+                }
+
+                const vapidKey = window.CREDIXA_VAPID_KEY || '';
+                if (!vapidKey) return;
+
+                const padding  = '='.repeat((4 - vapidKey.length % 4) % 4);
+                const base64   = (vapidKey + padding).replace(/-/g, '+').replace(/_/g, '/');
+                const rawBytes = window.atob(base64);
+                const appKey   = Uint8Array.from([...rawBytes].map(c => c.charCodeAt(0)));
+
+                let sub = await reg.pushManager.getSubscription();
+                if (!sub) {
+                    sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey });
+                }
+                const subJson = sub.toJSON();
+                await fetch('/app/push/subscribe', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+                    body:    JSON.stringify({
+                        endpoint:   sub.endpoint,
+                        public_key: subJson.keys?.p256dh || '',
+                        auth_token: subJson.keys?.auth   || '',
+                    }),
+                });
+                this.on = true;
+                localStorage.setItem('cxa_push_asked', 'granted');
+            }
+        } catch (e) {
+            console.error('[togglePref]', e);
+        } finally {
+            this.loading = false;
+        }
+    },
 }));
 
 // ── Dark / Light theme toggle ────────────────────────────────────────
