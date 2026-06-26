@@ -298,6 +298,60 @@ a{text-decoration:none;color:inherit}
 }
 .pg-foot a{color:rgba(255,255,255,.3)}.pg-foot a:hover{color:rgba(255,255,255,.6)}
 
+/* ── PWA Install banner ── */
+#pwa-banner{
+  display:none;
+  position:relative;z-index:10;
+  margin:0 1.25rem .5rem;
+  background:linear-gradient(135deg,rgba(13,207,220,.12),rgba(13,207,220,.05));
+  border:1.5px solid rgba(13,207,220,.25);
+  border-radius:16px;
+  padding:.875rem 1rem;
+  animation:fadeUp .4s ease .4s both;
+}
+.pwa-inner{display:flex;align-items:center;gap:.75rem}
+.pwa-icon{
+  width:42px;height:42px;border-radius:12px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(13,207,220,.3);
+}
+.pwa-icon img{width:26px;height:26px;object-fit:contain;border-radius:6px}
+.pwa-text{flex:1;min-width:0}
+.pwa-title{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.1rem}
+.pwa-sub{font-size:.7rem;color:var(--sub);line-height:1.4}
+.pwa-btn{
+  flex-shrink:0;
+  background:linear-gradient(90deg,var(--cyan),var(--cyan2));
+  color:#080C18;border:none;border-radius:999px;
+  padding:.42rem .9rem;font-size:.75rem;font-weight:700;
+  cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;
+  box-shadow:0 4px 14px rgba(13,207,220,.3);
+  transition:filter .18s,transform .1s;
+}
+.pwa-btn:hover{filter:brightness(1.1)}
+.pwa-btn:active{transform:scale(.96)}
+.pwa-close{
+  position:absolute;top:.5rem;right:.6rem;
+  background:none;border:none;color:var(--muted);
+  font-size:.62rem;cursor:pointer;padding:.2rem;
+  transition:color .18s;
+}
+.pwa-close:hover{color:var(--sub)}
+
+/* iOS instructions */
+#pwa-ios{
+  display:none;
+  margin:0 1.25rem .5rem;
+  background:rgba(13,207,220,.07);border:1.5px solid rgba(13,207,220,.2);
+  border-radius:16px;padding:.875rem 1rem;
+  font-size:.76rem;color:var(--sub);line-height:1.7;
+  animation:fadeUp .4s ease .4s both;position:relative;z-index:10;
+}
+.ios-step{display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem}
+.ios-step:last-child{margin-bottom:0}
+.ios-step i{color:var(--cyan);font-size:.8rem;flex-shrink:0;width:16px;text-align:center}
+
 /* Entrance animation */
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .logo-box  {animation:fadeUp .4s ease .05s both}
@@ -476,6 +530,49 @@ a{text-decoration:none;color:inherit}
     </div>
   </div>
 
+  {{-- ── PWA Install — Android/Chrome ── --}}
+  <div id="pwa-banner">
+    <button class="pwa-close" onclick="pwaDismiss()" aria-label="Fermer">
+      <i class="fas fa-xmark"></i>
+    </button>
+    <div class="pwa-inner">
+      <div class="pwa-icon">
+        <img src="/images/icon-192.png" alt="Credixa">
+      </div>
+      <div class="pwa-text">
+        <div class="pwa-title">Installer l'application</div>
+        <div class="pwa-sub">Accès rapide · Notifications · Mode hors-ligne</div>
+      </div>
+      <button class="pwa-btn" id="pwa-install-btn">
+        <i class="fas fa-download" style="margin-right:.3rem"></i>Installer
+      </button>
+    </div>
+  </div>
+
+  {{-- ── PWA Install — iOS Safari ── --}}
+  <div id="pwa-ios">
+    <div style="font-weight:700;color:var(--text);margin-bottom:.5rem;font-size:.8rem">
+      <i class="fas fa-mobile-screen" style="color:var(--cyan);margin-right:.4rem"></i>
+      Installer l'app Credixa sur votre iPhone
+    </div>
+    <div class="ios-step">
+      <i class="fas fa-arrow-up-from-bracket"></i>
+      <span>Appuyez sur <strong style="color:var(--cyan)">Partager</strong> dans Safari</span>
+    </div>
+    <div class="ios-step">
+      <i class="fas fa-plus-square"></i>
+      <span>Choisissez <strong style="color:var(--cyan)">Sur l'écran d'accueil</strong></span>
+    </div>
+    <div class="ios-step">
+      <i class="fas fa-check-circle"></i>
+      <span>Appuyez sur <strong style="color:var(--cyan)">Ajouter</strong> — c'est fait !</span>
+    </div>
+    <button onclick="document.getElementById('pwa-ios').style.display='none'"
+            style="margin-top:.6rem;background:none;border:none;color:var(--muted);font-size:.7rem;cursor:pointer;padding:0">
+      <i class="fas fa-xmark" style="margin-right:.25rem"></i>Fermer
+    </button>
+  </div>
+
   <div class="pg-foot">
     &copy; {{ date('Y') }} Credixa Invest &nbsp;·&nbsp;
     <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;·&nbsp;
@@ -508,6 +605,57 @@ document.getElementById('login-form').addEventListener('submit', function() {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(function(){});
 }
+
+/* ── PWA Install ── */
+(function () {
+  const DISMISS_KEY = 'cxa_pwa_dismissed';
+
+  // Ne pas montrer si déjà installé en standalone
+  var isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                   || window.navigator.standalone === true;
+  if (isStandalone) return;
+
+  // Ne pas montrer si l'utilisateur a déjà fermé la bannière
+  if (localStorage.getItem(DISMISS_KEY)) return;
+
+  /* Android / Chrome — beforeinstallprompt */
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('pwa-banner').style.display = 'block';
+  });
+
+  document.getElementById('pwa-install-btn').addEventListener('click', async function () {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    var choice = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    document.getElementById('pwa-banner').style.display = 'none';
+    if (choice.outcome === 'accepted') {
+      localStorage.setItem(DISMISS_KEY, '1');
+    }
+  });
+
+  window.addEventListener('appinstalled', function () {
+    document.getElementById('pwa-banner').style.display = 'none';
+    localStorage.setItem(DISMISS_KEY, '1');
+  });
+
+  /* iOS Safari — pas de beforeinstallprompt */
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  if (isIOS && isSafari && !isStandalone) {
+    setTimeout(function () {
+      document.getElementById('pwa-ios').style.display = 'block';
+    }, 1500);
+  }
+})();
+
+window.pwaDismiss = function () {
+  document.getElementById('pwa-banner').style.display = 'none';
+  localStorage.setItem('cxa_pwa_dismissed', '1');
+};
 </script>
 </body>
 </html>

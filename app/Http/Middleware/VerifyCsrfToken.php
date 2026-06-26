@@ -12,6 +12,8 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        // Appelé par le Service Worker sans accès au token CSRF (pushsubscriptionchange)
+        'app/push/subscribe',
+        'app/push/unsubscribe',
     ];
 }
