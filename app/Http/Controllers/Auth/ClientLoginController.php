@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OtpMail;
+use App\Models\PushSubscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,6 +94,16 @@ class ClientLoginController extends Controller
     public function logout(Request $request)
     {
         $isStaff = Auth::check() && Auth::user()->type === 'staff';
+        $userId  = Auth::id();
+
+        // Supprimer la souscription push de cet appareil à la déconnexion
+        // pour qu'un autre utilisateur ne reçoive pas les notifications du compte précédent
+        $endpoint = $request->session()->get('push_endpoint');
+        if ($endpoint && $userId) {
+            PushSubscription::where('user_id', $userId)
+                ->where('endpoint', $endpoint)
+                ->delete();
+        }
 
         Auth::logout();
         $request->session()->invalidate();
