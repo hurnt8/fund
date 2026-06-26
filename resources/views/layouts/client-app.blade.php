@@ -222,76 +222,49 @@
 <script>window.CREDIXA_VAPID_KEY = '{{ config("services.vapid.public_key") }}';</script>
 <script>
 (function () {
-  const PUSH_PUBLIC_KEY = window.CREDIXA_VAPID_KEY;
-  const CSRF            = '{{ csrf_token() }}';
-  const STORAGE_KEY     = 'cxa_push_asked';
-
-  function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-    const raw     = window.atob(base64);
-    return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
-  }
-
-  async function subscribe(reg) {
-    try {
-      // Réutiliser la souscription existante du navigateur ou en créer une nouvelle
-      let sub = await reg.pushManager.getSubscription();
-      if (!sub) {
-        sub = await reg.pushManager.subscribe({
-          userVisibleOnly:      true,
-          applicationServerKey: urlBase64ToUint8Array(PUSH_PUBLIC_KEY),
-        });
-      }
-      const subJson = sub.toJSON();
-
-      await fetch('/app/push/subscribe', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-        body:    JSON.stringify({
-          endpoint:   sub.endpoint,
-          public_key: subJson.keys?.p256dh || '',
-          auth_token: subJson.keys?.auth   || '',
-        }),
-      });
-      localStorage.setItem(STORAGE_KEY, 'granted');
-    } catch (err) {
-      localStorage.setItem(STORAGE_KEY, 'denied');
-    }
-  }
-
-  async function unsubscribe(reg) {
-    const sub = await reg.pushManager.getSubscription();
-    if (!sub) return;
-    await fetch('/app/push/unsubscribe', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-      body:    JSON.stringify({ endpoint: sub.endpoint }),
-    });
-    await sub.unsubscribe();
-  }
+  const CSRF        = '{{ csrf_token() }}';
+  const STORAGE_KEY = 'cxa_push_asked';
 
   document.addEventListener('DOMContentLoaded', async function () {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
 
     const reg = await navigator.serviceWorker.ready;
 
-    // Déjà abonné dans le navigateur → re-synchroniser avec le serveur (upsert DB)
+    // Si les clés VAPID ont changé, invalider l'ancienne souscription
+    const storedVapid = localStorage.getItem('cxa_vapid_pub');
+    const currentVapid = window.CREDIXA_VAPID_KEY || '';
+    if (storedVapid && storedVapid !== currentVapid) {
+      const oldSub = await reg.pushManager.getSubscription();
+      if (oldSub) {
+        await fetch('/app/push/unsubscribe', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
+          body:    JSON.stringify({ endpoint: oldSub.endpoint }),
+        }).catch(() => {});
+        await oldSub.unsubscribe().catch(() => {});
+      }
+      localStorage.removeItem('cxa_vapid_pub');
+      localStorage.setItem(STORAGE_KEY, 'reset'); // Forcer ré-affichage bannière
+    }
+
+    // Déjà abonné dans le navigateur avec les bonnes clés → re-sync DB
     const existing = await reg.pushManager.getSubscription();
-    if (existing) {
-      await subscribe(reg);
+    if (existing && (!storedVapid || storedVapid === currentVapid)) {
+      if (typeof pushSubscribe === 'function') {
+        await pushSubscribe(reg, CSRF).catch(() => {});
+      }
       return;
     }
 
-    // Permission déjà refusée
     if (Notification.permission === 'denied') return;
 
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === 'denied') return;
 
-    // Déjà accepté → abonner directement
     if (stored === 'granted') {
-      await subscribe(reg);
+      if (typeof pushSubscribe === 'function') {
+        await pushSubscribe(reg, CSRF).catch(() => {});
+      }
       return;
     }
 
@@ -299,11 +272,10 @@
     if (stored && stored.startsWith('later:')) {
       const retryAt = parseInt(stored.split(':')[1], 10);
       if (Date.now() < retryAt) return;
-      // Délai expiré → retirer et montrer la bannière
       localStorage.removeItem(STORAGE_KEY);
     }
 
-    // Montrer la bannière après 3 secondes (ne pas déranger au chargement)
+    // Montrer la bannière après 3 secondes
     setTimeout(function () {
       const banner = document.getElementById('cxa-push-banner');
       if (banner) banner.style.display = 'flex';
@@ -313,7 +285,9 @@
       document.getElementById('cxa-push-banner').style.display = 'none';
       const perm = await Notification.requestPermission();
       if (perm === 'granted') {
-        await subscribe(reg);
+        if (typeof pushSubscribe === 'function') {
+          await pushSubscribe(reg, CSRF).catch(() => {});
+        }
       } else {
         localStorage.setItem(STORAGE_KEY, 'denied');
       }
@@ -321,7 +295,6 @@
 
     document.getElementById('cxa-push-later')?.addEventListener('click', function () {
       document.getElementById('cxa-push-banner').style.display = 'none';
-      // Redemander dans 7 jours
       const retry = Date.now() + 7 * 24 * 3600 * 1000;
       localStorage.setItem(STORAGE_KEY, 'later:' + retry);
     });

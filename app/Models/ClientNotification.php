@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\PushService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ClientNotification extends Model
@@ -57,7 +58,12 @@ class ClientNotification extends Model
                 $url = $data['url'] ?? '/app/notifications';
                 (new PushService())->sendToUser($user, $title, $body, $url, $type);
             }
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) {
+            Log::error('[Push] sendToUser exception for user ' . $userId . ': ' . $e->getMessage(), [
+                'exception' => get_class($e),
+                'file'      => $e->getFile() . ':' . $e->getLine(),
+            ]);
+        }
 
         return $notification;
     }

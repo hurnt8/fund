@@ -51,6 +51,72 @@ Alpine.data('keypad', (initial = '') => ({
     reset() { this.raw = ''; },
 }));
 
+// ── Push helpers ─────────────────────────────────────────────────────
+const PUSH_VAPID_LS_KEY = 'cxa_vapid_pub';
+
+function pushVapidKey() {
+    return window.CREDIXA_VAPID_KEY || '';
+}
+
+function vapidKeyChanged() {
+    const stored = localStorage.getItem(PUSH_VAPID_LS_KEY);
+    return stored && stored !== pushVapidKey();
+}
+
+function urlBase64ToUint8Array(b64) {
+    const padding = '='.repeat((4 - b64.length % 4) % 4);
+    const base64  = (b64 + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const raw     = window.atob(base64);
+    return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+}
+
+async function pushSubscribe(reg, csrf) {
+    const vapidKey = pushVapidKey();
+    if (!vapidKey) return null;
+
+    // Si les clés VAPID ont changé, forcer la re-souscription
+    let sub = await reg.pushManager.getSubscription();
+    if (sub && vapidKeyChanged()) {
+        await sub.unsubscribe();
+        sub = null;
+    }
+    if (!sub) {
+        sub = await reg.pushManager.subscribe({
+            userVisibleOnly:      true,
+            applicationServerKey: urlBase64ToUint8Array(vapidKey),
+        });
+    }
+    const subJson = sub.toJSON();
+    const res = await fetch('/app/push/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+        body:    JSON.stringify({
+            endpoint:   sub.endpoint,
+            public_key: subJson.keys?.p256dh || '',
+            auth_token: subJson.keys?.auth   || '',
+        }),
+    });
+    if (res.ok) {
+        localStorage.setItem(PUSH_VAPID_LS_KEY, vapidKey);
+        localStorage.setItem('cxa_push_asked', 'granted');
+    }
+    return sub;
+}
+
+async function pushUnsubscribe(reg, csrf) {
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) {
+        await fetch('/app/push/unsubscribe', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+            body:    JSON.stringify({ endpoint: sub.endpoint }),
+        });
+        await sub.unsubscribe();
+    }
+    localStorage.removeItem(PUSH_VAPID_LS_KEY);
+    localStorage.setItem('cxa_push_asked', 'denied');
+}
+
 // ── Alpine toggle component — Push Notifications ────────────────────
 Alpine.data('togglePref', () => ({
     on:      false,
@@ -69,7 +135,8 @@ Alpine.data('togglePref', () => ({
         try {
             const reg = await navigator.serviceWorker.ready;
             const sub = await reg.pushManager.getSubscription();
-            this.on = !!sub && Notification.permission === 'granted';
+            // Show as OFF if keys changed (subscription would fail server-side)
+            this.on = !!sub && Notification.permission === 'granted' && !vapidKeyChanged();
         } catch (e) {}
     },
 
@@ -83,21 +150,9 @@ Alpine.data('togglePref', () => ({
             const reg = await navigator.serviceWorker.ready;
 
             if (this.on) {
-                /* ── Turn OFF ── */
-                const sub = await reg.pushManager.getSubscription();
-                if (sub) {
-                    await fetch('/app/push/unsubscribe', {
-                        method:  'POST',
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
-                        body:    JSON.stringify({ endpoint: sub.endpoint }),
-                    });
-                    await sub.unsubscribe();
-                }
+                await pushUnsubscribe(reg, csrf);
                 this.on = false;
-                localStorage.setItem('cxa_push_asked', 'denied');
-
             } else {
-                /* ── Turn ON ── */
                 if (Notification.permission === 'denied') {
                     this.blocked = true;
                     return;
@@ -105,36 +160,12 @@ Alpine.data('togglePref', () => ({
                 const perm = Notification.permission === 'granted'
                     ? 'granted'
                     : await Notification.requestPermission();
-
                 if (perm !== 'granted') {
                     localStorage.setItem('cxa_push_asked', 'denied');
                     return;
                 }
-
-                const vapidKey = window.CREDIXA_VAPID_KEY || '';
-                if (!vapidKey) return;
-
-                const padding  = '='.repeat((4 - vapidKey.length % 4) % 4);
-                const base64   = (vapidKey + padding).replace(/-/g, '+').replace(/_/g, '/');
-                const rawBytes = window.atob(base64);
-                const appKey   = Uint8Array.from([...rawBytes].map(c => c.charCodeAt(0)));
-
-                let sub = await reg.pushManager.getSubscription();
-                if (!sub) {
-                    sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey });
-                }
-                const subJson = sub.toJSON();
-                await fetch('/app/push/subscribe', {
-                    method:  'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
-                    body:    JSON.stringify({
-                        endpoint:   sub.endpoint,
-                        public_key: subJson.keys?.p256dh || '',
-                        auth_token: subJson.keys?.auth   || '',
-                    }),
-                });
-                this.on = true;
-                localStorage.setItem('cxa_push_asked', 'granted');
+                const sub = await pushSubscribe(reg, csrf);
+                this.on = !!sub;
             }
         } catch (e) {
             console.error('[togglePref]', e);
