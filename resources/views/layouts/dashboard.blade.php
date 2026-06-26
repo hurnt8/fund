@@ -7,10 +7,19 @@
 <meta name="theme-color" content="#0B1A2E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Credixa">
+<meta name="apple-mobile-web-app-title" content="Credixa Admin">
 <meta name="mobile-web-app-capable" content="yes">
+@auth
+  @if(Auth::user()->hasAnyRole(['admin','super-admin']))
+<link rel="manifest" href="/admin-manifest.json">
+  @else
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
+  @endif
+@else
+<link rel="manifest" href="/admin-manifest.json">
+@endauth
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
 <title>@yield('title','Dashboard') — Credixa Invest</title>
 <link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -869,6 +878,19 @@ a { text-decoration:none; }
     <div class="topbar-right">
       @auth
       @if(Auth::user()->hasAnyRole(['admin','super-admin']))
+      {{-- Bouton d'installation PWA (visible uniquement si installable) --}}
+      <button id="pwa-install-btn" onclick="doInstallPwa()"
+        title="Installer l'application"
+        style="display:none;align-items:center;gap:.4rem;
+          background:var(--c-gold);color:var(--c-navy);
+          border:none;border-radius:var(--radius-sm);
+          padding:.4rem .875rem;font-size:.78rem;font-weight:700;
+          cursor:pointer;font-family:inherit;transition:background .2s;flex-shrink:0">
+        <i class="fas fa-download"></i>
+        <span class="d-none d-sm-inline">Installer l'app</span>
+      </button>
+      @endif
+      @if(Auth::user()->hasAnyRole(['admin','super-admin']))
       @php $adminUnread = \App\Models\AdminNotification::where('admin_id', Auth::id())->whereNull('read_at')->count(); @endphp
       <div style="position:relative" id="notifWrap">
         <button class="topbar-badge" id="notifBell" onclick="toggleNotifPanel()"
@@ -1033,5 +1055,91 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+@auth
+@if(Auth::user()->hasAnyRole(['admin','super-admin']))
+<script>
+/* ── PWA Install — portail admin ── */
+let _pwaPrompt = null;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  _pwaPrompt = e;
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn && !localStorage.getItem('cxa_admin_pwa_installed')) {
+    btn.style.display = 'flex';
+  }
+});
+
+window.addEventListener('appinstalled', function() {
+  localStorage.setItem('cxa_admin_pwa_installed', '1');
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) btn.style.display = 'none';
+  _pwaPrompt = null;
+});
+
+function doInstallPwa() {
+  if (!_pwaPrompt) return;
+  _pwaPrompt.prompt();
+  _pwaPrompt.userChoice.then(function(r) {
+    if (r.outcome === 'accepted') {
+      localStorage.setItem('cxa_admin_pwa_installed', '1');
+      const btn = document.getElementById('pwa-install-btn');
+      if (btn) btn.style.display = 'none';
+    }
+    _pwaPrompt = null;
+  });
+}
+
+/* iOS Safari : afficher les instructions si non installé */
+(function() {
+  const isIos    = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const standalone = window.navigator.standalone === true;
+  if (isIos && isSafari && !standalone && !localStorage.getItem('cxa_admin_pwa_installed')) {
+    const banner = document.getElementById('pwa-ios-banner');
+    if (banner) banner.style.display = 'flex';
+  }
+})();
+</script>
+
+{{-- Bannière iOS (Safari) --}}
+<div id="pwa-ios-banner"
+  style="display:none;position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);
+    width:calc(100% - 2rem);max-width:380px;
+    background:var(--c-navy);color:#fff;
+    border-radius:var(--radius);padding:1rem 1.125rem;
+    box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:9999;
+    flex-direction:column;gap:.625rem;
+    border:1px solid rgba(200,169,81,.3)">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:.625rem">
+      <img src="/images/icon-192.png" style="width:36px;height:36px;border-radius:8px" alt="">
+      <div>
+        <div style="font-size:.8rem;font-weight:700;color:#fff">Credixa Admin</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Installer comme application</div>
+      </div>
+    </div>
+    <button onclick="document.getElementById('pwa-ios-banner').style.display='none';localStorage.setItem('cxa_admin_pwa_installed','1')"
+      style="background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">
+      &times;
+    </button>
+  </div>
+  <div style="font-size:.73rem;color:rgba(255,255,255,.65);line-height:1.6">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">
+      <span style="background:rgba(200,169,81,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">1</span>
+      Appuyez sur <strong style="color:#fff">Partager</strong> <i class="fas fa-share-square" style="color:var(--c-gold)"></i>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">
+      <span style="background:rgba(200,169,81,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">2</span>
+      Puis <strong style="color:#fff">Sur l'écran d'accueil</strong> <i class="fas fa-plus-square" style="color:var(--c-gold)"></i>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem">
+      <span style="background:rgba(200,169,81,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">3</span>
+      Appuyez sur <strong style="color:#fff">Ajouter</strong>
+    </div>
+  </div>
+</div>
+@endif
+@endauth
 </body>
 </html>

@@ -245,8 +245,9 @@ Route::middleware(['auth', 'role:client', 'client.locale'])->prefix('app')->name
         return back();
     })->name('locale');
 });
-Route::get('/manifest.json', [ClientAppController::class, 'manifest'])->name('pwa.manifest');
-Route::get('/sw.js',         [ClientAppController::class, 'serviceWorker'])->name('pwa.sw');
+Route::get('/manifest.json',       [ClientAppController::class, 'manifest'])->name('pwa.manifest');
+Route::get('/admin-manifest.json', [ClientAppController::class, 'adminManifest'])->name('pwa.admin-manifest');
+Route::get('/sw.js',               [ClientAppController::class, 'serviceWorker'])->name('pwa.sw');
 
 Route::get('/storage/{path}', function (string $path) {
     $file = storage_path('app/public/' . $path);

@@ -446,6 +446,51 @@ class AppController extends Controller
         ]);
     }
 
+    public function adminManifest()
+    {
+        $data = [
+            'name'             => config('app.company_name', 'Credixa Invest') . ' — Administration',
+            'short_name'       => 'Credixa Admin',
+            'description'      => 'Gérez les prêts, clients et opérations Credixa.',
+            'start_url'        => '/admin',
+            'scope'            => '/',
+            'display'          => 'standalone',
+            'orientation'      => 'any',
+            'background_color' => '#0B1A2E',
+            'theme_color'      => '#0B1A2E',
+            'lang'             => app()->getLocale(),
+            'categories'       => ['finance', 'business'],
+            'icons'            => [
+                ['src' => '/images/apple-touch-icon.png', 'sizes' => '180x180', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/images/icon-192.png',         'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/images/icon-192.png',         'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'maskable'],
+                ['src' => '/images/icon-512.png',         'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/images/icon-512.png',         'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
+            ],
+            'shortcuts' => [
+                [
+                    'name'        => 'Tableau de bord',
+                    'short_name'  => 'Dashboard',
+                    'url'         => '/admin',
+                    'description' => 'Vue d\'ensemble admin',
+                    'icons'       => [['src' => '/images/icon-192.png', 'sizes' => '192x192']],
+                ],
+                [
+                    'name'        => 'Demandes de prêt',
+                    'short_name'  => 'Prêts',
+                    'url'         => '/admin/loans',
+                    'description' => 'Gérer les demandes de prêt',
+                    'icons'       => [['src' => '/images/icon-192.png', 'sizes' => '192x192']],
+                ],
+            ],
+        ];
+
+        return response()->json($data, 200, [
+            'Content-Type'  => 'application/manifest+json',
+            'Cache-Control' => 'public, max-age=3600',
+        ]);
+    }
+
     public function serviceWorker()
     {
         $js = <<<'JS'

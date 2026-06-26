@@ -2,9 +2,16 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Credixa Admin">
+<meta name="theme-color" content="#0B1A2E">
+<link rel="manifest" href="/admin-manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
 <title>{{ __('auth.staff_login_title') }} | Credixa</title>
-<link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
@@ -372,6 +379,110 @@ function tglPwd(id, ico) {
   f.type = f.type === 'password' ? 'text' : 'password';
   i.classList.toggle('fa-eye'); i.classList.toggle('fa-eye-slash');
 }
+</script>
+
+{{-- ══ PWA Install ══ --}}
+
+{{-- Bannière Android / Chrome --}}
+<div id="pwa-banner" style="display:none;position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);
+  width:calc(100% - 2rem);max-width:400px;
+  background:var(--navy);border:1px solid rgba(200,169,81,.35);
+  border-radius:14px;padding:.875rem 1.125rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);z-index:9999;
+  align-items:center;gap:.75rem">
+  <img src="/images/icon-192.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0" alt="">
+  <div style="flex:1;min-width:0">
+    <div style="font-size:.825rem;font-weight:700;color:#fff">Credixa Admin</div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.1rem">Installer sur votre écran d'accueil</div>
+  </div>
+  <button id="pwa-install-trigger"
+    style="background:var(--gold);color:#0B1A2E;border:none;border-radius:8px;
+      padding:.45rem .875rem;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0">
+    <i class="fas fa-download"></i> Installer
+  </button>
+  <button onclick="document.getElementById('pwa-banner').style.display='none';localStorage.setItem('cxa_admin_pwa_dismissed','1')"
+    style="background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.9rem">
+    &times;
+  </button>
+</div>
+
+{{-- Bannière iOS Safari --}}
+<div id="pwa-ios" style="display:none;position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);
+  width:calc(100% - 2rem);max-width:400px;
+  background:var(--navy);border:1px solid rgba(200,169,81,.35);
+  border-radius:14px;padding:1rem 1.125rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);z-index:9999;flex-direction:column;gap:.75rem">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:.625rem">
+      <img src="/images/icon-192.png" style="width:36px;height:36px;border-radius:8px" alt="">
+      <div>
+        <div style="font-size:.8rem;font-weight:700;color:#fff">Credixa Admin</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.45)">Installer l'application</div>
+      </div>
+    </div>
+    <button onclick="document.getElementById('pwa-ios').style.display='none';localStorage.setItem('cxa_admin_pwa_dismissed','1')"
+      style="background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">
+      &times;
+    </button>
+  </div>
+  <div style="font-size:.73rem;color:rgba(255,255,255,.65);line-height:1.9">
+    <span style="display:inline-flex;align-items:center;gap:.35rem">
+      <b style="background:rgba(200,169,81,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">1</b>
+      Appuyez sur <strong style="color:#fff">Partager</strong> <i class="fas fa-share-square" style="color:var(--gold)"></i>
+    </span><br>
+    <span style="display:inline-flex;align-items:center;gap:.35rem">
+      <b style="background:rgba(200,169,81,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">2</b>
+      Puis <strong style="color:#fff">Sur l'écran d'accueil</strong> <i class="fas fa-plus-square" style="color:var(--gold)"></i>
+    </span><br>
+    <span style="display:inline-flex;align-items:center;gap:.35rem">
+      <b style="background:rgba(200,169,81,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">3</b>
+      Appuyez sur <strong style="color:#fff">Ajouter</strong>
+    </span>
+  </div>
+</div>
+
+<script>
+/* ── Service Worker ── */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+
+/* ── Android / Chrome install ── */
+var _pwaStaffPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  _pwaStaffPrompt = e;
+  if (!localStorage.getItem('cxa_admin_pwa_dismissed') && !localStorage.getItem('cxa_admin_pwa_installed')) {
+    document.getElementById('pwa-banner').style.display = 'flex';
+  }
+});
+window.addEventListener('appinstalled', function() {
+  localStorage.setItem('cxa_admin_pwa_installed', '1');
+  document.getElementById('pwa-banner').style.display = 'none';
+});
+document.getElementById('pwa-install-trigger').addEventListener('click', function() {
+  if (!_pwaStaffPrompt) return;
+  _pwaStaffPrompt.prompt();
+  _pwaStaffPrompt.userChoice.then(function(r) {
+    if (r.outcome === 'accepted') {
+      localStorage.setItem('cxa_admin_pwa_installed', '1');
+      document.getElementById('pwa-banner').style.display = 'none';
+    }
+    _pwaStaffPrompt = null;
+  });
+});
+
+/* ── iOS Safari ── */
+(function() {
+  var isIos    = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  var standalone = window.navigator.standalone === true;
+  if (isIos && isSafari && !standalone
+      && !localStorage.getItem('cxa_admin_pwa_dismissed')
+      && !localStorage.getItem('cxa_admin_pwa_installed')) {
+    document.getElementById('pwa-ios').style.display = 'flex';
+  }
+})();
 </script>
 </body>
 </html>
