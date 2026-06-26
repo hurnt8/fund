@@ -33,9 +33,6 @@ class PushController extends Controller
             ]
         );
 
-        // Mémoriser l'endpoint dans la session pour nettoyage à la déconnexion
-        $request->session()->put('push_endpoint', $request->endpoint);
-
         return response()->json(['status' => 'ok']);
     }
 
@@ -46,8 +43,6 @@ class PushController extends Controller
         PushSubscription::where('user_id', Auth::id())
             ->where('endpoint', $request->endpoint)
             ->delete();
-
-        $request->session()->forget('push_endpoint');
 
         return response()->json(['status' => 'ok']);
     }
