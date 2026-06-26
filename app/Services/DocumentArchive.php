@@ -65,6 +65,8 @@ class DocumentArchive
      */
     public function getOrGenerate(LoanRequest $loan, ContractTemplate $template, string $locale = 'fr'): string
     {
+        $currentVars = $this->resolver->resolve($loan, $locale);
+
         $existing = GeneratedDocument::where('loan_request_id', $loan->id)
             ->where('contract_template_id', $template->id)
             ->where('template_version', $template->docx_version)
@@ -74,7 +76,12 @@ class DocumentArchive
 
         if ($existing) {
             $absPath = storage_path('app/' . $existing->docx_path);
-            if (file_exists($absPath)) {
+            // Réutilise le cache uniquement si le fichier existe ET que les données du dossier n'ont pas changé
+            $snapshot = (array) ($existing->vars_snapshot ?? []);
+            ksort($snapshot);
+            $current  = $currentVars;
+            ksort($current);
+            if (file_exists($absPath) && $snapshot === $current) {
                 $this->audit->log(
                     DocumentAuditLog::ACTION_DOCUMENT_DOWNLOADED,
                     $loan,

@@ -129,22 +129,28 @@ class ContractDocxRenderer
     /**
      * Reconstruit les balises {variable} fragmentées en plusieurs <w:r> runs Word.
      *
-     * Patterns couverts :
-     *   A) { | varname | }       → 3 runs, nom complet au milieu, } séparé
-     *   B) {varname | }          → 2 runs, ouverture collée au nom, } seul
-     *   C) { | varname}          → 2 runs, { seul, nom+} ensemble
-     *   D) { | partial | rest}   → 3 runs, nom fragmenté + } attaché au dernier
+     * Patterns couverts (préfixe = texte avant { dans le même <w:t>) :
+     *   D)  { | partial | rest}     → 3 runs, nom fragmenté, { seul au début du run
+     *   A)  { | varname | }         → 3 runs, nom complet, { seul au début du run
+     *   B)  {varname | }            → 2 runs, {varname au début du run, } seul
+     *   C)  { | varname}            → 2 runs, { seul au début du run, nom+} ensemble
+     *   EH) préfixe{ | varname | } → 3 runs, { en milieu de run (3 façons)
+     *   EG) préfixe{varname | }    → 2 runs, {varname en milieu de run, } seul
+     *   EF) préfixe{ | varname}    → 2 runs, { en milieu de run, nom+} ensemble
+     *   ED) préfixe{ | p1 | p2}    → 3 runs, nom fragmenté, { en milieu de run
      */
     public function defragment(string $xml): string
     {
         $v = '[a-zA-Z_][a-zA-Z0-9_]*';
 
-        // <w:rPr>...</w:rPr> matché sans backtracking via exclusion de classe :
-        // [^<]* puis (<non-</w:rPr>>[^<]*)* évite que .* ne traverse plusieurs runs.
         $rpr = '(?:<w:rPr>[^<]*(?:<(?!/w:rPr>)[^<]*)*</w:rPr>)?';
         $run = '</w:t></w:r>\s*<w:r\b[^>]*>' . $rpr . '<w:t[^>]*>';
+        // Texte avant { dans le même <w:t> (ne peut pas contenir < ni {)
+        $pre = '[^<{]*';
 
-        // Pattern D : { | partial_name | rest_name}  (nom fragmenté, } final)
+        // ── Patterns A-D : { en DÉBUT de run ────────────────────────────────
+
+        // Pattern D : { | partial_name | rest_name}
         $xml = preg_replace(
             '#(<w:t[^>]*>)\{' . $run . '([a-zA-Z_][a-zA-Z0-9_]*)' . $run . '([a-zA-Z0-9_]+)\}#s',
             '$1{$2$3}',
@@ -172,6 +178,36 @@ class ContractDocxRenderer
             $xml
         );
 
+        // ── Patterns E* : { en MILIEU de run (précédé de texte) ─────────────
+
+        // Pattern ED : préfixe{ | partial | rest}  (nom fragmenté, { en milieu)
+        $xml = preg_replace(
+            '#(<w:t[^>]*>' . $pre . ')\{' . $run . '([a-zA-Z_][a-zA-Z0-9_]*)' . $run . '([a-zA-Z0-9_]+)\}#s',
+            '$1{$2$3}',
+            $xml
+        );
+
+        // Pattern EH : préfixe{ | varname | }  (3 runs, { en milieu)
+        $xml = preg_replace(
+            '#(<w:t[^>]*>' . $pre . ')\{' . $run . '(' . $v . ')' . $run . '\}#s',
+            '$1{$2}',
+            $xml
+        );
+
+        // Pattern EG : préfixe{varname | }  (2 runs, {varname en milieu, } seul)
+        $xml = preg_replace(
+            '#(<w:t[^>]*>' . $pre . ')(\{' . $v . ')' . $run . '\}#s',
+            '$1$2}',
+            $xml
+        );
+
+        // Pattern EF : préfixe{ | varname}  (2 runs, { en milieu, nom+} ensemble)
+        $xml = preg_replace(
+            '#(<w:t[^>]*>' . $pre . ')\{' . $run . '(' . $v . '\}\s*)#s',
+            '$1{$2',
+            $xml
+        );
+
         return $xml;
     }
 
@@ -192,13 +228,14 @@ class ContractDocxRenderer
 
     /**
      * Lève une exception si des balises {xxx} résiduelles sont présentes dans le document.xml.
-     * Ignore les balises dans les commentaires XML et les sections CDATA.
+     * Concatène le texte des <w:t> SANS séparateur pour détecter les variables encore
+     * fragmentées sur plusieurs runs après la phase defragment().
      */
     private function assertNoResidualTags(string $xml): void
     {
-        // Extraire uniquement le texte des <w:t> pour éviter les faux positifs
         preg_match_all('/<w:t[^>]*>([^<]*)<\/w:t>/', $xml, $m);
-        $texts = implode(' ', $m[1]);
+        // Jointure sans espace : détecte {var} dont { et name} sont dans des <w:t> adjacents
+        $texts = implode('', $m[1]);
 
         preg_match_all('/\{([a-zA-Z_][a-zA-Z0-9_]*)\}/', $texts, $found);
         $residual = array_unique($found[0] ?? []);
