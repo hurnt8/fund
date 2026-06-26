@@ -54,6 +54,7 @@ class ContractTemplateController extends Controller
 
         ContractTemplate::create([
             'name'          => $data['name'],
+            'content'       => '',
             'is_default'    => $data['is_default'] ?? false,
             'template_type' => 'docx',
             'locale'        => $data['locale'] ?? null,
