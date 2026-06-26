@@ -11,6 +11,57 @@
   .topbar-title { color: #E8EDF5 !important; }
   .topbar-badge { background: #162D47 !important; border-color: rgba(255,255,255,.1) !important; color: #B8C8D8 !important; }
   .topbar-avatar { background: linear-gradient(135deg,#1D3A5C,#0B2E4E) !important; color: #C8A951 !important; }
+
+  /* ── Tableau d'amortissement — responsive mobile ── */
+  .cl-amort-wrap { overflow-x: auto; overflow-y: auto; max-height: 380px; -webkit-overflow-scrolling: touch; }
+
+  @media(max-width:640px) {
+    /* Mode carte pour cl-table */
+    .cl-table { display: block; min-width: 0 !important; }
+    .cl-table thead { display: none; }
+    .cl-table tbody { display: block; }
+    .cl-table tbody tr {
+      display: block;
+      background: rgba(22,45,71,.7);
+      border: 1px solid rgba(200,169,81,.14);
+      border-radius: 9px;
+      padding: .75rem;
+      margin-bottom: .625rem;
+    }
+    .cl-table tbody td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .3rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      font-size: .8rem;
+      gap: .5rem;
+    }
+    .cl-table tbody td:last-child { border-bottom: none; }
+    .cl-table tbody td[data-label]::before {
+      content: attr(data-label);
+      font-size: .65rem;
+      font-weight: 700;
+      color: var(--cl-muted, #6B88A4);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    /* Panel head wrap */
+    .cl-panel__head { flex-wrap: wrap; gap: .5rem; }
+    /* Steps : scroll horizontal sur mobile */
+    .cl-steps { padding-bottom: .5rem; }
+    /* Row g-4 : réduire gap sur mobile */
+    .row.g-4 { --bs-gutter-y: 1rem; }
+  }
+
+  @media(max-width:480px) {
+    .cl-data-row { flex-wrap: wrap; gap: .2rem; }
+    .cl-data-row__val { text-align: left; flex: 1 1 100%; }
+    .cl-track-label { font-size: .65rem; }
+    .cl-track-val   { font-size: .78rem; }
+  }
 </style>
 @endpush
 
@@ -280,7 +331,7 @@
       {{ count($loan->amortization_schedule) }} échéances · {{ $loan->darly }} mois
     </span>
   </div>
-  <div style="max-height:380px;overflow-y:auto">
+  <div class="cl-amort-wrap">
     <table class="cl-table">
       <thead>
         <tr>
@@ -294,11 +345,11 @@
       <tbody>
         @foreach($loan->amortization_schedule as $row)
         <tr>
-          <td class="td-muted">{{ $row['month'] }}</td>
-          <td class="td-bold">{{ number_format($row['payment'], 2, ',', ' ') }} {{ $loan->currency }}</td>
-          <td class="td-green">{{ number_format($row['principal'], 2, ',', ' ') }} {{ $loan->currency }}</td>
-          <td class="td-red">{{ number_format($row['interest'], 2, ',', ' ') }} {{ $loan->currency }}</td>
-          <td class="td-muted">{{ number_format($row['balance'], 2, ',', ' ') }} {{ $loan->currency }}</td>
+          <td data-label="N°" class="td-muted">{{ $row['month'] }}</td>
+          <td data-label="Mensualité" class="td-bold">{{ number_format($row['payment'], 2, ',', ' ') }} {{ $loan->currency }}</td>
+          <td data-label="Capital remb." class="td-green">{{ number_format($row['principal'], 2, ',', ' ') }} {{ $loan->currency }}</td>
+          <td data-label="Intérêts" class="td-red">{{ number_format($row['interest'], 2, ',', ' ') }} {{ $loan->currency }}</td>
+          <td data-label="Solde restant" class="td-muted">{{ number_format($row['balance'], 2, ',', ' ') }} {{ $loan->currency }}</td>
         </tr>
         @endforeach
       </tbody>

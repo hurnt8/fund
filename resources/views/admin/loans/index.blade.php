@@ -129,6 +129,76 @@ table.li-tbl tbody tr:hover td:first-child{border-left-color:var(--c-gold)}
 
 /* ── Pagination ── */
 .li-pagi{padding:.75rem 1.125rem;border-top:1px solid var(--c-border)}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE MOBILE — li-tbl
+   ─────────────────────────────────────────*/
+@media(max-width:900px){
+  .li-header{flex-direction:column;align-items:flex-start}
+  .li-header .btn-navy{align-self:flex-end}
+  .li-search-bar{flex-wrap:wrap}
+}
+@media(max-width:640px){
+  .li-header .btn-navy{width:100%;justify-content:center;align-self:stretch}
+  /* Chips : scroll horizontal sans retour à la ligne */
+  .li-filters-strip{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.375rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .li-filters-strip::-webkit-scrollbar{display:none}
+  .li-chip{flex-shrink:0}
+  /* Méta : empilé */
+  .li-table-meta{flex-direction:column;align-items:flex-start;gap:.2rem}
+  /* Conteneur scroll → désactivé, on affiche des cartes */
+  .li-tbl-wrap{overflow-x:visible}
+  /* ── Tableau → cartes ── */
+  table.li-tbl thead{display:none}
+  table.li-tbl tbody tr{
+    display:block;
+    background:#fff;
+    border:1px solid var(--c-border);
+    border-radius:10px;
+    margin-bottom:.75rem;
+    overflow:hidden;
+  }
+  table.li-tbl tbody tr:hover td{background:transparent}
+  table.li-tbl tbody td{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.4rem 1rem;
+    border-bottom:1px solid #f3f4f6;
+    font-size:.8rem;
+    min-height:36px;
+    border-left:none !important;
+  }
+  table.li-tbl tbody td:last-child{border-bottom:none}
+  table.li-tbl tbody td[data-label]:not([data-label=""])::before{
+    content:attr(data-label);
+    font-size:.65rem;font-weight:700;color:var(--c-muted);
+    text-transform:uppercase;letter-spacing:.05em;
+    flex-shrink:0;margin-right:.75rem;white-space:nowrap;
+  }
+  /* Référence : en-tête de carte */
+  table.li-tbl tbody td:first-child{
+    padding:.75rem 1rem;
+    background:#fafbfc;
+    border-bottom:1px solid var(--c-border);
+    min-height:44px;
+  }
+  table.li-tbl tbody td:first-child::before{display:none}
+  /* Actions : barre inférieure centrée */
+  table.li-tbl tbody td:last-child{
+    justify-content:center;
+    gap:.625rem;
+    flex-wrap:wrap;
+    padding:.625rem 1rem;
+    background:#fafbfc;
+    border-top:1px solid var(--c-border);
+  }
+  table.li-tbl tbody td:last-child::before{display:none}
+  table.li-tbl tbody td:last-child .btn-icon{width:44px;height:44px;font-size:.95rem}
+  /* Barre de recherche : colonne sur petits écrans */
+  .li-search-bar{flex-direction:column;align-items:stretch}
+  .li-search-input{min-width:0;width:100%}
+}
 </style>
 @endpush
 
@@ -282,7 +352,7 @@ $stepMap = [
     </div>
   </div>
 
-  <div style="overflow-x:auto">
+  <div class="li-tbl-wrap" style="overflow-x:auto">
     <table class="li-tbl">
       <thead>
         <tr>
@@ -305,7 +375,7 @@ $stepMap = [
         <tr>
 
           {{-- Référence --}}
-          <td>
+          <td data-label="Référence">
             <a href="{{ route('admin.loans.show',$loan) }}" class="li-ref-link">
               {{ $loan->reference }}
             </a>
@@ -318,7 +388,7 @@ $stepMap = [
           </td>
 
           {{-- Client --}}
-          <td>
+          <td data-label="Client">
             <div style="display:flex;align-items:center;gap:.55rem">
               <div class="li-avatar li-avatar--client">
                 {{ strtoupper(substr($loan->client?->name ?? $loan->name,0,1)) }}
@@ -332,7 +402,7 @@ $stepMap = [
 
           {{-- Admin (super-admin seulement) --}}
           @if($isSuperAdmin)
-          <td>
+          <td data-label="Admin">
             @if($loan->admin)
             <div style="display:flex;align-items:center;gap:.45rem">
               <div class="li-avatar li-avatar--admin" style="width:26px;height:26px;border-radius:6px;font-size:.65rem">
@@ -349,7 +419,7 @@ $stepMap = [
           @endif
 
           {{-- Montant --}}
-          <td>
+          <td data-label="Montant">
             <div class="li-amount">
               {{ number_format((float)$loan->amount,0,',',' ') }}
               <span style="font-size:.68rem;font-weight:500;color:var(--c-muted)">{{ $loan->currency }}</span>
@@ -361,13 +431,13 @@ $stepMap = [
           </td>
 
           {{-- Mensualité --}}
-          <td>
+          <td data-label="Mensualité">
             <div class="li-monthly">{{ number_format((float)$loan->monthly_payment,2,',',' ') }}</div>
             <div class="li-monthly-cur">{{ $loan->currency }}/mois</div>
           </td>
 
           {{-- Statut --}}
-          <td>
+          <td data-label="Statut">
             <span class="li-status li-status--{{ $loan->status }}">
               @php
                 $sIcons = [
@@ -392,13 +462,13 @@ $stepMap = [
           </td>
 
           {{-- Date --}}
-          <td>
+          <td data-label="Date">
             <div class="li-date-main">{{ $loan->created_at->format('d/m/Y') }}</div>
             <div class="li-date-rel">{{ $loan->created_at->diffForHumans() }}</div>
           </td>
 
           {{-- Actions contextuelles par statut --}}
-          <td>
+          <td data-label="">
             <div class="li-act">
 
               {{-- Voir le dossier — toujours disponible --}}

@@ -159,6 +159,48 @@ table.ds-table td.td-pay{font-weight:700;color:var(--ca-text)}
 table.ds-table td.td-cap{color:var(--ca-teal-l)}
 table.ds-table td.td-int{color:#f59e0b}
 table.ds-table td.td-rem{color:var(--ca-text-3)}
+
+/* ── Amortization table — card mode ≤ 640 px ── */
+@media(max-width:640px){
+  .ds-amort-wrap{margin:0 .875rem}
+  table.ds-table{display:block}
+  table.ds-table thead{display:none}
+  table.ds-table tbody{display:block}
+  table.ds-table tbody tr{
+    display:block;
+    background:var(--ca-bg2);
+    border:1px solid var(--ca-border);
+    border-radius:12px;
+    padding:.75rem;
+    margin-bottom:.625rem;
+  }
+  table.ds-table tbody td{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.3rem 0;
+    border-bottom:1px solid var(--ca-border-2);
+    font-size:.8rem;
+    white-space:normal;
+    gap:.5rem;
+  }
+  table.ds-table tbody td:last-child{border-bottom:none}
+  table.ds-table tbody td[data-label]::before{
+    content:attr(data-label);
+    font-size:.65rem;
+    font-weight:700;
+    color:var(--ca-text-3);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    flex-shrink:0;
+    white-space:nowrap;
+  }
+  table.ds-table td.td-pay{font-weight:700;color:var(--ca-text)}
+  table.ds-table td.td-cap{color:var(--ca-teal-l)}
+  table.ds-table td.td-int{color:#f59e0b}
+  table.ds-table td.td-num,
+  table.ds-table td.td-rem{color:var(--ca-text-3)}
+}
 </style>
 @endpush
 
@@ -334,11 +376,11 @@ table.ds-table td.td-rem{color:var(--ca-text-3)}
       <tbody>
         @foreach($loan->amortization_schedule as $row)
         <tr>
-          <td class="td-num">{{ $row['month'] }}</td>
-          <td class="td-pay">{{ number_format($row['payment'],2,',',' ') }}</td>
-          <td class="td-cap">{{ number_format($row['principal'],2,',',' ') }}</td>
-          <td class="td-int">{{ number_format($row['interest'],2,',',' ') }}</td>
-          <td class="td-rem">{{ number_format($row['balance'],2,',',' ') }}</td>
+          <td data-label="N°" class="td-num">{{ $row['month'] }}</td>
+          <td data-label="Mensualité" class="td-pay">{{ number_format($row['payment'],2,',',' ') }}</td>
+          <td data-label="Capital" class="td-cap">{{ number_format($row['principal'],2,',',' ') }}</td>
+          <td data-label="Intérêts" class="td-int">{{ number_format($row['interest'],2,',',' ') }}</td>
+          <td data-label="Solde" class="td-rem">{{ number_format($row['balance'],2,',',' ') }}</td>
         </tr>
         @endforeach
       </tbody>

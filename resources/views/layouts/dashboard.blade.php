@@ -2,8 +2,15 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="theme-color" content="#0B1A2E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Credixa">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
 <title>@yield('title','Dashboard') — Credixa Invest</title>
 <link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -577,7 +584,9 @@ a { text-decoration:none; }
   .card-pro-hdr { flex-direction:column; align-items:flex-start; }
   .card-pro-hdr > * { width:100%; }
 
-  /* Tables : carte sur mobile */
+  /* Tables : carte sur mobile — annule le min-width du breakpoint tablet */
+  .pro-table { min-width:0 !important; width:100%; display:block; }
+  .pro-table tbody { display:block; width:100%; }
   .pro-table thead { display:none; }
   .pro-table tbody tr {
     display:block;
@@ -1017,5 +1026,12 @@ async function markAllReadPanel() {
 @endif
 @endauth
 @stack('scripts')
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
 </body>
 </html>

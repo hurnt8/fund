@@ -200,6 +200,55 @@
 .sadb-empty p { font-size: .8rem; color: var(--c-muted); }
 
 @media(max-width:575px) { .sadb-hero-stats { display: none; } }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE MOBILE — sadb-
+   ─────────────────────────────────────────*/
+@media(max-width:768px) {
+  .sadb-hero { padding: 1.25rem 1.25rem; gap: 1rem; }
+  .sadb-hero-title { font-size: 1.125rem; }
+}
+/* Mode carte pro-table démarre à 640px — table-card doit laisser passer les coins arrondis */
+@media(max-width:640px) {
+  .sadb-table-card { overflow: visible; }
+}
+@media(max-width:575px) {
+  /* Donut : empilé */
+  .sadb-ring-wrap { flex-direction: column; align-items: center; gap: .75rem; }
+  .sadb-ring-legend { width: 100%; }
+  /* En-têtes cartes */
+  .sadb-card-hdr { flex-wrap: wrap; gap: .5rem; }
+  .sadb-table-hdr { flex-wrap: wrap; gap: .5rem; }
+  /* Ligne utilisateur : wrap sur 320px */
+  .sadb-user-row { flex-wrap: wrap; gap: .375rem; }
+  .sadb-user-info { flex: 1 1 calc(100% - 52px); min-width: 0; }
+  .sadb-user-since { margin-left: auto; }
+  /* KPI sub-badges */
+  .sadb-kpi-sub { gap: .25rem; }
+}
+@media(max-width:400px) {
+  .sadb-kpi-grid { gap: .625rem; }
+  .sadb-kpi { padding: .875rem 1rem; }
+  .sadb-kpi-val { font-size: 1.625rem; }
+  .sadb-kpi-top { flex-wrap: wrap; gap: .375rem; }
+}
+
+/* ── Bouton installation PWA ── */
+.sadb-pwa-btn {
+  display: none;
+  align-items: center; gap: .4rem;
+  margin-top: .625rem;
+  padding: .375rem .875rem;
+  border: 1px solid rgba(200,169,81,.35);
+  border-radius: 8px;
+  background: rgba(200,169,81,.1);
+  color: var(--c-gold);
+  font-size: .7rem; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: background .2s, border-color .2s;
+}
+.sadb-pwa-btn:hover { background: rgba(200,169,81,.22); border-color: rgba(200,169,81,.6); }
+.sadb-pwa-btn i { font-size: .65rem; }
 </style>
 @endpush
 
@@ -251,6 +300,9 @@
     </div>
     <div class="sadb-hero-title">Panneau de contrôle</div>
     <div class="sadb-hero-sub">{{ now()->isoFormat('dddd D MMMM YYYY') }}</div>
+    <button id="sadb-pwa-btn" class="sadb-pwa-btn" aria-label="Installer l'application">
+      <i class="fas fa-download"></i> Installer l'application
+    </button>
     <div class="sadb-hero-users">
       <span class="sadb-user-chip" style="background:rgba(37,99,235,.15);color:#93c5fd">
         <span class="sadb-user-chip-dot" style="background:#2563EB"></span>
@@ -492,7 +544,7 @@
           <td data-label="Date" style="font-size:.72rem;color:var(--c-muted);white-space:nowrap">
             {{ $loan->created_at->format('d/m/Y') }}
           </td>
-          <td>
+          <td data-label="">
             <a href="{{ route('admin.loans.show', $loan) }}" class="btn-icon btn-icon-primary" title="Voir">
               <i class="fas fa-eye"></i>
             </a>
@@ -514,3 +566,32 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+  const btn = document.getElementById('sadb-pwa-btn');
+  if (!btn) return;
+  let deferred = null;
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    btn.style.display = 'inline-flex';
+  });
+
+  btn.addEventListener('click', function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function (result) {
+      deferred = null;
+      if (result.outcome === 'accepted') btn.style.display = 'none';
+    });
+  });
+
+  window.addEventListener('appinstalled', function () {
+    btn.style.display = 'none';
+  });
+})();
+</script>
+@endpush

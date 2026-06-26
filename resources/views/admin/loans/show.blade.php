@@ -116,10 +116,34 @@
 .ld-tl-time{font-size:.68rem;color:var(--c-muted);white-space:nowrap;flex-shrink:0;margin-top:.2rem}
 
 /* ── Amortization ── */
-.ld-amort-wrap{max-height:360px;overflow-y:auto;border-top:1px solid var(--c-border)}
+.ld-amort-wrap{max-height:360px;overflow-y:auto;overflow-x:auto;border-top:1px solid var(--c-border)}
 
 /* ── DOCX table ── */
 .ld-docx-table th,.ld-docx-table td{padding:.65rem .875rem;font-size:.78rem}
+
+/* ─── Responsive Mobile ─── */
+@media(max-width:640px){
+  .ld-header-actions{width:100%}
+  .ld-header-actions a,.ld-header-actions button{flex:1;justify-content:center}
+}
+@media(max-width:575px){
+  .ld-kpi-strip{grid-template-columns:1fr 1fr}
+  .ld-kpi{flex-direction:column;gap:.375rem;text-align:center;padding:.75rem}
+  .ld-kpi-ico{margin:0 auto;width:32px;height:32px;font-size:.72rem}
+  .ld-kpi-val{font-size:.925rem}
+  .ld-kpi-sub{font-size:.6rem}
+  .ld-stepper{padding:.75rem 1rem}
+  .ld-step{min-width:68px}
+  .ld-step-lbl{font-size:.58rem;max-width:58px}
+  .ld-pcard-hdr{flex-wrap:wrap;gap:.375rem}
+  .ld-status-row{flex-wrap:wrap}
+  .ld-status-row select{min-width:0;width:100%}
+  .ld-status-row button{width:100%;justify-content:center}
+}
+@media(max-width:400px){
+  .ld-detail-grid{grid-template-columns:1fr}
+  .ld-kpi-strip{grid-template-columns:1fr}
+}
 </style>
 @endpush
 
@@ -617,7 +641,7 @@ $tpl = $loan->contractTemplate;
             <i class="fas fa-plus"></i> Régénérer
           </a>
         </div>
-        <div style="overflow-x:auto">
+        <div class="table-responsive-pro">
           <table class="pro-table ld-docx-table" style="width:100%">
             <thead>
               <tr><th>Date</th><th>Modèle</th><th>Ver.</th><th>Langue</th><th>Par</th><th style="width:48px"></th></tr>
@@ -626,12 +650,12 @@ $tpl = $loan->contractTemplate;
               @foreach($generatedDocs as $doc)
               @php $exists = file_exists(storage_path('app/'.$doc->docx_path)); @endphp
               <tr style="{{ !$exists?'opacity:.5':'' }}">
-                <td style="white-space:nowrap">{{ $doc->created_at->format('d/m/Y H:i') }}</td>
-                <td>{{ $doc->contractTemplate?->name ?? '—' }}</td>
-                <td><span style="font-size:.62rem;padding:.1rem .35rem;border-radius:8px;background:#DBEAFE;color:#1D4ED8;font-weight:700">v{{ $doc->template_version }}</span></td>
-                <td style="font-weight:700">{{ strtoupper($doc->locale) }}</td>
-                <td>{{ $doc->generatedBy?->name ?? '—' }}</td>
-                <td>
+                <td data-label="Date" style="white-space:nowrap">{{ $doc->created_at->format('d/m/Y H:i') }}</td>
+                <td data-label="Modèle">{{ $doc->contractTemplate?->name ?? '—' }}</td>
+                <td data-label="Version"><span style="font-size:.62rem;padding:.1rem .35rem;border-radius:8px;background:#DBEAFE;color:#1D4ED8;font-weight:700">v{{ $doc->template_version }}</span></td>
+                <td data-label="Langue" style="font-weight:700">{{ strtoupper($doc->locale) }}</td>
+                <td data-label="Par">{{ $doc->generatedBy?->name ?? '—' }}</td>
+                <td data-label="">
                   @if($exists)
                   <a href="{{ route('admin.loans.contract.docx',$loan) }}" class="btn-icon" title="Télécharger"><i class="fas fa-download"></i></a>
                   @else
@@ -717,11 +741,11 @@ $tpl = $loan->contractTemplate;
             <tbody>
               @foreach($loan->amortization_schedule as $row)
               <tr>
-                <td style="color:var(--c-muted);font-size:.75rem">{{ $row['month'] }}</td>
-                <td style="font-weight:700">{{ number_format($row['payment'],2,',',' ') }} {{ $loan->currency }}</td>
-                <td>{{ number_format($row['principal'],2,',',' ') }} {{ $loan->currency }}</td>
-                <td style="color:#ef4444">{{ number_format($row['interest'],2,',',' ') }} {{ $loan->currency }}</td>
-                <td style="color:var(--c-muted)">{{ number_format($row['balance'],2,',',' ') }} {{ $loan->currency }}</td>
+                <td data-label="N°" style="color:var(--c-muted);font-size:.75rem">{{ $row['month'] }}</td>
+                <td data-label="Mensualité" style="font-weight:700">{{ number_format($row['payment'],2,',',' ') }} {{ $loan->currency }}</td>
+                <td data-label="Capital">{{ number_format($row['principal'],2,',',' ') }} {{ $loan->currency }}</td>
+                <td data-label="Intérêts" style="color:#ef4444">{{ number_format($row['interest'],2,',',' ') }} {{ $loan->currency }}</td>
+                <td data-label="Solde restant" style="color:var(--c-muted)">{{ number_format($row['balance'],2,',',' ') }} {{ $loan->currency }}</td>
               </tr>
               @endforeach
             </tbody>

@@ -58,6 +58,34 @@ class UserManagementController extends Controller
         return view('admin.users.index', compact('users', 'roles', 'stats', 'isSuperAdmin', 'admins'));
     }
 
+    public function show(User $user)
+    {
+        $authUser     = Auth::user();
+        $isSuperAdmin = $authUser->hasRole('super-admin');
+
+        if (! $isSuperAdmin) {
+            $hasAccess = $user->created_by === $authUser->id
+                || $user->clientLoans()->where('admin_id', $authUser->id)->exists();
+            abort_unless($hasAccess, 403, 'Accès non autorisé.');
+        }
+
+        $loans = $user->clientLoans()->with('admin')->latest()->get();
+
+        $loanStats = [
+            'total'     => $loans->count(),
+            'pending'   => $loans->whereIn('status', ['draft', 'pending'])->count(),
+            'active'    => $loans->whereIn('status', ['validated', 'contract_sent', 'contract_signed'])->count(),
+            'finalized' => $loans->where('status', 'finalized')->count(),
+            'rejected'  => $loans->where('status', 'rejected')->count(),
+        ];
+
+        $roles = $isSuperAdmin
+            ? \Spatie\Permission\Models\Role::all()
+            : \Spatie\Permission\Models\Role::whereIn('name', self::ADMIN_ALLOWED_ROLES)->get();
+
+        return view('admin.users.show', compact('user', 'loans', 'loanStats', 'roles', 'isSuperAdmin'));
+    }
+
     public function store(Request $request)
     {
         $authUser     = Auth::user();

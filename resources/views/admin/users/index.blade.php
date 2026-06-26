@@ -158,7 +158,14 @@
               </button>
               @endif
 
-              <button class="btn-icon btn-icon-primary"
+              <a href="{{ route('admin.users.show', $user->id) }}"
+                 class="btn-icon btn-icon-primary"
+                 title="Voir la fiche">
+                <i class="fas fa-eye"></i>
+              </a>
+
+              <button class="btn-icon"
+                      style="background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);color:var(--c-blue)"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal{{ $user->id }}"
                       title="Modifier">

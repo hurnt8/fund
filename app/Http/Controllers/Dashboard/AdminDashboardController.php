@@ -15,7 +15,7 @@ class AdminDashboardController extends Controller
 
         $base = LoanRequest::where('admin_id', $adminId);
 
-        $pendingStatuses  = [LoanRequest::STATUS_DRAFT, LoanRequest::STATUS_PENDING];
+        $pendingStatuses  = [LoanRequest::STATUS_PENDING];
         $activeStatuses   = [LoanRequest::STATUS_VALIDATED, LoanRequest::STATUS_CONTRACT_SENT, LoanRequest::STATUS_CONTRACT_SIGNED];
         $finalizedStatus  = [LoanRequest::STATUS_FINALIZED];
         $rejectedStatus   = [LoanRequest::STATUS_REJECTED];

@@ -219,6 +219,56 @@
 .adb-empty p { font-size: .8rem; color: var(--c-muted); }
 
 @media(max-width:575px) { .adb-hero-kpis { display: none; } }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE MOBILE — adb-
+   ─────────────────────────────────────────*/
+@media(max-width:768px) {
+  .adb-hero { padding: 1.25rem 1.25rem; gap: 1rem; }
+  .adb-hero-title { font-size: 1.125rem; }
+}
+/* Mode carte pro-table démarre à 640px — table-card doit laisser passer les coins arrondis */
+@media(max-width:640px) {
+  .adb-table-card { overflow: visible; }
+}
+@media(max-width:575px) {
+  /* Alert : bouton pleine largeur si trop étroit */
+  .adb-alert { flex-wrap: wrap; gap: .625rem; }
+  .adb-alert-btn {
+    width: 100%; justify-content: center;
+    display: flex; align-items: center; gap: .35rem;
+    text-align: center;
+  }
+  /* Donut : empilé verticalement */
+  .adb-ring-wrap { flex-direction: column; align-items: center; gap: .75rem; }
+  .adb-ring-legend { width: 100%; }
+  /* En-têtes de cartes */
+  .adb-card-hdr { flex-wrap: wrap; gap: .5rem; }
+  .adb-table-hdr { flex-wrap: wrap; gap: .5rem; }
+}
+@media(max-width:400px) {
+  .adb-kpi-grid { gap: .625rem; }
+  .adb-kpi { padding: .875rem 1rem; }
+  .adb-kpi-val { font-size: 1.5rem; }
+  .adb-kpi-top { flex-wrap: wrap; gap: .375rem; }
+}
+
+/* ── Bouton installation PWA ── */
+.adb-pwa-btn {
+  display: none;
+  align-items: center; gap: .4rem;
+  margin-top: .625rem;
+  padding: .375rem .875rem;
+  border: 1px solid rgba(200,169,81,.35);
+  border-radius: 8px;
+  background: rgba(200,169,81,.1);
+  color: var(--c-gold);
+  font-size: .7rem; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: background .2s, border-color .2s;
+}
+.adb-pwa-btn:hover { background: rgba(200,169,81,.22); border-color: rgba(200,169,81,.6); }
+.adb-pwa-btn i { font-size: .65rem; }
 </style>
 @endpush
 
@@ -254,6 +304,9 @@
     <div class="adb-hero-tag">Credixa — Espace Administrateur</div>
     <div class="adb-hero-title">Bonjour, {{ Auth::user()->name }} 👋</div>
     <div class="adb-hero-sub">{{ now()->isoFormat('dddd D MMMM YYYY') }}</div>
+    <button id="adb-pwa-btn" class="adb-pwa-btn" aria-label="Installer l'application">
+      <i class="fas fa-download"></i> Installer l'application
+    </button>
   </div>
   <div class="adb-hero-kpis">
     <div class="adb-hero-kpi">
@@ -490,7 +543,13 @@
             {{ $loan->reference ?? '#'.$loan->id }}
           </td>
           <td data-label="Client">
+            @if($loan->client_id)
+            <a href="{{ route('admin.users.show', $loan->client_id) }}" style="text-decoration:none">
+              <div class="cell-name" style="color:var(--c-navy)">{{ $clientName }}</div>
+            </a>
+            @else
             <div class="cell-name">{{ $clientName }}</div>
+            @endif
             <div class="cell-sub">{{ $clientEmail }}</div>
           </td>
           <td data-label="Montant" style="font-weight:800;color:var(--c-navy);white-space:nowrap">
@@ -505,7 +564,7 @@
           <td data-label="Date" style="font-size:.72rem;color:var(--c-muted);white-space:nowrap">
             {{ $loan->created_at->format('d/m/Y') }}
           </td>
-          <td>
+          <td data-label="">
             <a href="{{ route('admin.loans.show', $loan) }}" class="btn-icon btn-icon-primary" title="Voir">
               <i class="fas fa-eye"></i>
             </a>
@@ -527,3 +586,32 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+  const btn = document.getElementById('adb-pwa-btn');
+  if (!btn) return;
+  let deferred = null;
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    btn.style.display = 'inline-flex';
+  });
+
+  btn.addEventListener('click', function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function (result) {
+      deferred = null;
+      if (result.outcome === 'accepted') btn.style.display = 'none';
+    });
+  });
+
+  window.addEventListener('appinstalled', function () {
+    btn.style.display = 'none';
+  });
+})();
+</script>
+@endpush

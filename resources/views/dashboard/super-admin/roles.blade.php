@@ -98,6 +98,43 @@
   border-color:var(--c-border); color:var(--c-text);
 }
 .page-item.active .page-link { background:var(--c-navy); border-color:var(--c-navy); color:#fff; }
+
+/* ── Scroll wrapper matrice ──────────────────────── */
+.perm-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.perm-scroll::-webkit-scrollbar { height: 4px; }
+.perm-scroll::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 99px; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE MOBILE — roles
+   ─────────────────────────────────────────*/
+@media(max-width:991px) {
+  .role-cards { grid-template-columns: repeat(2,1fr); }
+}
+@media(max-width:768px) {
+  .role-select { min-height: 40px; font-size: .85rem; padding: .5rem .75rem; }
+}
+@media(max-width:640px) {
+  .role-cards { grid-template-columns: 1fr; }
+  /* Matrice : min-width pour forcer le scroll horizontal */
+  .perm-matrix { min-width: 480px; }
+  .perm-matrix thead th { padding: .5rem .75rem; font-size: .6rem; }
+  .perm-matrix tbody td { padding: .5rem .75rem; }
+  /* Colonne feature : réduite */
+  .perm-matrix thead th:first-child { min-width: 160px; }
+  /* Cartes de rôle */
+  .role-card { padding: 1.125rem; }
+  .role-card__count { font-size: 1.5rem; }
+  /* Sélect rôle : pleine largeur dans la cellule */
+  .role-select-wrap { flex-direction: column; align-items: stretch; }
+  .role-select { width: 100%; }
+}
+@media(max-width:400px) {
+  .perm-check { width: 20px; height: 20px; font-size: .55rem; }
+}
 </style>
 @endpush
 
@@ -185,7 +222,7 @@ $roleConf = [
     </div>
     <span style="font-size:.7rem;color:var(--c-muted)">Permissions basées sur les rôles du système</span>
   </div>
-  <div style="overflow-x:auto">
+  <div class="perm-scroll">
     <table class="perm-matrix">
       <thead>
         <tr>
