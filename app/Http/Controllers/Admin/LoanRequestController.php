@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Mail\LoanRequestApprovedMail;
 use App\Mail\LoanValidatedMail;
 use App\Mail\SignedContractAcknowledgementMail;
 use App\Mail\UserInvitationMail;
@@ -17,6 +16,7 @@ use App\Services\LoanPdfService;
 use App\Services\LoanService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -121,6 +121,9 @@ class LoanRequestController extends Controller
             // Balises personnalisées du template (modale)
             'extra_fields'      => 'nullable|array',
             'extra_fields.*'    => 'nullable|string|max:500',
+            // Fichiers joints au dossier
+            'files'             => 'nullable|array|max:10',
+            'files.*'           => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xls,xlsx|max:20480',
         ], [
             'client_email.unique' => 'Cet email est déjà utilisé dans le système. Passez en mode "Client existant" pour sélectionner ce client.',
             'client_name.required_if'  => 'Le nom du client est obligatoire pour un nouveau client.',
@@ -132,92 +135,100 @@ class LoanRequestController extends Controller
 
         $admin = Auth::user();
 
-        // Créer ou récupérer le client
-        $sendActivationEmail = false;
-        $activationUrl       = null;
-
-        if ($data['client_mode'] === 'new') {
-            $token  = Str::random(64);
-            $client = User::create([
-                'name'             => $data['client_name'],
-                'email'            => $data['client_email'],
-                'password'         => Hash::make(Str::random(32)),
-                'type'             => 'client',
-                'created_by'       => $admin->id,
-                'invitation_token' => $token,
-                'phone'            => $data['client_phone'] ?? null,
-                'address'          => $data['client_address'] ?? null,
-                'birth_date'       => $data['client_birth_date'] ?? null,
-                'id_type'          => $data['client_id_type'] ?? null,
-                'id_number'        => $data['client_id_number'] ?? null,
-                'locale'           => $data['client_locale'] ?? 'fr',
-                'currency'         => $data['client_currency'] ?? $data['currency'],
-            ]);
-            $client->assignRole('client');
-            $sendActivationEmail = true;
-            $activationUrl = route('invitation.activate', ['token' => $token]);
-        } else {
+        // Vérifier l'autorisation client existant avant la transaction
+        if ($data['client_mode'] === 'existing') {
             $client = User::findOrFail($data['client_id']);
-            // Un admin régulier ne peut sélectionner que ses propres clients
             if (!$admin->hasRole('super-admin')) {
                 abort_unless($client->created_by === $admin->id, 403, 'Client non autorisé.');
             }
         }
 
-        // Calculs financiers
         $calc = $this->loanService->calculateAll(
             (float) $data['amount'],
             5.00,
             (int) $data['darly']
         );
 
-        // Créer la demande
-        $locale = $client->locale ?? 'fr';
-        $loan = LoanRequest::create([
-            'reference'            => LoanRequest::generateReference(),
-            'archive_ref'          => 'CR-ARCH-' . strtoupper(Str::random(8)),
-            'admin_id'             => $admin->id,
-            'client_id'            => $client->id,
-            'contract_template_id' => $data['contract_template_id'] ?? null,
-            'name'                 => $client->name,
-            'email'                => $client->email,
-            'phone'                => $client->phone ?? $data['client_phone'] ?? null,
-            'address'              => $client->address ?? $data['client_address'] ?? null,
-            'amount'               => $data['amount'],
-            'interest_rate'        => 5.00,
-            'currency'             => $client->currency ?? $data['currency'],
-            'start_date'           => $data['start_date'] ?? now()->toDateString(),
-            'darly'                => $data['darly'],
-            'objet'                => $data['objet'] ?? null,
-            'subject'              => $data['subject'] ?? null,
-            'special_conditions'   => $data['special_conditions'] ?? null,
-            'admin_fees'           => $data['admin_fees'] ?? null,
-            'bank_account'         => $data['bank_account'] ?? null,
-            'agent_suivi'          => $data['agent_suivi'] ?? null,
-            'directeur'            => $data['directeur'] ?? null,
-            'monthly_payment'      => $calc['monthly_payment'],
-            'total_cost'           => $calc['total_cost'],
-            'total_with_interest'  => $calc['total_with_interest'],
-            'amortization_schedule'=> $calc['amortization_schedule'],
-            'contract_language'    => $locale,
-            'status'               => LoanRequest::STATUS_DRAFT,
-            'extra_fields'         => !empty($data['extra_fields']) ? $data['extra_fields'] : null,
-        ]);
+        $sendActivationEmail = false;
+        $activationUrl       = null;
 
-        // Envoyer l'email d'activation si nouveau client
+        $loan = DB::transaction(
+            function () use ($data, $admin, $calc, &$sendActivationEmail, &$activationUrl) {
+                if ($data['client_mode'] === 'new') {
+                    $token  = Str::random(64);
+                    $client = User::create([
+                        'name'             => $data['client_name'],
+                        'email'            => $data['client_email'],
+                        'password'         => Hash::make(Str::random(32)),
+                        'type'             => 'client',
+                        'created_by'       => $admin->id,
+                        'invitation_token' => $token,
+                        'phone'            => $data['client_phone'] ?? null,
+                        'address'          => $data['client_address'] ?? null,
+                        'birth_date'       => $data['client_birth_date'] ?? null,
+                        'id_type'          => $data['client_id_type'] ?? null,
+                        'id_number'        => $data['client_id_number'] ?? null,
+                        'locale'           => $data['client_locale'] ?? 'fr',
+                        'currency'         => $data['client_currency'] ?? $data['currency'],
+                    ]);
+                    $client->assignRole('client');
+                    $sendActivationEmail = true;
+                    $activationUrl = route('invitation.activate', ['token' => $token]);
+                } else {
+                    $client = User::findOrFail($data['client_id']);
+                }
+
+                $locale = $client->locale ?? 'fr';
+
+                $loan = LoanRequest::create([
+                    'reference'            => LoanRequest::generateReference(),
+                    'archive_ref'          => 'CR-ARCH-' . strtoupper(Str::random(8)),
+                    'admin_id'             => $admin->id,
+                    'client_id'            => $client->id,
+                    'contract_template_id' => $data['contract_template_id'] ?? null,
+                    'name'                 => $client->name,
+                    'email'                => $client->email,
+                    'phone'                => $client->phone ?? $data['client_phone'] ?? null,
+                    'address'              => $client->address ?? $data['client_address'] ?? null,
+                    'amount'               => $data['amount'],
+                    'interest_rate'        => 5.00,
+                    'currency'             => $client->currency ?? $data['currency'],
+                    'start_date'           => $data['start_date'] ?? now()->toDateString(),
+                    'darly'                => $data['darly'],
+                    'objet'                => $data['objet'] ?? null,
+                    'subject'              => $data['subject'] ?? null,
+                    'special_conditions'   => $data['special_conditions'] ?? null,
+                    'admin_fees'           => $data['admin_fees'] ?? null,
+                    'bank_account'         => $data['bank_account'] ?? null,
+                    'agent_suivi'          => $data['agent_suivi'] ?? null,
+                    'directeur'            => $data['directeur'] ?? null,
+                    'monthly_payment'      => $calc['monthly_payment'],
+                    'total_cost'           => $calc['total_cost'],
+                    'total_with_interest'  => $calc['total_with_interest'],
+                    'amortization_schedule'=> $calc['amortization_schedule'],
+                    'contract_language'    => $locale,
+                    'status'               => LoanRequest::STATUS_DRAFT,
+                    'extra_fields'         => !empty($data['extra_fields']) ? $data['extra_fields'] : null,
+                ]);
+
+                $this->logHistory($loan, 'created', null, ['status' => $loan->status]);
+
+                return $loan;
+            }
+        );
+
+        // Email envoyé hors transaction (ne doit pas rollback la BDD si SMTP échoue)
         if ($sendActivationEmail && $activationUrl) {
             try {
-                Mail::to($client->email)->send(new UserInvitationMail($client, $activationUrl));
+                Mail::to($loan->client->email)->send(new UserInvitationMail($loan->client, $activationUrl));
             } catch (\Throwable $e) {
-                Log::error('UserInvitationMail failed for ' . $client->email . ': ' . $e->getMessage());
+                Log::error('UserInvitationMail failed for ' . $loan->email . ': ' . $e->getMessage());
             }
         }
 
-        $this->logHistory($loan, 'created', null, ['status' => $loan->status]);
-
         return redirect()->route('admin.loans.show', $loan)
                          ->with('success', 'Dossier N°' . $loan->reference . ' créé (statut : Brouillon). '
-                             . ($sendActivationEmail ? 'Un email d\'activation a été envoyé à ' . $client->email . '.' : ''));
+                             . ($sendActivationEmail ? 'Un email d\'activation a été envoyé à ' . $loan->email . '.' : ''));
     }
 
     public function show(LoanRequest $loan)
@@ -508,14 +519,22 @@ class LoanRequestController extends Controller
             'signed_received_at'  => now(),
         ]);
 
-        // Email accusé réception au client
         $locale    = $loan->contract_language ?? 'fr';
         $recipient = $this->recipientEmail($loan);
-        Mail::to($recipient)->send(new SignedContractAcknowledgementMail($loan, $locale));
+        $mailSent  = true;
+        try {
+            Mail::to($recipient)->send(new SignedContractAcknowledgementMail($loan, $locale));
+        } catch (\Throwable $e) {
+            Log::error('SignedContractAcknowledgementMail failed for ' . $loan->reference . ': ' . $e->getMessage());
+            $mailSent = false;
+        }
 
         $this->logHistory($loan, 'signed_received', $old, ['status' => $loan->status]);
 
-        return back()->with('success', 'Contrat signé marqué comme reçu. Email envoyé au client.');
+        $msg = 'Contrat signé marqué comme reçu.';
+        $msg .= $mailSent ? ' Email envoyé au client.' : ' (Email non envoyé — vérifiez la configuration mail.)';
+
+        return back()->with('success', $msg);
     }
 
     public function updateStatus(Request $request, LoanRequest $loan)
@@ -591,26 +610,36 @@ class LoanRequestController extends Controller
         }
 
         // ── Autres changements de statut ──────────────────────────────────
-        $loan->update(['status' => $data['status']]);
+        $isFinalization = $data['status'] === LoanRequest::STATUS_FINALIZED
+            && $old['status'] !== LoanRequest::STATUS_FINALIZED;
 
-        // Créditer le solde du client lors du passage en "finalisé"
-        if ($data['status'] === LoanRequest::STATUS_FINALIZED && $old['status'] !== LoanRequest::STATUS_FINALIZED) {
-            $loan->client?->increment('balance', (float) $loan->amount);
+        DB::transaction(function () use ($loan, $data, $old, $isFinalization) {
+            // Verrou pessimiste pour éviter double-crédit en cas de double-clic
+            $fresh = LoanRequest::lockForUpdate()->find($loan->id);
+            if ($isFinalization && $fresh->status === LoanRequest::STATUS_FINALIZED) {
+                return; // déjà finalisé, on ignore
+            }
 
-            if ($loan->client_id) {
-                $cur = $loan->currency ?? config('credixa.default_currency');
+            $fresh->update(['status' => $data['status']]);
+
+            if ($isFinalization && $fresh->client_id) {
+                $fresh->client?->increment('balance', (float) $fresh->amount);
+
+                $cur = $fresh->currency ?? config('credixa.default_currency');
                 ClientNotification::notifyUser(
-                    $loan->client,
+                    $fresh->client,
                     'credit',
                     'app.notif_loan_funded',
                     'app.notif_loan_funded_body',
-                    ['amount' => number_format((float) $loan->amount, 2, ',', ' '), 'currency' => $cur],
-                    ['loan_id' => $loan->id, 'amount' => $loan->amount, 'currency' => $cur]
+                    ['amount' => number_format((float) $fresh->amount, 2, ',', ' '), 'currency' => $cur],
+                    ['loan_id' => $fresh->id, 'amount' => $fresh->amount, 'currency' => $cur]
                 );
             }
-        }
 
-        $this->logHistory($loan, 'status_changed', $old, ['status' => $data['status']]);
+            $this->logHistory($fresh, 'status_changed', $old, ['status' => $data['status']]);
+        });
+
+        $loan->refresh();
 
         return back()->with('success', 'Statut mis à jour.');
     }

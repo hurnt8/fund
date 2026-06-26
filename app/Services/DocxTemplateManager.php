@@ -30,19 +30,35 @@ class DocxTemplateManager
 
         $filename    = 'template_' . $template->id . '_v' . $version . '_' . time() . '.docx';
         $storagePath = $file->storeAs('docx-templates', $filename, 'local');
+        $absPath     = storage_path('app/' . $storagePath);
 
-        $absPath = storage_path('app/' . $storagePath);
-        $vars    = $this->detectVariables($absPath);
+        // Détecter les variables avant de toucher à la BDD
+        // (si le DOCX est invalide, on s'arrête sans modifier le template existant)
+        try {
+            $vars = $this->detectVariables($absPath);
+        } catch (\Throwable $e) {
+            // Nettoyer le fichier uploadé et propager l'erreur
+            @unlink($absPath);
+            throw $e;
+        }
+
+        // Archiver l'ancien fichier avant d'écraser la référence en BDD
+        if ($oldPath) {
+            try {
+                $this->archiveOld($oldPath, $template->id, $version - 1);
+            } catch (\Throwable $e) {
+                // Archivage non critique : on logue mais on ne bloque pas l'upload
+                \Illuminate\Support\Facades\Log::warning(
+                    'DocxTemplateManager: archivage ancien template échoué — ' . $e->getMessage()
+                );
+            }
+        }
 
         $template->update([
             'docx_template_path' => $storagePath,
             'docx_version'       => $version,
             'docx_detected_vars' => $vars,
         ]);
-
-        if ($oldPath) {
-            $this->archiveOld($oldPath, $template->id, $version - 1);
-        }
 
         return $vars;
     }
@@ -77,9 +93,9 @@ class DocxTemplateManager
 
             $xml = $this->renderer->defragment($xml);
 
-            // Scanne uniquement le contenu textuel des <w:t>
+            // Concatène sans séparateur pour détecter les variables encore fragmentées
             preg_match_all('/<w:t[^>]*>([^<]*)<\/w:t>/', $xml, $textMatches);
-            $text = implode(' ', $textMatches[1]);
+            $text = implode('', $textMatches[1]);
 
             preg_match_all('/\{([a-zA-Z_][a-zA-Z0-9_]*)\}/', $text, $varMatches);
             $vars = array_merge($vars, $varMatches[1]);

@@ -34,18 +34,24 @@
    ═══════════════════════════════════════════ */
 
 /* ── Topbar ── */
+:root {
+  --sc-safe-top: env(safe-area-inset-top, 0px);
+  --sc-topbar-h: 62px;
+  /* Hauteur réelle = 62px + safe-area (encoche iPhone) */
+  --sc-topbar-total: calc(var(--sc-topbar-h) + var(--sc-safe-top));
+}
 .sc-topbar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 62px;
+  height: var(--sc-topbar-total);
   z-index: 200;
   background: var(--ca-bg);
   border-bottom: 1px solid var(--ca-border-2);
   display: flex;
-  align-items: center;
+  align-items: flex-end;  /* contenu collé en bas pour rester au-dessus de la safe-area */
   gap: .5rem;
-  padding: 0 .625rem;
-  padding-top: env(safe-area-inset-top, 0px);
+  padding: 0 .625rem .75rem;
+  padding-top: var(--sc-safe-top);
   box-shadow: 0 1px 8px rgba(0,0,0,.18);
 }
 .sc-back {
@@ -104,12 +110,18 @@
 /* ── Full screen container ── */
 .sc-wrap {
   position: fixed;
-  top: 62px;
-  left: 0; right: 0; bottom: 0;
+  top: var(--sc-topbar-total);
+  left: 0; right: 0;
+  /* Hauteur = viewport visible - topbar.
+     dvh = Dynamic Viewport Height (se réduit quand le clavier apparaît, iOS 15.4+/Chrome 108+).
+     Le JS Visual Viewport ci-dessous prend le relais sur les anciens navigateurs. */
+  height: calc(100dvh - var(--sc-topbar-total));
   display: flex;
   flex-direction: column;
   background: var(--ca-bg);
   z-index: 100;
+  /* Empêche le rebond élastique iOS de faire défiler le fond */
+  overscroll-behavior: none;
 }
 
 /* ── Messages zone ── */
@@ -267,9 +279,13 @@
   gap: .5rem;
   flex-shrink: 0;
   padding: .625rem .875rem;
-  padding-bottom: calc(.75rem + env(safe-area-inset-bottom, 0px));
+  /* safe-area-inset-bottom = zone home indicator iPhone */
+  padding-bottom: calc(.625rem + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--ca-border-2);
   background: var(--ca-bg);
+  /* Garantit que la barre est toujours au-dessus de tout overlay natif */
+  position: relative;
+  z-index: 10;
 }
 .sc-btn-ico {
   width: 40px; height: 40px;
@@ -362,7 +378,7 @@
 @php $csrfToken = csrf_token(); @endphp
 
 {{-- ── Chat container full screen ── --}}
-<div class="sc-wrap">
+<div class="sc-wrap" id="scWrap">
 
   {{-- Messages ── --}}
   <div class="sc-msgs" id="scMsgs">
@@ -611,5 +627,34 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) clearInterval(scPollTimer);
   else scStartPolling();
 });
+
+/* ── Visual Viewport API — fix clavier mobile (iOS Safari) ──────────────
+   iOS Safari ne réduit pas window.innerHeight quand le clavier apparaît ;
+   il utilise visualViewport.height. On recalcule la hauteur du sc-wrap
+   pour que la barre de saisie reste toujours visible au-dessus du clavier. */
+(function () {
+  const vv   = window.visualViewport;
+  const wrap = document.getElementById('scWrap');
+  const bar  = document.querySelector('.sc-bar');
+  if (!vv || !wrap) return;
+
+  function scFitToViewport() {
+    const topbar = document.querySelector('.sc-topbar');
+    const topH   = topbar ? topbar.getBoundingClientRect().height : 62;
+    /* vv.offsetTop = défilement vertical du viewport (iOS fait monter la page) */
+    const wrapH  = vv.height - topH;
+    wrap.style.height = Math.max(120, wrapH) + 'px';
+    /* Repositionner si iOS a scrollé le contenu vers le haut */
+    wrap.style.top = (vv.offsetTop + topH) + 'px';
+    /* Scroll auto vers le bas pour que le dernier message reste visible */
+    const msgs = document.getElementById('scMsgs');
+    if (msgs) requestAnimationFrame(() => { msgs.scrollTop = msgs.scrollHeight; });
+  }
+
+  vv.addEventListener('resize', scFitToViewport);
+  vv.addEventListener('scroll', scFitToViewport);
+  /* Recalcul initial (au cas où la page s'ouvre clavier ouvert) */
+  scFitToViewport();
+})();
 </script>
 @endsection

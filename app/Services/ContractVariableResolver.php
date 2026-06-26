@@ -90,8 +90,12 @@ class ContractVariableResolver
         $vars = array_merge($vars, $gender);
 
         // Champs personnalisés saisis à la création du dossier
+        // Les clés réservées du resolver ne peuvent pas être écrasées
+        $reservedKeys = array_map(fn($k) => trim($k, '{}'), array_keys($vars));
         foreach ((array) ($loan->extra_fields ?? []) as $key => $value) {
-            $vars['{' . $key . '}'] = (string) $value;
+            if (!in_array($key, $reservedKeys, true)) {
+                $vars['{' . $key . '}'] = (string) $value;
+            }
         }
 
         return $vars;
@@ -99,8 +103,8 @@ class ContractVariableResolver
 
     private function resolveGender(LoanRequest $loan, string $locale): array
     {
-        $gender = $loan->client?->gender ?? 'male';
-        $female = $gender === 'female';
+        $gender = $loan->client?->gender ?? 'M';
+        $female = $gender === 'F';
 
         return match ($locale) {
             'pl' => [
@@ -148,6 +152,7 @@ class ContractVariableResolver
             '{archive}'         => 'ARC-2026-0001',
             '{nom_client}'      => 'Jean DUPONT',
             '{adresse_client}'  => '12 rue de la Paix, 75001 Paris',
+            '{address_client}'  => '12 rue de la Paix, 75001 Paris',
             '{date_naissance}'  => '15/06/1985',
             '{type_identite}'   => 'Passeport',
             '{numero_identite}' => 'AB123456',
@@ -161,7 +166,7 @@ class ContractVariableResolver
             '{frais_admin}'     => '250,00',
             '{compte_bancaire}' => 'FR76 1234 5678 9012 3456 7890 123',
             '{date}'            => now()->format('d/m/Y'),
-            '{societe}'         => 'CREDIXA INVESTI',
+            '{societe}'         => config('app.company_name', 'CREDIXA INVESTI'),
         ], $gender);
     }
 

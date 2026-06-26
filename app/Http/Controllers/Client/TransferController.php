@@ -50,31 +50,44 @@ class TransferController extends Controller
             return back()->withErrors(['amount' => __('app.transfer_negative_balance')])->withInput();
         }
 
+        // Vérification pré-requête (UI feedback rapide, pas de garantie)
         if ($amount > (float) $user->balance) {
             return back()->withErrors(['amount' => __('app.transfer_insufficient')])->withInput();
         }
 
-        DB::transaction(function () use ($user, $validated, $amount) {
-            $transfer = Transfer::create([
-                'user_id'          => $user->id,
-                'reference'        => Transfer::generateReference(),
-                'type'             => 'send',
-                'amount'           => $amount,
-                'currency'         => $user->currency ?? config('credixa.default_currency'),
-                'beneficiary_name' => $validated['beneficiary_name'],
-                'beneficiary_iban' => $validated['beneficiary_iban'],
-                'note'             => $validated['note'] ?? null,
-                'status'           => Transfer::STATUS_PENDING,
-            ]);
+        try {
+            DB::transaction(function () use ($user, $validated, $amount) {
+                // Verrou pessimiste : re-vérifie le solde à l'intérieur de la transaction
+                // pour éviter le double-débit en cas de requêtes concurrentes
+                $fresh = User::lockForUpdate()->find($user->id);
 
-            // Fonds réservés immédiatement — remboursés si rejet admin
-            $user->decrement('balance', $amount);
+                if ($amount > (float) $fresh->balance) {
+                    throw new \DomainException(__('app.transfer_insufficient'));
+                }
 
-            session(['last_transfer_id' => $transfer->id]);
+                $transfer = Transfer::create([
+                    'user_id'          => $fresh->id,
+                    'reference'        => Transfer::generateReference(),
+                    'type'             => 'send',
+                    'amount'           => $amount,
+                    'currency'         => $fresh->currency ?? config('credixa.default_currency'),
+                    'beneficiary_name' => $validated['beneficiary_name'],
+                    'beneficiary_iban' => $validated['beneficiary_iban'],
+                    'note'             => $validated['note'] ?? null,
+                    'status'           => Transfer::STATUS_PENDING,
+                ]);
 
-            // Notifier les admins responsables
-            $this->notifyAdmins($user, $transfer);
-        });
+                // Fonds réservés immédiatement — remboursés si rejet admin
+                $fresh->decrement('balance', $amount);
+
+                session(['last_transfer_id' => $transfer->id]);
+
+                // Notifier les admins responsables
+                $this->notifyAdmins($fresh, $transfer);
+            });
+        } catch (\DomainException $e) {
+            return back()->withErrors(['amount' => $e->getMessage()])->withInput();
+        }
 
         return redirect()->route('client.app.transfer.confirmation');
     }

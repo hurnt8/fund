@@ -397,15 +397,17 @@ class AppController extends Controller
     public function manifest()
     {
         $data = [
-            'name'             => 'Credixa — Espace Client',
+            'name'             => config('app.company_name', 'Credixa Invest') . ' — Espace Client',
             'short_name'       => 'Credixa',
+            'description'      => 'Gérez vos prêts, virements et documents en toute sécurité.',
             'start_url'        => '/app',
             'scope'            => '/app',
             'display'          => 'standalone',
-            'orientation'      => 'portrait',
+            'orientation'      => 'any',
             'background_color' => '#0A1628',
-            'theme_color'      => '#C8A951',
+            'theme_color'      => '#0A1628',
             'lang'             => app()->getLocale(),
+            'categories'       => ['finance', 'business'],
             'icons'            => [
                 ['src' => '/images/apple-touch-icon.png', 'sizes' => '180x180', 'type' => 'image/png', 'purpose' => 'any'],
                 ['src' => '/images/icon-192.png',         'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
@@ -413,13 +415,34 @@ class AppController extends Controller
                 ['src' => '/images/icon-512.png',         'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
                 ['src' => '/images/icon-512.png',         'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
             ],
-            'screenshots'      => [
-                ['src' => '/images/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'form_factor' => 'narrow'],
+            'shortcuts' => [
+                [
+                    'name'       => 'Mes dossiers',
+                    'short_name' => 'Dossiers',
+                    'url'        => '/app/loans',
+                    'description'=> 'Consulter mes demandes de prêt',
+                    'icons'      => [['src' => '/images/icon-192.png', 'sizes' => '192x192']],
+                ],
+                [
+                    'name'       => 'Virements',
+                    'short_name' => 'Virements',
+                    'url'        => '/app/transfers',
+                    'description'=> 'Effectuer ou suivre mes virements',
+                    'icons'      => [['src' => '/images/icon-192.png', 'sizes' => '192x192']],
+                ],
+                [
+                    'name'       => 'Support',
+                    'short_name' => 'Support',
+                    'url'        => '/app/support',
+                    'description'=> 'Contacter le support client',
+                    'icons'      => [['src' => '/images/icon-192.png', 'sizes' => '192x192']],
+                ],
             ],
         ];
 
         return response()->json($data, 200, [
-            'Content-Type' => 'application/manifest+json',
+            'Content-Type'  => 'application/manifest+json',
+            'Cache-Control' => 'public, max-age=3600',
         ]);
     }
 
