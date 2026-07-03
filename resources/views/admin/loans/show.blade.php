@@ -414,6 +414,40 @@ $tpl = $loan->contractTemplate;
 
         <hr class="ld-divider">
 
+        {{-- ── Assurance ── --}}
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#16a34a;margin-bottom:.4rem;display:flex;align-items:center;gap:.35rem">
+          <i class="fas fa-shield-alt" style="font-size:.65rem"></i> Assurance emprunteur
+        </div>
+
+        @if($loan->insuranceTemplate?->hasDocxTemplate())
+        {{-- Template DOCX → télécharger DOCX --}}
+        <a href="{{ route('admin.loans.insurance.docx', $loan) }}"
+           class="btn-navy ld-btn-full" style="background:#16a34a;border-color:#16a34a;display:flex;align-items:center;justify-content:center;gap:.45rem;text-decoration:none">
+          <i class="fas fa-file-word"></i> Télécharger DOCX assurance
+        </a>
+        @else
+        {{-- Template intégré ou HTML → générer PDF --}}
+        <form action="{{ route('admin.loans.insurance.pdf.generate', $loan) }}" method="POST"
+              onsubmit="return confirm('Générer l\'attestation d\'assurance ?')">
+          @csrf
+          <button type="submit" class="btn-navy ld-btn-full" style="background:#16a34a;border-color:#16a34a">
+            <i class="fas fa-magic"></i> {{ $loan->insurance_pdf_path ? 'Régénérer l\'attestation' : 'Générer l\'attestation' }}
+          </button>
+        </form>
+        @endif
+
+        @if($loan->insurance_pdf_path)
+        <form action="{{ route('admin.loans.insurance.send', $loan) }}" method="POST"
+              onsubmit="return confirm('Envoyer l\'attestation par email à {{ $loan->email }} ?')">
+          @csrf
+          <button type="submit" class="btn-navy ld-btn-full" style="background:#059669;border-color:#059669;margin-top:.4rem">
+            <i class="fas fa-paper-plane"></i> Envoyer par email
+          </button>
+        </form>
+        @endif
+
+        <hr class="ld-divider">
+
         <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--c-muted);margin-bottom:.35rem">Changer le statut</div>
         <form action="{{ route('admin.loans.status', $loan) }}" method="POST">
           @csrf @method('PATCH')
@@ -627,6 +661,150 @@ $tpl = $loan->contractTemplate;
         </div>
 
       </div>{{-- /ld-doc-grid --}}
+
+      {{-- ── SECTION ASSURANCE EMPRUNTEUR ── --}}
+      <div style="display:flex;align-items:center;gap:.75rem;margin:1.75rem 0 1rem">
+        <div style="display:flex;align-items:center;gap:.5rem;background:#F0FDF4;border:1px solid #A7F3D0;border-radius:8px;padding:.35rem .75rem;flex-shrink:0">
+          <i class="fas fa-shield-alt" style="color:#16a34a;font-size:.8rem"></i>
+          <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#065F46">Assurance emprunteur · CG-A340G</span>
+        </div>
+        <div style="flex:1;height:1.5px;background:linear-gradient(to right,#A7F3D0,transparent)"></div>
+      </div>
+
+      <div class="ld-doc-grid">
+
+        {{-- Attestation d'assurance --}}
+        <div class="card-pro">
+          <div class="card-pro-hdr">
+            <div class="card-pro-title">
+              <span class="icon-dot" style="background:#16a34a"></span>Attestation d'assurance PDF
+            </div>
+            @if($loan->insurance_pdf_path)
+            <a href="{{ route('admin.loans.insurance.pdf',$loan) }}" class="btn-ghost btn-sm-pro" target="_blank">
+              <i class="fas fa-eye"></i>
+            </a>
+            @endif
+          </div>
+          <div class="card-pro-body" style="display:flex;flex-direction:column;gap:.875rem">
+
+            @if($loan->insurance_pdf_path)
+            <div class="ld-pdf-file" style="background:#F0FDF4;border:1px solid #A7F3D0">
+              <i class="fas fa-shield-alt" style="color:#16a34a;font-size:1.3rem;flex-shrink:0"></i>
+              <div style="flex:1;min-width:0">
+                <div class="ld-pdf-file-name" style="color:#065F46">{{ $loan->reference }}_assurance.pdf</div>
+                <div class="ld-pdf-file-sub" style="color:#047857"><i class="fas fa-check-circle"></i> Attestation CG-A340G disponible</div>
+              </div>
+              <a href="{{ route('admin.loans.insurance.pdf',$loan) }}" class="btn-ghost btn-sm-pro" style="padding:.3rem .5rem" target="_blank">
+                <i class="fas fa-download"></i>
+              </a>
+            </div>
+            @else
+            <div class="ld-warn-box" style="background:#F0FDF4;border-color:#A7F3D0">
+              <i class="fas fa-shield-alt" style="color:#16a34a;flex-shrink:0"></i>
+              <span style="color:#065F46">Aucune attestation. Cliquez sur <strong>Générer</strong> pour créer le PDF.</span>
+            </div>
+            @endif
+
+            {{-- Générer : DOCX si template DOCX, sinon PDF intégré --}}
+            @if($loan->insuranceTemplate?->hasDocxTemplate())
+            <a href="{{ route('admin.loans.insurance.docx', $loan) }}"
+               class="btn-navy btn-sm-pro ld-btn-full" style="background:#16a34a;border-color:#16a34a;display:flex;align-items:center;justify-content:center;gap:.4rem;text-decoration:none">
+              <i class="fas fa-file-word"></i> Télécharger DOCX assurance
+            </a>
+            <div style="font-size:.68rem;color:var(--c-muted);margin-top:.35rem;display:flex;align-items:flex-start;gap:.3rem">
+              <i class="fas fa-info-circle" style="flex-shrink:0;margin-top:.1rem;color:#16a34a"></i>
+              <span>Ouvrez le DOCX, finalisez-le, exportez en PDF, puis uploadez ci-dessous.</span>
+            </div>
+            @else
+            <form action="{{ route('admin.loans.insurance.pdf.generate', $loan) }}" method="POST"
+                  onsubmit="return confirm('Générer l\'attestation d\'assurance pour ce dossier ?')">
+              @csrf
+              <button type="submit" class="btn-navy btn-sm-pro ld-btn-full" style="background:#16a34a;border-color:#16a34a">
+                <i class="fas fa-magic"></i> {{ $loan->insurance_pdf_path ? 'Régénérer l\'attestation' : 'Générer l\'attestation PDF' }}
+              </button>
+            </form>
+            @endif
+
+            {{-- Upload manuel --}}
+            <form action="{{ route('admin.loans.insurance.pdf.upload',$loan) }}" method="POST" enctype="multipart/form-data">
+              @csrf
+              <div class="ld-upload-area" onclick="this.querySelector('input').click()"
+                   style="{{ $loan->insurance_pdf_path ? 'border-color:#A7F3D0' : '' }}">
+                <i class="fas fa-cloud-upload-alt" style="color:#16a34a;font-size:1.5rem;display:block;margin-bottom:.4rem"></i>
+                <div style="font-size:.78rem;font-weight:600;color:var(--c-navy)">{{ $loan->insurance_pdf_path ? 'Remplacer le PDF' : 'Uploader un PDF existant' }}</div>
+                <div style="font-size:.68rem;color:var(--c-muted);margin-top:.2rem">PDF · max 20 Mo · CG-A340G</div>
+                <input type="file" name="insurance_pdf" accept=".pdf" required
+                       style="display:none" onchange="this.closest('form').submit()">
+              </div>
+              @error('insurance_pdf')
+              <div style="font-size:.72rem;color:#dc2626;margin-top:.3rem"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
+              @enderror
+            </form>
+
+          </div>
+        </div>
+
+        {{-- Modèle + envoi email --}}
+        <div class="card-pro">
+          <div class="card-pro-hdr">
+            <div class="card-pro-title"><span class="icon-dot" style="background:#16a34a"></span>Modèle &amp; envoi</div>
+            <a href="{{ route('admin.loans.edit',$loan) }}" class="btn-ghost btn-sm-pro">
+              <i class="fas fa-pen"></i>
+            </a>
+          </div>
+          <div class="card-pro-body">
+
+            @if($loan->insuranceTemplate)
+            <div style="font-weight:700;color:var(--c-navy);font-size:.875rem;margin-bottom:.5rem">{{ $loan->insuranceTemplate->name }}</div>
+            <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:1rem">
+              <span class="badge-status" style="background:#F0FDF4;color:#15803d;border:1px solid #A7F3D0;font-size:.6rem">Modèle personnalisé</span>
+            </div>
+            @else
+            <div style="font-weight:700;color:var(--c-navy);font-size:.875rem;margin-bottom:.25rem">Attestation CG-A340G</div>
+            <div style="font-size:.72rem;color:var(--c-muted);margin-bottom:1rem">Modèle intégré (par défaut)</div>
+            @endif
+
+            @if($loan->frais_assurance || $loan->date_fin_assurance)
+            <div style="padding:.625rem .75rem;background:#F0FDF4;border:1px solid #A7F3D0;border-radius:8px;margin-bottom:1rem">
+              @if($loan->frais_assurance)
+              <div style="display:flex;justify-content:space-between;padding:.2rem 0;font-size:.8rem">
+                <span style="color:var(--c-muted)">Frais d'assurance</span>
+                <span style="font-weight:700;color:#065F46">{{ number_format($loan->frais_assurance,2,',',' ') }} {{ $loan->currency }}</span>
+              </div>
+              @endif
+              @if($loan->date_fin_assurance)
+              <div style="display:flex;justify-content:space-between;padding:.2rem 0;font-size:.8rem">
+                <span style="color:var(--c-muted)">Date de fin</span>
+                <span style="font-weight:700;color:#065F46">{{ $loan->date_fin_assurance->format('d/m/Y') }}</span>
+              </div>
+              @endif
+            </div>
+            @endif
+
+            {{-- Envoyer par email --}}
+            @if($loan->insurance_pdf_path)
+            <form action="{{ route('admin.loans.insurance.send', $loan) }}" method="POST"
+                  onsubmit="return confirm('Envoyer l\'attestation d\'assurance à {{ $loan->email }} ?')">
+              @csrf
+              <button type="submit" class="btn-navy btn-sm-pro ld-btn-full" style="background:#059669;border-color:#059669">
+                <i class="fas fa-paper-plane"></i> Envoyer à {{ $loan->email }}
+              </button>
+            </form>
+            <div style="font-size:.68rem;color:var(--c-muted);margin-top:.5rem;display:flex;align-items:flex-start;gap:.35rem">
+              <i class="fas fa-globe" style="flex-shrink:0;margin-top:.15rem;color:#16a34a"></i>
+              <span>Email envoyé en <strong>{{ strtoupper($loan->contract_language ?? 'FR') }}</strong> (langue du dossier)</span>
+            </div>
+            @else
+            <div class="ld-warn-box" style="background:#F0FDF4;border-color:#A7F3D0">
+              <i class="fas fa-lock" style="color:#16a34a;flex-shrink:0;margin-top:.1rem"></i>
+              <span style="color:#065F46">Générez d'abord l'attestation PDF pour débloquer l'envoi par email.</span>
+            </div>
+            @endif
+
+          </div>
+        </div>
+
+      </div>{{-- /ld-doc-grid assurance --}}
 
       {{-- DOCX générés --}}
       @if($generatedDocs->count())

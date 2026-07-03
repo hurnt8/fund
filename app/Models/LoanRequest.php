@@ -30,15 +30,15 @@ class LoanRequest extends Model
 
     protected $fillable = [
         'reference', 'archive_ref',
-        'admin_id', 'client_id', 'contract_template_id',
+        'admin_id', 'client_id', 'contract_template_id', 'insurance_template_id',
         'name', 'email', 'phone', 'address',
         'amount', 'interest_rate', 'currency', 'start_date',
         'monthly_payment', 'total_cost', 'total_with_interest',
-        'admin_fees', 'bank_account', 'agent_suivi', 'directeur',
+        'admin_fees', 'frais_assurance', 'date_fin_assurance', 'bank_account', 'agent_suivi', 'directeur',
         'darly', 'objet', 'subject', 'npi',
         'extra_fields',
         'special_conditions',
-        'contract_content', 'contract_pdf_path', 'contract_language',
+        'contract_content', 'contract_pdf_path', 'insurance_pdf_path', 'contract_language',
         'amortization_schedule',
         'status', 'notes', 'files',
         'validated_at', 'sent_at', 'signed_received_at',
@@ -57,6 +57,8 @@ class LoanRequest extends Model
         'total_cost'           => 'decimal:2',
         'total_with_interest'  => 'decimal:2',
         'admin_fees'           => 'decimal:2',
+        'frais_assurance'      => 'decimal:2',
+        'date_fin_assurance'   => 'date',
         'interest_rate'        => 'decimal:2',
     ];
 
@@ -79,6 +81,11 @@ class LoanRequest extends Model
     public function contractTemplate()
     {
         return $this->belongsTo(ContractTemplate::class, 'contract_template_id');
+    }
+
+    public function insuranceTemplate()
+    {
+        return $this->belongsTo(ContractTemplate::class, 'insurance_template_id');
     }
 
     public function history()

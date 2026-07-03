@@ -278,10 +278,16 @@ class ContractService
             '{duree}'           => $loan->darly ?? '',
             '{mensualite}'      => number_format((float)$loan->monthly_payment, 2, ',', ' '),
             '{taux}'            => $loan->interest_rate ?? 5,
-            '{frais_admin}'     => $loan->admin_fees
+            '{frais_admin}'      => $loan->admin_fees
                                     ? number_format((float)$loan->admin_fees, 2, ',', ' ')
                                     : '—',
-            '{compte_bancaire}' => $loan->bank_account ?? '—',
+            '{frais_assurance}'  => $loan->frais_assurance
+                                    ? number_format((float)$loan->frais_assurance, 2, ',', ' ')
+                                    : '—',
+            '{date_fin_assurance}' => $loan->date_fin_assurance
+                                    ? $loan->date_fin_assurance->format('d/m/Y')
+                                    : '—',
+            '{compte_bancaire}'  => $loan->bank_account ?? '—',
             '{date}'            => $loan->validated_at
                                     ? $loan->validated_at->format('d/m/Y')
                                     : now()->format('d/m/Y'),

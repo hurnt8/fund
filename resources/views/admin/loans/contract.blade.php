@@ -247,6 +247,13 @@
       </div>
     </div>
 
+    {{-- ── Séparateur CONTRAT ── --}}
+    <div style="display:flex;align-items:center;gap:.5rem;margin:.25rem 0 -.25rem">
+      <div style="width:3px;height:16px;border-radius:2px;background:#dc2626;flex-shrink:0"></div>
+      <span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#dc2626">Contrat de prêt</span>
+      <div style="flex:1;height:1px;background:#fee2e2"></div>
+    </div>
+
     {{-- Upload PDF du contrat --}}
     <div class="lc-pcard">
       <div class="lc-pcard-hdr">
@@ -298,12 +305,117 @@
       </div>
     </div>
 
+    {{-- ── Séparateur ASSURANCE ── --}}
+    <div style="display:flex;align-items:center;gap:.5rem;margin:.5rem 0 -.25rem">
+      <div style="width:3px;height:16px;border-radius:2px;background:#16a34a;flex-shrink:0"></div>
+      <span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#16a34a">Assurance emprunteur</span>
+      <div style="flex:1;height:1px;background:#dcfce7"></div>
+    </div>
+
+    {{-- Attestation d'assurance --}}
+    <div class="lc-pcard">
+      <div class="lc-pcard-hdr">
+        <div class="lc-pcard-ico" style="background:#F0FDF4;color:#16a34a"><i class="fas fa-shield-alt"></i></div>
+        <span class="lc-pcard-title">Attestation d'assurance</span>
+        @if($loan->insurance_pdf_path)
+        <a href="{{ route('admin.loans.insurance.pdf', $loan) }}"
+           class="btn-ghost btn-sm-pro" style="margin-left:auto;padding:.2rem .5rem;font-size:.7rem" target="_blank">
+          <i class="fas fa-eye"></i>
+        </a>
+        @endif
+      </div>
+      <div class="lc-pcard-body">
+
+        @if($loan->insurance_pdf_path)
+        <div class="lc-pdf-file" style="background:#F0FDF4;border-color:#A7F3D0">
+          <i class="fas fa-shield-alt" style="color:#16a34a;font-size:1.1rem;flex-shrink:0"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.78rem;font-weight:700;color:#065F46;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+              {{ $loan->reference }}_assurance.pdf
+            </div>
+            <div style="font-size:.64rem;color:#047857;margin-top:.1rem">
+              <i class="fas fa-check-circle"></i> Attestation CG-A340G disponible
+            </div>
+          </div>
+          <a href="{{ route('admin.loans.insurance.pdf', $loan) }}"
+             class="btn-ghost btn-sm-pro" style="padding:.25rem .45rem;flex-shrink:0" target="_blank">
+            <i class="fas fa-download"></i>
+          </a>
+        </div>
+        @endif
+
+        {{-- Modèle en cours --}}
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;background:#f8f9fa;border:1px solid var(--c-border);border-radius:7px">
+          <i class="fas fa-file-medical-alt" style="color:#16a34a;font-size:.8rem;flex-shrink:0"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.74rem;font-weight:700;color:var(--c-navy)">
+              {{ $loan->insuranceTemplate?->name ?? 'Attestation CG-A340G' }}
+            </div>
+            <div style="font-size:.63rem;color:var(--c-muted)">
+              {{ $loan->insuranceTemplate ? 'Modèle personnalisé' : 'Modèle intégré (par défaut)' }}
+              · <a href="{{ route('admin.loans.edit',$loan) }}" style="color:#16a34a;text-decoration:none">Modifier →</a>
+            </div>
+          </div>
+        </div>
+
+        {{-- Générer : DOCX si template DOCX, sinon PDF intégré --}}
+        @if($loan->insuranceTemplate?->hasDocxTemplate())
+        <a href="{{ route('admin.loans.insurance.docx', $loan) }}"
+           style="width:100%;justify-content:center;display:flex;align-items:center;gap:.45rem;padding:.55rem .875rem;font-size:.78rem;font-weight:700;border-radius:8px;cursor:pointer;background:#16a34a;color:#fff;text-decoration:none">
+          <i class="fas fa-file-word"></i> Télécharger DOCX assurance
+        </a>
+        <div style="font-size:.63rem;color:var(--c-muted);margin-top:.25rem;text-align:center">
+          Ouvrez → finalisez → exportez en PDF → uploadez ci-dessous
+        </div>
+        @else
+        <form action="{{ route('admin.loans.insurance.pdf.generate', $loan) }}" method="POST"
+              onsubmit="return confirm('Générer l\'attestation d\'assurance ?')">
+          @csrf
+          <button type="submit"
+                  style="width:100%;justify-content:center;display:flex;align-items:center;gap:.45rem;padding:.55rem .875rem;font-size:.78rem;font-weight:700;border-radius:8px;cursor:pointer;background:#16a34a;border:none;color:#fff">
+            <i class="fas fa-magic"></i> {{ $loan->insurance_pdf_path ? 'Régénérer' : 'Générer l\'attestation PDF' }}
+          </button>
+        </form>
+        @endif
+
+        {{-- Upload --}}
+        <form action="{{ route('admin.loans.insurance.pdf.upload', $loan) }}" method="POST" enctype="multipart/form-data">
+          @csrf
+          <div class="lc-upload-zone" onclick="this.querySelector('input').click()"
+               style="{{ $loan->insurance_pdf_path ? 'border-color:#A7F3D0;background:#F0FDF4' : '' }}">
+            <i class="fas fa-file-upload" style="color:#16a34a;font-size:1.1rem;display:block;margin-bottom:.3rem"></i>
+            <div style="font-size:.74rem;font-weight:600;color:var(--c-navy)">
+              {{ $loan->insurance_pdf_path ? 'Remplacer l\'attestation' : 'Uploader un PDF existant' }}
+            </div>
+            <div style="font-size:.64rem;color:var(--c-muted);margin-top:.1rem">PDF · max 20 Mo</div>
+            <input type="file" name="insurance_pdf" accept=".pdf" required style="display:none"
+                   onchange="this.closest('form').submit()">
+          </div>
+          @error('insurance_pdf')
+          <div style="font-size:.72rem;color:#dc2626;margin-top:.35rem">
+            <i class="fas fa-exclamation-circle"></i> {{ $message }}
+          </div>
+          @enderror
+        </form>
+
+      </div>
+    </div>
+
   </div>{{-- /lc-panel --}}
 
   {{-- ════ ZONE PRINCIPALE ════ --}}
   <div style="min-width:0;display:flex;flex-direction:column;gap:1.125rem">
 
-    {{-- Visionneuse PDF --}}
+    {{-- ── Séparateur section CONTRAT (zone principale) ── --}}
+    <div style="display:flex;align-items:center;gap:.75rem">
+      <div style="display:flex;align-items:center;gap:.5rem;background:#FFF1F2;border:1px solid #FECDD3;border-radius:8px;padding:.35rem .75rem">
+        <i class="fas fa-file-contract" style="color:#dc2626;font-size:.8rem"></i>
+        <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#9F1239">Contrat de prêt</span>
+      </div>
+      <div style="flex:1;height:1.5px;background:linear-gradient(to right,#FECDD3,transparent)"></div>
+    </div>
+
+    {{-- Visionneuse PDF contrat --}}
     <div class="lc-pdf-card">
       <div class="lc-pdf-toolbar">
         <div class="lc-pdf-title">
@@ -334,6 +446,52 @@
         <i class="fas fa-file-pdf" style="font-size:3rem;margin-bottom:.75rem;opacity:.2"></i>
         <div style="font-size:.9rem;font-weight:600;color:var(--c-navy)">Aucun PDF disponible</div>
         <div style="font-size:.78rem;color:var(--c-muted);margin-top:.3rem">Uploadez le contrat signé dans le panneau gauche</div>
+      </div>
+      @endif
+    </div>
+
+    {{-- ── Séparateur section ASSURANCE (zone principale) ── --}}
+    <div style="display:flex;align-items:center;gap:.75rem;margin-top:.25rem">
+      <div style="display:flex;align-items:center;gap:.5rem;background:#F0FDF4;border:1px solid #A7F3D0;border-radius:8px;padding:.35rem .75rem">
+        <i class="fas fa-shield-alt" style="color:#16a34a;font-size:.8rem"></i>
+        <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#065F46">Assurance emprunteur · CG-A340G</span>
+      </div>
+      <div style="flex:1;height:1.5px;background:linear-gradient(to right,#A7F3D0,transparent)"></div>
+    </div>
+
+    {{-- Visionneuse PDF attestation d'assurance --}}
+    <div class="lc-pdf-card">
+      <div class="lc-pdf-toolbar">
+        <div class="lc-pdf-title">
+          <i class="fas fa-shield-alt" style="color:#16a34a"></i>
+          Attestation d'assurance emprunteur
+          <span class="lc-lang-badge" style="background:#F0FDF4;border-color:#A7F3D0;color:#065F46">CG-A340G</span>
+        </div>
+        @if($loan->insurance_pdf_path)
+        <div class="lc-pdf-actions">
+          <a href="{{ route('admin.loans.insurance.pdf', $loan) }}" class="btn-ghost btn-sm-pro" target="_blank">
+            <i class="fas fa-external-link-alt"></i> Nouvel onglet
+          </a>
+          <a href="{{ route('admin.loans.insurance.pdf', $loan) }}"
+             download="Assurance_{{ $loan->reference }}.pdf" class="btn-ghost btn-sm-pro">
+            <i class="fas fa-download"></i> Télécharger
+          </a>
+        </div>
+        @endif
+      </div>
+
+      @if($loan->insurance_pdf_path)
+      <iframe
+        src="{{ route('admin.loans.insurance.pdf', $loan) }}"
+        class="lc-pdf-frame"
+        title="Attestation assurance {{ $loan->reference }}"
+        loading="lazy"
+      ></iframe>
+      @else
+      <div class="lc-pdf-placeholder">
+        <i class="fas fa-shield-alt" style="font-size:3rem;margin-bottom:.75rem;opacity:.2;color:#16a34a"></i>
+        <div style="font-size:.9rem;font-weight:600;color:var(--c-navy)">Aucune attestation disponible</div>
+        <div style="font-size:.78rem;color:var(--c-muted);margin-top:.3rem">Uploadez l'attestation d'assurance CG-A340G dans le panneau gauche</div>
       </div>
       @endif
     </div>

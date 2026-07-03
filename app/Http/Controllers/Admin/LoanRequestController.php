@@ -11,6 +11,7 @@ use App\Models\ContractTemplate;
 use App\Models\LoanHistory;
 use App\Models\LoanRequest;
 use App\Models\User;
+use App\Services\ContractHtmlService;
 use App\Services\DocumentArchive;
 use App\Services\LoanPdfService;
 use App\Services\LoanService;
@@ -272,13 +273,16 @@ class LoanRequestController extends Controller
             'subject'              => 'nullable|string|max:2000',
             'start_date'           => 'nullable|date',
             'currency'             => 'required|string|max:10',
-            'admin_fees'           => 'nullable|numeric|min:0',
-            'bank_account'         => 'nullable|string|max:255',
-            'agent_suivi'          => 'nullable|string|max:255',
-            'directeur'            => 'nullable|string|max:255',
-            'special_conditions'   => 'nullable|string',
-            'contract_template_id' => 'nullable|exists:contract_templates,id',
-            'contract_language'    => 'nullable|in:fr,en,pl,es',
+            'admin_fees'            => 'nullable|numeric|min:0',
+            'frais_assurance'       => 'nullable|numeric|min:0',
+            'date_fin_assurance'    => 'nullable|date',
+            'bank_account'          => 'nullable|string|max:255',
+            'agent_suivi'           => 'nullable|string|max:255',
+            'directeur'             => 'nullable|string|max:255',
+            'special_conditions'    => 'nullable|string',
+            'contract_template_id'  => 'nullable|exists:contract_templates,id',
+            'insurance_template_id' => 'nullable|exists:contract_templates,id',
+            'contract_language'     => 'nullable|in:fr,en,pl,es',
             'extra_fields'         => 'nullable|array',
             'extra_fields.*'       => 'nullable|string|max:500',
         ]);
@@ -367,6 +371,160 @@ class LoanRequestController extends Controller
         $this->logHistory($loan, 'pdf_uploaded', [], ['pdf' => $relPath]);
 
         return back()->with('success', 'PDF du contrat uploadé avec succès. Il sera joint à l\'email envoyé au client.');
+    }
+
+    public function previewInsurancePdf(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        if (!$loan->insurance_pdf_path) {
+            return back()->with('error', 'Aucune attestation d\'assurance uploadée pour ce dossier.');
+        }
+
+        $absPath = storage_path('app/private/' . $loan->insurance_pdf_path);
+        if (!file_exists($absPath)) {
+            return back()->with('error', 'Fichier d\'attestation introuvable sur le serveur.');
+        }
+
+        return response()->file($absPath, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="Assurance_' . $loan->reference . '.pdf"',
+        ]);
+    }
+
+    public function uploadInsurancePdf(Request $request, LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        $request->validate([
+            'insurance_pdf' => 'required|file|mimes:pdf|max:20480',
+        ], [
+            'insurance_pdf.required' => 'Veuillez sélectionner un fichier PDF.',
+            'insurance_pdf.mimes'    => 'Seuls les fichiers PDF sont acceptés.',
+            'insurance_pdf.max'      => 'Le fichier PDF ne doit pas dépasser 20 Mo.',
+        ]);
+
+        if ($loan->insurance_pdf_path) {
+            $old = storage_path('app/private/' . $loan->insurance_pdf_path);
+            if (file_exists($old)) {
+                @unlink($old);
+            }
+        }
+
+        $file    = $request->file('insurance_pdf');
+        $relPath = 'insurance-pdfs/' . $loan->id . '/' . $loan->reference . '_assurance.pdf';
+        $absDir  = storage_path('app/private/insurance-pdfs/' . $loan->id);
+
+        if (!is_dir($absDir)) {
+            mkdir($absDir, 0755, true);
+        }
+
+        $file->move($absDir, $loan->reference . '_assurance.pdf');
+
+        $loan->update(['insurance_pdf_path' => $relPath]);
+
+        $this->logHistory($loan, 'insurance_pdf_uploaded', [], ['pdf' => $relPath]);
+
+        return back()->with('success', 'Attestation d\'assurance uploadée avec succès.');
+    }
+
+    public function sendInsuranceMail(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        if (!$loan->insurance_pdf_path) {
+            return back()->with('error', 'Générez d\'abord l\'attestation d\'assurance.');
+        }
+
+        $absPath = storage_path('app/private/' . $loan->insurance_pdf_path);
+        if (!file_exists($absPath)) {
+            return back()->with('error', 'Fichier d\'attestation introuvable sur le serveur.');
+        }
+
+        $locale = $loan->contract_language ?? 'fr';
+
+        Mail::to($loan->email)->send(new \App\Mail\InsuranceAttestationMail($loan, $absPath, $locale));
+
+        $this->logHistory($loan, 'insurance_sent', [], ['email' => $loan->email]);
+
+        return back()->with('success', 'Attestation d\'assurance envoyée à ' . $loan->email . '.');
+    }
+
+    public function selectInsuranceTemplate(Request $request, LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+        $request->validate(['insurance_template_id' => 'nullable|exists:contract_templates,id']);
+        $loan->update(['insurance_template_id' => $request->insurance_template_id ?: null]);
+        return back()->with('success', 'Modèle d\'assurance sélectionné.');
+    }
+
+    public function generateInsurancePdf(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        // Si le template a un DOCX, orienter vers le téléchargement DOCX
+        if ($loan->insuranceTemplate?->hasDocxTemplate()) {
+            return back()->with('error', 'Ce modèle utilise un fichier DOCX. Cliquez sur "Télécharger DOCX" pour l\'obtenir, convertissez-le en PDF, puis uploadez-le.');
+        }
+
+        $vars                = app(\App\Services\ContractService::class)->getVariables($loan);
+        $vars['{directeur}'] = $loan->directeur ?: 'CREDIXA INVESTI';
+
+        // Si le template a du contenu HTML personnalisé, l'utiliser
+        $template = $loan->insuranceTemplate;
+        if ($template && $template->content) {
+            $html = app(ContractHtmlService::class)->buildContractHtml($loan, $template, $loan->contract_language ?? 'fr');
+        } else {
+            $html = view('contracts.assurance-emprunteur')->render();
+            $html = str_replace(array_keys($vars), array_values($vars), $html);
+            $html = str_replace(array_keys($vars), array_values($vars), $html);
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadHTML($html)
+            ->setPaper('a4', 'portrait')
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled'      => false,
+                'isPhpEnabled'         => false,
+                'defaultFont'          => 'DejaVu Sans',
+                'dpi'                  => 150,
+            ]);
+
+        $relDir  = 'insurance-pdfs/' . $loan->id;
+        $relPath = $relDir . '/' . $loan->reference . '_assurance.pdf';
+        $absDir  = storage_path('app/private/' . $relDir);
+
+        if (!is_dir($absDir)) {
+            mkdir($absDir, 0755, true);
+        }
+
+        file_put_contents(storage_path('app/private/' . $relPath), $pdf->output());
+
+        $loan->update(['insurance_pdf_path' => $relPath]);
+        $this->logHistory($loan, 'insurance_pdf_generated', [], ['pdf' => $relPath]);
+
+        return back()->with('success', 'Attestation d\'assurance générée avec succès.');
+    }
+
+    public function downloadInsuranceDocx(LoanRequest $loan, DocumentArchive $archive)
+    {
+        $this->authorizeAccess($loan);
+
+        $template = $loan->insuranceTemplate;
+
+        if (!$template || !$template->hasDocxTemplate()) {
+            return back()->with('error', 'Aucun template DOCX assurance disponible. Sélectionnez un modèle avec DOCX dans la fiche du dossier.');
+        }
+
+        $locale = $loan->contract_language ?? 'fr';
+
+        try {
+            $path = $archive->getOrGenerate($loan, $template, $locale);
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Génération DOCX assurance impossible : ' . $e->getMessage());
+        }
+
+        return response()->download($path, 'Assurance_' . $loan->reference . '.docx');
     }
 
     public function downloadDocx(LoanRequest $loan, DocumentArchive $archive)
