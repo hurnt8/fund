@@ -110,10 +110,19 @@
     <a href="{{ route('admin.loans.show', $loan) }}" class="btn-ghost btn-sm-pro">
       <i class="fas fa-arrow-left"></i> Dossier
     </a>
-    @if($loan->contract_pdf_path)
-    <a href="{{ route('admin.loans.contract.pdf', $loan) }}" class="btn-ghost btn-sm-pro" target="_blank">
-      <i class="fas fa-eye"></i> Voir PDF
+    <a href="{{ $loan->contract_pdf_path ? route('admin.loans.contract.viewer', $loan) : '#' }}"
+       class="btn-ghost btn-sm-pro{{ !$loan->contract_pdf_path ? ' disabled' : '' }}"
+       style="{{ !$loan->contract_pdf_path ? 'opacity:.4;pointer-events:none' : '' }}"
+       title="Plein écran contrat">
+      <i class="fas fa-file-contract" style="color:#dc2626"></i> Contrat
     </a>
+    <a href="{{ $loan->insurance_pdf_path ? route('admin.loans.insurance.viewer', $loan) : '#' }}"
+       class="btn-ghost btn-sm-pro{{ !$loan->insurance_pdf_path ? ' disabled' : '' }}"
+       style="{{ !$loan->insurance_pdf_path ? 'opacity:.4;pointer-events:none' : '' }}"
+       title="Plein écran assurance">
+      <i class="fas fa-shield-alt" style="color:#16a34a"></i> Assurance
+    </a>
+    @if($loan->contract_pdf_path)
     <a href="{{ route('admin.loans.contract.pdf', $loan) }}"
        download="Contrat_{{ $loan->reference }}.pdf" class="btn-ghost btn-sm-pro">
       <i class="fas fa-download"></i> Télécharger
@@ -260,9 +269,9 @@
         <div class="lc-pcard-ico" style="background:#FFF1F2;color:#dc2626"><i class="fas fa-file-pdf"></i></div>
         <span class="lc-pcard-title">PDF du contrat</span>
         @if($loan->contract_pdf_path)
-        <a href="{{ route('admin.loans.contract.pdf',$loan) }}"
-           class="btn-ghost btn-sm-pro" style="margin-left:auto;padding:.2rem .5rem;font-size:.7rem" target="_blank">
-          <i class="fas fa-eye"></i>
+        <a href="{{ route('admin.loans.contract.viewer',$loan) }}"
+           class="btn-ghost btn-sm-pro" style="margin-left:auto;padding:.2rem .5rem;font-size:.7rem" title="Visualiser plein écran">
+          <i class="fas fa-expand-alt"></i>
         </a>
         @endif
       </div>
@@ -318,9 +327,9 @@
         <div class="lc-pcard-ico" style="background:#F0FDF4;color:#16a34a"><i class="fas fa-shield-alt"></i></div>
         <span class="lc-pcard-title">Attestation d'assurance</span>
         @if($loan->insurance_pdf_path)
-        <a href="{{ route('admin.loans.insurance.pdf', $loan) }}"
-           class="btn-ghost btn-sm-pro" style="margin-left:auto;padding:.2rem .5rem;font-size:.7rem" target="_blank">
-          <i class="fas fa-eye"></i>
+        <a href="{{ route('admin.loans.insurance.viewer', $loan) }}"
+           class="btn-ghost btn-sm-pro" style="margin-left:auto;padding:.2rem .5rem;font-size:.7rem" title="Visualiser plein écran">
+          <i class="fas fa-expand-alt"></i>
         </a>
         @endif
       </div>

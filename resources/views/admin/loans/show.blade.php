@@ -412,6 +412,13 @@ $tpl = $loan->contractTemplate;
         </form>
         @endif
 
+        <a href="{{ $loan->contract_pdf_path ? route('admin.loans.contract.viewer', $loan) : '#' }}"
+           class="btn-ghost btn-sm-pro ld-btn-full"
+           style="display:flex;align-items:center;justify-content:center;gap:.4rem;text-decoration:none;{{ !$loan->contract_pdf_path ? 'opacity:.4;pointer-events:none' : '' }}">
+          <i class="fas fa-expand-alt" style="color:#dc2626"></i>
+          {{ $loan->contract_pdf_path ? 'Visualiser le contrat' : 'Aucun contrat PDF' }}
+        </a>
+
         <hr class="ld-divider">
 
         {{-- ── Assurance ── --}}
@@ -445,6 +452,13 @@ $tpl = $loan->contractTemplate;
           </button>
         </form>
         @endif
+
+        <a href="{{ $loan->insurance_pdf_path ? route('admin.loans.insurance.viewer', $loan) : '#' }}"
+           class="btn-ghost btn-sm-pro ld-btn-full"
+           style="margin-top:.35rem;display:flex;align-items:center;justify-content:center;gap:.4rem;text-decoration:none;{{ !$loan->insurance_pdf_path ? 'opacity:.4;pointer-events:none' : '' }}">
+          <i class="fas fa-expand-alt" style="color:#16a34a"></i>
+          {{ $loan->insurance_pdf_path ? 'Visualiser l\'attestation' : 'Aucune attestation PDF' }}
+        </a>
 
         <hr class="ld-divider">
 
@@ -565,7 +579,7 @@ $tpl = $loan->contractTemplate;
               <span class="icon-dot" style="background:#dc2626"></span>PDF du contrat signé
             </div>
             @if($loan->contract_pdf_path)
-            <a href="{{ route('admin.loans.contract.pdf',$loan) }}" class="btn-ghost btn-sm-pro" target="_blank">
+            <a href="{{ route('admin.loans.contract.viewer',$loan) }}" class="btn-ghost btn-sm-pro" title="Visualiser le contrat">
               <i class="fas fa-eye"></i>
             </a>
             @endif
@@ -579,6 +593,9 @@ $tpl = $loan->contractTemplate;
                 <div class="ld-pdf-file-name">{{ $loan->reference }}.pdf</div>
                 <div class="ld-pdf-file-sub"><i class="fas fa-check-circle"></i> Joint à l'email de validation</div>
               </div>
+              <a href="{{ route('admin.loans.contract.viewer',$loan) }}" class="btn-ghost btn-sm-pro" style="padding:.3rem .5rem" title="Visualiser">
+                <i class="fas fa-external-link-alt"></i>
+              </a>
               <a href="{{ route('admin.loans.contract.pdf',$loan) }}" class="btn-ghost btn-sm-pro" style="padding:.3rem .5rem" target="_blank" title="Télécharger">
                 <i class="fas fa-download"></i>
               </a>
@@ -680,7 +697,7 @@ $tpl = $loan->contractTemplate;
               <span class="icon-dot" style="background:#16a34a"></span>Attestation d'assurance PDF
             </div>
             @if($loan->insurance_pdf_path)
-            <a href="{{ route('admin.loans.insurance.pdf',$loan) }}" class="btn-ghost btn-sm-pro" target="_blank">
+            <a href="{{ route('admin.loans.insurance.viewer',$loan) }}" class="btn-ghost btn-sm-pro" title="Visualiser l'attestation">
               <i class="fas fa-eye"></i>
             </a>
             @endif
@@ -694,7 +711,10 @@ $tpl = $loan->contractTemplate;
                 <div class="ld-pdf-file-name" style="color:#065F46">{{ $loan->reference }}_assurance.pdf</div>
                 <div class="ld-pdf-file-sub" style="color:#047857"><i class="fas fa-check-circle"></i> Attestation CG-A340G disponible</div>
               </div>
-              <a href="{{ route('admin.loans.insurance.pdf',$loan) }}" class="btn-ghost btn-sm-pro" style="padding:.3rem .5rem" target="_blank">
+              <a href="{{ route('admin.loans.insurance.viewer',$loan) }}" class="btn-ghost btn-sm-pro" style="padding:.3rem .5rem" title="Visualiser">
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+              <a href="{{ route('admin.loans.insurance.pdf',$loan) }}" class="btn-ghost btn-sm-pro" style="padding:.3rem .5rem" target="_blank" title="Télécharger">
                 <i class="fas fa-download"></i>
               </a>
             </div>

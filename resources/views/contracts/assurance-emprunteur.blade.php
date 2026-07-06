@@ -284,6 +284,18 @@ body {
     <td class="lbl">Frais de dossier</td>
     <td class="val">{{ $vars['{frais_admin}'] ?? '{frais_admin}' }} {{ $vars['{devise}'] ?? '{devise}' }}</td>
   </tr>
+  @if(($vars['{frais_assurance}'] ?? '—') !== '—')
+  <tr>
+    <td class="lbl">Frais d'assurance emprunteur</td>
+    <td class="val">{{ $vars['{frais_assurance}'] }} {{ $vars['{devise}'] ?? '{devise}' }}</td>
+  </tr>
+  @endif
+  @if(($vars['{date_fin_assurance}'] ?? '—') !== '—')
+  <tr>
+    <td class="lbl">Date de fin d'assurance</td>
+    <td class="val">{{ $vars['{date_fin_assurance}'] }}</td>
+  </tr>
+  @endif
   @if(!empty($vars['{compte_bancaire}']) && ($vars['{compte_bancaire}'] ?? '') !== '')
   <tr>
     <td class="lbl">Compte bancaire de prélèvement</td>

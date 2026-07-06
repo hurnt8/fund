@@ -309,6 +309,24 @@ class LoanRequestController extends Controller
                          ->with('success', 'Demande mise à jour.');
     }
 
+    public function contractViewer(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+        if (!$loan->contract_pdf_path) {
+            return back()->with('error', 'Aucun PDF de contrat disponible pour ce dossier.');
+        }
+        return view('admin.loans.contract-viewer', compact('loan'));
+    }
+
+    public function insuranceViewer(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+        if (!$loan->insurance_pdf_path) {
+            return back()->with('error', 'Aucune attestation d\'assurance disponible pour ce dossier.');
+        }
+        return view('admin.loans.insurance-viewer', compact('loan'));
+    }
+
     public function contract(LoanRequest $loan)
     {
         $this->authorizeAccess($loan);
@@ -475,8 +493,7 @@ class LoanRequestController extends Controller
         if ($template && $template->content) {
             $html = app(ContractHtmlService::class)->buildContractHtml($loan, $template, $loan->contract_language ?? 'fr');
         } else {
-            $html = view('contracts.assurance-emprunteur')->render();
-            $html = str_replace(array_keys($vars), array_values($vars), $html);
+            $html = view('contracts.assurance-emprunteur', ['vars' => $vars])->render();
             $html = str_replace(array_keys($vars), array_values($vars), $html);
         }
 

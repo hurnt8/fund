@@ -272,10 +272,12 @@ Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('ad
     Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
     Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
     Route::get('/loans/{loan}/contract/pdf',          [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
+    Route::get('/loans/{loan}/contract/viewer',       [AdminLoanRequestController::class, 'contractViewer'])->name('loans.contract.viewer');
     Route::post('/loans/{loan}/contract/pdf/upload',  [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
     Route::post('/loans/{loan}/contract/pdf/resend',  [AdminLoanRequestController::class, 'resendContractEmail'])->name('loans.contract.pdf.resend');
     Route::get('/loans/{loan}/contract/docx',         [AdminLoanRequestController::class, 'downloadDocx'])->name('loans.contract.docx');
     Route::get('/loans/{loan}/insurance/pdf',              [AdminLoanRequestController::class, 'previewInsurancePdf'])->name('loans.insurance.pdf');
+    Route::get('/loans/{loan}/insurance/viewer',           [AdminLoanRequestController::class, 'insuranceViewer'])->name('loans.insurance.viewer');
     Route::post('/loans/{loan}/insurance/pdf/upload',      [AdminLoanRequestController::class, 'uploadInsurancePdf'])->name('loans.insurance.pdf.upload');
     Route::post('/loans/{loan}/insurance/pdf/generate',    [AdminLoanRequestController::class, 'generateInsurancePdf'])->name('loans.insurance.pdf.generate');
     Route::get('/loans/{loan}/insurance/docx',             [AdminLoanRequestController::class, 'downloadInsuranceDocx'])->name('loans.insurance.docx');
@@ -376,10 +378,12 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('super-admin')->name('su
     Route::get('/loans/{loan}/contract',           [AdminLoanRequestController::class, 'contract'])->name('loans.contract');
     Route::post('/loans/{loan}/contract',          [AdminLoanRequestController::class, 'updateContract'])->name('loans.contract.update');
     Route::get('/loans/{loan}/contract/pdf',          [AdminLoanRequestController::class, 'previewPdf'])->name('loans.contract.pdf');
+    Route::get('/loans/{loan}/contract/viewer',       [AdminLoanRequestController::class, 'contractViewer'])->name('loans.contract.viewer');
     Route::post('/loans/{loan}/contract/pdf/upload',  [AdminLoanRequestController::class, 'uploadContractPdf'])->name('loans.contract.pdf.upload');
     Route::post('/loans/{loan}/contract/pdf/resend',  [AdminLoanRequestController::class, 'resendContractEmail'])->name('loans.contract.pdf.resend');
     Route::get('/loans/{loan}/contract/docx',         [AdminLoanRequestController::class, 'downloadDocx'])->name('loans.contract.docx');
     Route::get('/loans/{loan}/insurance/pdf',              [AdminLoanRequestController::class, 'previewInsurancePdf'])->name('loans.insurance.pdf');
+    Route::get('/loans/{loan}/insurance/viewer',           [AdminLoanRequestController::class, 'insuranceViewer'])->name('loans.insurance.viewer');
     Route::post('/loans/{loan}/insurance/pdf/upload',      [AdminLoanRequestController::class, 'uploadInsurancePdf'])->name('loans.insurance.pdf.upload');
     Route::post('/loans/{loan}/insurance/pdf/generate',    [AdminLoanRequestController::class, 'generateInsurancePdf'])->name('loans.insurance.pdf.generate');
     Route::get('/loans/{loan}/insurance/docx',             [AdminLoanRequestController::class, 'downloadInsuranceDocx'])->name('loans.insurance.docx');
