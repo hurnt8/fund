@@ -50,11 +50,13 @@ class LoanController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email',
             'phone'    => 'required|string|max:50',
-            'amount'   => 'required|numeric|min:1',
+            'amount'   => 'required|numeric|min:1000',
             'darly'    => 'required|numeric|min:1',
             'subject'  => 'required|string',
             'objet'    => 'nullable|string|max:2000',
             'currency' => 'nullable|string|in:' . implode(',', config('credixa.currencies')),
+        ], [
+            'amount.min' => 'Le montant minimum pour une demande de prêt est de 1000.',
         ]);
         $data['currency'] = $data['currency'] ?? config('credixa.default_currency');
 

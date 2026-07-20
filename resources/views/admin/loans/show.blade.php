@@ -967,6 +967,25 @@ function ldTab(btn, paneId) {
   document.getElementById(paneId).classList.add('active');
 }
 
+// Empêche la double soumission (double-clic) sur les actions du dossier :
+// validation, signature, envoi/renvoi d'email, génération de documents, etc.
+document.querySelectorAll('.ld-layout form').forEach(function (form) {
+  form.addEventListener('submit', function (e) {
+    if (e.defaultPrevented) return; // confirmation annulée par l'utilisateur
+    if (form.dataset.submitted === '1') {
+      e.preventDefault();
+      return;
+    }
+    form.dataset.submitted = '1';
+    var btn = form.querySelector('button[type="submit"], button:not([type])');
+    if (btn) {
+      btn.disabled = true;
+      btn.dataset.originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+    }
+  });
+});
+
 // Upload auto-submit feedback
 document.querySelectorAll('.ld-upload-area input[type="file"]').forEach(function(inp) {
   inp.addEventListener('change', function() {

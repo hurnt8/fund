@@ -268,7 +268,7 @@ document.addEventListener('alpine:init', () => {
                                 @lang('loan.label_other') :
                             </label>
                             <input type="number" x-model="customAmt" @input="selAmount = null"
-                                   min="100" step="100"
+                                   min="1000" step="100"
                                    placeholder="{{ __('loan.placeholder_amount') }}">
                             <span class="sym" x-text="currency.symbol"></span>
                         </div>

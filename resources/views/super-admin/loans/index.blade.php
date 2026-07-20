@@ -449,7 +449,7 @@ $sIcons = [
 
   @if($loans->hasPages())
   <div class="li-pagi">
-    {{ $loans->appends(request()->query())->links() }}
+    <x-loans-pagination :paginator="$loans" />
   </div>
   @endif
 

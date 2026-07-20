@@ -107,7 +107,7 @@ class LoanRequestController extends Controller
             'client_locale'     => 'nullable|in:fr,en,pl,es',
             'client_currency'   => 'nullable|string|max:10',
             // Prêt
-            'amount'            => 'required|numeric|min:100',
+            'amount'            => 'required|numeric|min:1000',
             'darly'             => 'required|integer|min:1|max:360',
             'objet'             => 'nullable|string|max:255',
             'subject'           => 'nullable|string|max:2000',
@@ -131,6 +131,7 @@ class LoanRequestController extends Controller
             'client_email.required_if' => 'L\'email du client est obligatoire pour un nouveau client.',
             'client_id.required_if'    => 'Veuillez sélectionner un client existant.',
             'amount.required'   => 'Le montant est obligatoire.',
+            'amount.min'        => 'Le montant minimum pour une demande de prêt est de 1000.',
             'darly.required'    => 'La durée est obligatoire.',
         ]);
 
@@ -267,7 +268,7 @@ class LoanRequestController extends Controller
         abort_unless($loan->isEditable(), 403);
 
         $data = $request->validate([
-            'amount'               => 'required|numeric|min:100',
+            'amount'               => 'required|numeric|min:1000',
             'darly'                => 'required|integer|min:1|max:360',
             'objet'                => 'nullable|string|max:255',
             'subject'              => 'nullable|string|max:2000',
@@ -285,6 +286,8 @@ class LoanRequestController extends Controller
             'contract_language'     => 'nullable|in:fr,en,pl,es',
             'extra_fields'         => 'nullable|array',
             'extra_fields.*'       => 'nullable|string|max:500',
+        ], [
+            'amount.min' => 'Le montant minimum pour une demande de prêt est de 1000.',
         ]);
 
         $old = $loan->only(['amount','darly','status','contract_template_id']);
@@ -596,7 +599,29 @@ class LoanRequestController extends Controller
             );
         }
 
-        $old       = ['status' => $loan->status];
+        $old = ['status' => $loan->status];
+
+        // ── Verrou + bascule atomique du statut ───────────────────────────
+        // Empêche un double traitement (double-clic, requêtes concurrentes) :
+        // un seul thread peut faire passer le dossier en "validated".
+        // Les autres tombent sur canBeValidated() === false et s'arrêtent net,
+        // avant tout envoi d'email.
+        $claimed = DB::transaction(function () use ($loan) {
+            $fresh = LoanRequest::lockForUpdate()->find($loan->id);
+            if (!$fresh->canBeValidated()) {
+                return false;
+            }
+            $fresh->update(['status' => LoanRequest::STATUS_VALIDATED, 'validated_at' => now()]);
+            return true;
+        });
+
+        if (!$claimed) {
+            return redirect()->route('admin.loans.show', $loan)
+                ->with('error', 'Ce dossier a déjà été validé (ou est en cours de validation).');
+        }
+
+        $loan->refresh();
+
         $locale    = $loan->contract_language ?? 'fr';
         $recipient = $this->recipientEmail($loan);
 
@@ -608,12 +633,6 @@ class LoanRequestController extends Controller
         } catch (\Throwable $e) {
             Log::warning('Amortization PDF generation failed for ' . $loan->reference . ': ' . $e->getMessage());
         }
-
-        // ── Mettre à jour le statut ───────────────────────────────────────
-        $loan->update([
-            'status'       => LoanRequest::STATUS_VALIDATED,
-            'validated_at' => now(),
-        ]);
 
         // ── Envoyer l'email dans la langue du client ──────────────────────
         try {
@@ -689,10 +708,27 @@ class LoanRequestController extends Controller
         $this->authorizeAccess($loan);
 
         $old = ['status' => $loan->status];
-        $loan->update([
-            'status'              => LoanRequest::STATUS_CONTRACT_SIGNED,
-            'signed_received_at'  => now(),
-        ]);
+
+        // ── Verrou + bascule atomique du statut ───────────────────────────
+        // Empêche l'envoi en double de l'email d'accusé de réception en cas
+        // de double-clic ou de requêtes concurrentes sur ce bouton.
+        $claimed = DB::transaction(function () use ($loan) {
+            $fresh = LoanRequest::lockForUpdate()->find($loan->id);
+            if ($fresh->status !== LoanRequest::STATUS_CONTRACT_SENT) {
+                return false;
+            }
+            $fresh->update([
+                'status'             => LoanRequest::STATUS_CONTRACT_SIGNED,
+                'signed_received_at' => now(),
+            ]);
+            return true;
+        });
+
+        if (!$claimed) {
+            return back()->with('error', 'Ce contrat a déjà été marqué comme signé.');
+        }
+
+        $loan->refresh();
 
         $locale    = $loan->contract_language ?? 'fr';
         $recipient = $this->recipientEmail($loan);

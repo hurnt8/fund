@@ -198,7 +198,7 @@
             <label class="form-label-pro">Montant *</label>
             <div class="d-flex gap-2">
               <input type="number" name="amount" class="form-control-pro" value="{{ old('amount') }}"
-                     step="100" min="100" placeholder="5 000"
+                     step="100" min="1000" placeholder="5 000"
                      x-model.number="amount" @input="calc()" style="flex:1">
               <select name="currency" class="form-control-pro" style="width:90px;flex-shrink:0" x-model="currency">
                 @foreach($currencies as $cur)
