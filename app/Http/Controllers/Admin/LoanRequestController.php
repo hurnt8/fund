@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\LoanValidatedMail;
 use App\Mail\SignedContractAcknowledgementMail;
-use App\Mail\UserInvitationMail;
 use App\Models\ClientNotification;
 use App\Models\ContractTemplate;
 use App\Models\LoanHistory;
@@ -151,20 +150,16 @@ class LoanRequestController extends Controller
             (int) $data['darly']
         );
 
-        $sendActivationEmail = false;
-        $activationUrl       = null;
-
         $loan = DB::transaction(
-            function () use ($data, $admin, $calc, &$sendActivationEmail, &$activationUrl) {
+            function () use ($data, $admin, $calc) {
                 if ($data['client_mode'] === 'new') {
-                    $token  = Str::random(64);
                     $client = User::create([
                         'name'             => $data['client_name'],
                         'email'            => $data['client_email'],
                         'password'         => Hash::make(Str::random(32)),
                         'type'             => 'client',
                         'created_by'       => $admin->id,
-                        'invitation_token' => $token,
+                        'invitation_token' => Str::random(64),
                         'phone'            => $data['client_phone'] ?? null,
                         'address'          => $data['client_address'] ?? null,
                         'birth_date'       => $data['client_birth_date'] ?? null,
@@ -174,8 +169,6 @@ class LoanRequestController extends Controller
                         'currency'         => $data['client_currency'] ?? $data['currency'],
                     ]);
                     $client->assignRole('client');
-                    $sendActivationEmail = true;
-                    $activationUrl = route('invitation.activate', ['token' => $token]);
                 } else {
                     $client = User::findOrFail($data['client_id']);
                 }
@@ -219,18 +212,8 @@ class LoanRequestController extends Controller
             }
         );
 
-        // Email envoyé hors transaction (ne doit pas rollback la BDD si SMTP échoue)
-        if ($sendActivationEmail && $activationUrl) {
-            try {
-                Mail::to($loan->client->email)->send(new UserInvitationMail($loan->client, $activationUrl));
-            } catch (\Throwable $e) {
-                Log::error('UserInvitationMail failed for ' . $loan->email . ': ' . $e->getMessage());
-            }
-        }
-
         return redirect()->route('admin.loans.show', $loan)
-                         ->with('success', 'Dossier N°' . $loan->reference . ' créé (statut : Brouillon). '
-                             . ($sendActivationEmail ? 'Un email d\'activation a été envoyé à ' . $loan->email . '.' : ''));
+                         ->with('success', 'Dossier N°' . $loan->reference . ' créé (statut : Brouillon).');
     }
 
     public function show(LoanRequest $loan)

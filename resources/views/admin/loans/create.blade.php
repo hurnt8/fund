@@ -18,7 +18,7 @@
 <div class="flash flash-err mb-4"><i class="fas fa-exclamation-triangle"></i> {{ $errors->first() }}</div>
 @endif
 
-<form action="{{ route('admin.loans.store') }}" method="POST" x-data="loanForm()" x-init="calc()">
+<form action="{{ route('admin.loans.store') }}" method="POST" x-data="loanForm()" x-init="calc()" @submit.prevent="onSubmit($event)">
 @csrf
 <div class="row g-4">
 
@@ -48,7 +48,7 @@
         {{-- Client existant --}}
         <div x-show="clientMode==='existing'" x-cloak>
           <label class="form-label-pro">Sélectionner un client *</label>
-          <select name="client_id" class="form-control-pro" x-on:change="loadClient($event)">
+          <select name="client_id" class="form-control-pro" x-model="clientId" x-on:change="loadClient($event)">
             <option value="">— Choisir —</option>
             @foreach($myClients as $c)
             <option value="{{ $c->id }}"
@@ -328,6 +328,35 @@
   </div>
 </div>
 
+{{-- Modal : champs obligatoires non remplis --}}
+<div class="modal fade" id="missingRequiredModal" tabindex="-1" aria-labelledby="missingRequiredModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:12px;border:none;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+      <div class="modal-header" style="background:#dc2626;border-radius:12px 12px 0 0;border:none;padding:1.25rem 1.5rem">
+        <h5 class="modal-title text-white" id="missingRequiredModalLabel" style="font-weight:700;font-size:.9375rem">
+          <i class="fas fa-exclamation-triangle me-2"></i>Champs obligatoires manquants
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:1.5rem">
+        <p class="text-muted" style="font-size:.8125rem;margin-bottom:1rem">
+          Veuillez compléter les champs suivants avant de créer le dossier :
+        </p>
+        <ul style="margin:0;padding-left:1.25rem">
+          <template x-for="field in missingRequired" :key="field">
+            <li style="font-size:.85rem;color:var(--c-navy);font-weight:600;margin-bottom:.35rem" x-text="field"></li>
+          </template>
+        </ul>
+      </div>
+      <div class="modal-footer" style="border:none;padding:1rem 1.5rem 1.5rem">
+        <button type="button" class="btn-navy" data-bs-dismiss="modal">
+          <i class="fas fa-pen me-1"></i> Corriger
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </form>
 @endsection
 
@@ -339,10 +368,42 @@ function loanForm(){
   return {
     amount:{{ old('amount',0) }}, duration:{{ old('darly',12) }}, rate:5,
     currency:'{{ old('currency','EUR') }}', clientMode:'{{ old('client_mode','existing') }}',
+    clientId:'{{ old('client_id','') }}',
     monthly:0, totalCost:0, totalInterest:0, schedule:[],
     missingFields:[], extraFieldValues:{},
+    missingRequired:[],
 
     loadClient(e){const o=e.target.selectedOptions[0];if(o&&o.dataset.currency)this.currency=o.dataset.currency;},
+
+    getMissingRequired(form){
+      const missing = [];
+      if(this.clientMode === 'existing'){
+        if(!this.clientId) missing.push('Client existant à sélectionner');
+      } else {
+        if(!form.querySelector('input[name="client_name"]')?.value.trim()) missing.push('Nom complet du client');
+        if(!form.querySelector('input[name="client_email"]')?.value.trim()) missing.push('Email du client');
+      }
+      if(!this.amount || this.amount < 1000) missing.push('Montant du prêt (minimum 1000)');
+      if(!this.duration || this.duration < 1) missing.push('Durée en mois');
+      if(!this.currency) missing.push('Devise');
+      return missing;
+    },
+
+    onSubmit(e){
+      const form = e.target;
+      const missing = this.getMissingRequired(form);
+      if(missing.length > 0){
+        this.missingRequired = missing;
+        this.$nextTick(() => {
+          const el = document.getElementById('missingRequiredModal');
+          if(el && typeof bootstrap !== 'undefined'){
+            bootstrap.Modal.getOrCreateInstance(el).show();
+          }
+        });
+        return;
+      }
+      form.submit();
+    },
 
     onTemplateChange(e){
       const tplId = e.target.value;
