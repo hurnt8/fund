@@ -548,7 +548,7 @@ $stepMap = [
 
   @if($loans->hasPages())
   <div class="li-pagi">
-    <x-loans-pagination :paginator="$loans" />
+    <x-pagination :paginator="$loans" />
   </div>
   @endif
 

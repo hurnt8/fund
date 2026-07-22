@@ -421,7 +421,7 @@
 
   @if($users->hasPages())
   <div style="padding:.875rem 1.25rem;border-top:1px solid var(--c-border)">
-    {{ $users->links() }}
+    <x-pagination :paginator="$users" />
   </div>
   @endif
 </div>
