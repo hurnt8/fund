@@ -4,10 +4,7 @@
 
 @section('content')
 @php
-  $totalBalance  = $clients->sum('balance');
-  $positiveCount = $clients->where('balance', '>', 0)->count();
-  $negativeCount = $clients->where('balance', '<', 0)->count();
-  $defaultCur    = config('credixa.default_currency');
+  $defaultCur = config('credixa.default_currency');
 @endphp
 
 {{-- Page header ── --}}
@@ -19,7 +16,7 @@
         <span class="badge-status bs-violet"><i class="fas fa-shield-alt" style="font-size:.6rem"></i> Vue globale</span>
       @endif
     </div>
-    <p>{{ $clients->count() }} compte{{ $clients->count() > 1 ? 's' : '' }} géré{{ $clients->count() > 1 ? 's' : '' }}</p>
+    <p>{{ $clients->total() }} compte{{ $clients->total() > 1 ? 's' : '' }} géré{{ $clients->total() > 1 ? 's' : '' }}</p>
   </div>
 </div>
 
@@ -27,7 +24,7 @@
 <div class="metrics-grid">
   <div class="metric-card">
     <div class="metric-card__icon mi-navy"><i class="fas fa-users"></i></div>
-    <div class="metric-card__val">{{ $clients->count() }}</div>
+    <div class="metric-card__val">{{ $clients->total() }}</div>
     <div class="metric-card__lbl">Comptes total</div>
     <div class="metric-card__accent" style="background:var(--c-navy)"></div>
   </div>
@@ -52,14 +49,18 @@
 </div>
 
 {{-- Search + sort bar ── --}}
-<div class="filter-bar" style="margin-bottom:1.25rem">
+<form method="GET" action="{{ route('admin.accounts.index') }}" class="filter-bar" style="margin-bottom:1.25rem">
   <div style="position:relative;flex:1;min-width:180px">
     <i class="fas fa-search" style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--c-muted);font-size:.75rem;pointer-events:none"></i>
-    <input id="accSearch" type="text" placeholder="Nom, e-mail, IBAN…" class="form-control-pro" style="padding-left:2.25rem">
+    <input type="text" name="search" placeholder="Nom, e-mail, IBAN…" class="form-control-pro" style="padding-left:2.25rem" value="{{ request('search') }}">
   </div>
-  <button id="sortAlpha" class="btn-ghost btn-sm-pro" onclick="sortTable('name')"><i class="fas fa-arrow-down-a-z"></i> A – Z</button>
-  <button id="sortBal"   class="btn-ghost btn-sm-pro" onclick="sortTable('balance')"><i class="fas fa-arrow-down-9-1"></i> Solde</button>
-</div>
+  <button type="submit" class="btn-navy btn-sm-pro"><i class="fas fa-search"></i> Chercher</button>
+  @if(request()->filled('search'))
+  <a href="{{ route('admin.accounts.index') }}" class="btn-ghost btn-sm-pro"><i class="fas fa-times"></i> Réinitialiser</a>
+  @endif
+  <button type="button" id="sortAlpha" class="btn-ghost btn-sm-pro" onclick="sortTable('name')"><i class="fas fa-arrow-down-a-z"></i> A – Z</button>
+  <button type="button" id="sortBal"   class="btn-ghost btn-sm-pro" onclick="sortTable('balance')"><i class="fas fa-arrow-down-9-1"></i> Solde</button>
+</form>
 
 {{-- Table ── --}}
 <div class="card-pro">
@@ -129,18 +130,15 @@
       </tbody>
     </table>
   </div>
+  @if($clients->hasPages())
+  <div style="padding:.875rem 1.25rem;border-top:1px solid var(--c-border)">
+    <x-pagination :paginator="$clients" />
+  </div>
+  @endif
   @endif
 </div>
 
 <script>
-document.getElementById('accSearch').addEventListener('input', function () {
-  const q = this.value.toLowerCase();
-  document.querySelectorAll('#accBody tr').forEach(row => {
-    const ok = row.dataset.name.includes(q) || row.dataset.email.includes(q) || row.dataset.iban.includes(q);
-    row.style.display = ok ? '' : 'none';
-  });
-});
-
 let _dir = {};
 function sortTable(key) {
   const tbody = document.getElementById('accBody');

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $auth    = Auth::user();
         $isSuperAdmin = $auth->hasRole('super-admin');
@@ -27,9 +27,26 @@ class AccountController extends Controller
             });
         }
 
-        $clients = $query->orderBy('name')->get();
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('name', 'like', "%{$s}%")
+                  ->orWhere('email', 'like', "%{$s}%")
+                  ->orWhere('bank_account', 'like', "%{$s}%");
+            });
+        }
 
-        return view('admin.accounts.index', compact('clients', 'isSuperAdmin'));
+        // Statistiques calculées sur l'ensemble filtré, pas seulement la page affichée
+        $statsQuery    = clone $query;
+        $totalBalance  = (clone $statsQuery)->sum('balance');
+        $positiveCount = (clone $statsQuery)->where('balance', '>', 0)->count();
+        $negativeCount = (clone $statsQuery)->where('balance', '<', 0)->count();
+
+        $clients = $query->orderBy('name')->paginate(15)->appends($request->query());
+
+        return view('admin.accounts.index', compact(
+            'clients', 'isSuperAdmin', 'totalBalance', 'positiveCount', 'negativeCount'
+        ));
     }
 
     public function show(User $account)
