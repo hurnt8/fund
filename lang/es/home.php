@@ -196,6 +196,8 @@ return [
     'services' => [
         'sectagline' => 'lo que ofrecemos',
         'sectitle' => 'Ofrecemos los mejores servicios para tu préstamo',
+        'cta_title' => '¿Listo para comenzar tu proyecto financiero?',
+        'cta_text' => 'Nuestro equipo está disponible para ayudarte con tu solicitud de financiación.',
     ],
 
     'simulate' => [

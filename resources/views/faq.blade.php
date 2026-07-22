@@ -31,8 +31,8 @@
                          style="width:100%;border-radius:var(--radius-xl);height:360px;object-fit:cover;box-shadow:var(--shadow-hover);">
                     <div class="contact-widget mt-4">
                         <div class="contact-widget__icon"><i class="fas fa-headset"></i></div>
-                        <h4>Besoin d'aide ?</h4>
-                        <p>Notre équipe répond à toutes vos questions, du lundi au samedi.</p>
+                        <h4>{{ __('faq.help_title') }}</h4>
+                        <p>{{ __('faq.help_text') }}</p>
                         <a href="tel:+34613853614" class="contact-widget__phone">+31 6 57341120</a>
                         <a href="{{ route('contact', ['locale' => $locale]) }}"
                            class="btn-primary w-100 justify-content-center">
@@ -45,7 +45,7 @@
             {{-- FAQ accordions (Alpine.js) --}}
             <div class="col-lg-8 wow fadeInRight" data-wow-duration="900ms" data-wow-delay="100ms">
                 <div class="section-label mb-2">@lang('menu.faq')</div>
-                <h2 class="section-title mb-8">Questions fréquentes</h2>
+                <h2 class="section-title mb-8">{{ __('faq.section_title') }}</h2>
 
                 @php
                 $types = ['personal_loan','home_loan','auto_loan','business_loan','study_loan','bike_loan'];
@@ -103,10 +103,10 @@
             <div class="col-lg-8 wow fadeInLeft" data-wow-duration="900ms">
                 <div class="section-label" style="color:var(--gold);">Support</div>
                 <h2 class="section-title section-title--white mb-2">
-                    Vous n'avez pas trouvé votre réponse ?
+                    {{ __('faq.cta_title') }}
                 </h2>
                 <p class="section-sub section-sub--white">
-                    Notre équipe est disponible du lundi au samedi pour vous accompagner.
+                    {{ __('faq.cta_text') }}
                 </p>
             </div>
             <div class="col-lg-4 text-lg-end wow fadeInRight" data-wow-duration="900ms" data-wow-delay="100ms">

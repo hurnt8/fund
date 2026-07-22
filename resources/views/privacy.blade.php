@@ -22,49 +22,55 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <div class="legal-content">
-                    <h2>Politique de confidentialité</h2>
-                    <p>Credixa s'engage à protéger la confidentialité de vos informations personnelles. Cette politique décrit comment nous collectons, utilisons et protégeons vos données.</p>
+                    <h2>{{ __('privacy.introduction_title') }}</h2>
+                    <p>{{ __('privacy.introduction_text') }}</p>
 
-                    <h2>Données collectées</h2>
-                    <p>Nous collectons les informations que vous nous fournissez lors de vos demandes de prêt ou de contact, notamment :</p>
+                    <h2>{{ __('privacy.information_collection_title') }}</h2>
+                    <p>{{ __('privacy.information_collection_text') }}</p>
                     <ul>
-                        <li>Nom et prénom</li>
-                        <li>Adresse email et numéro de téléphone</li>
-                        <li>Adresse postale</li>
-                        <li>Informations financières (montant souhaité, durée, revenus)</li>
-                        <li>Documents d'identité (le cas échéant)</li>
+                        @foreach (__('privacy.information_collection_list') as $item)
+                        <li>{{ $item }}</li>
+                        @endforeach
                     </ul>
 
-                    <h2>Utilisation des données</h2>
-                    <p>Vos données sont utilisées exclusivement pour :</p>
+                    <h2>{{ __('privacy.information_use_title') }}</h2>
+                    <p>{{ __('privacy.information_use_text') }}</p>
                     <ul>
-                        <li>Traiter votre demande de prêt</li>
-                        <li>Vous contacter concernant votre dossier</li>
-                        <li>Améliorer nos services</li>
-                        <li>Respecter nos obligations légales et réglementaires</li>
+                        @foreach (__('privacy.information_use_list') as $item)
+                        <li>{{ $item }}</li>
+                        @endforeach
                     </ul>
 
-                    <h2>Partage des données</h2>
-                    <p>Nous ne vendons pas vos données personnelles à des tiers. Nous pouvons partager vos informations uniquement avec nos partenaires financiers dans le cadre du traitement de votre demande, ou lorsque la loi l'exige.</p>
-
-                    <h2>Sécurité des données</h2>
-                    <p>Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, modification, divulgation ou destruction.</p>
-
-                    <h2>Cookies</h2>
-                    <p>Ce site utilise des cookies pour améliorer votre expérience de navigation. Vous pouvez configurer votre navigateur pour refuser les cookies, bien que cela puisse affecter certaines fonctionnalités du site.</p>
-
-                    <h2>Vos droits (RGPD)</h2>
-                    <p>Conformément au RGPD, vous disposez des droits suivants concernant vos données personnelles :</p>
+                    <h2>{{ __('privacy.information_sharing_title') }}</h2>
+                    <p>{{ __('privacy.information_sharing_text') }}</p>
                     <ul>
-                        <li>Droit d'accès à vos données</li>
-                        <li>Droit de rectification</li>
-                        <li>Droit à l'effacement ("droit à l'oubli")</li>
-                        <li>Droit à la portabilité des données</li>
-                        <li>Droit d'opposition au traitement</li>
+                        @foreach (__('privacy.information_sharing_list') as $item)
+                        <li>{{ $item }}</li>
+                        @endforeach
                     </ul>
 
-                    <h2>Contact</h2>
-                    <p>Pour exercer vos droits ou pour toute question relative à la protection de vos données, contactez notre délégué à la protection des données à <a href="mailto:contact@credixa.eu">contact@credixa.eu</a>.</p>
+                    <h2>{{ __('privacy.information_security_title') }}</h2>
+                    <p>{{ __('privacy.information_security_text') }}</p>
+
+                    <h2>{{ __('privacy.your_rights_title') }}</h2>
+                    <p>{{ __('privacy.your_rights_text') }}</p>
+                    <ul>
+                        @foreach (__('privacy.your_rights_list') as $item)
+                        <li>{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                    <p>{{ __('privacy.your_rights_contact') }}</p>
+
+                    <h2>{{ __('privacy.policy_updates_title') }}</h2>
+                    <p>{{ __('privacy.policy_updates_text') }}</p>
+
+                    <h2>{{ __('privacy.contact_title') }}</h2>
+                    <p>{{ __('privacy.contact_text') }}</p>
+                    <p>
+                        @foreach (__('privacy.contact_details') as $line)
+                        {{ $line }}<br>
+                        @endforeach
+                    </p>
                 </div>
             </div>
         </div>

@@ -35,11 +35,11 @@
 
     <!-- Prev / Next arrows -->
     <button @click="current = (current - 1 + 3) % 3"
-            class="hero-arrow hero-arrow--prev" aria-label="Précédent">
+            class="hero-arrow hero-arrow--prev" aria-label="Previous">
         <i class="fas fa-chevron-left"></i>
     </button>
     <button @click="current = (current + 1) % 3"
-            class="hero-arrow hero-arrow--next" aria-label="Suivant">
+            class="hero-arrow hero-arrow--next" aria-label="Next">
         <i class="fas fa-chevron-right"></i>
     </button>
 

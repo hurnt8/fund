@@ -56,7 +56,7 @@
 </script>
 
 <!-- Scroll-to-top button -->
-<button id="scroll-top" aria-label="Retour en haut"
+<button id="scroll-top" aria-label="Back to top"
     style="opacity:0;pointer-events:none;transition:opacity .3s ease"
     class="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-gold text-navy flex items-center justify-center shadow-gold hover:bg-navy hover:text-white transition-colors duration-300">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">

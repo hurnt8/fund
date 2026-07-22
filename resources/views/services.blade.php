@@ -70,8 +70,8 @@
         <div class="row align-items-center gutter-y-30">
             <div class="col-lg-7 wow fadeInLeft" data-wow-duration="900ms">
                 <div class="section-label" style="color:var(--gold);">{{ __('home.services.sectagline') }}</div>
-                <h2 class="section-title section-title--white mb-2">Prêt à démarrer votre projet financier ?</h2>
-                <p class="section-sub section-sub--white">Notre équipe est disponible pour vous accompagner dans votre demande de financement.</p>
+                <h2 class="section-title section-title--white mb-2">{{ __('home.services.cta_title') }}</h2>
+                <p class="section-sub section-sub--white">{{ __('home.services.cta_text') }}</p>
             </div>
             <div class="col-lg-5 text-lg-end wow fadeInRight" data-wow-duration="900ms" data-wow-delay="150ms">
                 <div class="d-flex flex-wrap justify-content-lg-end gap-3">

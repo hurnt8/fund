@@ -53,6 +53,8 @@ return [
     'services' => [
         'sectagline' => 'co oferujemy',
         'sectitle' => 'Oferujemy najlepsze usługi kredytowe',
+        'cta_title' => 'Gotowy, aby rozpocząć swój projekt finansowy?',
+        'cta_text' => 'Nasz zespół jest gotowy, aby pomóc Ci w Twoim wniosku o finansowanie.',
     ],
 
     'simulate' => [

@@ -197,6 +197,8 @@ return [
     'services' => [
         'sectagline' => 'what we”re offering',
         'sectitle' => 'We provide best services for your loan',
+        'cta_title' => 'Ready to start your financial project?',
+        'cta_text' => 'Our team is available to support you with your financing request.',
     ],
 
     'simulate' => [

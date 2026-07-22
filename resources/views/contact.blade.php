@@ -128,13 +128,13 @@
                                     <label>{{ __('contact.subject') }} *</label>
                                     <select name="subject" class="form-control" required>
                                         <option value="">— {{ __('contact.subject') }} —</option>
-                                        <option value="Prêt personnel"  {{ old('subject')=='Prêt personnel'  ?'selected':'' }}>@lang('menu.personal')</option>
-                                        <option value="Prêt immobilier" {{ old('subject')=='Prêt immobilier' ?'selected':'' }}>@lang('menu.home_loan')</option>
-                                        <option value="Prêt commercial" {{ old('subject')=='Prêt commercial' ?'selected':'' }}>@lang('menu.business')</option>
-                                        <option value="Prêt étudiant"   {{ old('subject')=='Prêt étudiant'   ?'selected':'' }}>@lang('menu.study')</option>
-                                        <option value="Prêt auto"       {{ old('subject')=='Prêt auto'       ?'selected':'' }}>@lang('menu.auto')</option>
-                                        <option value="Prêt moto"       {{ old('subject')=='Prêt moto'       ?'selected':'' }}>@lang('menu.bike')</option>
-                                        <option value="Autre"           {{ old('subject')=='Autre'           ?'selected':'' }}>Autre</option>
+                                        <option value="Personal loan"  {{ old('subject')=='Personal loan'  ?'selected':'' }}>@lang('menu.personal')</option>
+                                        <option value="Home loan" {{ old('subject')=='Home loan' ?'selected':'' }}>@lang('menu.home_loan')</option>
+                                        <option value="Business loan" {{ old('subject')=='Business loan' ?'selected':'' }}>@lang('menu.business')</option>
+                                        <option value="Study loan"   {{ old('subject')=='Study loan'   ?'selected':'' }}>@lang('menu.study')</option>
+                                        <option value="Auto loan"       {{ old('subject')=='Auto loan'       ?'selected':'' }}>@lang('menu.auto')</option>
+                                        <option value="Bike loan"       {{ old('subject')=='Bike loan'       ?'selected':'' }}>@lang('menu.bike')</option>
+                                        <option value="Other"           {{ old('subject')=='Other'           ?'selected':'' }}>Other</option>
                                     </select>
                                     @error('subject')<span class="form-error">{{ $message }}</span>@enderror
                                 </div>

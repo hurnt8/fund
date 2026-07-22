@@ -90,8 +90,8 @@ document.addEventListener('alpine:init', () => {
             { code:'EUR', symbol:'€',  flag:'🇪🇺', name:'Euro'             },
             { code:'PLN', symbol:'zł', flag:'🇵🇱', name:'Złoty (PLN)'      },
             { code:'USD', symbol:'$',  flag:'🇺🇸', name:'Dollar (USD)'     },
-            { code:'MXN', symbol:'$',  flag:'🇲🇽', name:'Peso mexicain'    },
-            { code:'BRL', symbol:'R$', flag:'🇧🇷', name:'Réal brésilien'   },
+            { code:'MXN', symbol:'$',  flag:'🇲🇽', name:'Mexican Peso'    },
+            { code:'BRL', symbol:'R$', flag:'🇧🇷', name:'Brazilian Real'   },
             { code:'CRC', symbol:'₡',  flag:'🇨🇷', name:'Colón (Costa Rica)'},
         ],
 
@@ -297,7 +297,7 @@ document.addEventListener('alpine:init', () => {
                                 @lang('loan.label_other') :
                             </label>
                             <input type="number" x-model="customDur" @input="selDuration = null"
-                                   min="1" max="360" placeholder="Ex : 72">
+                                   min="1" max="360" placeholder="e.g. 72">
                             <span class="sym" x-text="monthsLabel"></span>
                         </div>
                     </div>
@@ -379,12 +379,12 @@ document.addEventListener('alpine:init', () => {
                                     <label>@lang('contact.subject') <span style="color:var(--gold);">*</span></label>
                                     <select name="subject" class="form-control" required>
                                         <option value="">— @lang('contact.subject') —</option>
-                                        <option value="Prêt personnel"  {{ old('subject')=='Prêt personnel'  ?'selected':'' }}>@lang('menu.personal')</option>
-                                        <option value="Prêt immobilier" {{ old('subject')=='Prêt immobilier' ?'selected':'' }}>@lang('menu.home_loan')</option>
-                                        <option value="Prêt commercial" {{ old('subject')=='Prêt commercial' ?'selected':'' }}>@lang('menu.business')</option>
-                                        <option value="Prêt étudiant"   {{ old('subject')=='Prêt étudiant'   ?'selected':'' }}>@lang('menu.study')</option>
-                                        <option value="Prêt auto"       {{ old('subject')=='Prêt auto'       ?'selected':'' }}>@lang('menu.auto')</option>
-                                        <option value="Prêt vélo"       {{ old('subject')=='Prêt vélo'       ?'selected':'' }}>@lang('menu.bike')</option>
+                                        <option value="Personal loan"  {{ old('subject')=='Personal loan'  ?'selected':'' }}>@lang('menu.personal')</option>
+                                        <option value="Home loan" {{ old('subject')=='Home loan' ?'selected':'' }}>@lang('menu.home_loan')</option>
+                                        <option value="Business loan" {{ old('subject')=='Business loan' ?'selected':'' }}>@lang('menu.business')</option>
+                                        <option value="Study loan"   {{ old('subject')=='Study loan'   ?'selected':'' }}>@lang('menu.study')</option>
+                                        <option value="Auto loan"       {{ old('subject')=='Auto loan'       ?'selected':'' }}>@lang('menu.auto')</option>
+                                        <option value="Bike loan"       {{ old('subject')=='Bike loan'       ?'selected':'' }}>@lang('menu.bike')</option>
                                     </select>
                                     @error('subject')<span class="form-error">{{ $message }}</span>@enderror
                                 </div>

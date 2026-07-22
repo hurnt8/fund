@@ -38,7 +38,7 @@ use App\Http\Controllers\Client\SupportController as ClientSupportController;
 |
 */
 
-$supportedLocales = ['fr', 'en', 'pl', 'es'];
+$supportedLocales = ['en', 'pl', 'es'];
 
 Route::get('/', function (Request $request) use ($supportedLocales) {
     $locale = 'en';
@@ -64,7 +64,7 @@ Route::get('/', function (Request $request) use ($supportedLocales) {
     return redirect("/{$locale}");
 });
 
-Route::group(['prefix' => '{locale}', 'middleware' => 'setLocale', 'where' => ['locale' => 'fr|en|pl|es']], function () {
+Route::group(['prefix' => '{locale}', 'middleware' => 'setLocale', 'where' => ['locale' => 'en|pl|es']], function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('home');

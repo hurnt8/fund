@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', __('menu.home')) | Credixa</title>
-    <meta name="description" content="Credixa — solutions de financement rapides, flexibles et personnalisées à travers l'Europe.">
+    <meta name="description" content="{{ __('menu.footer_desc') }}">
     <link rel="canonical" href="{{ url()->current() }}">
-    @foreach (['fr', 'en', 'pl', 'es'] as $l)
+    @foreach (['en', 'pl', 'es'] as $l)
     <link rel="alternate" hreflang="{{ $l }}" href="{{ url($l) }}">
     @endforeach
     <link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
