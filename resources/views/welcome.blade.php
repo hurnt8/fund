@@ -237,9 +237,9 @@ $serviceNav = [
             <div class="col-lg-6 wow fadeInLeft" data-wow-duration="1000ms">
                 <div class="about-image-wrap">
                     <img src="{{ asset('assets/images/about/about-3-1.jpg') }}"
-                         alt="Credixa — conseiller financier" class="about-image-main">
+                         alt="Credixa — financial advisor" class="about-image-main">
                     <img src="{{ asset('assets/images/about/about-3-3.jpg') }}"
-                         alt="Conseiller avec clients" class="about-image-secondary"
+                         alt="Advisor with clients" class="about-image-secondary"
                          style="width:38%;right:1rem;bottom:1rem;">
                     <div class="about-badge">
                         <span class="about-badge__number">5</span>

@@ -81,7 +81,7 @@
                         <form action="{{ route('subscribe.send') }}" method="POST" class="footer-newsletter">
                             @csrf
                             <input type="email" name="email" placeholder="@lang('menu.email_placeholder')" required>
-                            <button type="submit" aria-label="S'abonner"><i class="fas fa-arrow-right"></i></button>
+                            <button type="submit" aria-label="{{ __('menu.subscribe') }}"><i class="fas fa-arrow-right"></i></button>
                         </form>
                     </div>
                 </div>
