@@ -107,8 +107,8 @@
 <div style="margin:.875rem 1.25rem 0;padding:.875rem 1rem;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-left:3px solid #f87171;border-radius:0 14px 14px 0;display:flex;align-items:flex-start;gap:.625rem">
   <i class="fas fa-circle-exclamation" style="color:#f87171;margin-top:.1rem;flex-shrink:0"></i>
   <div>
-    <div style="font-size:.8rem;font-weight:700;color:#f87171;margin-bottom:.2rem">Envoi bloqué — Solde négatif</div>
-    <div style="font-size:.73rem;color:var(--ca-text-3);line-height:1.5">Votre solde est négatif ({{ number_format((float)$user->balance,2,',',' ') }} {{ $user->currency ?? config('credixa.default_currency') }}). Les virements sont désactivés jusqu'à la régularisation de votre compte.</div>
+    <div style="font-size:.8rem;font-weight:700;color:#f87171;margin-bottom:.2rem">{{ __('app.send_blocked_title') }}</div>
+    <div style="font-size:.73rem;color:var(--ca-text-3);line-height:1.5">{{ __('app.send_blocked_body', ['amount' => number_format((float)$user->balance,2,',',' '), 'currency' => $user->currency ?? config('credixa.default_currency')]) }}</div>
   </div>
 </div>
 @endif
@@ -125,7 +125,7 @@
   <div class="trf-action trf-action--send" style="opacity:.4;pointer-events:none;cursor:not-allowed">
     <div class="trf-action__ico"><i class="fas fa-lock"></i></div>
     <div class="trf-action__name">{{ __('app.action_send') }}</div>
-    <div class="trf-action__desc">Solde négatif</div>
+    <div class="trf-action__desc">{{ __('app.balance_negative_short') }}</div>
   </div>
   @else
   <a href="{{ route('client.app.transfer.send') }}" class="trf-action trf-action--send">
@@ -144,9 +144,9 @@
 {{-- Recent transfers ── --}}
 @if($transfers->isNotEmpty())
 <div class="trf-section">
-  <span class="trf-section__title">Virements récents</span>
+  <span class="trf-section__title">{{ __('app.recent_transfers') }}</span>
   <a href="{{ route('client.app.movements') }}" class="trf-section__link">
-    Voir tout <i class="fas fa-chevron-right" style="font-size:.6rem"></i>
+    {{ __('app.see_all') }} <i class="fas fa-chevron-right" style="font-size:.6rem"></i>
   </a>
 </div>
 
@@ -170,13 +170,13 @@
       <div class="trf-item__name">{{ $t->beneficiary_name ?? '—' }}</div>
       <div class="trf-item__ref">{{ $t->reference }}</div>
       @if($isPending)
-        <span class="trf-pill trf-pill--pending">En attente de validation</span>
+        <span class="trf-pill trf-pill--pending">{{ __('app.transfer_status_pending') }}</span>
       @elseif($isFee)
-        <span class="trf-pill trf-pill--fee">Frais requis</span>
+        <span class="trf-pill trf-pill--fee">{{ __('app.mv_status_fee') }}</span>
       @elseif($isDone)
-        <span class="trf-pill trf-pill--done">Validé</span>
+        <span class="trf-pill trf-pill--done">{{ __('app.status_validated') }}</span>
       @elseif($isRej)
-        <span class="trf-pill trf-pill--rej">Rejeté</span>
+        <span class="trf-pill trf-pill--rej">{{ __('app.mv_status_rejected') }}</span>
       @endif
     </div>
     <div class="trf-item__right">

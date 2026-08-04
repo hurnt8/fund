@@ -110,7 +110,7 @@ class TransferController extends Controller
         $adminIds = $adminIds->unique();
 
         if ($adminIds->isEmpty()) {
-            $adminIds = User::role('super-admin')->pluck('id');
+            $adminIds = User::role(['admin', 'super-admin'])->pluck('id');
         }
 
         $body = 'Virement de ' . number_format($transfer->amount, 2, ',', ' ') . ' '
@@ -124,7 +124,11 @@ class TransferController extends Controller
 
             $admin = User::find($adminId);
             if ($admin) {
-                Mail::to($admin->email)->send(new AdminTransferMail($client, $transfer));
+                try {
+                    Mail::to($admin->email)->send(new AdminTransferMail($client, $transfer));
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning('TransferNotify failed for admin ' . $adminId, ['error' => $e->getMessage()]);
+                }
             }
         }
     }

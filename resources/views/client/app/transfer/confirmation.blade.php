@@ -1,6 +1,6 @@
 @extends('layouts.client-app')
-@section('title', 'Virement soumis — Credixa')
-@section('page_title', 'Confirmation')
+@section('title', __('app.send_confirm_title') . ' — Credixa')
+@section('page_title', __('app.confirm_title'))
 
 @section('topbar_action')
 <a href="{{ route('client.app.home') }}" class="ca-topbar__action" style="color:var(--ca-text-3)">
@@ -92,20 +92,20 @@
     <i class="fas fa-hourglass-half"></i>
   </div>
 
-  <div class="trf-confirm__title">Virement soumis</div>
+  <div class="trf-confirm__title">{{ __('app.send_confirm_title') }}</div>
   <div class="trf-confirm__body">
-    Votre demande a bien été enregistrée et est en attente de validation par notre équipe.
+    {{ __('app.send_confirm_body') }}
   </div>
 
   @if($transfer)
 
   {{-- Status pill ── --}}
   <div class="trf-confirm__status">
-    <i class="fas fa-clock" style="font-size:.7rem"></i> En attente de validation
+    <i class="fas fa-clock" style="font-size:.7rem"></i> {{ __('app.transfer_status_pending') }}
   </div>
 
   {{-- Amount ── --}}
-  <div class="trf-confirm__amt-lbl">Montant réservé</div>
+  <div class="trf-confirm__amt-lbl">{{ __('app.send_confirm_amount_label') }}</div>
   <div class="trf-confirm__amt">
     {{ $transfer->currency }} {{ number_format($transfer->amount, 2, ',', ' ') }}
   </div>
@@ -113,28 +113,28 @@
   {{-- Details ── --}}
   <div class="trf-confirm__card">
     <div class="trf-confirm__row">
-      <span class="trf-confirm__row-lbl">Bénéficiaire</span>
+      <span class="trf-confirm__row-lbl">{{ __('app.confirm_recipient') }}</span>
       <span class="trf-confirm__row-val">{{ $transfer->beneficiary_name }}</span>
     </div>
     <div class="trf-confirm__row">
-      <span class="trf-confirm__row-lbl">IBAN</span>
+      <span class="trf-confirm__row-lbl">{{ __('app.receive_iban') }}</span>
       <span class="trf-confirm__row-val" style="font-family:monospace;font-size:.72rem">
         {{ Str::limit($transfer->beneficiary_iban, 22) }}
       </span>
     </div>
     <div class="trf-confirm__row">
-      <span class="trf-confirm__row-lbl">Soumis le</span>
+      <span class="trf-confirm__row-lbl">{{ __('app.send_confirm_submitted_at') }}</span>
       <span class="trf-confirm__row-val">{{ $transfer->created_at->format('d/m/Y — H:i') }}</span>
     </div>
     <div class="trf-confirm__row">
-      <span class="trf-confirm__row-lbl">Référence</span>
+      <span class="trf-confirm__row-lbl">{{ __('app.confirm_txn') }}</span>
       <span class="trf-confirm__row-val" style="font-family:monospace;color:var(--ca-gold-l)">
         {{ $transfer->reference }}
       </span>
     </div>
     @if($transfer->note)
     <div class="trf-confirm__row">
-      <span class="trf-confirm__row-lbl">Note</span>
+      <span class="trf-confirm__row-lbl">{{ __('app.note_label') }}</span>
       <span class="trf-confirm__row-val">{{ $transfer->note }}</span>
     </div>
     @endif
@@ -144,8 +144,7 @@
   <div class="trf-confirm__info">
     <i class="fas fa-circle-info"></i>
     <div class="trf-confirm__info-text">
-      Vous serez notifié par e-mail et dans l'application dès que votre virement sera traité.
-      Le montant est réservé sur votre compte pendant la validation.
+      {{ __('app.send_confirm_info') }}
     </div>
   </div>
 
@@ -155,14 +154,14 @@
 
 <div class="ca-btn-wrap" style="padding:0 1.25rem 1rem">
   <a href="{{ route('client.app.movements') }}" class="ca-btn ca-btn--primary">
-    <i class="fas fa-list-ul"></i> Voir mes mouvements
+    <i class="fas fa-list-ul"></i> {{ __('app.view_movements') }}
   </a>
 </div>
 
 <div style="text-align:center;padding:.25rem 1.25rem 1.5rem">
   <a href="{{ route('client.app.home') }}"
      style="font-size:.82rem;color:var(--ca-teal-l);font-weight:600">
-    <i class="fas fa-home" style="font-size:.75rem"></i> Retour à l'accueil
+    <i class="fas fa-home" style="font-size:.75rem"></i> {{ __('app.back_home') }}
   </a>
 </div>
 

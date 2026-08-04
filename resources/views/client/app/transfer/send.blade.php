@@ -48,7 +48,7 @@
   {{-- Notice en attente ── --}}
   <div class="send-notice">
     <i class="fas fa-hourglass-half"></i>
-    <span class="send-notice-text">Votre virement sera soumis pour validation. Vous serez notifié dès qu'il sera traité.</span>
+    <span class="send-notice-text">{{ __('app.send_pending_notice') }}</span>
   </div>
 
   {{-- Formulaire ── --}}
@@ -84,10 +84,10 @@
       <div class="ca-amount-display__available"
            :style="numericValue > {{ $balance }} && numericValue > 0 ? 'color:var(--ca-negative)' : ''">
         <span x-show="numericValue > 0 && numericValue <= {{ $balance }}">
-          Solde restant : <strong x-text="fmt({{ $balance }} - numericValue)"></strong>
+          {{ __('app.send_remaining_balance') }} <strong x-text="fmt({{ $balance }} - numericValue)"></strong>
         </span>
         <span x-show="numericValue > {{ $balance }} && numericValue > 0" style="color:var(--ca-negative)">
-          <i class="fas fa-exclamation-triangle" style="font-size:.7rem"></i> Solde insuffisant
+          <i class="fas fa-exclamation-triangle" style="font-size:.7rem"></i> {{ __('app.balance_insufficient_short') }}
         </span>
         <span x-show="numericValue <= 0">
           {{ __('app.available') }} :
