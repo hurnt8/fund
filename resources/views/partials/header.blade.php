@@ -52,7 +52,7 @@
                     x-transition:enter-start="opacity-0 translate-y-1"
                     x-transition:enter-end="opacity-100 translate-y-0"
                     class="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-card-hover border border-gray-100 py-1.5 z-50" style="display:none">
-                    @foreach (['en', 'pl', 'es'] as $l)
+                    @foreach (['fr', 'en', 'pl', 'es'] as $l)
                     @if ($l !== $locale)
                     <a href="{{ route($route ?? 'home', ['locale' => $l]) }}"
                         class="flex items-center gap-2.5 px-3.5 py-2.5 text-sm font-medium text-gray-700 hover:bg-cream hover:text-navy transition-colors duration-150 rounded-lg mx-1">
