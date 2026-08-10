@@ -400,6 +400,8 @@
                 <option value="en" {{ old('locale', $user->locale) === 'en' ? 'selected' : '' }}>English</option>
                 <option value="es" {{ old('locale', $user->locale) === 'es' ? 'selected' : '' }}>Español</option>
                 <option value="pl" {{ old('locale', $user->locale) === 'pl' ? 'selected' : '' }}>Polski</option>
+                <option value="ro" {{ old('locale', $user->locale) === 'ro' ? 'selected' : '' }}>Română</option>
+                <option value="hr" {{ old('locale', $user->locale) === 'hr' ? 'selected' : '' }}>Hrvatski</option>
               </select>
             </div>
           </div>

@@ -273,6 +273,8 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
             'en' => ['English',  'png'],
             'pl' => ['Polski',   'svg'],
             'es' => ['Español',  'png'],
+            'ro' => ['Română',   'svg'],
+            'hr' => ['Hrvatski', 'png'],
           ];
         @endphp
         <div class="ls" x-data="{ open: false }">

@@ -123,6 +123,8 @@
                 <option value="pl" {{ old('client_locale')==='pl'?'selected':'' }}>🇵🇱 Polski</option>
                 <option value="en" {{ old('client_locale')==='en'?'selected':'' }}>🇬🇧 English</option>
                 <option value="es" {{ old('client_locale')==='es'?'selected':'' }}>🇪🇸 Español</option>
+                <option value="ro" {{ old('client_locale')==='ro'?'selected':'' }}>🇷🇴 Română</option>
+                <option value="hr" {{ old('client_locale')==='hr'?'selected':'' }}>🇭🇷 Hrvatski</option>
               </select>
             </div>
           </div>

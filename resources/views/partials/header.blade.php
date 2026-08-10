@@ -41,7 +41,7 @@
             <div class="relative" x-data="{ open: false }">
                 <button @click="open = !open" @click.outside="open = false"
                     class="lang-btn flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-                    @php $flagExt = fn($l) => $l === 'pl' ? 'svg' : 'png'; @endphp
+                    @php $flagExt = fn($l) => in_array($l, ['pl', 'ro']) ? 'svg' : 'png'; @endphp
                     <img src="{{ asset('images/' . $locale . '.' . $flagExt($locale)) }}" alt="{{ $locale }}" class="w-5 h-auto rounded-sm">
                     <span class="hidden sm:inline">{{ strtoupper($locale) }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transition-transform duration-200" :class="{ 'rotate-180': open }" viewBox="0 0 20 20" fill="currentColor">
@@ -52,7 +52,7 @@
                     x-transition:enter-start="opacity-0 translate-y-1"
                     x-transition:enter-end="opacity-100 translate-y-0"
                     class="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-card-hover border border-gray-100 py-1.5 z-50" style="display:none">
-                    @foreach (['fr', 'en', 'pl', 'es'] as $l)
+                    @foreach (['fr', 'en', 'pl', 'es', 'ro', 'hr'] as $l)
                     @if ($l !== $locale)
                     <a href="{{ route($route ?? 'home', ['locale' => $l]) }}"
                         class="flex items-center gap-2.5 px-3.5 py-2.5 text-sm font-medium text-gray-700 hover:bg-cream hover:text-navy transition-colors duration-150 rounded-lg mx-1">
