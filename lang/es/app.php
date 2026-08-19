@@ -272,6 +272,7 @@ return [
     'balance_negative_short'     => 'Saldo negativo',
     'recent_transfers'           => 'Transferencias recientes',
     'transfer_status_pending'    => 'Pendiente de validacion',
+    'transfer_generic_error'     => 'Ocurrio un error al realizar la transferencia. Por favor, intente nuevamente mas tarde.',
     'send_pending_notice'        => 'Su transferencia sera enviada para validacion. Sera notificado en cuanto sea procesada.',
     'send_remaining_balance'     => 'Saldo restante:',
     'balance_insufficient_short' => 'Saldo insuficiente',

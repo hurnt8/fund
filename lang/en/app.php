@@ -279,6 +279,7 @@ return [
     'balance_negative_short'     => 'Negative balance',
     'recent_transfers'           => 'Recent transfers',
     'transfer_status_pending'    => 'Pending validation',
+    'transfer_generic_error'     => 'An error occurred while processing the transfer. Please try again later.',
     'send_pending_notice'        => 'Your transfer will be submitted for validation. You will be notified once it is processed.',
     'send_remaining_balance'     => 'Remaining balance:',
     'balance_insufficient_short' => 'Insufficient balance',

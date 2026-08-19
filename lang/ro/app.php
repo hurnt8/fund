@@ -81,7 +81,7 @@ return [
     'send_iban'          => 'IBAN-ul beneficiarului',
     'transfer_insufficient'     => 'Sold insuficient pentru a efectua acest transfer.',
     'transfer_negative_balance' => 'Soldul dumneavoastră este negativ. Transferurile sunt blocate până la regularizare.',
-
+    'transfer_generic_error'    => 'A apărut o eroare în timpul procesării transferului. Vă rugăm să încercați din nou mai târziu.',
     'receive_title'      => 'Primește',
     'receive_subtitle'   => 'Partajați datele dumneavoastră bancare pentru a primi un transfer',
     'receive_iban'       => 'IBAN',

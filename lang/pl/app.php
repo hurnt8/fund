@@ -73,7 +73,7 @@ return [
     'send_iban'             => 'IBAN odbiorcy',
     'transfer_insufficient'     => 'Niewystarczajace saldo do realizacji przelewu.',
     'transfer_negative_balance' => 'Saldo jest ujemne. Przelewy są zablokowane do czasu wyrównania konta.',
-
+    'transfer_generic_error'    => 'Wystąpił błąd podczas przetwarzania przelewu. Proszę spróbować ponownie później.',
     'receive_title'      => 'Odbierz',
     'receive_subtitle'   => 'Udostepnij dane bankowe, aby otrzymac przelew',
     'receive_iban'       => 'IBAN',

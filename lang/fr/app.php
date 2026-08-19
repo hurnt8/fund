@@ -81,7 +81,7 @@ return [
     'send_iban'          => 'IBAN du beneficiaire',
     'transfer_insufficient'     => 'Solde insuffisant pour effectuer ce virement.',
     'transfer_negative_balance' => 'Votre solde est négatif. Les virements sont bloqués jusqu\'à régularisation.',
-
+    'transfer_generic_error'    => 'Une erreur est survenue lors du virement. Veuillez réessayer plus tard.',
     'receive_title'      => 'Recevoir',
     'receive_subtitle'   => 'Partagez vos coordonnees bancaires pour recevoir un virement',
     'receive_iban'       => 'IBAN',
