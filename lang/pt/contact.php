@@ -13,15 +13,12 @@ return [
     'placeholder_message' => 'Sua Mensagem',
     'button' => 'Enviar',
     'subject' => 'Selecionar empréstimo',
-
     'detail_title' => 'Mantenha-se em contato conosco',
     'detail_desc' => 'Estamos aqui para ajudá-lo. Entre em contato conosco para qualquer dúvida ou assistência sobre nossos serviços de empréstimo.',
-
     'address_title' => 'Endereço',
     'address_desc' => 'Calcea Victoriei 118 Setor 1 010093 Bucareste',
     'phone_title' => 'Telefone',
     'phone_desc' => '+31 6 57341120 ',
     'mail_title' => 'Email',
     'mail_desc' => 'contact@credixa.eu',
-
 ];

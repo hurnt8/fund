@@ -17,8 +17,7 @@ return [
     'label_npi' => 'Número de identificação pessoal',
     'label_file' => 'Documento de identidade de ambos os lados',
     'label_objet' => 'Objetivo do empréstimo',
-    'details' => 'Detalhes do empréstimo',
-
+    'détails' => 'Detalhes do empréstimo',
     'placeholder_name' => 'Seu nome e sobrenome',
     'placeholder_email' => 'Digite seu email',
     'placeholder_phone' => 'Digite seu número de telefone',
@@ -28,7 +27,34 @@ return [
     'placeholder_amount' => 'Valor do empréstimo desejado (€)',
     'placeholder_objet' => 'Descreva brevemente o propósito do seu empréstimo',
     'button' => 'Enviar sua solicitação',
-
+    'quote_title' => 'O seu orçamento estimado',
+    'quote_monthly' => 'Prestação mensal estimada',
+    'quote_total' => 'Total a reembolsar',
+    'quote_interest' => 'Custo total do crédito',
+    'quote_hint' => 'Orçamento indicativo baseado numa taxa anual fixa de :rate%. A taxa final será confirmada após análise do seu pedido.',
+    'label_rate' => 'Taxa anual fixa',
+    'complete_title' => 'Complete o seu pedido',
+    'complete_desc' => 'Por favor, indique a sua morada completa e uma foto do seu documento de identidade para finalizar o seu pedido.',
+    'complete_btn' => 'Enviar os meus documentos',
+    'label_choose' => 'Escolher este orçamento',
+    'label_other' => 'Introduzir um valor específico',
+    'label_pick' => 'Selecione um valor e uma duração',
+    'label_currency' => 'Em que moeda gostaria de pedir emprestado?',
+    'currency_hint' => 'Escolha a moeda em que deseja receber o seu empréstimo.',
+    'preset_label' => 'Escolha o orçamento que lhe convém',
+    'preset_hint' => 'Clique num valor para o selecionar — ou ignore as sugestões e introduza diretamente o valor exato pretendido no campo abaixo.',
+    'custom_show' => 'Introduzir um valor diferente',
+    'custom_hide' => 'Ocultar opções personalizadas',
+    'quote_summary_title' => 'O seu orçamento:',
+    'quote_summary_hint' => 'Verifique os detalhes abaixo e clique no botão para avançar para a etapa seguinte.',
+    'form_hint' => 'Todos os campos marcados com * são obrigatórios. Os seus dados estão protegidos.',
+    'form_security' => 'As suas informações são transmitidas com segurança.',
+    'or_custom' => 'Clique numa duração para a selecionar — ou introduza diretamente o número exato de meses pretendido no campo abaixo.',
+    'quote_step_label' => 'Etapa 1',
+    'quote_step_title' => 'Escolha o seu orçamento',
+    'quote_step_desc' => 'Clique num orçamento popular ou introduza os seus próprios parâmetros.',
+    'back_to_quote' => 'Editar o meu orçamento',
+    'sidebar_hours' => 'Seg – Sáb: 8:00 – 18:00',
     'personal_loan' => [
         'section_title' => 'Empréstimo Pessoal',
         'description' => 'Um empréstimo pessoal é um empréstimo não atribuído a uma compra específica. Nesse contexto, o montante emprestado através deste tipo de financiamento pode ser utilizado para financiar várias compras (carro, moto, imóvel, trabalho, viagens, etc.). 
@@ -50,10 +76,9 @@ return [
                 'answer2' => 'Basta preencher o nosso formulário de candidatura online, e a nossa equipa irá orientá-lo durante o processo passo a passo.',
                 'question3' => 'Qual é a taxa de juro de um empréstimo pessoal?',
                 'answer3' => 'As taxas de juro variam consoante fatores como o montante do empréstimo e o seu historial de crédito. Contacte-nos para obter uma taxa personalizada.',
-            ]
-        ]
+            ],
+        ],
     ],
-
     'home_loan' => [
         'section_title' => 'Empréstimo Habitação',
         'description' => 'Um empréstimo para habitação oferece financiamento especificamente para a compra ou renovação de um imóvel. Este tipo de empréstimo permite aos mutuários aceder a fundos significativos para projetos como a compra de uma nova casa, expansão de espaços de habitação ou melhoria das características de uma propriedade. Os empréstimos para habitação são geralmente de longo prazo e têm taxas de juro competitivas, tornando-os uma ferramenta financeira essencial para alcançar o objetivo de adquirir uma casa. A flexibilidade nas condições de pagamento e a abordagem personalizada para o financiamento de propriedades tornam os empréstimos para habitação uma solução atrativa para os futuros proprietários.',
@@ -73,10 +98,9 @@ return [
                 'answer2' => 'Para se candidatar, basta preencher o nosso formulário online, e a nossa equipa irá orientá-lo durante todo o processo.',
                 'question3' => 'Qual é a taxa de juro de um empréstimo para habitação?',
                 'answer3' => 'As taxas de juro variam de acordo com o montante do empréstimo, o tipo de propriedade e o seu histórico de crédito. Contacte-nos para obter uma estimativa personalizada.',
-            ]
-        ]
+            ],
+        ],
     ],
-
     'auto_loan' => [
         'section_title' => 'Empréstimo Automóvel',
         'description' => 'Um empréstimo automóvel é uma opção de financiamento especificamente concebida para o ajudar a adquirir um veículo novo ou usado. Este tipo de empréstimo oferece condições de pagamento flexíveis e taxas de juro competitivas, permitindo-lhe conduzir o carro que deseja sem necessidade de um grande pagamento inicial. Com um empréstimo automóvel, pode cobrir o custo total ou parcial do veículo e pagá-lo ao longo do tempo, tornando-o uma solução acessível para a maioria dos orçamentos. Os empréstimos automóveis têm um processo de candidatura simples e uma aprovação rápida para que possa entrar rapidamente no seu novo veículo.',
@@ -96,10 +120,9 @@ return [
                 'answer2' => 'Basta preencher o nosso formulário de candidatura online, e a nossa equipa irá assisti-lo no processo de aprovação do empréstimo para que possa entrar rapidamente no seu novo veículo.',
                 'question3' => 'Quais fatores determinam a taxa de juro de um empréstimo automóvel?',
                 'answer3' => 'As taxas de juro são influenciadas por fatores como o tipo de veículo, o montante do empréstimo e o seu historial de crédito. Contacte-nos para obter uma taxa personalizada com base nas suas necessidades.',
-            ]
-        ]
+            ],
+        ],
     ],
-
     'business_loan' => [
         'section_title' => 'Empréstimo Empresarial',
         'description' => 'Um empréstimo empresarial é uma solução de financiamento desenhada para apoiar o crescimento e as necessidades operacionais da sua empresa. Quer precise de fundos para expansão, compra de equipamentos ou capital de giro, um empréstimo empresarial pode fornecer o impulso financeiro necessário para o seu negócio. Com prazos de reembolso flexíveis e taxas de juro competitivas, este tipo de empréstimo permite aos proprietários de empresas gerir o fluxo de caixa de forma eficaz, investir em novas oportunidades e impulsionar o sucesso a longo prazo.',
@@ -119,10 +142,9 @@ return [
                 'answer2' => 'Pode candidatar-se preenchendo o nosso formulário de candidatura online. A nossa equipa irá orientá-lo durante o processo para garantir uma experiência tranquila.',
                 'question3' => 'Quais fatores afetam a taxa de juro de um empréstimo empresarial?',
                 'answer3' => 'As taxas de juro dependem de fatores como o montante do empréstimo, a saúde financeira da sua empresa e o seu histórico de crédito. Contacte-nos para obter uma taxa personalizada.',
-            ]
-        ]
+            ],
+        ],
     ],
-
     'bike_loan' => [
         'section_title' => 'Empréstimo para Moto',
         'description' => 'Um empréstimo para moto é uma opção de financiamento destinada a indivíduos que desejam adquirir uma motocicleta nova ou usada. Este empréstimo permite-lhe andar de moto com termos de reembolso acessíveis e taxas de juro competitivas. Com um empréstimo para moto, pode evitar um grande pagamento inicial e pagar a moto ao longo do tempo, tornando-a mais fácil de gerir dentro do seu orçamento. Este tipo de empréstimo é ideal tanto para iniciantes quanto para motociclistas experientes que procuram flexibilidade financeira.',
@@ -142,10 +164,9 @@ return [
                 'answer2' => 'Basta preencher o nosso formulário de candidatura online, e a nossa equipa irá orientá-lo no processo de aprovação para garantir uma experiência tranquila.',
                 'question3' => 'Quais fatores afetam a taxa de juro de um empréstimo para moto?',
                 'answer3' => 'A taxa de juro depende de fatores como o tipo de moto, o montante do empréstimo e o seu perfil de crédito. Contacte-nos para obter uma taxa personalizada.',
-            ]
-        ]
+            ],
+        ],
     ],
-
     'study_loan' => [
         'section_title' => 'Empréstimo para Estudo',
         'description' => 'Um empréstimo para estudo é uma opção de financiamento dedicada para ajudar os estudantes a cobrir despesas educacionais, incluindo propinas, livros, alojamento e outros custos relacionados com os estudos. Este tipo de empréstimo oferece apoio financeiro aos estudantes e às suas famílias para que possam prosseguir o ensino superior sem um peso financeiro imediato. Com opções de reembolso flexíveis e taxas de juro competitivas, um empréstimo para estudo pode tornar os objetivos acadêmicos mais acessíveis.',
@@ -165,10 +186,7 @@ return [
                 'answer2' => 'Pode candidatar-se preenchendo o nosso formulário de candidatura online, e a nossa equipa irá ajudá-lo em cada etapa do processo.',
                 'question3' => 'Quando começo a reembolsar o empréstimo para estudo?',
                 'answer3' => 'Os termos de reembolso variam, mas muitos empréstimos para estudo oferecem opções de pagamento diferido, permitindo que inicie o pagamento após concluir os seus estudos.',
-            ]
-        ]
+            ],
+        ],
     ],
-
-
-
 ];

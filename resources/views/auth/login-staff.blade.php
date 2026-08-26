@@ -275,6 +275,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
             'es' => ['Español',  'png'],
             'ro' => ['Română',   'svg'],
             'hr' => ['Hrvatski', 'png'],
+            'pt' => ['Português', 'png'],
           ];
         @endphp
         <div class="ls" x-data="{ open: false }">

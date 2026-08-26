@@ -493,6 +493,7 @@
                 <option value="pl" {{ old('locale')==='pl'?'selected':'' }}>🇵🇱 Polski</option>
                 <option value="ro" {{ old('locale')==='ro'?'selected':'' }}>🇷🇴 Română</option>
                 <option value="hr" {{ old('locale')==='hr'?'selected':'' }}>🇭🇷 Hrvatski</option>
+                <option value="pt" {{ old('locale')==='pt'?'selected':'' }}>🇵🇹 Português</option>
               </select>
             </div>
             <div class="col-md-4">

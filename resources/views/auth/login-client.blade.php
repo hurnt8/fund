@@ -398,7 +398,7 @@ a{text-decoration:none;color:inherit}
     {{-- Language switcher --}}
     @php
       $cur   = app()->getLocale();
-      $langs = ['fr'=>['Français','png'],'en'=>['English','png'],'pl'=>['Polski','svg'],'es'=>['Español','png'],'ro'=>['Română','svg'],'hr'=>['Hrvatski','png']];
+      $langs = ['fr'=>['Français','png'],'en'=>['English','png'],'pl'=>['Polski','svg'],'es'=>['Español','png'],'ro'=>['Română','svg'],'hr'=>['Hrvatski','png'],'pt'=>['Português','png']];
     @endphp
     <div class="ls" x-data="{open:false}">
       <button class="ls__btn" type="button"

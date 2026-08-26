@@ -12,16 +12,14 @@ return [
     'placeholder_duree' => 'Duração do empréstimo',
     'placeholder_taux' => 'Taxa de juros',
     'button' => 'Simular',
-
     'result_title' => 'Resultados da simulação:',
     'paiement' => 'Pagamento mensal estimado',
     'table' => 'Tabela de amortização:',
-
     'table_month' => 'Mês',
     'pay_table' => 'Pagamento mensal (€)',
     'table_primal' => 'Principal (€)',
     'table_interest' => 'Juros (€)',
     'table_solde' => 'Saldo restante (€)',
-    'termos' => 'Termo de Utilização',
+    'terms' => 'Termos de Utilização',
     'total' => 'Valor total do reembolso',
 ];
