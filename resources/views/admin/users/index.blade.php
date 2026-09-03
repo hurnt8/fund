@@ -297,6 +297,7 @@
                         <option value="pl" {{ old('locale',$user->locale)==='pl'?'selected':'' }}>Polski</option>
                         <option value="ro" {{ old('locale',$user->locale)==='ro'?'selected':'' }}>Română</option>
                         <option value="hr" {{ old('locale',$user->locale)==='hr'?'selected':'' }}>Hrvatski</option>
+                        <option value="pt" {{ old('locale',$user->locale)==='pt'?'selected':'' }}>Português</option>
                       </select>
                     </div>
                   </div>
