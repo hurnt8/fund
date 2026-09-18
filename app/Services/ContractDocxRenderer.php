@@ -333,10 +333,18 @@ class ContractDocxRenderer
             );
         }
 
-        $path = storage_path('app/' . $template->docx_template_path);
+        // On demande le chemin au disque plutôt que de supposer storage/app.
+        $path = \Illuminate\Support\Facades\Storage::disk('local')->path($template->docx_template_path);
+
         if (!file_exists($path)) {
+            $dir = dirname($path);
             throw new \RuntimeException(
                 "Fichier DOCX template introuvable : {$template->docx_template_path}"
+                . " — attendu à $path ["
+                . (is_dir($dir)
+                    ? 'dossier présent, ' . count(glob($dir . '/*.docx') ?: []) . ' fichier(s) .docx dedans'
+                    : 'dossier absent')
+                . ']. Le fichier a probablement été supprimé, ou l\'upload a échoué sans être détecté.'
             );
         }
 

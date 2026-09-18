@@ -66,6 +66,16 @@ class Handler extends ExceptionHandler
                 return null;
             }
 
+            // Un abort($code, "message") est un message écrit volontairement par le
+            // code pour être lu : on le conserve au lieu de le remplacer par le
+            // texte générique, sinon le diagnostic est perdu en production.
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface
+                && trim($e->getMessage()) !== '') {
+                return redirect()->back()
+                    ->withInput($request->except(['password', 'password_confirmation', 'current_password']))
+                    ->with('error', $e->getMessage());
+            }
+
             $message = match (true) {
                 $e instanceof \Illuminate\Http\Exceptions\PostTooLargeException =>
                     'Le ou les fichiers envoyés sont trop volumineux pour être transmis. Réduisez leur taille et réessayez.',

@@ -51,8 +51,22 @@ class DocxTemplateManager
         try {
             $vars = $this->detectVariables($absPath);
         } catch (\Throwable $e) {
-            // Nettoyer le fichier uploadé et propager l'erreur
-            @unlink($absPath);
+            // On ne supprime pas le fichier : quand l'échec vient de l'environnement
+            // (droits, quota, open_basedir), il est la seule pièce à conviction.
+            // On le met de côté sous .failed pour ne pas le confondre avec un
+            // template valide, et on trace son état dans les logs.
+            $failed = $absPath . '.failed';
+            @rename($absPath, $failed);
+
+            \Illuminate\Support\Facades\Log::error(
+                'DocxTemplateManager: détection des variables échouée — ' . $e->getMessage(),
+                [
+                    'fichier_conserve' => is_file($failed) ? $failed : $absPath,
+                    'taille'           => is_file($failed) ? filesize($failed)
+                                        : (is_file($absPath) ? filesize($absPath) : null),
+                ]
+            );
+
             throw $e;
         }
 

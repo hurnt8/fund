@@ -150,4 +150,28 @@ $libre = @disk_free_space(dirname($cible));
 ligne('espace libre', $libre === false ? 'indisponible' : round($libre / 1048576, 1) . ' Mo');
 echo "\n";
 
+/* ─── 7. Exposition web ───────────────────────────────────────────────────── */
+echo "--- 7. Exposition web ---\n";
+
+$docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
+ligne('DOCUMENT_ROOT', $docRoot ?: '(inconnu)');
+
+if ($docRoot !== '' && function_exists('base_path')) {
+    $base = rtrim(str_replace('\\', '/', base_path()), '/');
+    ligne('base_path()', $base);
+
+    if ($base === $docRoot || str_starts_with($base . '/', $docRoot . '/')) {
+        echo "\n";
+        echo "ATTENTION : l'application est à l'intérieur du dossier web.\n";
+        echo "  .env, storage/ et vendor/ risquent d'être accessibles depuis Internet.\n";
+        echo "  Vérifiez ces URL — elles doivent toutes renvoyer 403 ou 404 :\n";
+        foreach (['/.env', '/storage/logs/laravel.log', '/composer.json'] as $u) {
+            echo "    https://" . ($_SERVER['HTTP_HOST'] ?? 'votre-domaine') . $u . "\n";
+        }
+    } else {
+        ligne('application hors du dossier web', 'OUI');
+    }
+}
+echo "\n";
+
 echo "=== FIN — supprimez ce fichier du serveur ===\n";
