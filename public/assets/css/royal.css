@@ -1798,3 +1798,64 @@ select.form-control { cursor: pointer; }
 @media (max-width: 576px) {
     .partner-logo:nth-child(2n) { border-right: none; }
 }
+
+/* ================================================================
+   BOUTON PRINCIPAL SUR FOND SOMBRE
+   Le bouton est vert forêt plein : sur les sections vert forêt il
+   disparaît. On bascule alors sur le laiton, avec texte encre.
+================================================================ */
+.cta-banner .btn-primary,
+.calc-section .btn-primary,
+.contact-widget .btn-primary,
+.site-footer .btn-primary,
+.figure-band .btn-primary,
+.newsletter-form .btn-primary {
+    background: var(--brass);
+    border-color: var(--brass);
+    color: var(--ink) !important;
+}
+.cta-banner .btn-primary:hover,
+.calc-section .btn-primary:hover,
+.contact-widget .btn-primary:hover,
+.site-footer .btn-primary:hover,
+.figure-band .btn-primary:hover,
+.newsletter-form .btn-primary:hover {
+    background: var(--brass-light);
+    border-color: var(--brass-light);
+    color: var(--ink) !important;
+}
+
+/* ── Newsletter : champ lisible sur fond sombre ── */
+.newsletter-form input {
+    background: rgba(255,255,255,.10);
+    border-color: rgba(251,249,244,.28);
+}
+.newsletter-form input::placeholder { color: rgba(251,249,244,.5); }
+.newsletter-form input:focus {
+    border-color: var(--brass);
+    background: rgba(255,255,255,.14);
+}
+
+/* ── Newsletter et actions du bandeau : pleine largeur sur mobile ── */
+@media (max-width: 767px) {
+    .newsletter-form { width: 100%; max-width: 100%; }
+    .cta-banner .d-flex.flex-wrap {
+        flex-direction: column;
+        align-items: stretch !important;
+        justify-content: stretch !important;
+        gap: .75rem;
+    }
+    .cta-banner .d-flex.flex-wrap > .btn-primary,
+    .cta-banner .d-flex.flex-wrap > .btn-outline,
+    .cta-banner .d-flex.flex-wrap > .btn-outline-white {
+        width: 100%;
+        justify-content: center;
+    }
+    .cta-banner hr { margin: 2rem 0 !important; }
+    .cta-banner .text-lg-end { text-align: left !important; }
+}
+
+/* ── Footer : champ newsletter lisible ── */
+.footer-newsletter input { background: rgba(255,255,255,.09); border-color: rgba(251,249,244,.22); }
+.footer-newsletter input::placeholder { color: rgba(251,249,244,.45); }
+.footer-newsletter input:focus { border-color: var(--brass); }
