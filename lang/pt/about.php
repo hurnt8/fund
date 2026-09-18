@@ -1,18 +1,18 @@
 <?php
 
 return [
-    'banner_title' => 'Descubra a Credixa',
+    'banner_title' => 'Descubra a Aurenza Capital',
     'banner_subtitle' => 'Sobre nós',
     'banner_description' => 'Empréstimos mais fáceis com soluções de crédito flexíveis adaptadas às suas necessidades financeiras.',
-    'section1_title' => 'Por que escolher a Credixa',
-    'section1_p1' => 'Na Credixa, acreditamos firmemente que todos merecem uma chance de realizar seus sonhos financeiros. Desde a nossa fundação, temos nos comprometido a fornecer soluções de empréstimo flexíveis e acessíveis para atender às diversas necessidades de nossos clientes. Se você está buscando financiar um projeto pessoal, comprar um carro ou expandir seu negócio, temos o empréstimo que você precisa.',
+    'section1_title' => 'Por que escolher a Aurenza Capital',
+    'section1_p1' => 'Na Aurenza Capital, acreditamos firmemente que todos merecem uma chance de realizar seus sonhos financeiros. Desde a nossa fundação, temos nos comprometido a fornecer soluções de empréstimo flexíveis e acessíveis para atender às diversas necessidades de nossos clientes. Se você está buscando financiar um projeto pessoal, comprar um carro ou expandir seu negócio, temos o empréstimo que você precisa.',
     'section1_p2' => 'Nossos serviços são projetados para proporcionar uma experiência sem complicações, com um processo de solicitação rápido e fácil. Entendemos que cada cliente é único, por isso oferecemos empréstimos personalizados que se adaptam às suas necessidades específicas. Além disso, nossos consultores dedicados estão sempre prontos para guiá-lo em cada etapa, garantindo que você tenha todo o suporte do início ao fim.',
     'proposed' => 'Nós propomos:',
     'check1' => 'Empréstimos personalizados de acordo com suas necessidades específicas.',
     'check2' => 'Consultores dedicados para ajudá-lo em cada passo do caminho.',
     'check3' => 'Termos de pagamento flexíveis para se adequar à sua situação financeira.',
     'check4' => 'Empréstimos sem necessidade de contracheque.',
-    'section1_p3' => 'Na Credixa, nossa missão é ajudá-lo a alcançar seus objetivos financeiros com soluções de empréstimo sob medida. Junte-se a nós hoje e descubra como podemos ajudá-lo a tornar seus projetos uma realidade.',
+    'section1_p3' => 'Na Aurenza Capital, nossa missão é ajudá-lo a alcançar seus objetivos financeiros com soluções de empréstimo sob medida. Junte-se a nós hoje e descubra como podemos ajudá-lo a tornar seus projetos uma realidade.',
     'btn' => 'Encontre seu Empréstimo Ideal',
     'faq_title' => 'Perguntas Frequentes',
     'faq_description' => 'Encontre respostas para as perguntas mais comuns sobre nossos serviços de empréstimo.',

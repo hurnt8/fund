@@ -1,9 +1,9 @@
 <?php
 
 return [
-  'general_title' => 'Credixa - I migliori prestatori online in Germania, Spagna, Ungheria, ecc.',
+  'general_title' => 'Aurenza Capital - I migliori prestatori online in Germania, Spagna, Ungheria, ecc.',
 'banner_title' => 'Ottieni il prestito perfetto per tutte le tue esigenze online.',
-'banner_text' => 'Milioni di persone usano Credixa per realizzare i loro progetti.',
+'banner_text' => 'Milioni di persone usano Aurenza Capital per realizzare i loro progetti.',
 'get_loan_now' => 'Ottieni un prestito ora',
 'popular_loans' => 'Tipi di prestiti popolari:',
 'personal_loan' => 'Prestito personale',
@@ -62,11 +62,11 @@ return [
 
 'custom_loan_services' => 'Approfitta dei nostri servizi di prestito su misura',
 'reliability_quality' => 'Trasparenza e Affidabilità',
-'reliability_quality_description' => 'In Credixa offriamo soluzioni di prestito chiare e affidabili, supportate da recensioni positive dei clienti e completa trasparenza.',
+'reliability_quality_description' => 'In Aurenza Capital offriamo soluzioni di prestito chiare e affidabili, supportate da recensioni positive dei clienti e completa trasparenza.',
 'financial_transparency' => 'Nessun Costo Nascosto',
 'financial_transparency_description' => 'Rivedi i nostri termini, discuti i tassi e paga solo una volta approvato il tuo prestito.',
 'optimal_security' => 'Sicurezza e Privacy',
-'optimal_security_description' => 'I tuoi dati personali sono al sicuro con noi. Credixa utilizza protocolli di sicurezza avanzati per proteggere la tua privacy. Il nostro supporto è disponibile 24/7 per qualsiasi assistenza.',
+'optimal_security_description' => 'I tuoi dati personali sono al sicuro con noi. Aurenza Capital utilizza protocolli di sicurezza avanzati per proteggere la tua privacy. Il nostro supporto è disponibile 24/7 per qualsiasi assistenza.',
 'apply_loan' => 'Richiedi un prestito',
 
 'testimonials_title' => 'Le nostre testimonianze',
@@ -106,7 +106,7 @@ return [
 
 
     'about_title' => 'Unisciti al miglior marketplace mondiale per lavoratori',
-'about_description' => 'Credixa è la tua piattaforma di fiducia per ottenere prestiti con un’esperienza cliente eccezionale. Siamo impegnati a offrirti soluzioni finanziarie semplici, sicure e veloci.',
+'about_description' => 'Aurenza Capital è la tua piattaforma di fiducia per ottenere prestiti con un’esperienza cliente eccezionale. Siamo impegnati a offrirti soluzioni finanziarie semplici, sicure e veloci.',
 'rating' => '4.9/5',
 'rating_description' => 'I clienti valutano i professionisti',
 'projects_completed' => '+12M',
@@ -148,7 +148,7 @@ return [
     'placeholder' => 'Il tuo indirizzo email',
     'button' => 'Invia',
 ],
-'rights_reserved' => '© Credixa. 2024. Tutti i diritti riservati.',
+'rights_reserved' => '© Aurenza Capital. 2024. Tutti i diritti riservati.',
 
 'en' => 'Inglese',
 'fr' => 'Francese',
@@ -195,10 +195,10 @@ return [
 
 'about' => [
     'exptitle' => 'anni di esperienza',
-    'sectagline' => 'benvenuto in Credixa',
+    'sectagline' => 'benvenuto in Aurenza Capital',
     'sectitle' => 'Prestiti personali per realizzare i tuoi sogni',
     'text1' => 'Siamo in questo settore dal 1990 e forniamo i migliori servizi.',
-    'text2' => 'Credixa è la tua piattaforma di fiducia per prestiti con un’esperienza cliente eccezionale. Siamo impegnati a offrirti soluzioni finanziarie semplici, sicure e veloci.',
+    'text2' => 'Aurenza Capital è la tua piattaforma di fiducia per prestiti con un’esperienza cliente eccezionale. Siamo impegnati a offrirti soluzioni finanziarie semplici, sicure e veloci.',
     'check1' => 'prestito per piccole imprese',
     'check2' => 'prestito per studiare all’estero',
     'check3' => 'processo di prestito rapido',

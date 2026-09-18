@@ -6,7 +6,7 @@
 
 {{-- Page hero --}}
 <div class="page-hero">
-    <div class="container">
+    <div class="container-sm">
         <div class="page-hero__content">
             <h1 class="page-hero__title">@lang('menu.services')</h1>
             <ul class="page-hero__breadcrumb">
@@ -20,7 +20,7 @@
 
 {{-- Services grid --}}
 <section class="py-24 bg-white">
-    <div class="container">
+    <div class="container-sm">
         <div class="text-center mb-14">
             <div class="section-label justify-content-center">{{ __('home.services.sectagline') }}</div>
             <h2 class="section-title">{{ __('home.services.sectitle') }}</h2>
@@ -28,12 +28,12 @@
 
         @php
         $services = [
-            ['route' => 'services.personal', 'img' => 'service-3-1.jpg', 'label' => 'menu.personal',  'type' => 'personal_loan', 'icon' => 'fas fa-user-tie'],
-            ['route' => 'services.home',     'img' => 'service-3-3.jpg', 'label' => 'menu.home_loan', 'type' => 'home_loan',     'icon' => 'fas fa-home'],
-            ['route' => 'services.auto',     'img' => 'service-3-5.jpg', 'label' => 'menu.auto',      'type' => 'auto_loan',     'icon' => 'fas fa-car'],
-            ['route' => 'services.business', 'img' => 'service-3-4.jpg', 'label' => 'menu.business',  'type' => 'business_loan', 'icon' => 'fas fa-briefcase'],
-            ['route' => 'services.study',    'img' => 'service-3-2.jpg', 'label' => 'menu.study',     'type' => 'study_loan',    'icon' => 'fas fa-graduation-cap'],
-            ['route' => 'services.bike',     'img' => 'service-3-6.jpg', 'label' => 'menu.bike',      'type' => 'bike_loan',     'icon' => 'fas fa-bicycle'],
+            ['route' => 'services.personal', 'label' => 'menu.personal',  'type' => 'personal_loan', 'icon' => 'fas fa-user-tie'],
+            ['route' => 'services.home',     'label' => 'menu.home_loan', 'type' => 'home_loan',     'icon' => 'fas fa-home'],
+            ['route' => 'services.auto',     'label' => 'menu.auto',      'type' => 'auto_loan',     'icon' => 'fas fa-car'],
+            ['route' => 'services.business', 'label' => 'menu.business',  'type' => 'business_loan', 'icon' => 'fas fa-briefcase'],
+            ['route' => 'services.study',    'label' => 'menu.study',     'type' => 'study_loan',    'icon' => 'fas fa-graduation-cap'],
+            ['route' => 'services.bike',     'label' => 'menu.bike',      'type' => 'bike_loan',     'icon' => 'fas fa-bicycle'],
         ];
         @endphp
 
@@ -41,10 +41,6 @@
             @foreach ($services as $i => $svc)
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="800ms" data-wow-delay="{{ $i * 80 }}ms">
                 <div class="service-card">
-                    <div class="service-card__image">
-                        <img src="{{ asset('assets/images/services/' . $svc['img']) }}" alt="@lang($svc['label'])">
-                        <div class="service-card__image__overlay"></div>
-                    </div>
                     <div class="service-card__body">
                         <div class="service-card__icon"><i class="{{ $svc['icon'] }}"></i></div>
                         <h3 class="service-card__title">
@@ -66,7 +62,7 @@
 
 {{-- CTA --}}
 <section class="cta-banner">
-    <div class="container">
+    <div class="container-sm">
         <div class="row align-items-center gutter-y-30">
             <div class="col-lg-7 wow fadeInLeft" data-wow-duration="900ms">
                 <div class="section-label" style="color:var(--gold);">{{ __('home.services.sectagline') }}</div>
@@ -94,7 +90,7 @@
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <i class="fas fa-envelope" style="color:var(--gold);font-size:.9rem;"></i>
-                        <a href="mailto:contact@credixa.eu" style="color:rgba(255,255,255,.6);font-size:.875rem;">{{ __('contact.mail_desc') }}</a>
+                        <a href="mailto:contact@aurenzacapital.com" style="color:rgba(255,255,255,.6);font-size:.875rem;">{{ __('contact.mail_desc') }}</a>
                     </div>
                 </div>
             </div>

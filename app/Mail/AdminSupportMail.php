@@ -22,7 +22,7 @@ class AdminSupportMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Nouveau message de ' . $this->client->name . ' — Support Credixa',
+            subject: 'Nouveau message de ' . $this->client->name . ' — Support Aurenza Capital',
         );
     }
 

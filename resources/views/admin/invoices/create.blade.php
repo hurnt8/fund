@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title', 'Nouvelle facture — Credixa')
+@section('title', 'Nouvelle facture — Aurenza Capital')
 @section('page_title', 'Nouvelle facture')
 
 @section('content')
@@ -53,7 +53,7 @@
               <label class="form-label-pro">Devise *</label>
               <select name="currency" class="form-control-pro" x-model="currency">
                 @foreach($currencies as $cur)
-                <option value="{{ $cur }}" {{ old('currency', config('credixa.default_currency')) === $cur ? 'selected' : '' }}>{{ $cur }}</option>
+                <option value="{{ $cur }}" {{ old('currency', config('aurenza.default_currency')) === $cur ? 'selected' : '' }}>{{ $cur }}</option>
                 @endforeach
               </select>
             </div>
@@ -77,7 +77,7 @@
       </div>
 
       {{-- Récapitulatif --}}
-      <div class="card-pro" style="background:linear-gradient(135deg,#1B4976,#0D2E52);color:#fff;border:none">
+      <div class="card-pro" style="background:linear-gradient(135deg,#1B7649,#0D522E);color:#fff;border:none">
         <div class="card-pro-body">
           <div style="display:flex;justify-content:space-between;margin-bottom:.5rem;font-size:.8rem;color:rgba(255,255,255,.6)">
             <span>Sous-total</span>
@@ -87,7 +87,7 @@
             <span>TVA (<span x-text="taxRate">0</span>%)</span>
             <span x-text="fmt(taxAmt) + ' ' + currency">0</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding-top:.625rem;border-top:1px solid rgba(255,255,255,.15);font-size:1.25rem;font-weight:800;font-family:'Space Grotesk',sans-serif">
+          <div style="display:flex;justify-content:space-between;padding-top:.625rem;border-top:1px solid rgba(255,255,255,.15);font-size:1.25rem;font-weight:800;font-family:'Outfit',sans-serif">
             <span>Total TTC</span>
             <span x-text="fmt(total) + ' ' + currency">0</span>
           </div>
@@ -120,7 +120,7 @@
                        x-model.number="line.qty" min="0.01" step="0.01" @input="calcTotals()" required>
                 <input type="number" :name="'items['+idx+'][unit_price]'" class="form-control-pro"
                        x-model.number="line.price" min="0" step="0.01" @input="calcTotals()" required>
-                <div style="padding:.5rem .625rem;background:rgba(200,169,81,.08);border:1.5px solid rgba(200,169,81,.25);border-radius:var(--radius-sm);font-size:.8125rem;font-weight:700;color:var(--c-navy);text-align:right"
+                <div style="padding:.5rem .625rem;background:rgba(198,161,91,.08);border:1.5px solid rgba(198,161,91,.25);border-radius:var(--radius-sm);font-size:.8125rem;font-weight:700;color:var(--c-navy);text-align:right"
                      x-text="fmt(line.qty * line.price)">0</div>
                 <button type="button" @click="removeLine(idx)" x-show="lines.length > 1"
                         style="width:36px;height:36px;border:none;background:rgba(220,38,38,.1);color:#dc2626;border-radius:var(--radius-sm);cursor:pointer;font-size:.8rem">
@@ -148,7 +148,7 @@
 function invoiceForm() {
   return {
     lines: [],
-    currency: '{{ old('currency', config('credixa.default_currency')) }}',
+    currency: '{{ old('currency', config('aurenza.default_currency')) }}',
     taxRate: {{ old('tax_rate', 0) }},
     subtotal: 0, taxAmt: 0, total: 0,
 

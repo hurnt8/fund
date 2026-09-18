@@ -15,18 +15,18 @@ class UserInvitationMail extends Mailable
 
     // ── Sujets de l'email selon [locale][genre] ──────────────────────────────
     private const SUBJECTS = [
-        'fr' => ['M' => 'Activation de votre compte — Credixa Invest',
-                 'F' => 'Activation de votre compte — Credixa Invest',
-                 'N' => 'Activez votre compte — Credixa Invest'],
-        'en' => ['M' => 'Activate your account — Credixa Invest',
-                 'F' => 'Activate your account — Credixa Invest',
-                 'N' => 'Activate your account — Credixa Invest'],
-        'es' => ['M' => 'Activación de su cuenta — Credixa Invest',
-                 'F' => 'Activación de su cuenta — Credixa Invest',
-                 'N' => 'Active su cuenta — Credixa Invest'],
-        'pl' => ['M' => 'Aktywacja Twojego konta — Credixa Invest',
-                 'F' => 'Aktywacja Twojego konta — Credixa Invest',
-                 'N' => 'Aktywuj swoje konto — Credixa Invest'],
+        'fr' => ['M' => 'Activation de votre compte — Aurenza Capital',
+                 'F' => 'Activation de votre compte — Aurenza Capital',
+                 'N' => 'Activez votre compte — Aurenza Capital'],
+        'en' => ['M' => 'Activate your account — Aurenza Capital',
+                 'F' => 'Activate your account — Aurenza Capital',
+                 'N' => 'Activate your account — Aurenza Capital'],
+        'es' => ['M' => 'Activación de su cuenta — Aurenza Capital',
+                 'F' => 'Activación de su cuenta — Aurenza Capital',
+                 'N' => 'Active su cuenta — Aurenza Capital'],
+        'pl' => ['M' => 'Aktywacja Twojego konta — Aurenza Capital',
+                 'F' => 'Aktywacja Twojego konta — Aurenza Capital',
+                 'N' => 'Aktywuj swoje konto — Aurenza Capital'],
     ];
 
     // ── Labels du bouton selon la locale ────────────────────────────────────
@@ -78,10 +78,10 @@ class UserInvitationMail extends Mailable
             'pl' => ['M' => 'Z poważaniem',    'F' => 'Z poważaniem',    'N' => 'Z pozdrowieniami'],
         ],
         '{EQUIPE}' => [
-            'fr' => ['M' => "L'équipe Credixa Invest",    'F' => "L'équipe Credixa Invest",    'N' => "L'équipe Credixa Invest"],
-            'en' => ['M' => 'The Credixa Invest Team',    'F' => 'The Credixa Invest Team',    'N' => 'The Credixa Invest Team'],
-            'es' => ['M' => 'El equipo de Credixa Invest','F' => 'El equipo de Credixa Invest','N' => 'El equipo de Credixa Invest'],
-            'pl' => ['M' => 'Zespół Credixa Invest',      'F' => 'Zespół Credixa Invest',      'N' => 'Zespół Credixa Invest'],
+            'fr' => ['M' => "L'équipe Aurenza Capital",    'F' => "L'équipe Aurenza Capital",    'N' => "L'équipe Aurenza Capital"],
+            'en' => ['M' => 'The Aurenza Capital Team',    'F' => 'The Aurenza Capital Team',    'N' => 'The Aurenza Capital Team'],
+            'es' => ['M' => 'El equipo de Aurenza Capital','F' => 'El equipo de Aurenza Capital','N' => 'El equipo de Aurenza Capital'],
+            'pl' => ['M' => 'Zespół Aurenza Capital',      'F' => 'Zespół Aurenza Capital',      'N' => 'Zespół Aurenza Capital'],
         ],
         '{NOTICE_PERSONNEL}' => [
             'fr' => ['M' => "Ce lien d'activation est **personnel et unique**. Il expire dès que vous avez défini votre mot de passe.",
@@ -144,7 +144,7 @@ class UserInvitationMail extends Mailable
         $resolved['{NOM_COMPLET}']     = $this->user->name;
         $resolved['{EMAIL}']           = $this->user->email;
         $resolved['{LIEN_ACTIVATION}'] = $this->activationUrl;
-        $resolved['{NOM_ENTREPRISE}']  = 'Credixa Invest';
+        $resolved['{NOM_ENTREPRISE}']  = 'Aurenza Capital';
 
         $body = self::BODY[$locale] ?? self::BODY['fr'];
         $resolved['{INTRO_CORPS}']  = $this->applyReplacements($body['intro'],  $resolved);

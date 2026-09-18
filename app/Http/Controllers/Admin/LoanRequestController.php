@@ -85,7 +85,7 @@ class LoanRequestController extends Controller
         $admin     = Auth::user();
         $myClients = $this->clientsForAdmin($admin);
         $templates  = $this->templatesForAdmin($admin);
-        $currencies = config('credixa.currencies');
+        $currencies = config('aurenza.currencies');
 
         return view('admin.loans.create', compact('myClients', 'templates', 'currencies'));
     }
@@ -239,7 +239,7 @@ class LoanRequestController extends Controller
         $myClients = User::where('type', 'client')
                          ->whereHas('clientLoans', fn($q) => $q->where('admin_id', $admin->id))
                          ->orderBy('name')->get();
-        $currencies = config('credixa.currencies');
+        $currencies = config('aurenza.currencies');
         $templates  = $this->templatesForAdmin($admin);
 
         return view('admin.loans.edit', compact('loan', 'myClients', 'currencies', 'templates'));
@@ -472,7 +472,7 @@ class LoanRequestController extends Controller
         }
 
         $vars                = app(\App\Services\ContractService::class)->getVariables($loan);
-        $vars['{directeur}'] = $loan->directeur ?: 'CREDIXA INVESTI';
+        $vars['{directeur}'] = $loan->directeur ?: 'AURENZA CAPITAL INVESTI';
 
         // Si le template a du contenu HTML personnalisé, l'utiliser
         $template = $loan->insuranceTemplate;
@@ -830,7 +830,7 @@ class LoanRequestController extends Controller
             if ($isFinalization && $fresh->client_id) {
                 $fresh->client?->increment('balance', (float) $fresh->amount);
 
-                $cur = $fresh->currency ?? config('credixa.default_currency');
+                $cur = $fresh->currency ?? config('aurenza.default_currency');
                 ClientNotification::notifyUser(
                     $fresh->client,
                     'credit',

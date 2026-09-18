@@ -18,7 +18,7 @@ class ContactController extends Controller
             'message' => 'required|string|min:1',
         ]);
         $data = $request->all();
-        Mail::to('contact@credixa.eu')->send(new ContactMail([
+        Mail::to(config('mail.contact_address'))->send(new ContactMail([
             'name' => $data['name'],
             'message' => $data['message'],
             'email' => $data['email'],
@@ -32,7 +32,7 @@ class ContactController extends Controller
             'email' => 'required|email|min:1',
         ]);
         $data = $request->all();
-        Mail::to('contact@credixa.eu')->send(new SubscribeMail([
+        Mail::to(config('mail.contact_address'))->send(new SubscribeMail([
             'email' => $data['email'],
         ]));
         return back()->with('success', 'Subscription successfully completed');

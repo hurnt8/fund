@@ -1,8 +1,8 @@
 @php $locale = $user->locale ?? 'fr'; @endphp
 <x-email-layout
     :title="__('auth.otp_email_title', [], $locale)"
-    subtitle="Credixa Invest"
-    accent="teal"
+    subtitle="Aurenza Capital"
+    accent="brand"
     :footerNote="__('auth.otp_email_footer', [], $locale)"
 >
 

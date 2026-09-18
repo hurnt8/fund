@@ -15,17 +15,17 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    border-bottom: 2.5px solid #0B1A2E;
+    border-bottom: 2.5px solid #0E3B2E;
     padding-bottom: 14px;
     margin-bottom: 20px;
 }
 .header-brand {
     font-size: 15pt;
     font-weight: 700;
-    color: #0B1A2E;
+    color: #0E3B2E;
     letter-spacing: .02em;
 }
-.header-brand span { color: #C8A951; }
+.header-brand span { color: #C6A15B; }
 .header-meta {
     text-align: right;
     font-size: 8pt;
@@ -35,7 +35,7 @@ body {
 .doc-title {
     font-size: 13pt;
     font-weight: 700;
-    color: #0B1A2E;
+    color: #0E3B2E;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: .08em;
@@ -63,10 +63,10 @@ body {
     font-weight: 600;
 }
 .summary-cell.value {
-    color: #0B1A2E;
+    color: #0E3B2E;
     font-weight: 700;
 }
-.summary-cell.value-gold { color: #C8A951; font-weight: 700; }
+.summary-cell.value-gold { color: #C6A15B; font-weight: 700; }
 
 table.schedule {
     width: 100%;
@@ -74,7 +74,7 @@ table.schedule {
     font-size: 8.5pt;
 }
 table.schedule thead tr {
-    background: #0B1A2E;
+    background: #0E3B2E;
     color: #fff;
 }
 table.schedule thead th {
@@ -98,9 +98,9 @@ table.schedule tbody tr td:first-child {
     font-weight: 600;
 }
 table.schedule tbody tr td.interest { color: #c0392b; }
-table.schedule tbody tr td.balance  { color: #0B1A2E; font-weight: 600; }
+table.schedule tbody tr td.balance  { color: #0E3B2E; font-weight: 600; }
 table.schedule tfoot tr {
-    background: #0B1A2E;
+    background: #0E3B2E;
     color: #fff;
 }
 table.schedule tfoot td {
@@ -127,7 +127,7 @@ table.schedule tfoot td:first-child { text-align: center; }
         @if(!empty($logoBase64))
         <img src="{{ $logoBase64 }}" style="height:42px;max-width:190px;object-fit:contain;display:block">
     @else
-        <div class="header-brand">CREDIXA <span>INVESTI</span></div>
+        <div class="header-brand">AURENZA CAPITAL <span>INVESTI</span></div>
     @endif
         <div style="font-size:7.5pt;color:#888;margin-top:3px">{{ $texts['header_sub'] }}</div>
     </div>
@@ -195,7 +195,7 @@ table.schedule tfoot td:first-child { text-align: center; }
     </tfoot>
 </table>
 
-<div class="footer">{{ $texts['footer'] }} — CREDIXA INVESTI © {{ now()->format('Y') }}</div>
+<div class="footer">{{ $texts['footer'] }} — AURENZA CAPITAL INVESTI © {{ now()->format('Y') }}</div>
 
 </body>
 </html>

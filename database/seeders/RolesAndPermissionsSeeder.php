@@ -38,10 +38,10 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Default super-admin account
         $superAdmin = User::firstOrCreate(
-            ['email' => 'superadmin@credixa.eu'],
+            ['email' => 'superadmin@aurenzacapital.com'],
             [
                 'name'     => 'Super Admin',
-                'password' => Hash::make('Credixa@2025!'),
+                'password' => Hash::make('Aurenza@2025!'),
                 'type'     => 'staff',
             ]
         );
@@ -49,9 +49,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Default admin account
         $admin = User::firstOrCreate(
-            ['email' => 'admin@credixa.eu'],
+            ['email' => 'admin@aurenzacapital.com'],
             [
-                'name'     => 'Admin Credixa',
+                'name'     => 'Admin Aurenza Capital',
                 'password' => Hash::make('Admin@2025!'),
                 'type'     => 'staff',
             ]
@@ -62,8 +62,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $this->command->table(
             ['Role', 'Email', 'Password (change immediately)'],
             [
-                ['super-admin', 'superadmin@credixa.eu', 'Credixa@2025!'],
-                ['admin',       'admin@credixa.eu',      'Admin@2025!'],
+                ['super-admin', 'superadmin@aurenzacapital.com', 'Aurenza@2025!'],
+                ['admin',       'admin@aurenzacapital.com',      'Admin@2025!'],
             ]
         );
     }

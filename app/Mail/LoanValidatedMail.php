@@ -30,10 +30,10 @@ class LoanValidatedMail extends Mailable
     public function envelope(): Envelope
     {
         $subjects = [
-            'fr' => 'Validation de votre demande N°' . $this->loan->reference . ' — CREDIXA INVESTI',
-            'pl' => 'Zatwierdzenie wniosku nr ' . $this->loan->reference . ' — CREDIXA INVESTI',
-            'en' => 'Approval of your application N°' . $this->loan->reference . ' — CREDIXA INVESTI',
-            'es' => 'Validación de su solicitud N°' . $this->loan->reference . ' — CREDIXA INVESTI',
+            'fr' => 'Validation de votre demande N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'pl' => 'Zatwierdzenie wniosku nr ' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'en' => 'Approval of your application N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'es' => 'Validación de su solicitud N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
         ];
 
         return new Envelope(subject: $subjects[$this->mailLocale] ?? $subjects['fr']);

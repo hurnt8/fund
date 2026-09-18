@@ -3,7 +3,7 @@
 return [
     'title' => 'Privatumo politika',
     'introduction_title' => '1. Ä®vadas',
-    'introduction_text' => 'Credixa mes Ä¯sipareigojame saugoti ir gerbti jÅ«sÅ³ privatumÄ. Šioje privatumo politikoje paaiškinama, kaip mes renkame, naudojame, atskleidÅ¾iame ir saugome jÅ«sÅ³ asmeninÄ informacijÄ, kai naudojatÄs mÅ«sÅ³ svetaine ir skolinimo internetu paslaugomis. Naudodamiesi mÅ«sÅ³ svetaine sutinkate su šioje politikoje aprašyta praktika.',
+    'introduction_text' => 'Aurenza Capital mes Ä¯sipareigojame saugoti ir gerbti jÅ«sÅ³ privatumÄ. Šioje privatumo politikoje paaiškinama, kaip mes renkame, naudojame, atskleidÅ¾iame ir saugome jÅ«sÅ³ asmeninÄ informacijÄ, kai naudojatÄs mÅ«sÅ³ svetaine ir skolinimo internetu paslaugomis. Naudodamiesi mÅ«sÅ³ svetaine sutinkate su šioje politikoje aprašyta praktika.',
     'information_collection_title' => '2. Informacija, kuriÄ renkame',
     'information_collection_text' => 'Mes galime rinkti ir apdoroti šiÄ informacijÄ apie jus:',
     'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
     'contact_title' => '8. Kontaktas',
     'contact_text' => 'Jei turite klausimÅ³, rÅ«pesÄiÅ³ ar prašymÅ³ dÄl šios privatumo politikos arba kaip elgiamÄs su jÅ«sÅ³ asmenine informacija, susisiekite su mumis adresu:',
     'contact_details' => [
-        'Credixa',
+        'Aurenza Capital',
         'Adresas: Rua de Santo António 33, 7200-175, Portugal',
-        'El. paštas: contact@credixa.eu',
+        'El. paštas: contact@aurenzacapital.com',
         'Telefonas: +31 6 57341120 ',
     ],
 ];

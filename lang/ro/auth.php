@@ -19,18 +19,18 @@ return [
 
     'client_login_title'  => 'Spațiu Client',
     'client_login_sub'    => 'Conectați-vă pentru a accesa dosarele dumneavoastră',
-    'client_brand_title'  => 'Spațiul dumneavoastră<br>client Credixa',
+    'client_brand_title'  => 'Spațiul dumneavoastră<br>client Aurenza Capital',
     'client_brand_sub'    => 'Urmăriți-vă cererile, gestionați-vă profilul și accesați toate documentele dumneavoastră în deplină siguranță.',
 
     'staff_login_title'   => 'Portal Administrație',
     'staff_login_sub'     => 'Rezervat exclusiv personalului autorizat',
-    'staff_brand_title'   => 'Administrație<br>Credixa',
+    'staff_brand_title'   => 'Administrație<br>Aurenza Capital',
     'staff_brand_sub'     => 'Acces securizat la instrumentele de gestiune, urmărire a dosarelor și administrare a utilizatorilor.',
 
     'email'               => 'Adresă de email',
     'email_staff'         => 'Email profesional',
     'email_ph'            => 'dumneavoastra@exemplu.com',
-    'email_ph_staff'      => 'agent@credixa.eu',
+    'email_ph_staff'      => 'agent@aurenzacapital.com',
     'password_label'      => 'Parolă',
     'remember'            => 'Ține-mă minte',
     'remember_staff'      => 'Rămâi conectat',
@@ -40,7 +40,7 @@ return [
     'staff_portal_link'   => 'Portal agent / administrator',
     'client_portal_link'  => 'Spațiu client',
     'staff_restricted'    => 'Acces restricționat — Personal autorizat',
-    'staff_notice'        => 'Acest portal este rezervat agenților Credixa. Toate conectările sunt înregistrate.',
+    'staff_notice'        => 'Acest portal este rezervat agenților Aurenza Capital. Toate conectările sunt înregistrate.',
     'or_staff'            => 'Sunteți agent sau administrator?',
     'or_client'           => 'Sunteți client?',
 
@@ -92,24 +92,24 @@ return [
     'account_unblocked'                   => 'Contul dumneavoastră a fost deblocat cu succes. Vă puteți conecta acum.',
     'unblock_invalid'                     => 'Acest link de deblocare este invalid sau a expirat. Contactați asistența.',
 
-    'account_blocked_email_subject'       => 'Contul dumneavoastră Credixa a fost blocat',
+    'account_blocked_email_subject'       => 'Contul dumneavoastră Aurenza Capital a fost blocat',
     'account_blocked_email_title'         => 'Cont blocat temporar',
     'account_blocked_email_intro'         => 'Contul dumneavoastră a fost blocat temporar în urma mai multor încercări de conectare incorecte.',
     'account_blocked_email_reason_title'  => 'De ce acest blocaj?',
     'account_blocked_email_reason_body'   => '4 coduri OTP incorecte au fost introduse consecutiv în timpul unei încercări de conectare la contul dumneavoastră. Din motive de securitate, accesul a fost suspendat.',
     'account_blocked_email_btn'           => 'Deblochează contul meu',
     'account_blocked_email_fallback'      => 'Dacă butonul nu funcționează, copiați acest link în browserul dumneavoastră:',
-    'account_blocked_email_notice'        => 'Dacă nu dumneavoastră ați inițiat aceste încercări, nu faceți clic pe acest link și contactați imediat asistența Credixa.',
+    'account_blocked_email_notice'        => 'Dacă nu dumneavoastră ați inițiat aceste încercări, nu faceți clic pe acest link și contactați imediat asistența Aurenza Capital.',
     'account_blocked_email_footer'        => 'Link valabil 48 de ore.',
 
     // OTP email
-    'otp_email_subject'      => 'Codul dumneavoastră de conectare — Credixa',
+    'otp_email_subject'      => 'Codul dumneavoastră de conectare — Aurenza Capital',
     'otp_email_title'        => 'Cod de verificare',
     'otp_email_intro'        => 'Iată codul dumneavoastră de conectare de unică folosință. Nu îl comunicați nimănui.',
     'otp_email_code_label'   => 'Codul dumneavoastră',
     'otp_email_expiry'       => 'Acest cod expiră în 10 minute.',
     'otp_email_notice_title' => 'Securitate importantă',
-    'otp_email_notice_body'  => 'Credixa nu vă va solicita niciodată acest cod prin telefon sau mesaj. Dacă nu ați solicitat acest cod, ignorați acest email.',
+    'otp_email_notice_body'  => 'Aurenza Capital nu vă va solicita niciodată acest cod prin telefon sau mesaj. Dacă nu ați solicitat acest cod, ignorați acest email.',
     'otp_email_footer'       => 'Dacă nu ați solicitat acest cod, ignorați acest email.',
 
 ];

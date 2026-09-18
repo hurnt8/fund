@@ -1,6 +1,6 @@
 <?php
 return [
-    'title'           => 'Moj Credixa prostor',
+    'title'           => 'Moj Aurenza Capital prostor',
     'greeting'        => 'Pozdrav',
     'language'        => 'Jezik',
     'welcome_back'    => 'Dobrodošli natrag',
@@ -308,8 +308,8 @@ return [
     'not_provided'               => 'Nije navedeno',
     'currency_label'             => 'Valuta',
     'email_label'                => 'Email',
-    'receive_notice'             => 'Podijelite ove bankovne podatke kako biste primili sredstva izravno na svoj Credixa račun.',
-    'share_title'                => 'Moji Credixa podaci',
+    'receive_notice'             => 'Podijelite ove bankovne podatke kako biste primili sredstva izravno na svoj Aurenza Capital račun.',
+    'share_title'                => 'Moji Aurenza Capital podaci',
     'back_to_transfers'          => 'Povratak na prijenose',
     'send_confirm_title'         => 'Prijenos poslan',
     'send_confirm_body'          => 'Vaš zahtjev je zabilježen i čeka odobrenje našeg tima.',

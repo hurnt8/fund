@@ -5,7 +5,7 @@ return [
     'sections' => [
         [
             'title' => '1. Wprowadzenie',
-            'content' => 'Witamy w Credixa. Korzystając z naszej strony i usług, zgadzasz się przestrzegać poniższych warunków użytkowania i być nimi związanym. Prosimy o uważne zapoznanie się z niniejszymi warunkami przed skorzystaniem z naszej strony lub zaciągnięciem u nas pożyczki.'
+            'content' => 'Witamy w Aurenza Capital. Korzystając z naszej strony i usług, zgadzasz się przestrzegać poniższych warunków użytkowania i być nimi związanym. Prosimy o uważne zapoznanie się z niniejszymi warunkami przed skorzystaniem z naszej strony lub zaciągnięciem u nas pożyczki.'
         ],
         [
             'title' => '2. Korzystanie ze strony',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. Usługi pożyczkowe',
-            'content' => 'Credixa oferuje różne rodzaje pożyczek dostosowane do Twoich potrzeb finansowych. Wszystkie pożyczki podlegają zatwierdzeniu na podstawie naszej oceny Twojej zdolności kredytowej i możliwości spłaty. Szczegółowe warunki każdej pożyczki, w tym oprocentowanie, terminy i zasady spłaty, zostaną określone w Twojej umowie pożyczki.'
+            'content' => 'Aurenza Capital oferuje różne rodzaje pożyczek dostosowane do Twoich potrzeb finansowych. Wszystkie pożyczki podlegają zatwierdzeniu na podstawie naszej oceny Twojej zdolności kredytowej i możliwości spłaty. Szczegółowe warunki każdej pożyczki, w tym oprocentowanie, terminy i zasady spłaty, zostaną określone w Twojej umowie pożyczki.'
         ],
         [
             'title' => '4. Koszty umowy i ubezpieczenia',
-            'content' => 'Przy zaciąganiu pożyczki w Credixa mogą zostać naliczone opłaty za umowę i ubezpieczenie. Opłata ta pokrywa koszty administracyjne związane z uruchomieniem i obsługą Twojej pożyczki. Szczegóły tych opłat zostaną jasno określone w Twojej umowie pożyczki. Jesteś zobowiązany do uiszczenia tych opłat zgodnie z określonymi warunkami.'
+            'content' => 'Przy zaciąganiu pożyczki w Aurenza Capital mogą zostać naliczone opłaty za umowę i ubezpieczenie. Opłata ta pokrywa koszty administracyjne związane z uruchomieniem i obsługą Twojej pożyczki. Szczegóły tych opłat zostaną jasno określone w Twojej umowie pożyczki. Jesteś zobowiązany do uiszczenia tych opłat zgodnie z określonymi warunkami.'
         ],
         [
             'title' => '5. Poufność',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. Ograniczenie odpowiedzialności',
-            'content' => 'Credixa nie ponosi odpowiedzialności za jakiekolwiek pośrednie, szczególne lub wtórne straty bądź szkody wynikające z korzystania lub niemożności korzystania z naszej strony lub usług, w tym utratę zysków, utratę danych lub przerwę w działalności, nawet jeśli zostaliśmy poinformowani o możliwości wystąpienia takich szkód.'
+            'content' => 'Aurenza Capital nie ponosi odpowiedzialności za jakiekolwiek pośrednie, szczególne lub wtórne straty bądź szkody wynikające z korzystania lub niemożności korzystania z naszej strony lub usług, w tym utratę zysków, utratę danych lub przerwę w działalności, nawet jeśli zostaliśmy poinformowani o możliwości wystąpienia takich szkód.'
         ],
         [
             'title' => '8. Zmiany warunków',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Kontakt',
-            'content' => 'Jeśli masz pytania lub wątpliwości dotyczące niniejszych warunków użytkowania, skontaktuj się z nami:<br><br>Credixa<br>Adres: Rua de Santo António 33, 7200-175, Portugalia<br>E-mail: contact@credixa.eu<br>Telefon: +31 6 57341120 '
+            'content' => 'Jeśli masz pytania lub wątpliwości dotyczące niniejszych warunków użytkowania, skontaktuj się z nami:<br><br>Aurenza Capital<br>Adres: Rua de Santo António 33, 7200-175, Portugalia<br>E-mail: contact@aurenzacapital.com<br>Telefon: +31 6 57341120 '
         ],
     ],
 ];

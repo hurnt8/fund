@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.analytics_title') . ' — Credixa')
+@section('title', __('app.analytics_title') . ' — Aurenza Capital')
 @section('page_title', __('app.analytics_title'))
 @section('back_btn', true)
 @section('back_url', route('client.app.home'))
@@ -7,7 +7,7 @@
 @section('content')
 
 @php
-  $currency      = $user->currency ?? config('credixa.default_currency');
+  $currency      = $user->currency ?? config('aurenza.default_currency');
   $totalSchedule = $loans->sum(fn($l) => (float) $l->total_with_interest);
   $totalCapital  = $loans->sum(fn($l) => (float) $l->amount);
   $totalInterest = max(0, $totalSchedule - $totalCapital);
@@ -15,7 +15,7 @@
   $hasData       = $totalSchedule > 0;
 
   $donutData   = [$totalCapital, $totalInterest, (float) $totalPaid, (float) $totalReceived];
-  $donutColors = ['rgba(27,138,122,.75)', 'rgba(200,169,81,.75)', 'rgba(255,90,90,.75)', 'rgba(74,222,128,.65)'];
+  $donutColors = ['rgba(27,138,122,.75)', 'rgba(198,161,91,.75)', 'rgba(255,90,90,.75)', 'rgba(74,222,128,.65)'];
   $donutLabels = [__('app.chart_capital'), __('app.chart_interest'), __('app.chart_transfers'), 'Crédits reçus'];
 
   $lineLabels = array_keys(array_slice($monthlyData, 0, 10));
@@ -124,7 +124,7 @@
     </div>
 
     <div class="ca-category-item">
-      <div class="ca-category-icon" style="background:rgba(200,169,81,.15);color:var(--ca-gold-l)">
+      <div class="ca-category-icon" style="background:rgba(198,161,91,.15);color:var(--ca-gold-l)">
         <i class="fas fa-percent"></i>
       </div>
       <div class="ca-category-info">

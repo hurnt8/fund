@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa - Najbolji online zajmodavci u Njemačkoj, Španjolskoj, Mađarskoj itd.',
+    'general_title' => 'Aurenza Capital - Najbolji online zajmodavci u Njemačkoj, Španjolskoj, Mađarskoj itd.',
     'banner_title' => 'Nabavite savršen zajam za sve svoje online potrebe.',
-    'banner_text' => 'Milijuni ljudi koriste Credixa za realizaciju svojih projekata.',
+    'banner_text' => 'Milijuni ljudi koriste Aurenza Capital za realizaciju svojih projekata.',
     'get_loan_now' => 'Dobijte zajam sada',
     'popular_loans' => 'Popularne vrste kredita:',
     'personal_loan' => 'Osobni zajam',
@@ -62,11 +62,11 @@ return [
 
     'custom_loan_services' => 'Iskoristite naše usluge zajma po mjeri',
     'reliability_quality' => 'Transparentnost i pouzdanost',
-    'reliability_quality_description' => 'U Credixau nudimo jasna i pouzdana kreditna rješenja, potkrijepljena pozitivnim ocjenama kupaca i potpunom transparentnošću.',
+    'reliability_quality_description' => 'U Aurenza Capitalu nudimo jasna i pouzdana kreditna rješenja, potkrijepljena pozitivnim ocjenama kupaca i potpunom transparentnošću.',
     'financial_transparency' => 'Nema skrivenih troškova',
     'financial_transparency_description' => 'Pregledajte naše uvjete, porazgovarajte o stopama i platite tek kada vaš zajam bude odobren.',
     'optimal_security' => 'Sigurnost i privatnost',
-    'optimal_security_description' => 'Vaši osobni podaci kod nas su sigurni. Credixa koristi napredne sigurnosne protokole za zaštitu vaše privatnosti. Naša podrška dostupna je 24/7 za bilo kakvu pomoć.',
+    'optimal_security_description' => 'Vaši osobni podaci kod nas su sigurni. Aurenza Capital koristi napredne sigurnosne protokole za zaštitu vaše privatnosti. Naša podrška dostupna je 24/7 za bilo kakvu pomoć.',
     'apply_loan' => 'Zahtjev za zajam',
 
     'total_loans_granted' => 'Ukupno odobreni zajmovi',
@@ -124,7 +124,7 @@ return [
     ],
 
     'about_title' => 'Pridružite se najboljoj svjetskoj tržnici za radnike',
-    'about_description' => 'Credixa je vaša pouzdana platforma za dobivanje zajmova s iznimnim korisničkim iskustvom. Posvećeni smo pružanju jednostavnih, sigurnih i brzih financijskih rješenja.',
+    'about_description' => 'Aurenza Capital je vaša pouzdana platforma za dobivanje zajmova s iznimnim korisničkim iskustvom. Posvećeni smo pružanju jednostavnih, sigurnih i brzih financijskih rješenja.',
     'rating' => '4,9/5',
     'rating_description' => 'Kupci ocjenjuju profesionalce',
     'projects_completed' => '+12M',
@@ -166,7 +166,7 @@ return [
         'placeholder' => 'Vaša adresa e-pošte',
         'button' => 'Pošalji',
     ],
-    'rights_reserved' => '© Credixa. 2024. Sva prava pridržana.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Sva prava pridržana.',
 
     'en' => 'engleski',
     'fr' => 'francuski',

@@ -1,18 +1,20 @@
 @props([
-    'title'      => 'Credixa Invest',
+    'title'      => 'Aurenza Capital',
     'subtitle'   => 'Espace Client Sécurisé',
-    'accent'     => 'teal',   // teal | green | orange | red
+    'accent'     => 'brand',  // brand | green | orange | red
     'footerNote' => null,
 ])
 
 @php
 $palettes = [
-    'teal'   => ['hdr'=>'linear-gradient(135deg,#0B2545 0%,#0D3060 100%)','icon'=>'linear-gradient(135deg,#22A396,#167A6C)','code'=>'#2ECBB7','bdr'=>'rgba(34,163,150,.25)'],
+    // Accent de marque : vert forêt + laiton (transactionnel courant)
+    'brand'  => ['hdr'=>'linear-gradient(135deg,#082A20 0%,#14503D 100%)','icon'=>'linear-gradient(135deg,#C6A15B,#9A7736)','code'=>'#DCBE87','bdr'=>'rgba(198,161,91,.28)','btn'=>'#101A14'],
+    'teal'   => ['hdr'=>'linear-gradient(135deg,#0B4525 0%,#0D6030 100%)','icon'=>'linear-gradient(135deg,#22A396,#167A6C)','code'=>'#2ECBB7','bdr'=>'rgba(34,163,150,.25)'],
     'green'  => ['hdr'=>'linear-gradient(135deg,#0A2B1A 0%,#0D3B22 100%)','icon'=>'linear-gradient(135deg,#16A34A,#15803D)','code'=>'#4ADE80','bdr'=>'rgba(74,222,128,.25)'],
     'orange' => ['hdr'=>'linear-gradient(135deg,#2B1800 0%,#3D2200 100%)','icon'=>'linear-gradient(135deg,#D97706,#B45309)','code'=>'#FBBF24','bdr'=>'rgba(251,191,36,.25)'],
     'red'    => ['hdr'=>'linear-gradient(135deg,#2D0A0A 0%,#4A1010 100%)','icon'=>'linear-gradient(135deg,#C0392B,#922B21)','code'=>'#F87171','bdr'=>'rgba(239,68,68,.25)'],
 ];
-$p = $palettes[$accent] ?? $palettes['teal'];
+$p = $palettes[$accent] ?? $palettes['brand'];
 @endphp
 <!DOCTYPE html>
 <html lang="fr">
@@ -21,10 +23,10 @@ $p = $palettes[$accent] ?? $palettes['teal'];
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{{ $title }}</title>
 <style>
-body{margin:0;padding:0;background:#060D1A;font-family:'Segoe UI',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;padding:0;background:#061A0D;font-family:'Segoe UI',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 img{border:0;outline:0}
 table{border-collapse:collapse}
-.wrap{max-width:580px;margin:32px auto;background:#0D1F38;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.wrap{max-width:580px;margin:32px auto;background:#0D381F;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
 /* ── Header ── */
 .hdr{background:{{ $p['hdr'] }};padding:36px 44px 30px;text-align:center}
 .logo-outer{width:76px;height:76px;border-radius:20px;margin:0 auto 18px;overflow:hidden;background:{{ $p['icon'] }};display:inline-flex;align-items:center;justify-content:center}
@@ -53,7 +55,7 @@ p.body-text{font-size:.88rem;color:rgba(240,245,255,.62);line-height:1.8;margin:
 .alert-success{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2); border-left:3px solid #4ade80;color:rgba(150,240,180,.85)}
 /* ── Button ── */
 .btn-wrap{text-align:center;margin:1.6rem 0 1.2rem}
-.btn{display:inline-block;padding:13px 36px;border-radius:999px;font-size:.94rem;font-weight:700;text-decoration:none;letter-spacing:.01em;color:#ffffff;background:{{ $p['icon'] }};box-shadow:0 4px 20px rgba(0,0,0,.45)}
+.btn{display:inline-block;padding:13px 36px;border-radius:999px;font-size:.94rem;font-weight:700;text-decoration:none;letter-spacing:.01em;color:{{ $p['btn'] ?? '#ffffff' }};background:{{ $p['icon'] }};box-shadow:0 4px 20px rgba(0,0,0,.45)}
 /* ── Code box ── */
 .code-box{background:rgba(255,255,255,.05);border:1px solid {{ $p['bdr'] }};border-radius:14px;padding:26px 20px;text-align:center;margin-bottom:1.5rem}
 .code-digits{font-family:'Courier New',Courier,monospace;font-size:2.6rem;font-weight:900;letter-spacing:.35em;color:{{ $p['code'] }};text-shadow:0 0 24px {{ $p['code'] }}55}
@@ -87,7 +89,7 @@ p.closing strong{color:#F0F5FF;font-size:.92rem}
   {{-- ── Header ── --}}
   <div class="hdr">
     <div class="logo-outer">
-      <img src="{{ url('images/icon-192.png') }}" alt="Credixa" width="76" height="76">
+      <img src="{{ url('images/icon-192.png') }}" alt="Aurenza Capital" width="76" height="76">
     </div>
     <h1 class="hdr-title">{{ $title }}</h1>
     @if($subtitle)
@@ -105,7 +107,7 @@ p.closing strong{color:#F0F5FF;font-size:.92rem}
   {{-- ── Footer ── --}}
   <div class="footer">
     <p>
-      &copy; {{ date('Y') }} Credixa Invest
+      &copy; {{ date('Y') }} Aurenza Capital
       @if($footerNote)
       &nbsp;·&nbsp; {{ $footerNote }}
       @endif

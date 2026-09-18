@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa - Cei mai buni creditori online din Germania, Spania, Ungaria etc.',
+    'general_title' => 'Aurenza Capital - Cei mai buni creditori online din Germania, Spania, Ungaria etc.',
     'banner_title' => 'Obțineți creditul perfect pentru toate nevoile dumneavoastră, online.',
-    'banner_text' => 'Milioane de oameni folosesc Credixa pentru a-și realiza proiectele.',
+    'banner_text' => 'Milioane de oameni folosesc Aurenza Capital pentru a-și realiza proiectele.',
     'get_loan_now' => 'Obțineți un credit acum',
     'popular_loans' => 'Tipuri populare de credite:',
 
@@ -54,11 +54,11 @@ return [
 
     'custom_loan_services' => 'Beneficiați de serviciile noastre de credit personalizate',
     'reliability_quality' => 'Transparență și fiabilitate',
-    'reliability_quality_description' => 'La Credixa, oferim soluții de credit clare și fiabile, susținute de recenzii pozitive ale clienților și transparență totală.',
+    'reliability_quality_description' => 'La Aurenza Capital, oferim soluții de credit clare și fiabile, susținute de recenzii pozitive ale clienților și transparență totală.',
     'financial_transparency' => 'Fără costuri ascunse',
     'financial_transparency_description' => 'Analizați condițiile noastre, discutați ratele și plătiți doar după ce creditul dumneavoastră este aprobat.',
     'optimal_security' => 'Securitate și confidențialitate',
-    'optimal_security_description' => 'Datele dumneavoastră personale sunt în siguranță cu noi. Credixa utilizează protocoale de securitate avansate pentru a vă proteja viața privată. Suportul nostru este disponibil 24/7 pentru orice asistență.',
+    'optimal_security_description' => 'Datele dumneavoastră personale sunt în siguranță cu noi. Aurenza Capital utilizează protocoale de securitate avansate pentru a vă proteja viața privată. Suportul nostru este disponibil 24/7 pentru orice asistență.',
     'apply_loan' => 'Solicitați un credit',
 
 
@@ -70,7 +70,7 @@ return [
         'location' => 'Paris, Franța',
     ],
     'testimonial_2' => [
-        'quote' => '« După două refuzuri la o bancă tradițională, Credixa Invest mi-a acordat un credit personal în 48 de ore. Echipa a știut să îmi analizeze dosarul cu seriozitate și bunăvoință. Mulțumesc mult! »',
+        'quote' => '« După două refuzuri la o bancă tradițională, Aurenza Capital mi-a acordat un credit personal în 48 de ore. Echipa a știut să îmi analizeze dosarul cu seriozitate și bunăvoință. Mulțumesc mult! »',
         'name'  => 'Isabelle Dupont',
         'location' => 'Lyon, Franța',
     ],
@@ -85,7 +85,7 @@ return [
         'location' => 'Marsilia, Franța',
     ],
     'testimonial_5' => [
-        'quote' => '« Simulator clar, dosar simplu, virament primit în trei zile lucrătoare. Aveam nevoie să finanțez niște lucrări urgente, iar Credixa a răspuns prezent la momentul potrivit. »',
+        'quote' => '« Simulator clar, dosar simplu, virament primit în trei zile lucrătoare. Aveam nevoie să finanțez niște lucrări urgente, iar Aurenza Capital a răspuns prezent la momentul potrivit. »',
         'name'  => 'Aurélien Leclerc',
         'location' => 'Nantes, Franța',
     ],
@@ -96,7 +96,7 @@ return [
     ],
 
     'about_title' => 'Alăturați-vă celei mai bune piețe mondiale pentru profesioniști',
-    'about_description' => 'Credixa este platforma dumneavoastră de încredere pentru obținerea de credite, cu o experiență excepțională pentru clienți. Ne angajăm să vă oferim soluții financiare simple, sigure și rapide.',
+    'about_description' => 'Aurenza Capital este platforma dumneavoastră de încredere pentru obținerea de credite, cu o experiență excepțională pentru clienți. Ne angajăm să vă oferim soluții financiare simple, sigure și rapide.',
     'rating' => '4.9/5',
     'rating_description' => 'Clienții evaluează profesioniștii',
     'projects_completed' => '+12M',
@@ -132,7 +132,7 @@ return [
         'placeholder' => 'Adresa dumneavoastră de email',
         'button' => 'Trimite',
     ],
-    'rights_reserved' => '© Credixa. 2024. Toate drepturile rezervate.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Toate drepturile rezervate.',
 
     'en' => 'Engleză',
     'fr' => 'Franceză',
@@ -181,10 +181,10 @@ return [
     // About
     'about' => [
         'exptitle' => 'ani de experiență',
-        'sectagline' => 'bine ați venit la Credixa',
+        'sectagline' => 'bine ați venit la Aurenza Capital',
         'sectitle' => 'Credite personale pentru a vă realiza visele',
         'text1' => 'Suntem în acest domeniu din 1990 și oferim cele mai bune servicii.',
-        'text2' => 'Credixa este platforma dumneavoastră de încredere pentru credite, cu o experiență excepțională pentru clienți. Ne angajăm să vă oferim soluții financiare simple, sigure și rapide.',
+        'text2' => 'Aurenza Capital este platforma dumneavoastră de încredere pentru credite, cu o experiență excepțională pentru clienți. Ne angajăm să vă oferim soluții financiare simple, sigure și rapide.',
         'check1' => 'credit pentru afaceri mici',
         'check2' => 'credit pentru studii în străinătate',
         'check3' => 'proces rapid de creditare',

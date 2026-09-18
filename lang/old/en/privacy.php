@@ -3,7 +3,7 @@
 return [
     'title' => 'Privacy policy',
     'introduction_title' => '1. Introduction',
-    'introduction_text' => 'At Credixa, we are committed to protecting and respecting your privacy. This privacy policy explains how we collect, use, disclose and protect your personal information when you use our website and online lending services. By using our site, you accept the practices described in this policy.',
+    'introduction_text' => 'At Aurenza Capital, we are committed to protecting and respecting your privacy. This privacy policy explains how we collect, use, disclose and protect your personal information when you use our website and online lending services. By using our site, you accept the practices described in this policy.',
     'information_collection_title' => '2. Information we collect',
     'information_collection_text' => 'We may collect and process the following information about you:',
     'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
     'contact_title' => '8. Contact',
     'contact_text' => 'If you have any questions, concerns or requests regarding this privacy policy or how we treat your personal information, please contact us at:',
     'contact_details' => [
-        'Credixa',
+        'Aurenza Capital',
         'Address: Rua de Santo António 33, 7200-175, Portugal',
-        'Email: contact@credixa.eu',
+        'Email: contact@aurenzacapital.com',
         'Phone: +31 6 57341120 ',
     ],
 ];

@@ -21,5 +21,5 @@ return [
     'phone_title' => 'Teléfono',
     'phone_desc' => '+31 6 57341120 ',
     'mail_title' => 'Correo electrónico',
-    'mail_desc' => 'contact@credixa.eu',
+    'mail_desc' => 'contact@aurenzacapital.com',
 ];

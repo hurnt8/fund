@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa - Los mejores prestamistas online en Alemania, España, Hungría, etc.',
+    'general_title' => 'Aurenza Capital - Los mejores prestamistas online en Alemania, España, Hungría, etc.',
     'banner_title' => 'Obtenga el préstamo perfecto para todas sus necesidades en línea.',
-    'banner_text' => 'Millones de personas utilizan Credixa para realizar sus proyectos.',
+    'banner_text' => 'Millones de personas utilizan Aurenza Capital para realizar sus proyectos.',
     'get_loan_now' => 'Obtener un préstamo ahora',
     'popular_loans' => 'Tipos de préstamos populares:',
     'personal_loan' => 'Préstamo personal',
@@ -62,11 +62,11 @@ return [
 
     'custom_loan_services' => 'Aproveche nuestros servicios de préstamo a medida',
     'reliability_quality' => 'Transparencia y Confiabilidad',
-    'reliability_quality_description' => 'En Credixa ofrecemos soluciones crediticias claras y confiables, respaldadas por opiniones positivas de los clientes y total transparencia.',
+    'reliability_quality_description' => 'En Aurenza Capital ofrecemos soluciones crediticias claras y confiables, respaldadas por opiniones positivas de los clientes y total transparencia.',
     'financial_transparency' => 'Sin costos ocultos',
     'financial_transparency_description' => 'Revise nuestros términos, analice las tasas y pague solo una vez que se apruebe su préstamo.',
     'optimal_security' => 'Seguridad y Privacidad',
-    'optimal_security_description' => 'Sus datos personales están seguros con nosotros. Credixa utiliza protocolos de seguridad avanzados para proteger su privacidad. Nuestro soporte está disponible las 24 horas del día, los 7 días de la semana para cualquier ayuda.',
+    'optimal_security_description' => 'Sus datos personales están seguros con nosotros. Aurenza Capital utiliza protocolos de seguridad avanzados para proteger su privacidad. Nuestro soporte está disponible las 24 horas del día, los 7 días de la semana para cualquier ayuda.',
     'apply_loan' => 'Solicitar un préstamo',
 
     'total_loans_granted' => 'Total de Préstamos Concedidos',
@@ -124,7 +124,7 @@ return [
     ],
 
     'about_title' => 'Únase al mejor mercado para trabajadores del mundo',
-    'about_description' => 'Credixa es su plataforma confiable para obtener préstamos con una experiencia de cliente excepcional. Estamos comprometidos a brindarle soluciones financieras simples, seguras y rápidas.',
+    'about_description' => 'Aurenza Capital es su plataforma confiable para obtener préstamos con una experiencia de cliente excepcional. Estamos comprometidos a brindarle soluciones financieras simples, seguras y rápidas.',
     'rating' => '4,9/5',
     'rating_description' => 'Los clientes califican a los profesionales',
     'projects_completed' => '+12M',
@@ -166,7 +166,7 @@ return [
         'placeholder' => 'Su dirección de correo electrónico',
         'button' => 'Enviar',
     ],
-    'rights_reserved' => '© Credixa. 2024. Todos los derechos reservados.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Todos los derechos reservados.',
 
     'en' => 'inglés',
     'fr' => 'francés',

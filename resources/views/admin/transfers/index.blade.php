@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title', 'Transferts — Credixa')
+@section('title', 'Transferts — Aurenza Capital')
 @section('page_title', 'Transferts clients')
 
 @section('content')
@@ -128,7 +128,7 @@
 
     {{-- Amount ── --}}
     <div style="text-align:right">
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:900;color:var(--c-navy)">
+      <div style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:900;color:var(--c-navy)">
         {{ number_format($trf->amount, 2, ',', ' ') }}
         <span style="font-size:.75rem;font-weight:600;color:var(--c-muted)">{{ $trf->currency }}</span>
       </div>

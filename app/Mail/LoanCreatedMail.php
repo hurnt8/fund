@@ -24,10 +24,10 @@ class LoanCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         $subjects = [
-            'fr' => 'Votre dossier de financement N°' . $this->loan->reference . ' — CREDIXA INVESTI',
-            'pl' => 'Twój wniosek o finansowanie nr ' . $this->loan->reference . ' — CREDIXA INVESTI',
-            'en' => 'Your financing file N°' . $this->loan->reference . ' — CREDIXA INVESTI',
-            'es' => 'Su expediente de financiación N°' . $this->loan->reference . ' — CREDIXA INVESTI',
+            'fr' => 'Votre dossier de financement N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'pl' => 'Twój wniosek o finansowanie nr ' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'en' => 'Your financing file N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'es' => 'Su expediente de financiación N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
         ];
 
         return new Envelope(subject: $subjects[$this->locale] ?? $subjects['fr']);

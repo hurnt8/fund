@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.edit_profile') . ' — Credixa')
+@section('title', __('app.edit_profile') . ' — Aurenza Capital')
 @section('page_title', __('app.edit_profile'))
 @section('back_btn', true)
 @section('back_url', route('client.app.profile'))
@@ -80,7 +80,7 @@
 .ep-otp-panel__body { font-size:.8rem;color:var(--ca-text-2);margin-bottom:1rem;line-height:1.55 }
 .ep-otp-input {
   letter-spacing:.45em;font-size:1.35rem;font-weight:800;
-  text-align:center;font-family:'Space Grotesk',monospace;
+  text-align:center;font-family:'Outfit',monospace;
 }
 </style>
 @endpush

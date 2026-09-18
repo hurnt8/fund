@@ -3,7 +3,7 @@
 return [
     'title' => 'Datenschutzerklärung',
     'introduction_title' => '1. Einführung',
-    'introduction_text' => 'Bei Credixa verpflichten wir uns, Ihre Privatsphäre zu schützen und zu respektieren. In dieser Datenschutzrichtlinie wird erläutert, wie wir Ihre personenbezogenen Daten erfassen, verwenden, offenlegen und schützen, wenn Sie unsere Website und Online-Kreditdienste nutzen. Durch die Nutzung unserer Website akzeptieren Sie die in dieser Richtlinie beschriebenen Praktiken.',
+    'introduction_text' => 'Bei Aurenza Capital verpflichten wir uns, Ihre Privatsphäre zu schützen und zu respektieren. In dieser Datenschutzrichtlinie wird erläutert, wie wir Ihre personenbezogenen Daten erfassen, verwenden, offenlegen und schützen, wenn Sie unsere Website und Online-Kreditdienste nutzen. Durch die Nutzung unserer Website akzeptieren Sie die in dieser Richtlinie beschriebenen Praktiken.',
     'information_collection_title' => '2. Informationen, die wir sammeln',
     'information_collection_text' => 'Wir können die folgenden Informationen über Sie sammeln und verarbeiten:',
     'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
     'contact_title' => '8. Kontakt',
     'contact_text' => 'Wenn Sie Fragen, Bedenken oder Wünsche bezüglich dieser Datenschutzrichtlinie oder unserem Umgang mit Ihren persönlichen Daten haben, kontaktieren Sie uns bitte unter:',
     'contact_details' => [
-        'Credixa',
+        'Aurenza Capital',
         'Adresse: Rua de Santo António 33, 7200-175, Portugal',
-        'E-Mail: contact@credixa.eu',
+        'E-Mail: contact@aurenzacapital.com',
         'Telefon: +31 6 57341120 ',
     ],
 ];

@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.loans_title') . ' — Credixa')
+@section('title', __('app.loans_title') . ' — Aurenza Capital')
 @section('page_title', __('app.loans_title'))
 @section('back_btn', true)
 @section('back_url', route('client.app.home'))
@@ -21,7 +21,7 @@
   background:var(--ca-bg2);border:1px solid var(--ca-border);
   border-radius:14px;padding:.625rem .5rem;text-align:center;
 }
-.dos-chip__val{font-family:'Space Grotesk',sans-serif;font-size:1.125rem;font-weight:900;color:var(--ca-text);line-height:1}
+.dos-chip__val{font-family:'Outfit',sans-serif;font-size:1.125rem;font-weight:900;color:var(--ca-text);line-height:1}
 .dos-chip__lbl{font-size:.6rem;color:var(--ca-text-3);margin-top:.25rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 
 /* ── Filter pills ── */
@@ -71,12 +71,12 @@
 .dos-badge--valid   {background:rgba(27,138,122,.12);color:var(--ca-teal-l)}
 .dos-badge--sent    {background:rgba(96,165,250,.12);color:#60a5fa}
 .dos-badge--signed  {background:rgba(139,92,246,.12);color:#a78bfa}
-.dos-badge--final   {background:rgba(200,169,81,.14);color:var(--ca-gold-l)}
+.dos-badge--final   {background:rgba(198,161,91,.14);color:var(--ca-gold-l)}
 .dos-badge--rejected{background:rgba(248,113,113,.1);color:#f87171}
 
 /* Amount */
 .dos-card__amount{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.5rem;font-weight:900;color:var(--ca-text);
   line-height:1;margin-bottom:.5rem;
 }
@@ -170,7 +170,7 @@
     'validated'       => ['#2BBAA8','dos-badge--valid',    'pending'],
     'contract_sent'   => ['#60a5fa','dos-badge--sent',     'active'],
     'contract_signed' => ['#a78bfa','dos-badge--signed',   'active'],
-    'finalized'       => ['#C8A951','dos-badge--final',    'finalized'],
+    'finalized'       => ['#C6A15B','dos-badge--final',    'finalized'],
     'rejected'        => ['#f87171','dos-badge--rejected', 'rejected'],
     default           => ['#94a3b8','dos-badge--draft',    'pending'],
   };

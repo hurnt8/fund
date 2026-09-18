@@ -5,7 +5,7 @@ return [
     'sections' => [
         [
             'title' => '1. Introducción',
-            'content' => 'Bienvenido a Credixa. Al utilizar nuestro sitio y servicios, usted acepta cumplir y estar sujeto a los siguientes términos y condiciones. Lea estos términos detenidamente antes de utilizar nuestro sitio o solicitar un préstamo con nosotros.',
+            'content' => 'Bienvenido a Aurenza Capital. Al utilizar nuestro sitio y servicios, usted acepta cumplir y estar sujeto a los siguientes términos y condiciones. Lea estos términos detenidamente antes de utilizar nuestro sitio o solicitar un préstamo con nosotros.',
         ],
         [
             'title' => '2. Uso del sitio',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. Servicios de préstamo',
-            'content' => 'Credixa ofrece varios tipos de préstamos para satisfacer sus necesidades financieras. Todos los préstamos están sujetos a aprobación basada en nuestra evaluación de su solvencia y capacidad de pago. Los términos específicos de cada préstamo, incluidas las tasas de interés, los vencimientos y los términos de pago, se detallarán en su contrato de préstamo.',
+            'content' => 'Aurenza Capital ofrece varios tipos de préstamos para satisfacer sus necesidades financieras. Todos los préstamos están sujetos a aprobación basada en nuestra evaluación de su solvencia y capacidad de pago. Los términos específicos de cada préstamo, incluidas las tasas de interés, los vencimientos y los términos de pago, se detallarán en su contrato de préstamo.',
         ],
         [
             'title' => '4. Costos de contrato y seguro',
-            'content' => 'Al solicitar un préstamo con Credixa, se pueden aplicar tarifas de contrato y seguro. Esta tarifa cubre los costos administrativos asociados con la configuración y administración de su préstamo. Los detalles específicos de estas tarifas estarán claramente establecidos en su contrato de préstamo. Debe pagar estos cargos de acuerdo con los términos especificados.'
+            'content' => 'Al solicitar un préstamo con Aurenza Capital, se pueden aplicar tarifas de contrato y seguro. Esta tarifa cubre los costos administrativos asociados con la configuración y administración de su préstamo. Los detalles específicos de estas tarifas estarán claramente establecidos en su contrato de préstamo. Debe pagar estos cargos de acuerdo con los términos especificados.'
         ],
         [
             'title' => '5. Confidencialidad',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. Limitación de responsabilidad',
-            'content' => 'Credixa no será responsable de ninguna pérdida o daño indirecto, especial o consecuente que surja del uso o la imposibilidad de usar nuestro sitio o servicios, incluida la pérdida de ganancias, la pérdida de datos o la interrupción del negocio, incluso si Se nos ha advertido de la posibilidad de que se produzcan tales daños.'
+            'content' => 'Aurenza Capital no será responsable de ninguna pérdida o daño indirecto, especial o consecuente que surja del uso o la imposibilidad de usar nuestro sitio o servicios, incluida la pérdida de ganancias, la pérdida de datos o la interrupción del negocio, incluso si Se nos ha advertido de la posibilidad de que se produzcan tales daños.'
         ],
         [
             'title' => '8. Cambios en los términos',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Contactar',
-            'content' => 'Si tiene alguna pregunta o inquietud con respecto a estos términos y condiciones, contáctenos en:<br><br>Credixa<br>Dirección: Rua de Santo António 33, 7200-175, Portugal<br>E-mail: contact@credixa.eu<br>Teléfono: +31 6 57341120 ]'
+            'content' => 'Si tiene alguna pregunta o inquietud con respecto a estos términos y condiciones, contáctenos en:<br><br>Aurenza Capital<br>Dirección: Rua de Santo António 33, 7200-175, Portugal<br>E-mail: contact@aurenzacapital.com<br>Teléfono: +31 6 57341120 ]'
         ],
     ],
 ];

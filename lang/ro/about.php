@@ -1,19 +1,19 @@
 <?php
 
 return [
-    'banner_title' => 'Descoperă Credixa',
+    'banner_title' => 'Descoperă Aurenza Capital',
     'banner_subtitle' => 'Despre noi',
     'banner_description' => 'Împrumutați mai simplu cu soluții de credit flexibile și adaptate nevoilor dumneavoastră financiare.',
 
-    'section1_title' => 'De ce să alegeți Credixa',
-    'section1_p1' => 'La Credixa, credem cu tărie că fiecare persoană merită șansa de a-și îndeplini visele financiare. Încă de la înființare, ne-am angajat să oferim soluții de credit flexibile și accesibile pentru a răspunde nevoilor diverse ale clienților noștri. Fie că doriți să finanțați un proiect personal, să cumpărați o mașină sau să vă dezvoltați afacerea, avem creditul potrivit pentru dumneavoastră.',
+    'section1_title' => 'De ce să alegeți Aurenza Capital',
+    'section1_p1' => 'La Aurenza Capital, credem cu tărie că fiecare persoană merită șansa de a-și îndeplini visele financiare. Încă de la înființare, ne-am angajat să oferim soluții de credit flexibile și accesibile pentru a răspunde nevoilor diverse ale clienților noștri. Fie că doriți să finanțați un proiect personal, să cumpărați o mașină sau să vă dezvoltați afacerea, avem creditul potrivit pentru dumneavoastră.',
     'section1_p2' => 'Serviciile noastre sunt concepute pentru a oferi o experiență fără bătăi de cap, cu un proces de cerere simplu și rapid. Înțelegem că fiecare client este unic, de aceea oferim credite personalizate care se adaptează nevoilor dumneavoastră specifice. În plus, consilierii noștri dedicați sunt mereu alături de dumneavoastră la fiecare etapă, asigurându-vă astfel un sprijin complet de la început până la sfârșit.',
     'proposed' => 'Vă propunem:',
     'check1' => 'Credite personalizate în funcție de nevoile dumneavoastră specifice.',
     'check2' => 'Consilieri dedicați pentru a vă ajuta la fiecare etapă a procesului.',
     'check3' => 'Condiții de rambursare flexibile, adaptate situației dumneavoastră financiare',
     'check4' => 'Credite fără a fi nevoie de fluturaș de salariu.',
-    'section1_p3' => 'La Credixa, misiunea noastră este să vă ajutăm să vă atingeți obiectivele financiare prin soluții de credit personalizate. Alăturați-vă nouă chiar astăzi și descoperiți cum vă putem ajuta să vă concretizați proiectele.',
+    'section1_p3' => 'La Aurenza Capital, misiunea noastră este să vă ajutăm să vă atingeți obiectivele financiare prin soluții de credit personalizate. Alăturați-vă nouă chiar astăzi și descoperiți cum vă putem ajuta să vă concretizați proiectele.',
     'btn' => 'Găsiți creditul ideal',
 
     'faq_title' => 'Întrebări frecvente',

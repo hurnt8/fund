@@ -19,18 +19,18 @@ return [
 
     'client_login_title'  => 'Área de Clientes',
     'client_login_sub'    => 'Inicie sesión para acceder a sus expedientes',
-    'client_brand_title'  => 'Su espacio<br>cliente Credixa',
+    'client_brand_title'  => 'Su espacio<br>cliente Aurenza Capital',
     'client_brand_sub'    => 'Siga sus solicitudes, gestione su perfil y acceda a todos sus documentos de forma segura.',
 
     'staff_login_title'   => 'Portal de Administración',
     'staff_login_sub'     => 'Exclusivamente para personal autorizado',
-    'staff_brand_title'   => 'Administración<br>Credixa',
+    'staff_brand_title'   => 'Administración<br>Aurenza Capital',
     'staff_brand_sub'     => 'Acceso seguro a herramientas de gestión, seguimiento de expedientes y administración de usuarios.',
 
     'email'               => 'Correo electrónico',
     'email_staff'         => 'Email profesional',
     'email_ph'            => 'usted@ejemplo.com',
-    'email_ph_staff'      => 'agente@credixa.eu',
+    'email_ph_staff'      => 'agente@aurenzacapital.com',
     'password_label'      => 'Contraseña',
     'remember'            => 'Recordarme',
     'remember_staff'      => 'Mantener sesión',
@@ -40,7 +40,7 @@ return [
     'staff_portal_link'   => 'Portal agente / administrador',
     'client_portal_link'  => 'Área de clientes',
     'staff_restricted'    => 'Acceso restringido — Solo personal autorizado',
-    'staff_notice'        => 'Este portal está reservado para el personal de Credixa. Todos los accesos quedan registrados.',
+    'staff_notice'        => 'Este portal está reservado para el personal de Aurenza Capital. Todos los accesos quedan registrados.',
     'or_staff'            => '¿Es agente o administrador?',
     'or_client'           => '¿Es cliente?',
 
@@ -90,23 +90,23 @@ return [
     'account_unblocked'                   => 'Su cuenta ha sido desbloqueada con éxito. Ahora puede iniciar sesión.',
     'unblock_invalid'                     => 'Este enlace de desbloqueo no es válido o ha caducado. Contacte con el soporte.',
 
-    'account_blocked_email_subject'       => 'Su cuenta Credixa ha sido bloqueada',
+    'account_blocked_email_subject'       => 'Su cuenta Aurenza Capital ha sido bloqueada',
     'account_blocked_email_title'         => 'Cuenta temporalmente bloqueada',
     'account_blocked_email_intro'         => 'Su cuenta ha sido temporalmente bloqueada tras varios intentos de inicio de sesión incorrectos.',
     'account_blocked_email_reason_title'  => '¿Por qué este bloqueo?',
     'account_blocked_email_reason_body'   => 'Se introdujeron 4 códigos OTP incorrectos consecutivos durante un intento de acceso. Por seguridad, el acceso ha sido suspendido.',
     'account_blocked_email_btn'           => 'Desbloquear mi cuenta',
     'account_blocked_email_fallback'      => 'Si el botón no funciona, copie este enlace en su navegador:',
-    'account_blocked_email_notice'        => 'Si no ha realizado estos intentos, no haga clic en este enlace y contacte inmediatamente con el soporte de Credixa.',
+    'account_blocked_email_notice'        => 'Si no ha realizado estos intentos, no haga clic en este enlace y contacte inmediatamente con el soporte de Aurenza Capital.',
     'account_blocked_email_footer'        => 'Enlace válido durante 48 horas.',
 
-    'otp_email_subject'      => 'Su código de acceso — Credixa',
+    'otp_email_subject'      => 'Su código de acceso — Aurenza Capital',
     'otp_email_title'        => 'Código de verificación',
     'otp_email_intro'        => 'Aquí tiene su código de acceso de un solo uso. No lo comparta con nadie.',
     'otp_email_code_label'   => 'Su código',
     'otp_email_expiry'       => 'Este código caduca en 10 minutos.',
     'otp_email_notice_title' => 'Aviso de seguridad importante',
-    'otp_email_notice_body'  => 'Credixa nunca le pedirá este código por teléfono o mensaje. Si no ha solicitado este código, ignore este email.',
+    'otp_email_notice_body'  => 'Aurenza Capital nunca le pedirá este código por teléfono o mensaje. Si no ha solicitado este código, ignore este email.',
     'otp_email_footer'       => 'Si no ha solicitado este código, ignore este email.',
 
 ];

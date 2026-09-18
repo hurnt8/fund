@@ -29,5 +29,5 @@ return [
     'newsletter_title' => 'Bodite obveščeni o naših ponudbah',
     'subscribe'        => 'Naroči se',
     'read_more'        => 'Izvedi več',
-    'footer_desc'      => 'Credixa je vaš zaupanja vreden partner za hitre, prilagodljive in personalizirane finančne rešitve po vsej Evropi.',
+    'footer_desc'      => 'Aurenza Capital je vaš zaupanja vreden partner za hitre, prilagodljive in personalizirane finančne rešitve po vsej Evropi.',
 ];

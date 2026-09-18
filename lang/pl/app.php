@@ -1,6 +1,6 @@
 <?php
 return [
-    'title'           => 'Moje konto Credixa',
+    'title'           => 'Moje konto Aurenza Capital',
     'greeting'        => 'Czesc',
     'language'        => 'Jezyk',
     'welcome_back'    => 'Witamy z powrotem',
@@ -278,8 +278,8 @@ return [
     'not_provided'               => 'Nie podano',
     'currency_label'             => 'Waluta',
     'email_label'                => 'Email',
-    'receive_notice'             => 'Udostepnij te dane bankowe, aby otrzymac srodki bezposrednio na swoje konto Credixa.',
-    'share_title'                => 'Moje dane Credixa',
+    'receive_notice'             => 'Udostepnij te dane bankowe, aby otrzymac srodki bezposrednio na swoje konto Aurenza Capital.',
+    'share_title'                => 'Moje dane Aurenza Capital',
     'back_to_transfers'          => 'Powrot do przelewow',
     'send_confirm_title'         => 'Przelew zlozony',
     'send_confirm_body'          => 'Twoje zadanie zostalo zarejestrowane i oczekuje na zatwierdzenie przez nasz zespol.',

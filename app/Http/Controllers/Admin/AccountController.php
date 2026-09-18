@@ -70,7 +70,7 @@ class AccountController extends Controller
             'note'   => 'nullable|string|max:255',
         ]);
 
-        $cur = $account->currency ?? config('credixa.default_currency');
+        $cur = $account->currency ?? config('aurenza.default_currency');
 
         DB::transaction(function () use ($account, $validated, $cur) {
             $before = (float) $account->balance;
@@ -111,7 +111,7 @@ class AccountController extends Controller
             'note'   => 'nullable|string|max:255',
         ]);
 
-        $cur    = $account->currency ?? config('credixa.default_currency');
+        $cur    = $account->currency ?? config('aurenza.default_currency');
         $before = (float) $account->balance;
 
         DB::transaction(function () use ($account, $validated, $before, $cur) {
@@ -140,7 +140,7 @@ class AccountController extends Controller
             );
         });
 
-        return back()->with('success', 'Compte débité de ' . number_format($validated['amount'], 2, ',', ' ') . ' ' . ($account->currency ?? config('credixa.default_currency')) . '.');
+        return back()->with('success', 'Compte débité de ' . number_format($validated['amount'], 2, ',', ' ') . ' ' . ($account->currency ?? config('aurenza.default_currency')) . '.');
     }
 
     private function authorizeAccount(User $client): void

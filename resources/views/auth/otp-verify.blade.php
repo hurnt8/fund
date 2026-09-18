@@ -6,27 +6,27 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Credixa">
-<meta name="theme-color" content="#080C18">
+<meta name="apple-mobile-web-app-title" content="Aurenza Capital">
+<meta name="theme-color" content="#061A14">
 <link rel="manifest" href="{{ route('pwa.manifest') }}">
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
-<title>{{ __('auth.otp_title') }} — Credixa</title>
+<title>{{ __('auth.otp_title') }} — Aurenza Capital</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 <style>
 :root{
-  --bg:   #080C18;
-  --bg2:  #0C1120;
-  --card: #0E1626;
-  --inp:  #141C2E;
-  --cyan: #0DCFDC;
-  --cyan2:#09B5C8;
+  --bg:   #061A14;
+  --bg2:  #08231B;
+  --card: #0B2C22;
+  --inp:  #103428;
+  --brass: #DCBE87;
+  --brass2:#C6A15B;
   --text: #FFFFFF;
   --sub:  rgba(255,255,255,.52);
   --muted:rgba(255,255,255,.28);
@@ -35,7 +35,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{
   height:100%;background:var(--bg);color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;font-size:15px;
+  font-family:'Outfit',system-ui,sans-serif;font-size:15px;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   /* Empêche le resize du viewport quand le clavier natif s'ouvre */
   overflow:hidden;
@@ -50,30 +50,30 @@ html,body{
 #ld.on{opacity:1;pointer-events:all}
 .ld-bar{
   position:absolute;top:0;left:0;width:0;height:3px;
-  background:linear-gradient(90deg,var(--cyan),var(--cyan2),var(--cyan));
+  background:linear-gradient(90deg,var(--brass),var(--brass2),var(--brass));
   background-size:200% 100%;border-radius:0 3px 3px 0;
 }
 #ld.on .ld-bar{animation:ldbar 1.8s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes ldbar{0%{width:0}40%{width:60%}100%{width:92%}}
 .ld-logo{
   width:80px;height:80px;border-radius:24px;
-  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  background:linear-gradient(135deg,var(--brass),var(--brass2));
   display:flex;align-items:center;justify-content:center;
   margin-bottom:1.5rem;position:relative;
-  box-shadow:0 0 40px rgba(13,207,220,.35);
+  box-shadow:0 0 40px rgba(220,190,135,.35);
   overflow:hidden;
 }
 .ld-logo img{width:56px;height:56px;object-fit:contain;border-radius:10px}
 .ld-ring{
   position:absolute;inset:-8px;border-radius:32px;
-  border:2px solid rgba(13,207,220,.2);border-top-color:var(--cyan);
+  border:2px solid rgba(220,190,135,.2);border-top-color:var(--brass);
   animation:spin .9s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 .ld-lbl{font-size:.8rem;font-weight:600;color:var(--sub);letter-spacing:.06em;margin-bottom:.875rem}
 .ld-dots{display:flex;gap:.4rem}
 .ld-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  width:6px;height:6px;border-radius:50%;background:var(--brass);
   animation:ldp 1.2s ease-in-out infinite;
 }
 .ld-dot:nth-child(2){animation-delay:.18s}
@@ -85,12 +85,12 @@ html,body{
 .orb{position:absolute;border-radius:50%;filter:blur(90px)}
 .orb-1{
   width:480px;height:480px;top:-10%;right:-8%;
-  background:radial-gradient(circle,rgba(13,207,220,.1) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(220,190,135,.1) 0%,transparent 65%);
   animation:orbf 10s ease-in-out infinite alternate;
 }
 .orb-2{
   width:360px;height:360px;bottom:-15%;left:-8%;
-  background:radial-gradient(circle,rgba(13,207,220,.06) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(220,190,135,.06) 0%,transparent 65%);
   animation:orbf 14s ease-in-out infinite alternate-reverse;
 }
 @keyframes orbf{from{transform:scale(1)}to{transform:scale(1.1) translate(2%,3%)}}
@@ -139,17 +139,17 @@ html,body{
 /* Shield icon */
 .otp-icon{
   width:76px;height:76px;border-radius:22px;
-  background:linear-gradient(135deg,rgba(13,207,220,.18),rgba(9,181,200,.18));
-  border:1.5px solid rgba(13,207,220,.25);
+  background:linear-gradient(135deg,rgba(220,190,135,.18),rgba(198,161,91,.18));
+  border:1.5px solid rgba(220,190,135,.25);
   display:flex;align-items:center;justify-content:center;
   margin:0 auto 1.25rem;
   position:relative;
 }
-.otp-icon i{font-size:2rem;color:var(--cyan)}
+.otp-icon i{font-size:2rem;color:var(--brass)}
 .otp-icon::after{
   content:'';
   position:absolute;inset:-6px;border-radius:28px;
-  border:1px solid rgba(13,207,220,.12);
+  border:1px solid rgba(220,190,135,.12);
   animation:pulse-ring 2.5s ease-in-out infinite;
 }
 @keyframes pulse-ring{
@@ -158,11 +158,11 @@ html,body{
 }
 
 .card-title{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.55rem;font-weight:800;color:var(--text);margin-bottom:.35rem;
 }
 .card-sub{font-size:.82rem;color:var(--sub);line-height:1.6;margin-bottom:1.5rem}
-.card-sub strong{color:var(--cyan);font-weight:600}
+.card-sub strong{color:var(--brass);font-weight:600}
 
 /* ── Error ── */
 .oerr{
@@ -184,25 +184,25 @@ html,body{
   background:var(--inp);
   border:2px solid rgba(255,255,255,.1);
   display:flex;align-items:center;justify-content:center;
-  font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:800;
+  font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;
   color:var(--text);
   transition:border-color .2s,background .2s,box-shadow .2s;
   flex-shrink:0;position:relative;
 }
 .odigit.filled{
-  border-color:var(--cyan);
-  background:rgba(13,207,220,.12);
-  color:var(--cyan);
+  border-color:var(--brass);
+  background:rgba(220,190,135,.12);
+  color:var(--brass);
 }
 .odigit.active{
-  border-color:var(--cyan);
-  background:rgba(13,207,220,.08);
-  box-shadow:0 0 0 4px rgba(13,207,220,.18),0 0 20px rgba(13,207,220,.18);
+  border-color:var(--brass);
+  background:rgba(220,190,135,.08);
+  box-shadow:0 0 0 4px rgba(220,190,135,.18),0 0 20px rgba(220,190,135,.18);
 }
 .odigit.active::after{
   content:'';position:absolute;
   width:2px;height:60%;border-radius:2px;
-  background:var(--cyan);
+  background:var(--brass);
   animation:blink .8s step-end infinite;
 }
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
@@ -228,11 +228,11 @@ html,body{
 .obtn{
   width:100%;max-width:400px;
   padding:.88rem 1.5rem;border:none;border-radius:999px;
-  font-size:.97rem;font-weight:700;font-family:'Inter',sans-serif;
+  font-size:.97rem;font-weight:700;font-family:'Outfit',sans-serif;
   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.625rem;
-  background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan2) 100%);
-  color:#080C18;letter-spacing:.01em;
-  box-shadow:0 6px 28px rgba(13,207,220,.35),0 2px 8px rgba(0,0,0,.3);
+  background:linear-gradient(90deg,var(--brass) 0%,var(--brass2) 100%);
+  color:#061A14;letter-spacing:.01em;
+  box-shadow:0 6px 28px rgba(220,190,135,.35),0 2px 8px rgba(0,0,0,.3);
   transition:filter .2s,box-shadow .2s,transform .1s;
   margin-bottom:.5rem;
 }
@@ -242,7 +242,7 @@ html,body{
 
 .btn-spinner{
   display:inline-block;width:18px;height:18px;border-radius:50%;
-  border:2.5px solid rgba(8,12,24,.3);border-top-color:#080C18;
+  border:2.5px solid rgba(8,12,24,.3);border-top-color:#061A14;
   animation:spin .65s linear infinite;
 }
 
@@ -253,10 +253,10 @@ html,body{
   display:flex;align-items:center;justify-content:center;gap:.35rem;
   flex-wrap:wrap;
 }
-.resend-timer strong{color:var(--cyan);font-weight:700;font-family:'Space Grotesk',sans-serif}
+.resend-timer strong{color:var(--brass);font-weight:700;font-family:'Outfit',sans-serif}
 .resend-btn{
   background:none;border:none;cursor:pointer;padding:0;
-  font-size:.79rem;font-weight:700;color:var(--cyan);
+  font-size:.79rem;font-weight:700;color:var(--brass);
   transition:opacity .18s;
 }
 .resend-btn:hover{opacity:.75}
@@ -294,18 +294,18 @@ html,body{
 }
 .kbtn:active,.kbtn.pressed{
   transform:scale(.92);
-  background:rgba(13,207,220,.15);
-  border-color:rgba(13,207,220,.35);
-  box-shadow:0 0 14px rgba(13,207,220,.2);
+  background:rgba(220,190,135,.15);
+  border-color:rgba(220,190,135,.35);
+  box-shadow:0 0 14px rgba(220,190,135,.2);
 }
 .kbtn:disabled{opacity:.3;cursor:not-allowed}
 .knum{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.375rem;font-weight:700;line-height:1;
 }
 .ksub{
   font-size:.4rem;font-weight:600;letter-spacing:.12em;
-  color:var(--muted);font-family:'Inter',sans-serif;
+  color:var(--muted);font-family:'Outfit',sans-serif;
   text-transform:uppercase;
 }
 .kbtn-del{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.05)}
@@ -333,7 +333,7 @@ html,body{
 <div id="ld" role="status">
   <div class="ld-bar"></div>
   <div class="ld-logo">
-    <img src="/images/icon-192.png" alt="Credixa">
+    <img src="/images/icon-192.png" alt="Aurenza Capital">
     <div class="ld-ring"></div>
   </div>
   <p class="ld-lbl">{{ __('auth.otp_verifying') ?? 'Vérification…' }}</p>
@@ -359,8 +359,8 @@ html,body{
       <i class="fas fa-chevron-left"></i> {{ __('auth.otp_back') }}
     </a>
     <a href="{{ url('/') }}" class="topbar__logo">
-      <img src="{{ asset('assets/images/logo%20new.png') }}"
-           onerror="this.style.display='none'" alt="Credixa">
+      <img src="{{ asset('assets/images/logo-aurenza-light.svg') }}"
+           onerror="this.style.display='none'" alt="Aurenza Capital">
     </a>
   </div>
 
@@ -424,7 +424,7 @@ html,body{
             </button>
           </template>
           <template x-if="resending">
-            <span><i class="fas fa-circle-notch fa-spin" style="color:var(--cyan)"></i></span>
+            <span><i class="fas fa-circle-notch fa-spin" style="color:var(--brass)"></i></span>
           </template>
         </div>
         <span class="resend-msg" :class="resendOk ? 'ok' : 'fail'" x-show="resendMsg" x-text="resendMsg"></span>

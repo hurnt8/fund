@@ -12,13 +12,13 @@ return [
     'month_abbr'           => 'mois',
     'optional'             => 'optionnel',
     'loan_admin_subject'   => 'Nouvelle demande de prêt',
-    'loan_admin_intro'     => 'Un client vient de soumettre une demande de prêt via le site Credixa Invest.',
+    'loan_admin_intro'     => 'Un client vient de soumettre une demande de prêt via le site Aurenza Capital.',
 
     'loan_confirm_subject'   => 'Votre demande de prêt est en cours de traitement',
     'loan_confirm_greeting'  => 'Bonjour :name,',
     'loan_confirm_body'      => 'Nous avons bien reçu votre demande de prêt d\'un montant de :amount :currency sur :duration mois. Elle est actuellement en cours de traitement par notre équipe.',
     'loan_confirm_footer'    => 'Nous vous contacterons dans les plus brefs délais. Merci de nous avoir fait confiance.',
-    'loan_confirm_signature' => 'L\'équipe Credixa Invest',
+    'loan_confirm_signature' => 'L\'équipe Aurenza Capital',
     'loan_confirm_noreply'   => 'Cet email a été envoyé depuis une adresse no-reply. Veuillez ne pas répondre directement à ce message.',
 
     'loan_conditions_title'  => 'Conditions d\'éligibilité',
@@ -48,7 +48,7 @@ return [
     'docs_confirm_greeting'  => 'Bonjour :name,',
     'docs_confirm_body'      => 'Nous avons bien reçu vos documents (adresse et pièce d\'identité). Notre équipe les examinera et vous donnera un retour dans les 24 heures.',
     'docs_confirm_footer'    => 'Nous vous remercions de votre confiance et restons à votre disposition pour toute question.',
-    'docs_confirm_signature' => 'L\'équipe Credixa Invest',
+    'docs_confirm_signature' => 'L\'équipe Aurenza Capital',
 
     'docs_upload_hint'  => 'Glissez-déposez ou cliquez pour choisir un fichier',
     'docs_single_photo' => 'Pour ce type de document, une seule photo suffit.',

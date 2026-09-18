@@ -3,13 +3,13 @@
 style="background-image: url({{ asset('assets/images/shapes/footer-bg-1-1.png') }});"></div>
 <!-- /.main-footer__bg -->
 <div class="main-footer__top">
-<div class="container">
+<div class="container-sm">
     <div class="row gutter-y-40">
         <div class="col-xl-4 col-lg-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="00ms">
             <div class="footer-widget footer-widget--about">
                 <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="footer-widget__logo">
-                    <img src="{{ asset('assets/images/logo new.png') }}" width="190"
-                        alt="Credixa">
+                    <img src="{{ asset('assets/images/logo-aurenza-dark.svg') }}" width="190"
+                        alt="Aurenza Capital">
                 </a>
                 <p class="footer-widget__about-text">{{__('home.about_text')}}</p>
                 <!-- /.footer-widget__about-text -->
@@ -71,7 +71,7 @@ style="background-image: url({{ asset('assets/images/shapes/footer-bg-1-1.png') 
                     </li>
                     <li>
                         <span class="footer-widget__info__icon"><i class="icon-paper-plane"></i></span>
-                        <a href="mailto:contact@credixa.eu">contact@credixa.eu</a>
+                        <a href="mailto:contact@aurenzacapital.com">contact@aurenzacapital.com</a>
                     </li>
                     <li>
                         <span class="footer-widget__info__icon"><i class="icon-telephone"></i></span>
@@ -84,7 +84,7 @@ style="background-image: url({{ asset('assets/images/shapes/footer-bg-1-1.png') 
 </div><!-- /.container -->
 </div><!-- /.main-footer__top -->
 <div class="main-footer__bottom">
-<div class="container">
+<div class="container-sm">
     <div class="main-footer__bottom__inner">
         <div class="row gutter-y-40 align-items-center">
             <div class="col-md-5 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">

@@ -2,7 +2,7 @@
 
 {{-- Page hero --}}
 <div class="page-hero">
-    <div class="container">
+    <div class="container-sm">
         <div class="page-hero__content">
             <h1 class="page-hero__title">@lang('menu.' . $menuKey)</h1>
             <ul class="page-hero__breadcrumb">
@@ -17,7 +17,7 @@
 </div>
 
 <section class="py-24 bg-white">
-    <div class="container">
+    <div class="container-sm">
         <div class="row g-4 gutter-y-50 align-items-start">
 
             {{-- Sidebar (2e sur mobile, 1re sur desktop) --}}
@@ -30,10 +30,7 @@
             {{-- Main content (1er sur mobile, 2e sur desktop) --}}
             <div class="col-lg-8 order-1 order-lg-2 wow fadeInRight" data-wow-duration="900ms" data-wow-delay="100ms">
 
-                <div class="service-detail__thumbnail mb-6">
-                    <img src="{{ asset('assets/images/services/' . $image) }}"
-                         alt="@lang('menu.' . $menuKey)">
-                </div>
+                <div class="service-detail__icon"><i class="{{ $icon ?? 'fas fa-coins' }}"></i></div>
 
                 <h2 class="service-detail__title">@lang('loan.' . $loanKey . '.section_title')</h2>
                 <p class="service-detail__text">{{ __('loan.' . $loanKey . '.description') }}</p>
@@ -43,7 +40,7 @@
                     <ul class="advantage-list">
                         @foreach ([1,2,3,4] as $n)
                         <li>
-                            <i class="fas fa-check advantage-list__icon"></i>
+                            <span class="advantage-list__icon"><i class="fas fa-check"></i></span>
                             {{ __('loan.' . $loanKey . '.details.advantage' . $n) }}
                         </li>
                         @endforeach
@@ -54,9 +51,9 @@
                     {{ __('loan.' . $loanKey . '.details.faq_title') }}
                 </h3>
 
-                <div x-data="{ open: 1 }">
+                <div class="faq-list" x-data="{ open: 1 }">
                     @foreach ([1,2,3] as $n)
-                    <div class="accordion-item mb-1" style="border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-card);">
+                    <div class="faq-row">
                         <button type="button"
                                 class="faq-btn"
                                 :class="open === {{ $n }} ? 'is-open' : ''"
@@ -98,7 +95,7 @@
 
 {{-- Calculator strip --}}
 <section class="calc-section py-16">
-    <div class="container">
+    <div class="container-sm">
         <div class="row g-4 gutter-y-50 align-items-center">
             <div class="col-lg-6 wow fadeInLeft" data-wow-duration="900ms">
                 <div class="section-label" style="color:var(--gold);">Simulation</div>

@@ -2,7 +2,7 @@
 /*
  * Équivalent de : php artisan storage:link
  * À SUPPRIMER après utilisation
- * Accès : https://credixa.eu/storage-link.php
+ * Accès : https://aurenzacapital.com/storage-link.php
  */
 header('Content-Type: text/plain; charset=utf-8');
 

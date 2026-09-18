@@ -3,7 +3,7 @@
 return [
    'title' => 'Informativa sulla privacy',
 'introduction_title' => '1. Introduzione',
-'introduction_text' => 'In Credixa, ci impegniamo a proteggere e rispettare la tua privacy. Questa informativa sulla privacy spiega come raccogliamo, utilizziamo, divulghiamo e proteggiamo le tue informazioni personali quando utilizzi il nostro sito web e i nostri servizi di prestito online. Utilizzando il nostro sito, accetti le pratiche descritte in questa informativa.',
+'introduction_text' => 'In Aurenza Capital, ci impegniamo a proteggere e rispettare la tua privacy. Questa informativa sulla privacy spiega come raccogliamo, utilizziamo, divulghiamo e proteggiamo le tue informazioni personali quando utilizzi il nostro sito web e i nostri servizi di prestito online. Utilizzando il nostro sito, accetti le pratiche descritte in questa informativa.',
 'information_collection_title' => '2. Informazioni che raccogliamo',
 'information_collection_text' => 'Potremmo raccogliere ed elaborare le seguenti informazioni su di te:',
 'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
 'contact_title' => '8. Contatti',
 'contact_text' => 'Se hai domande, preoccupazioni o richieste relative a questa informativa sulla privacy o al trattamento delle tue informazioni personali, ti preghiamo di contattarci a:',
 'contact_details' => [
-    'Credixa',
+    'Aurenza Capital',
     'Indirizzo: Rua de Santo António 33, 7200-175, Portogallo',
-    'Email: contact@credixa.eu',
+    'Email: contact@aurenzacapital.com',
     'Telefono: +31 6 57341120 ',
 ],
 

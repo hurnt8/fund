@@ -19,18 +19,18 @@ return [
 
     'client_login_title'  => 'Klijentski prostor',
     'client_login_sub'    => 'Prijavite se za pristup vašim dosjeima',
-    'client_brand_title'  => 'Vaš klijentski<br>prostor Credixa',
+    'client_brand_title'  => 'Vaš klijentski<br>prostor Aurenza Capital',
     'client_brand_sub'    => 'Pratite svoje zahtjeve, upravljajte svojim profilom i pristupite svim svojim dokumentima u potpunoj sigurnosti.',
 
     'staff_login_title'   => 'Administratorski portal',
     'staff_login_sub'     => 'Rezervirano isključivo za ovlašteno osoblje',
-    'staff_brand_title'   => 'Administracija<br>Credixa',
+    'staff_brand_title'   => 'Administracija<br>Aurenza Capital',
     'staff_brand_sub'     => 'Siguran pristup alatima za upravljanje, praćenje dosjea i administraciju korisnika.',
 
     'email'               => 'E-mail adresa',
     'email_staff'         => 'Poslovni e-mail',
     'email_ph'            => 'vi@primjer.com',
-    'email_ph_staff'      => 'agent@credixa.eu',
+    'email_ph_staff'      => 'agent@aurenzacapital.com',
     'password_label'      => 'Lozinka',
     'remember'            => 'Zapamti me',
     'remember_staff'      => 'Ostani prijavljen',
@@ -40,7 +40,7 @@ return [
     'staff_portal_link'   => 'Portal za agente / administratore',
     'client_portal_link'  => 'Klijentski prostor',
     'staff_restricted'    => 'Ograničen pristup — Ovlašteno osoblje',
-    'staff_notice'        => 'Ovaj portal je rezerviran za Credixa agente. Sve prijave se bilježe.',
+    'staff_notice'        => 'Ovaj portal je rezerviran za Aurenza Capital agente. Sve prijave se bilježe.',
     'or_staff'            => 'Jeste li agent ili administrator?',
     'or_client'           => 'Jeste li klijent?',
 
@@ -92,24 +92,24 @@ return [
     'account_unblocked'                   => 'Vaš račun je uspješno deblokiran. Sada se možete prijaviti.',
     'unblock_invalid'                     => 'Ova poveznica za deblokiranje nije valjana ili je istekla. Kontaktirajte podršku.',
 
-    'account_blocked_email_subject'       => 'Vaš Credixa račun je blokiran',
+    'account_blocked_email_subject'       => 'Vaš Aurenza Capital račun je blokiran',
     'account_blocked_email_title'         => 'Račun privremeno blokiran',
     'account_blocked_email_intro'         => 'Vaš račun je privremeno blokiran nakon nekoliko netočnih pokušaja prijave.',
     'account_blocked_email_reason_title'  => 'Zašto je ovaj račun blokiran?',
     'account_blocked_email_reason_body'   => '4 netočna OTP koda uneseni su uzastopno tijekom pokušaja prijave na vaš račun. Iz sigurnosnih razloga, pristup je suspendiran.',
     'account_blocked_email_btn'           => 'Deblokiraj moj račun',
     'account_blocked_email_fallback'      => 'Ako gumb ne funkcionira, kopirajte ovu poveznicu u svoj preglednik:',
-    'account_blocked_email_notice'        => 'Ako niste vi pokrenuli ove pokušaje, nemojte kliknuti na ovu poveznicu i odmah kontaktirajte Credixa podršku.',
+    'account_blocked_email_notice'        => 'Ako niste vi pokrenuli ove pokušaje, nemojte kliknuti na ovu poveznicu i odmah kontaktirajte Aurenza Capital podršku.',
     'account_blocked_email_footer'        => 'Poveznica vrijedi 48 sati.',
 
     // OTP email
-    'otp_email_subject'      => 'Vaš kod za prijavu — Credixa',
+    'otp_email_subject'      => 'Vaš kod za prijavu — Aurenza Capital',
     'otp_email_title'        => 'Kod za provjeru',
     'otp_email_intro'        => 'Evo vašeg jednokratnog koda za prijavu. Nemojte ga nikome dijeliti.',
     'otp_email_code_label'   => 'Vaš kod',
     'otp_email_expiry'       => 'Ovaj kod istječe za 10 minuta.',
     'otp_email_notice_title' => 'Važna sigurnosna napomena',
-    'otp_email_notice_body'  => 'Credixa vas nikada neće tražiti ovaj kod putem telefona ili poruke. Ako niste zatražili ovaj kod, zanemarite ovaj e-mail.',
+    'otp_email_notice_body'  => 'Aurenza Capital vas nikada neće tražiti ovaj kod putem telefona ili poruke. Ako niste zatražili ovaj kod, zanemarite ovaj e-mail.',
     'otp_email_footer'       => 'Ako niste zatražili ovaj kod, zanemarite ovaj e-mail.',
 
 ];

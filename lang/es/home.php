@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa - Los mejores prestamistas online en Alemania, España, Hungría, etc.',
+    'general_title' => 'Aurenza Capital - Los mejores prestamistas online en Alemania, España, Hungría, etc.',
     'banner_title' => 'Obtenga el préstamo perfecto para todas sus necesidades en línea.',
-    'banner_text' => 'Millones de personas utilizan Credixa para realizar sus proyectos.',
+    'banner_text' => 'Millones de personas utilizan Aurenza Capital para realizar sus proyectos.',
     'get_loan_now' => 'Obtener un préstamo ahora',
     'popular_loans' => 'Tipos de préstamos populares:',
 
@@ -53,17 +53,17 @@ return [
 
     'custom_loan_services' => 'Aproveche nuestros servicios de préstamo a medida',
     'reliability_quality' => 'Transparencia y Confiabilidad',
-    'reliability_quality_description' => 'En Credixa ofrecemos soluciones crediticias claras y confiables, respaldadas por opiniones positivas de los clientes y total transparencia.',
+    'reliability_quality_description' => 'En Aurenza Capital ofrecemos soluciones crediticias claras y confiables, respaldadas por opiniones positivas de los clientes y total transparencia.',
     'financial_transparency' => 'Sin costos ocultos',
     'financial_transparency_description' => 'Revise nuestros términos, analice las tasas y pague solo una vez que se apruebe su préstamo.',
     'optimal_security' => 'Seguridad y Privacidad',
-    'optimal_security_description' => 'Sus datos personales están seguros con nosotros. Credixa utiliza protocolos de seguridad avanzados para proteger su privacidad. Nuestro soporte está disponible las 24 horas del día, los 7 días de la semana para cualquier ayuda.',
+    'optimal_security_description' => 'Sus datos personales están seguros con nosotros. Aurenza Capital utiliza protocolos de seguridad avanzados para proteger su privacidad. Nuestro soporte está disponible las 24 horas del día, los 7 días de la semana para cualquier ayuda.',
     'apply_loan' => 'Solicitar un préstamo',
 
     'testimonials_title' => 'Testimonios',
     'testimonials_description' => 'Descubra lo que nuestros clientes dicen sobre nosotros.',
     'testimonial_1' => [
-        'quote'    => '«Solicité un préstamo hipotecario tras varios rechazos en mi banco habitual. Credixa Invest estudió mi caso con detalle y me aprobó la financiación en cinco días. El tipo de interés fue mejor de lo esperado. Muy recomendable.»',
+        'quote'    => '«Solicité un préstamo hipotecario tras varios rechazos en mi banco habitual. Aurenza Capital estudió mi caso con detalle y me aprobó la financiación en cinco días. El tipo de interés fue mejor de lo esperado. Muy recomendable.»',
         'name'     => 'Carlos García',
         'location' => 'Madrid, España',
     ],
@@ -73,7 +73,7 @@ return [
         'location' => 'Barcelona, España',
     ],
     'testimonial_3' => [
-        'quote'    => '«Necesitaba financiación para ampliar mi taller mecánico y los bancos me pedían avales imposibles. Credixa analizó mi facturación real y me concedió el préstamo empresarial que necesitaba. Gracias al equipo.»',
+        'quote'    => '«Necesitaba financiación para ampliar mi taller mecánico y los bancos me pedían avales imposibles. Aurenza Capital analizó mi facturación real y me concedió el préstamo empresarial que necesitaba. Gracias al equipo.»',
         'name'     => 'Antonio Martínez',
         'location' => 'Sevilla, España',
     ],
@@ -88,13 +88,13 @@ return [
         'location' => 'Bilbao, España',
     ],
     'testimonial_6' => [
-        'quote'    => '«Mi situación laboral como autónoma complicaba la obtención de crédito. Credixa valoró mis ingresos reales y me ofreció condiciones adaptadas a mi perfil. Por fin una entidad que entiende la realidad de los trabajadores independientes.»',
+        'quote'    => '«Mi situación laboral como autónoma complicaba la obtención de crédito. Aurenza Capital valoró mis ingresos reales y me ofreció condiciones adaptadas a mi perfil. Por fin una entidad que entiende la realidad de los trabajadores independientes.»',
         'name'     => 'Carmen Fernández',
         'location' => 'Málaga, España',
     ],
 
     'about_title' => 'Únase al mejor mercado para trabajadores del mundo',
-    'about_description' => 'Credixa es su plataforma confiable para obtener préstamos con una experiencia de cliente excepcional. Estamos comprometidos a brindarle soluciones financieras simples, seguras y rápidas.',
+    'about_description' => 'Aurenza Capital es su plataforma confiable para obtener préstamos con una experiencia de cliente excepcional. Estamos comprometidos a brindarle soluciones financieras simples, seguras y rápidas.',
     'rating' => '4,9/5',
     'rating_description' => 'Los clientes califican a los profesionales',
     'projects_completed' => '+12M',
@@ -130,7 +130,7 @@ return [
         'placeholder' => 'Su dirección de correo electrónico',
         'button' => 'Enviar',
     ],
-    'rights_reserved' => '© Credixa. 2024. Todos los derechos reservados.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Todos los derechos reservados.',
 
     'en' => 'inglés',
     'fr' => 'francés',
@@ -177,10 +177,10 @@ return [
 
     'about' => [
         'exptitle' => 'años de experiencia',
-        'sectagline' => 'bienvenido a Credixa',
+        'sectagline' => 'bienvenido a Aurenza Capital',
         'sectitle' => 'Préstamos personales para cumplir tus sueños',
         'text1' => 'Estamos en este negocio desde 1990 y brindamos los mejores servicios.',
-        'text2' => 'Credixa es tu plataforma confiable para préstamos con una experiencia al cliente excepcional. Nos comprometemos a ofrecerte soluciones financieras simples, seguras y rápidas.',
+        'text2' => 'Aurenza Capital es tu plataforma confiable para préstamos con una experiencia al cliente excepcional. Nos comprometemos a ofrecerte soluciones financieras simples, seguras y rápidas.',
         'check1' => 'préstamo para pequeñas empresas',
         'check2' => 'préstamo para estudiar en el extranjero',
         'check3' => 'proceso rápido de préstamo',

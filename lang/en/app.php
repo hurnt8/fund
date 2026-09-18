@@ -1,6 +1,6 @@
 <?php
 return [
-    'title'           => 'My Credixa Space',
+    'title'           => 'My Aurenza Capital Space',
     'greeting'        => 'Hello',
     'language'        => 'Language',
     'welcome_back'    => 'Welcome back',
@@ -286,8 +286,8 @@ return [
     'not_provided'               => 'Not provided',
     'currency_label'             => 'Currency',
     'email_label'                => 'Email',
-    'receive_notice'             => 'Share these bank details to receive funds directly into your Credixa account.',
-    'share_title'                => 'My Credixa details',
+    'receive_notice'             => 'Share these bank details to receive funds directly into your Aurenza Capital account.',
+    'share_title'                => 'My Aurenza Capital details',
     'back_to_transfers'          => 'Back to transfers',
     'send_confirm_title'         => 'Transfer submitted',
     'send_confirm_body'          => 'Your request has been recorded and is pending validation by our team.',

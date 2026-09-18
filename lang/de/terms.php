@@ -5,7 +5,7 @@ return [
     'Abschnitte' => [
         [
             'Titel' => '1. Einführung',
-            'content' => 'Willkommen bei Credixa. Durch die Nutzung unserer Website und Dienste erklären Sie sich mit den folgenden Geschäftsbedingungen einverstanden und an diese gebunden. Bitte lesen Sie diese Bedingungen sorgfältig durch, bevor Sie unsere Website nutzen oder einen Kredit bei uns aufnehmen.',
+            'content' => 'Willkommen bei Aurenza Capital. Durch die Nutzung unserer Website und Dienste erklären Sie sich mit den folgenden Geschäftsbedingungen einverstanden und an diese gebunden. Bitte lesen Sie diese Bedingungen sorgfältig durch, bevor Sie unsere Website nutzen oder einen Kredit bei uns aufnehmen.',
         ],
         [
             'Titel' => '2. Nutzung der Website',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. Kreditdienstleistungen',
-            'content' => 'Credixa bietet verschiedene Arten von Krediten an, um Ihren finanziellen Bedürfnissen gerecht zu werden. Alle Kredite unterliegen der Genehmigung auf Grundlage unserer Einschätzung Ihrer Kreditwürdigkeit und Rückzahlungsfähigkeit. Die spezifischen Bedingungen jedes Darlehens, einschließlich Zinssätze, Laufzeiten und Rückzahlungsbedingungen, werden in Ihrem Darlehensvertrag detailliert beschrieben.',
+            'content' => 'Aurenza Capital bietet verschiedene Arten von Krediten an, um Ihren finanziellen Bedürfnissen gerecht zu werden. Alle Kredite unterliegen der Genehmigung auf Grundlage unserer Einschätzung Ihrer Kreditwürdigkeit und Rückzahlungsfähigkeit. Die spezifischen Bedingungen jedes Darlehens, einschließlich Zinssätze, Laufzeiten und Rückzahlungsbedingungen, werden in Ihrem Darlehensvertrag detailliert beschrieben.',
         ],
         [
             'Titel' => '4. Vertrags- und Versicherungskosten',
-            'content' => 'Bei der Aufnahme eines Kredits bei Credixa können Vertrags- und Versicherungsgebühren anfallen. Diese Gebühr deckt die Verwaltungskosten ab, die mit der Einrichtung und Verwaltung Ihres Kredits verbunden sind. Die genauen Einzelheiten dieser Gebühren werden in Ihrem Darlehensvertrag klar dargelegt. Sie sind verpflichtet, diese Gebühren gemäß den angegebenen Bedingungen zu zahlen.',
+            'content' => 'Bei der Aufnahme eines Kredits bei Aurenza Capital können Vertrags- und Versicherungsgebühren anfallen. Diese Gebühr deckt die Verwaltungskosten ab, die mit der Einrichtung und Verwaltung Ihres Kredits verbunden sind. Die genauen Einzelheiten dieser Gebühren werden in Ihrem Darlehensvertrag klar dargelegt. Sie sind verpflichtet, diese Gebühren gemäß den angegebenen Bedingungen zu zahlen.',
         ],
         [
             'title' => '5. Vertraulichkeit',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. Haftungsbeschränkung',
-            'content' => 'Credixa haftet nicht für indirekte, besondere oder Folgeschäden oder Verluste, die sich aus der Nutzung oder der Unmöglichkeit der Nutzung unserer Website oder Dienste ergeben, einschließlich entgangenem Gewinn, Verlust von Daten oder Betriebsunterbrechungen, selbst wenn Wir wurden auf die Möglichkeit eines solchen Schadens hingewiesen.',
+            'content' => 'Aurenza Capital haftet nicht für indirekte, besondere oder Folgeschäden oder Verluste, die sich aus der Nutzung oder der Unmöglichkeit der Nutzung unserer Website oder Dienste ergeben, einschließlich entgangenem Gewinn, Verlust von Daten oder Betriebsunterbrechungen, selbst wenn Wir wurden auf die Möglichkeit eines solchen Schadens hingewiesen.',
         ],
         [
             'title' => '8. AGB-Änderungen',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Kontakt',
-            'content' => 'Wenn Sie Fragen oder Bedenken zu diesen Allgemeinen Geschäftsbedingungen haben, kontaktieren Sie uns bitte unter:<br><br>Credixa<br>Adresse: Rua de Santo António 33, 7200-175, Portugal<br>E-Mail: contact@credixa.eu<br>Telefon: +31 6 57341120 '
+            'content' => 'Wenn Sie Fragen oder Bedenken zu diesen Allgemeinen Geschäftsbedingungen haben, kontaktieren Sie uns bitte unter:<br><br>Aurenza Capital<br>Adresse: Rua de Santo António 33, 7200-175, Portugal<br>E-Mail: contact@aurenzacapital.com<br>Telefon: +31 6 57341120 '
         ],
     ],
 ];

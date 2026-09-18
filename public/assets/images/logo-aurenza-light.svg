@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 64" width="264" height="64" role="img" aria-label="Aurenza Capital">
+  <title>Aurenza Capital</title>
+
+  <!-- Monogramme : chevron ascendant, bloc ivoire sur fond sombre -->
+  <rect x="0" y="4" width="56" height="56" rx="3" fill="#FBF9F4"/>
+  <path d="M14 44 L28 18 L42 44" fill="none" stroke="#0E3B2E" stroke-width="4"
+        stroke-linejoin="miter" stroke-linecap="square"/>
+  <path d="M20.5 33 H35.5" fill="none" stroke="#C6A15B" stroke-width="4" stroke-linecap="square"/>
+
+  <!-- Wordmark -->
+  <text x="72" y="33" font-family="Georgia, 'Times New Roman', serif" font-size="23"
+        font-weight="600" letter-spacing="3.4" fill="#FBF9F4">AURENZA</text>
+  <text x="73.5" y="50" font-family="Georgia, 'Times New Roman', serif" font-size="10"
+        font-weight="400" letter-spacing="6.1" fill="#DCBE87">CAPITAL</text>
+</svg>

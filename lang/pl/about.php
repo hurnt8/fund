@@ -1,19 +1,19 @@
 <?php
 
 return [
-    'banner_title' => 'Odkryj Credixa Invest',
+    'banner_title' => 'Odkryj Aurenza Capital',
     'banner_subtitle' => 'O nas',
     'banner_description' => 'Pożyczaj łatwiej dzięki elastycznym rozwiązaniom kredytowym dostosowanym do Twoich potrzeb finansowych.',
 
-    'section1_title' => 'Dlaczego warto wybrać Credixa Invest',
-    'section1_p1' => 'W Credixa Invest wierzymy, że każdy zasługuje na szansę realizacji swoich marzeń finansowych. Od początku naszej działalności jesteśmy zaangażowani w dostarczanie elastycznych i dostępnych rozwiązań kredytowych spełniających różnorodne potrzeby naszych klientów. Niezależnie od tego, czy chcesz sfinansować projekt osobisty, kupić samochód, czy rozwinąć firmę, mamy kredyt dla Ciebie.',
+    'section1_title' => 'Dlaczego warto wybrać Aurenza Capital',
+    'section1_p1' => 'W Aurenza Capital wierzymy, że każdy zasługuje na szansę realizacji swoich marzeń finansowych. Od początku naszej działalności jesteśmy zaangażowani w dostarczanie elastycznych i dostępnych rozwiązań kredytowych spełniających różnorodne potrzeby naszych klientów. Niezależnie od tego, czy chcesz sfinansować projekt osobisty, kupić samochód, czy rozwinąć firmę, mamy kredyt dla Ciebie.',
     'section1_p2' => 'Nasze usługi są zaprojektowane tak, aby zapewnić bezproblemowe doświadczenie, z szybkim i łatwym procesem aplikacji. Rozumiemy, że każdy klient jest wyjątkowy, dlatego oferujemy spersonalizowane kredyty dostosowane do Twoich konkretnych potrzeb. Ponadto nasi dedykowani doradcy są zawsze dostępni, aby prowadzić Cię na każdym kroku.',
     'proposed' => 'Oferujemy:',
     'check1' => 'Spersonalizowane kredyty dopasowane do Twoich potrzeb.',
     'check2' => 'Dedykowani doradcy na każdym etapie procesu.',
     'check3' => 'Elastyczne warunki spłaty dostosowane do Twojej sytuacji finansowej.',
     'check4' => 'Kredyty bez konieczności posiadania zaświadczenia o zarobkach.',
-    'section1_p3' => 'W Credixa Invest naszą misją jest pomoc w osiąganiu celów finansowych dzięki rozwiązaniom kredytowym szytym na miarę. Dołącz do nas i dowiedz się, jak możemy pomóc Ci zrealizować Twoje projekty.',
+    'section1_p3' => 'W Aurenza Capital naszą misją jest pomoc w osiąganiu celów finansowych dzięki rozwiązaniom kredytowym szytym na miarę. Dołącz do nas i dowiedz się, jak możemy pomóc Ci zrealizować Twoje projekty.',
     'btn' => 'Znajdź idealny kredyt',
 
     'faq_title' => 'Często zadawane pytania',

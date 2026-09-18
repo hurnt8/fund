@@ -6,7 +6,7 @@
 
 {{-- Page hero --}}
 <div class="page-hero">
-    <div class="container">
+    <div class="container-sm">
         <div class="page-hero__content">
             <h1 class="page-hero__title">@lang('menu.contact')</h1>
             <ul class="page-hero__breadcrumb">
@@ -18,82 +18,13 @@
     </div>
 </div>
 
-{{-- Info bar --}}
-<div class="contact-info-bar">
-    <div class="container">
-        <div class="row g-3 gutter-y-20">
-            @foreach ([
-                ['fas fa-map-marker-alt', __('contact.address_title'), __('contact.address_desc'), null],
-                ['fas fa-phone-alt',      __('contact.phone_title'),   __('contact.phone_desc'),   'tel:+34613853614'],
-                ['fas fa-envelope',       __('contact.mail_title'),    __('contact.mail_desc'),    'mailto:contact@credixa.eu'],
-            ] as $i => $info)
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="800ms" data-wow-delay="{{ $i*80 }}ms">
-                <div class="contact-info-card">
-                    <div class="contact-info-card__icon"><i class="{{ $info[0] }}"></i></div>
-                    <div>
-                        <p class="contact-info-card__title">{{ $info[1] }}</p>
-                        @if($info[3])
-                        <p class="contact-info-card__value"><a href="{{ $info[3] }}">{{ $info[2] }}</a></p>
-                        @else
-                        <p class="contact-info-card__value">{{ $info[2] }}</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-
-{{-- Form + Image panel --}}
 <section class="py-24 bg-white">
-    <div class="container">
-        <div class="row g-4 gutter-y-40 align-items-stretch">
-
-            {{-- Image panel --}}
-            <div class="col-lg-5 wow fadeInLeft" data-wow-duration="900ms">
-                <div class="contact-image-panel">
-                    <img src="{{ asset('assets/images/resources/contact-1-1.jpg') }}"
-                         alt="Contact Credixa" class="contact-image-panel__img">
-                    <div class="contact-image-panel__info">
-                        <div class="contact-panel__company">
-                            <h3>Credixa</h3>
-                            <p>{{ __('contact.detail_desc') }}</p>
-                        </div>
-                        <div class="contact-panel__item">
-                            <div class="contact-panel__item-icon"><i class="fas fa-map-marker-alt"></i></div>
-                            <div>
-                                <span class="contact-panel__item-label">{{ __('contact.address_title') }}</span>
-                                <span class="contact-panel__item-value">{{ __('contact.address_desc') }}</span>
-                            </div>
-                        </div>
-                        <div class="contact-panel__item">
-                            <div class="contact-panel__item-icon"><i class="fas fa-phone-alt"></i></div>
-                            <div>
-                                <span class="contact-panel__item-label">{{ __('contact.phone_title') }}</span>
-                                <a href="tel:+34613853614" class="contact-panel__item-value">{{ __('contact.phone_desc') }}</a>
-                            </div>
-                        </div>
-                        <div class="contact-panel__item">
-                            <div class="contact-panel__item-icon"><i class="fas fa-envelope"></i></div>
-                            <div>
-                                <span class="contact-panel__item-label">{{ __('contact.mail_title') }}</span>
-                                <a href="mailto:contact@credixa.eu" class="contact-panel__item-value">{{ __('contact.mail_desc') }}</a>
-                            </div>
-                        </div>
-                        <div class="contact-panel__social">
-                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="container-sm">
+        <div class="row g-4 gutter-y-40 align-items-start">
 
             {{-- Contact form --}}
-            <div class="col-lg-7 wow fadeInRight" data-wow-duration="900ms" data-wow-delay="150ms">
-                <div class="form-card h-100">
+            <div class="col-lg-7 wow fadeInLeft" data-wow-duration="900ms">
+                <div class="form-card">
                     <div class="section-label mb-2">{{ __('contact.form_title') }}</div>
                     <h2 class="section-title mb-6">{{ __('contact.detail_title') }}</h2>
 
@@ -155,6 +86,54 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            {{-- Coordonnées --}}
+            <div class="col-lg-5 wow fadeInRight" data-wow-duration="900ms" data-wow-delay="150ms">
+                <div class="contact-cards">
+
+                    <div class="contact-card">
+                        <div class="contact-card__icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <p class="contact-card__title">{{ __('contact.address_title') }}</p>
+                            <p class="contact-card__value">{{ __('contact.address_desc') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-card__icon"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <p class="contact-card__title">{{ __('contact.phone_title') }}</p>
+                            <p class="contact-card__value"><a href="tel:+34613853614">{{ __('contact.phone_desc') }}</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-card__icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <p class="contact-card__title">{{ __('contact.mail_title') }}</p>
+                            <p class="contact-card__value"><a href="mailto:contact@aurenzacapital.com">{{ __('contact.mail_desc') }}</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-card__icon"><i class="fas fa-building"></i></div>
+                        <div>
+                            <p class="contact-card__title">Aurenza Capital</p>
+                            <p class="contact-card__value" style="font-weight:500;color:var(--gray-500);font-size:.875rem;">
+                                {{ __('contact.detail_desc') }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-cards__social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+
                 </div>
             </div>
 

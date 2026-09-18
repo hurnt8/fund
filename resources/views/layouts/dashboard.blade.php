@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<meta name="theme-color" content="#0B1A2E">
+<meta name="theme-color" content="#0E3B2E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Credixa Admin">
+<meta name="apple-mobile-web-app-title" content="Aurenza Capital Admin">
 <meta name="mobile-web-app-capable" content="yes">
 @auth
   @if(Auth::user()->hasAnyRole(['admin','super-admin']))
@@ -20,24 +20,24 @@
 @endauth
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
-<title>@yield('title','Dashboard') — Credixa Invest</title>
+<title>@yield('title','Dashboard') — Aurenza Capital</title>
 <link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/all.min.css') }}">
 <style>
 /* ═══════════════════════════════════════════════
-   CREDIXA INVEST — DESIGN SYSTEM v2
+   AURENZA CAPITAL INVEST — DESIGN SYSTEM v2
    ═══════════════════════════════════════════════ */
 :root {
-  --c-navy:       #0B1A2E;
-  --c-navy-2:     #112240;
-  --c-navy-3:     #1a3a5c;
-  --c-gold:       #C8A951;
-  --c-gold-d:     #A88830;
-  --c-gold-l:     #f0e0a0;
+  --c-navy:       #0E3B2E;
+  --c-navy-2:     #114022;
+  --c-navy-3:     #1A4A38;
+  --c-gold:       #C6A15B;
+  --c-gold-d:     #9A7736;
+  --c-gold-l:     #DCBE87;
   --c-bg:         #F1F4F9;
   --c-surface:    #FFFFFF;
   --c-border:     #E4E8F0;
@@ -63,7 +63,7 @@
 }
 
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:'Inter',sans-serif; background:var(--c-bg); color:var(--c-text); font-size:.875rem; line-height:1.6; min-height:100vh; -webkit-font-smoothing:antialiased; }
+body { font-family:'Outfit',sans-serif; background:var(--c-bg); color:var(--c-text); font-size:.875rem; line-height:1.6; min-height:100vh; -webkit-font-smoothing:antialiased; }
 a { text-decoration:none; }
 
 /* ─── SCROLLBAR ─── */
@@ -122,7 +122,7 @@ a { text-decoration:none; }
 }
 .sidebar-link .icon { width:18px; text-align:center; font-size:.8rem; flex-shrink:0; }
 .sidebar-link:hover { color:#fff; background:rgba(255,255,255,.04); border-left-color:rgba(255,255,255,.15); }
-.sidebar-link.active { color:var(--c-gold); background:rgba(200,169,81,.1); border-left-color:var(--c-gold); font-weight:600; }
+.sidebar-link.active { color:var(--c-gold); background:rgba(198,161,91,.1); border-left-color:var(--c-gold); font-weight:600; }
 .sidebar-link.active .icon { color:var(--c-gold); }
 
 .sidebar-footer {
@@ -241,7 +241,7 @@ a { text-decoration:none; }
 }
 /* Icon color variants */
 .mi-navy  { background:#EEF2FF; color:var(--c-navy); }
-.mi-gold  { background:#FEF9EC; color:var(--c-gold-d); }
+.mi-gold  { background:#F5EDDD; color:var(--c-gold-d); }
 .mi-green { background:var(--c-green-l); color:var(--c-green); }
 .mi-red   { background:var(--c-red-l); color:var(--c-red); }
 .mi-blue  { background:var(--c-blue-l); color:var(--c-blue); }
@@ -328,7 +328,7 @@ a { text-decoration:none; }
 
 .btn-gold {
   display:inline-flex; align-items:center; gap:.4rem;
-  background:var(--c-gold); color:var(--c-navy);
+  background:var(--c-gold); color:#1A1A17;
   border:none; border-radius:var(--radius-sm);
   padding:.525rem 1.125rem; font-size:.8375rem; font-weight:700;
   cursor:pointer; transition:var(--transition); font-family:inherit;
@@ -362,7 +362,7 @@ a { text-decoration:none; }
 /* Bootstrap compat */
 .b-navy { background:var(--c-navy); color:#fff; border:none; border-radius:var(--radius-sm); padding:.525rem 1.125rem; font-size:.8375rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; text-decoration:none; transition:var(--transition); }
 .b-navy:hover { background:var(--c-navy-2); color:#fff; }
-.b-gold { background:var(--c-gold); color:var(--c-navy); border:none; border-radius:var(--radius-sm); padding:.525rem 1.125rem; font-size:.8375rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; text-decoration:none; transition:var(--transition); }
+.b-gold { background:var(--c-gold); color:#1A1A17; border:none; border-radius:var(--radius-sm); padding:.525rem 1.125rem; font-size:.8375rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; text-decoration:none; transition:var(--transition); }
 .btn-xs { padding:.2rem .5rem; font-size:.75rem; border-radius:6px; }
 
 /* ══════════════════
@@ -376,7 +376,7 @@ a { text-decoration:none; }
   font-family:inherit; transition:var(--transition);
   appearance:none;
 }
-.form-control-pro:focus { outline:none; border-color:var(--c-gold); box-shadow:0 0 0 3px rgba(200,169,81,.12); }
+.form-control-pro:focus { outline:none; border-color:var(--c-gold); box-shadow:0 0 0 3px rgba(198,161,91,.12); }
 .form-control-pro::placeholder { color:#C4CADC; }
 .form-help { font-size:.73rem; color:var(--c-muted); margin-top:.3rem; }
 
@@ -418,8 +418,8 @@ a { text-decoration:none; }
   border:2px solid var(--c-border);
   transition:var(--transition);
 }
-.step-dot.done { background:var(--c-gold); color:var(--c-navy); border-color:var(--c-gold); }
-.step-dot.current { background:var(--c-navy); color:var(--c-gold); border-color:var(--c-gold); }
+.step-dot.done { background:var(--c-gold); color:#1A1A17; border-color:var(--c-gold); }
+.step-dot.current { background:var(--c-navy); color:var(--c-gold-l); border-color:var(--c-gold); }
 .step-label { font-size:.62rem; text-align:center; color:var(--c-muted); margin-top:.4rem; max-width:65px; line-height:1.3; }
 .step-label.done,.step-label.current { color:var(--c-navy); font-weight:600; }
 
@@ -453,7 +453,7 @@ a { text-decoration:none; }
 }
 .filter-bar input:focus, .filter-bar select:focus {
   outline:none; border-color:var(--c-gold); background:var(--c-surface);
-  box-shadow:0 0 0 3px rgba(200,169,81,.1);
+  box-shadow:0 0 0 3px rgba(198,161,91,.1);
 }
 .filter-bar input::placeholder { color:#C4CADC; }
 
@@ -476,7 +476,7 @@ a { text-decoration:none; }
 .stat-c { background:var(--c-surface); border-radius:var(--radius); border:1px solid var(--c-border); padding:1.25rem; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:1rem; }
 .stat-c__icon { width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.125rem; flex-shrink:0; }
 .ic--blue   { background:#EFF6FF; color:var(--c-blue); }
-.ic--gold   { background:#FEF9EC; color:var(--c-gold-d); }
+.ic--gold   { background:#F5EDDD; color:var(--c-gold-d); }
 .ic--green  { background:var(--c-green-l); color:var(--c-green); }
 .ic--red    { background:var(--c-red-l); color:var(--c-red); }
 .ic--navy   { background:#EEF2FF; color:var(--c-navy); }
@@ -689,7 +689,7 @@ a { text-decoration:none; }
 
   <div class="sidebar-brand">
     <a href="{{ route('home',['locale'=>app()->getLocale()]) }}">
-      <img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa Invest">
+      <img src="{{ asset('assets/images/logo-aurenza-light.svg') }}" alt="Aurenza Capital">
     </a>
   </div>
 
@@ -775,7 +775,7 @@ a { text-decoration:none; }
          class="sidebar-link {{ request()->routeIs('admin.support*') ? 'active':'' }}">
         <i class="fas fa-comments icon"></i> Support
         @if($saSupUnread > 0)
-        <span style="margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--c-gold);color:var(--c-navy);font-size:.62rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center">{{ $saSupUnread }}</span>
+        <span style="margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--c-gold);color:#1A1A17;font-size:.62rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center">{{ $saSupUnread }}</span>
         @endif
       </a>
       @endhasanyrole
@@ -833,7 +833,7 @@ a { text-decoration:none; }
          class="sidebar-link {{ request()->routeIs('admin.support*') ? 'active':'' }}">
         <i class="fas fa-comments icon"></i> Support
         @if($admSupUnread > 0)
-        <span style="margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--c-gold);color:var(--c-navy);font-size:.62rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center">{{ $admSupUnread }}</span>
+        <span style="margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--c-gold);color:#1A1A17;font-size:.62rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center">{{ $admSupUnread }}</span>
         @endif
       </a>
       @endhasanyrole
@@ -882,7 +882,7 @@ a { text-decoration:none; }
       <button id="pwa-install-btn" onclick="doInstallPwa()"
         title="Installer l'application"
         style="display:none;align-items:center;gap:.4rem;
-          background:var(--c-gold);color:var(--c-navy);
+          background:var(--c-gold);color:#1A1A17;
           border:none;border-radius:var(--radius-sm);
           padding:.4rem .875rem;font-size:.78rem;font-weight:700;
           cursor:pointer;font-family:inherit;transition:background .2s;flex-shrink:0">
@@ -896,7 +896,7 @@ a { text-decoration:none; }
         <button class="topbar-badge" id="notifBell" onclick="toggleNotifPanel()"
                 style="border:none;cursor:pointer;background:var(--c-surface)" title="Notifications">
           <i class="fas fa-bell"></i>
-          <span id="adminNotifBadge" style="position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--c-gold);color:var(--c-navy);font-size:.58rem;font-weight:800;display:{{ $adminUnread > 0 ? 'flex' : 'none' }};align-items:center;justify-content:center;border:2px solid var(--c-surface)">{{ $adminUnread > 9 ? '9+' : $adminUnread }}</span>
+          <span id="adminNotifBadge" style="position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--c-gold);color:#1A1A17;font-size:.58rem;font-weight:800;display:{{ $adminUnread > 0 ? 'flex' : 'none' }};align-items:center;justify-content:center;border:2px solid var(--c-surface)">{{ $adminUnread > 9 ? '9+' : $adminUnread }}</span>
         </button>
         {{-- Dropdown panel --}}
         <div id="notifPanel" style="display:none;position:absolute;top:calc(100% + 10px);right:0;
@@ -988,14 +988,14 @@ function _renderNotifs(list) {
   const bgMap    = { support:'rgba(124,58,237,.1)', transfer:'rgba(37,99,235,.1)', system:'rgba(217,119,6,.1)' };
   el.innerHTML = list.map(n => {
     const col = colorMap[n.type] || 'var(--c-gold)';
-    const bg  = bgMap[n.type]   || 'rgba(200,169,81,.1)';
+    const bg  = bgMap[n.type]   || 'rgba(198,161,91,.1)';
     const unreadDot = n.read ? '' : `<div style="width:6px;height:6px;border-radius:50%;background:var(--c-gold);flex-shrink:0;margin-top:.4rem"></div>`;
     return `<div onclick="${n.url ? `window.location='${n.url}'` : ''}"
       style="display:flex;align-items:flex-start;gap:.75rem;padding:.75rem 1.125rem;
         border-bottom:1px solid var(--c-border);cursor:${n.url ? 'pointer' : 'default'};
-        background:${n.read ? 'transparent' : 'rgba(200,169,81,.04)'};transition:.15s"
+        background:${n.read ? 'transparent' : 'rgba(198,161,91,.04)'};transition:.15s"
       onmouseover="this.style.background='var(--c-bg)'"
-      onmouseout="this.style.background='${n.read ? 'transparent' : 'rgba(200,169,81,.04)'}'">
+      onmouseout="this.style.background='${n.read ? 'transparent' : 'rgba(198,161,91,.04)'}'">
       <div style="width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;
         align-items:center;justify-content:center;font-size:.8rem;background:${bg};color:${col}">
         <i class="fas fa-${n.icon}"></i>
@@ -1110,12 +1110,12 @@ function doInstallPwa() {
     border-radius:var(--radius);padding:1rem 1.125rem;
     box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:9999;
     flex-direction:column;gap:.625rem;
-    border:1px solid rgba(200,169,81,.3)">
+    border:1px solid rgba(198,161,91,.3)">
   <div style="display:flex;align-items:center;justify-content:space-between">
     <div style="display:flex;align-items:center;gap:.625rem">
       <img src="/images/icon-192.png" style="width:36px;height:36px;border-radius:8px" alt="">
       <div>
-        <div style="font-size:.8rem;font-weight:700;color:#fff">Credixa Admin</div>
+        <div style="font-size:.8rem;font-weight:700;color:#fff">Aurenza Capital Admin</div>
         <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Installer comme application</div>
       </div>
     </div>
@@ -1126,15 +1126,15 @@ function doInstallPwa() {
   </div>
   <div style="font-size:.73rem;color:rgba(255,255,255,.65);line-height:1.6">
     <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">
-      <span style="background:rgba(200,169,81,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">1</span>
+      <span style="background:rgba(198,161,91,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">1</span>
       Appuyez sur <strong style="color:#fff">Partager</strong> <i class="fas fa-share-square" style="color:var(--c-gold)"></i>
     </div>
     <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">
-      <span style="background:rgba(200,169,81,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">2</span>
+      <span style="background:rgba(198,161,91,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">2</span>
       Puis <strong style="color:#fff">Sur l'écran d'accueil</strong> <i class="fas fa-plus-square" style="color:var(--c-gold)"></i>
     </div>
     <div style="display:flex;align-items:center;gap:.5rem">
-      <span style="background:rgba(200,169,81,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">3</span>
+      <span style="background:rgba(198,161,91,.15);border-radius:4px;padding:.1rem .4rem;font-size:.7rem;color:var(--c-gold);font-weight:700">3</span>
       Appuyez sur <strong style="color:#fff">Ajouter</strong>
     </div>
   </div>

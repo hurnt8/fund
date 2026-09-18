@@ -29,5 +29,5 @@ return [
     'newsletter_title' => 'Stay informed about our offers',
     'subscribe'        => 'Subscribe',
     'read_more'        => 'Learn more',
-    'footer_desc'      => 'Credixa is your trusted partner for fast, flexible and personalized financing solutions across Europe.',
+    'footer_desc'      => 'Aurenza Capital is your trusted partner for fast, flexible and personalized financing solutions across Europe.',
 ];

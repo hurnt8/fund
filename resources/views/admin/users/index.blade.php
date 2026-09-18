@@ -283,7 +283,7 @@
                     <div class="col-md-4">
                       <label class="form-label-pro">Devise</label>
                       <select name="currency" class="form-control-pro">
-                        @foreach(config('credixa.currencies') as $cur)
+                        @foreach(config('aurenza.currencies') as $cur)
                         <option value="{{ $cur }}" {{ old('currency',$user->currency)===$cur?'selected':'' }}>{{ $cur }}</option>
                         @endforeach
                       </select>
@@ -550,8 +550,8 @@
             <div class="col-md-6">
               <label class="form-label-pro">Devise</label>
               <select name="currency" class="form-control-pro">
-                @foreach(config('credixa.currencies') as $cur)
-                <option value="{{ $cur }}" {{ $cur===config('credixa.default_currency')?'selected':'' }}>{{ $cur }}</option>
+                @foreach(config('aurenza.currencies') as $cur)
+                <option value="{{ $cur }}" {{ $cur===config('aurenza.default_currency')?'selected':'' }}>{{ $cur }}</option>
                 @endforeach
               </select>
             </div>

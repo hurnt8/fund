@@ -3,7 +3,7 @@
 return [
     'title' => 'Pravila o privatnosti',
     'introduction_title' => '1. Uvod',
-    'introduction_text' => 'U Credixau predani smo zaštiti i poštivanju vaše privatnosti. Ova pravila o privatnosti objašnjavaju kako prikupljamo, koristimo, otkrivamo i štitimo vaše osobne podatke kada koristite našu web stranicu i online usluge posudbe. Korištenjem naše stranice prihvaÄate postupke opisane u ovim pravilima.',
+    'introduction_text' => 'U Aurenza Capitalu predani smo zaštiti i poštivanju vaše privatnosti. Ova pravila o privatnosti objašnjavaju kako prikupljamo, koristimo, otkrivamo i štitimo vaše osobne podatke kada koristite našu web stranicu i online usluge posudbe. Korištenjem naše stranice prihvaÄate postupke opisane u ovim pravilima.',
     'information_collection_title' => '2. Informacije koje prikupljamo',
     'information_collection_text' => 'MoÅ¾emo prikupljati i obraÄivati ââsljedeÄe informacije o vama:',
     'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
     'contact_title' => '8. Kontakt',
     'contact_text' => 'Ako imate pitanja, nedoumica ili zahtjeva u vezi s ovom politikom privatnosti ili naÄinom na koji postupamo s vašim osobnim podacima, kontaktirajte nas na:',
     'contact_details' => [
-        'Credixa',
+        'Aurenza Capital',
         'Adresa: Rua de Santo António 33, 7200-175, Portugal',
-        'E-pošta: contact@credixa.eu',
+        'E-pošta: contact@aurenzacapital.com',
         'Telefon: +31 6 57341120 ',
     ],
 ];

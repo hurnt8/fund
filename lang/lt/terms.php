@@ -5,7 +5,7 @@ return [
     'skyriai' => [
         [
             'title' => '1. Ä®vadas',
-            'content' => 'Sveiki atvykÄ Ä¯ Credixa. Naudodamiesi mÅ«sÅ³ svetaine ir paslaugomis, sutinkate laikytis toliau nurodytÅ³ sÄlygÅ³ ir bÅ«ti jÅ³ saistomos. Prašome atidÅ¾iai perskaityti šias sÄlygas prieš naudodamiesi mÅ«sÅ³ svetaine arba imdami paskolÄ su mumis.',
+            'content' => 'Sveiki atvykÄ Ä¯ Aurenza Capital. Naudodamiesi mÅ«sÅ³ svetaine ir paslaugomis, sutinkate laikytis toliau nurodytÅ³ sÄlygÅ³ ir bÅ«ti jÅ³ saistomos. Prašome atidÅ¾iai perskaityti šias sÄlygas prieš naudodamiesi mÅ«sÅ³ svetaine arba imdami paskolÄ su mumis.',
         ],
         [
             'title' => '2. SvetainÄs naudojimas',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. PaskolÅ³ paslaugos',
-            'content' => 'Credixa siÅ«lo Ä¯vairiÅ³ tipÅ³ paskolas, kad patenkintÅ³ jÅ«sÅ³ finansinius poreikius. Visos paskolos turi bÅ«ti patvirtintos, remiantis mÅ«sÅ³ Ä¯vertinimu apie jÅ«sÅ³ kreditingumÄ ir grÄÅ¾inimo galimybes. KonkreÄios kiekvienos paskolos sÄlygos, Ä¯skaitant palÅ«kanÅ³ normas, terminus ir grÄÅ¾inimo sÄlygas, bus išsamiai nurodytos jÅ«sÅ³ paskolos sutartyje.',
+            'content' => 'Aurenza Capital siÅ«lo Ä¯vairiÅ³ tipÅ³ paskolas, kad patenkintÅ³ jÅ«sÅ³ finansinius poreikius. Visos paskolos turi bÅ«ti patvirtintos, remiantis mÅ«sÅ³ Ä¯vertinimu apie jÅ«sÅ³ kreditingumÄ ir grÄÅ¾inimo galimybes. KonkreÄios kiekvienos paskolos sÄlygos, Ä¯skaitant palÅ«kanÅ³ normas, terminus ir grÄÅ¾inimo sÄlygas, bus išsamiai nurodytos jÅ«sÅ³ paskolos sutartyje.',
         ],
         [
             'title' => '4. Sutarties ir draudimo išlaidos',
-            'content' => 'Išimant paskolÄ su Credixa, gali bÅ«ti taikomi sutarties ir draudimo mokesÄiai. Šis mokestis padengia administracines išlaidas, susijusias su paskolos nustatymu ir valdymu. Konkreti informacija apie šiuos mokesÄius bus aiškiai nurodyta jÅ«sÅ³ paskolos sutartyje. Šiuos mokesÄius privalote sumokÄti pagal nurodytas sÄlygas.',
+            'content' => 'Išimant paskolÄ su Aurenza Capital, gali bÅ«ti taikomi sutarties ir draudimo mokesÄiai. Šis mokestis padengia administracines išlaidas, susijusias su paskolos nustatymu ir valdymu. Konkreti informacija apie šiuos mokesÄius bus aiškiai nurodyta jÅ«sÅ³ paskolos sutartyje. Šiuos mokesÄius privalote sumokÄti pagal nurodytas sÄlygas.',
         ],
         [
             'title' => '5. Konfidencialumas',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. AtsakomybÄs apribojimas',
-            'content' => 'Credixa nebus atsakinga uÅ¾ jokius netiesioginius, specialius ar pasekminius nuostolius ar Å¾alÄ, atsiradusiÄ dÄl mÅ«sÅ³ svetainÄs ar paslaugÅ³ naudojimo arba negalÄjimo ja naudotis, Ä¯skaitant pelno praradimÄ, duomenÅ³ praradimÄ ar verslo nutraukimÄ, net jei buvome informuoti apie tokios Å¾alos galimybÄ.',
+            'content' => 'Aurenza Capital nebus atsakinga uÅ¾ jokius netiesioginius, specialius ar pasekminius nuostolius ar Å¾alÄ, atsiradusiÄ dÄl mÅ«sÅ³ svetainÄs ar paslaugÅ³ naudojimo arba negalÄjimo ja naudotis, Ä¯skaitant pelno praradimÄ, duomenÅ³ praradimÄ ar verslo nutraukimÄ, net jei buvome informuoti apie tokios Å¾alos galimybÄ.',
         ],
         [
             'pavadinimas' => '8. SÄlygÅ³ pakeitimai',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'pavadinimas' => '9. Kontaktas',
-            'content' => 'Jei turite klausimÅ³ ar neaiškumÅ³ dÄl šiÅ³ taisykliÅ³ ir sÄlygÅ³, susisiekite su mumis adresu:<br><br>Credixa<br>Adresas: Rua de Santo António 33, 7200-175, Portugal<br>El. paštas: contact@credixa.eu<br>Telefonas: +31 6 57341120 '
+            'content' => 'Jei turite klausimÅ³ ar neaiškumÅ³ dÄl šiÅ³ taisykliÅ³ ir sÄlygÅ³, susisiekite su mumis adresu:<br><br>Aurenza Capital<br>Adresas: Rua de Santo António 33, 7200-175, Portugal<br>El. paštas: contact@aurenzacapital.com<br>Telefonas: +31 6 57341120 '
         ],
     ],
 ];

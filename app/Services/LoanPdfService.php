@@ -112,7 +112,7 @@ class LoanPdfService
         $texts    = $translations[$locale] ?? $translations['fr'];
         $schedule = $loan->amortization_schedule ?? [];
 
-        $logoPath   = public_path('assets/images/logo new.png');
+        $logoPath   = public_path('assets/images/logo-aurenza.png');
         $logoBase64 = file_exists($logoPath)
             ? 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath))
             : null;

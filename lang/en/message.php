@@ -12,13 +12,13 @@ return [
     'month_abbr'           => 'mo',
     'optional'             => 'optional',
     'loan_admin_subject'   => 'New loan request',
-    'loan_admin_intro'     => 'A customer just submitted a loan request via the Credixa Invest website.',
+    'loan_admin_intro'     => 'A customer just submitted a loan request via the Aurenza Capital website.',
 
     'loan_confirm_subject'   => 'Your loan request is being processed',
     'loan_confirm_greeting'  => 'Hello :name,',
     'loan_confirm_body'      => 'We have received your loan request for an amount of :amount :currency over :duration months. It is currently being processed by our team.',
     'loan_confirm_footer'    => 'We will contact you as soon as possible. Thank you for trusting us.',
-    'loan_confirm_signature' => 'The Credixa Invest team',
+    'loan_confirm_signature' => 'The Aurenza Capital team',
     'loan_confirm_noreply'   => 'This email was sent from a no-reply address. Please do not reply directly to this message.',
 
     'loan_conditions_title'  => 'Eligibility conditions',
@@ -48,7 +48,7 @@ return [
     'docs_confirm_greeting'  => 'Hello :name,',
     'docs_confirm_body'      => 'We have received your documents (address and identity document). Our team will review them and get back to you within 24 hours.',
     'docs_confirm_footer'    => 'Thank you for your trust. We remain available for any questions.',
-    'docs_confirm_signature' => 'The Credixa Invest team',
+    'docs_confirm_signature' => 'The Aurenza Capital team',
 
     'docs_upload_hint'  => 'Drag and drop or click to choose a file',
     'docs_single_photo' => 'For this document type, a single photo is enough.',

@@ -54,11 +54,11 @@ class LoanController extends Controller
             'darly'    => 'required|numeric|min:1',
             'subject'  => 'required|string',
             'objet'    => 'nullable|string|max:2000',
-            'currency' => 'nullable|string|in:' . implode(',', config('credixa.currencies')),
+            'currency' => 'nullable|string|in:' . implode(',', config('aurenza.currencies')),
         ], [
             'amount.min' => 'Le montant minimum pour une demande de prêt est de 1000.',
         ]);
-        $data['currency'] = $data['currency'] ?? config('credixa.default_currency');
+        $data['currency'] = $data['currency'] ?? config('aurenza.default_currency');
 
         $locale = $request->input('locale', 'fr');
         if (!in_array($locale, ['fr', 'en', 'pl', 'es', 'ro', 'hr', 'pt'])) {
@@ -70,8 +70,8 @@ class LoanController extends Controller
             . '?name='  . urlencode($data['name'])
             . '&email=' . urlencode($data['email']);
 
-        // Email 1 : dossier complet → contact@credixa.eu
-        Mail::to('contact@credixa.eu')->send(new LoanMail($data, $locale));
+        // Email 1 : dossier complet → contact@aurenzacapital.com
+        Mail::to(config('mail.contact_address'))->send(new LoanMail($data, $locale));
 
         // Email 2 : confirmation → demandeur
         Mail::to($data['email'])->send(new LoanConfirmationMail($data, $locale));
@@ -151,7 +151,7 @@ class LoanController extends Controller
 
         // ── Envoi des emails ─────────────────────────────────────────────────
         try {
-            Mail::to('contact@credixa.eu')->send(new LoanDocumentsMail($data, $attachments, $locale));
+            Mail::to(config('mail.contact_address'))->send(new LoanDocumentsMail($data, $attachments, $locale));
             Mail::to($data['email'])->send(new LoanDocumentsConfirmationMail($data, $locale));
         } finally {
             foreach ($tempFiles as $p) {

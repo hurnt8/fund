@@ -22,5 +22,5 @@ return [
     'phone_title' => 'Telefon',
     'phone_desc' => '+33 1 23 45 67 89',
     'mail_title' => 'E-mail',
-    'mail_desc' => 'contact@Credixa.fr',
+    'mail_desc' => 'contact@aurenzacapital.com',
 ];

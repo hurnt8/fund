@@ -5,7 +5,7 @@ return [
     'sections' => [
         [
             'title' => '1. Uvod',
-            'content' => 'Dobrodošli pri Credixa. Z uporabo naše spletne strani in storitev se strinjate, da se boste držali in bili vezani na naslednje pogoje in določila. Prosimo, natančno preberite te pogoje, preden uporabite našo spletno stran ali sklenete posojilo z nami.'
+            'content' => 'Dobrodošli pri Aurenza Capital. Z uporabo naše spletne strani in storitev se strinjate, da se boste držali in bili vezani na naslednje pogoje in določila. Prosimo, natančno preberite te pogoje, preden uporabite našo spletno stran ali sklenete posojilo z nami.'
         ],
         [
             'title' => '2. Uporaba spletne strani',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. Posojilne storitve',
-            'content' => 'Credixa ponuja različne vrste posojil, da zadosti vašim finančnim potrebam. Vsa posojila so predmet odobritve na podlagi naše ocene vaše kreditne sposobnosti in zmožnosti odplačevanja. Specifični pogoji vsakega posojila, vključno z obrestnimi merami, ročnostmi in pogoji odplačevanja, bodo podrobno opisani v vaši posojilni pogodbi.'
+            'content' => 'Aurenza Capital ponuja različne vrste posojil, da zadosti vašim finančnim potrebam. Vsa posojila so predmet odobritve na podlagi naše ocene vaše kreditne sposobnosti in zmožnosti odplačevanja. Specifični pogoji vsakega posojila, vključno z obrestnimi merami, ročnostmi in pogoji odplačevanja, bodo podrobno opisani v vaši posojilni pogodbi.'
         ],
         [
             'title' => '4. Stroški pogodbe in zavarovanja',
-            'content' => 'Ob sklenitvi posojila pri Credixa se lahko zaračunajo stroški pogodbe in zavarovanja. Ta pristojbina pokriva upravne stroške, povezane s postavitvijo in upravljanjem vašega posojila. Specifične podrobnosti o teh stroških bodo jasno navedene v vaši posojilni pogodbi. Te stroške morate plačati v skladu s predpisi.'
+            'content' => 'Ob sklenitvi posojila pri Aurenza Capital se lahko zaračunajo stroški pogodbe in zavarovanja. Ta pristojbina pokriva upravne stroške, povezane s postavitvijo in upravljanjem vašega posojila. Specifične podrobnosti o teh stroških bodo jasno navedene v vaši posojilni pogodbi. Te stroške morate plačati v skladu s predpisi.'
         ],
         [
             'title' => '5. Zaupnost',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. Omejitev odgovornosti',
-            'content' => 'Credixa ne bo odgovoren za kakršno koli posredno, posebno ali posledično izgubo ali škodo, ki izhaja iz uporabe ali nezmožnosti uporabe naše spletne strani ali storitev, vključno z izgubo dobička, izgubo podatkov ali prekinitev poslovanja, tudi če smo bili obveščeni o možnosti take škode.'
+            'content' => 'Aurenza Capital ne bo odgovoren za kakršno koli posredno, posebno ali posledično izgubo ali škodo, ki izhaja iz uporabe ali nezmožnosti uporabe naše spletne strani ali storitev, vključno z izgubo dobička, izgubo podatkov ali prekinitev poslovanja, tudi če smo bili obveščeni o možnosti take škode.'
         ],
         [
             'title' => '8. Spremembe pogojev',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Kontakt',
-            'content' => 'Če imate kakršna koli vprašanja ali pomisleke glede teh pogojev in določil, nas kontaktirajte na:<br><br>Credixa<br>Naslov: Calcea Victoriei 118, Sector 1, 010093 Bukarešta<br>E-pošta: contact@credixa.eu<br>Telefon: +31 6 57341120 '
+            'content' => 'Če imate kakršna koli vprašanja ali pomisleke glede teh pogojev in določil, nas kontaktirajte na:<br><br>Aurenza Capital<br>Naslov: Calcea Victoriei 118, Sector 1, 010093 Bukarešta<br>E-pošta: contact@aurenzacapital.com<br>Telefon: +31 6 57341120 '
         ],
     ],
 ];

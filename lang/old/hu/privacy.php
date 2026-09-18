@@ -3,7 +3,7 @@
 return [
     'title' => 'Adatvédelmi szabályzat',
     'introduction_title' => '1. Bevezetés',
-    'introduction_text' => 'A Credixanál elkötelezettek vagyunk az Ön adatainak védelme és tiszteletben tartása mellett. Ez az adatvédelmi szabályzat elmagyarázza, hogyan gyÅ±jtjük, használjuk, hozzuk nyilvánosságra és védjük személyes adatait, amikor weboldalunkat és online kölcsönzési szolgáltatásainkat használja. Oldalunk használatával Ön elfogadja a jelen szabályzatban leírt gyakorlatot.',
+    'introduction_text' => 'A Aurenza Capitalnál elkötelezettek vagyunk az Ön adatainak védelme és tiszteletben tartása mellett. Ez az adatvédelmi szabályzat elmagyarázza, hogyan gyÅ±jtjük, használjuk, hozzuk nyilvánosságra és védjük személyes adatait, amikor weboldalunkat és online kölcsönzési szolgáltatásainkat használja. Oldalunk használatával Ön elfogadja a jelen szabályzatban leírt gyakorlatot.',
     'information_collection_title' => '2. Az általunk gyÅ±jtött információk',
     'information_collection_text' => 'A következÅ információkat gyÅ±jthetjük és dolgozhatjuk fel ÖnrÅl:',
     'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
     'contact_title' => '8. Kapcsolatba lépni',
     'contact_text' => 'Ha bármilyen kérdése, aggálya vagy kérése van ezzel az adatvédelmi szabályzattal vagy azzal kapcsolatban, hogy miként kezeljük személyes adatait, kérjük, lépjen kapcsolatba velünk a következÅ címen:',
     'contact_details' => [
-        "Credixa",
+        "Aurenza Capital",
         "Cím: Rua de Santo António 33, 7200-175, Portugal",
-        "E-mail: contact@credixa.eu",
+        "E-mail: contact@aurenzacapital.com",
         "Telefon: +31 6 57341120 ",
     ],
 ];

@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa - Best online lenders in Germany, Spain, Hungary etc.',
+    'general_title' => 'Aurenza Capital - Best online lenders in Germany, Spain, Hungary etc.',
     'banner_title' => 'Get the perfect loan for all your online needs.',
-    'banner_text' => 'Millions of people use Credixa to realize their projects.',
+    'banner_text' => 'Millions of people use Aurenza Capital to realize their projects.',
     'get_loan_now' => 'Get a loan now',
     'popular_loans' => 'Popular loan types:',
     'personal_loan' => 'Personal loan',
@@ -62,11 +62,11 @@ return [
 
     'custom_loan_services' => 'Take advantage of our tailor-made loan services',
     'reliability_quality' => 'Transparency and Reliability',
-    'reliability_quality_description' => 'At Credixa we offer clear and reliable lending solutions, backed by positive customer reviews and full transparency.',
+    'reliability_quality_description' => 'At Aurenza Capital we offer clear and reliable lending solutions, backed by positive customer reviews and full transparency.',
     'financial_transparency' => 'No Hidden Costs',
     'financial_transparency_description' => 'Review our terms, discuss rates, and only pay once your loan is approved.',
     'optimal_security' => 'Security and Privacy',
-    'optimal_security_description' => 'Your personal data is safe with us. Credixa uses advanced security protocols to protect your privacy. Our support is available 24/7 for any assistance.',
+    'optimal_security_description' => 'Your personal data is safe with us. Aurenza Capital uses advanced security protocols to protect your privacy. Our support is available 24/7 for any assistance.',
     'apply_loan' => 'Request a loan',
 
     'total_loans_granted' => 'Total Loans Granted',
@@ -124,7 +124,7 @@ return [
     ],
 
     'about_title' => 'Join the world\'s best marketplace for workers',
-    'about_description' => 'Credixa is your trusted platform for obtaining loans with an exceptional customer experience. We are committed to providing you with simple, secure and fast financial solutions.',
+    'about_description' => 'Aurenza Capital is your trusted platform for obtaining loans with an exceptional customer experience. We are committed to providing you with simple, secure and fast financial solutions.',
     'rating' => '4.9/5',
     'rating_description' => 'Customers rate professionals',
     'projects_completed' => '+12M',
@@ -166,7 +166,7 @@ return [
         'placeholder' => 'Your email address',
         'button' => 'Send',
     ],
-    'rights_reserved' => '© Credixa. 2024. All rights reserved.',
+    'rights_reserved' => '© Aurenza Capital. 2024. All rights reserved.',
 
     'en' => 'English',
     'fr' => 'French',

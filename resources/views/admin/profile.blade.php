@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title', 'Mon Profil — Credixa')
+@section('title', 'Mon Profil — Aurenza Capital')
 @section('page_title', 'Mon Profil')
 
 @section('content')
@@ -10,7 +10,7 @@
     <div style="width:72px;height:72px;border-radius:50%;margin:0 auto .875rem;
       background:linear-gradient(135deg,var(--c-navy),var(--c-navy-3));
       display:flex;align-items:center;justify-content:center;
-      font-size:1.75rem;font-weight:800;color:var(--c-gold)">
+      font-size:1.75rem;font-weight:800;color:var(--c-gold-l)">
       {{ strtoupper(substr($user->name,0,1)) }}
     </div>
     <div style="font-size:1.0625rem;font-weight:800;color:var(--c-navy)">{{ $user->name }}</div>
@@ -74,7 +74,7 @@
 
         <button type="submit"
           style="padding:.625rem 1.5rem;border-radius:var(--radius-sm);border:none;
-            background:var(--c-navy);color:var(--c-gold);font-size:.8125rem;font-weight:700;cursor:pointer;transition:.15s"
+            background:var(--c-navy);color:var(--c-gold-l);font-size:.8125rem;font-weight:700;cursor:pointer;transition:.15s"
           onmouseover="this.style.background='var(--c-navy-3)'" onmouseout="this.style.background='var(--c-navy)'">
           <i class="fas fa-save" style="margin-right:.4rem"></i> Enregistrer
         </button>

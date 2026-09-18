@@ -24,7 +24,7 @@ class PushService
         $this->webPush->setReuseVAPIDHeaders(true);
     }
 
-    public function sendToUser(User $user, string $title, string $body, string $url = '/app/notifications', string $tag = 'credixa'): void
+    public function sendToUser(User $user, string $title, string $body, string $url = '/app/notifications', string $tag = 'aurenza'): void
     {
         $subscriptions = PushSubscription::where('user_id', $user->id)->get();
 

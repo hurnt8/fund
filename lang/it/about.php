@@ -1,19 +1,19 @@
 <?php
 
 return [
-'banner_title' => 'Scopri Credixa',
+'banner_title' => 'Scopri Aurenza Capital',
 'banner_subtitle' => 'Chi siamo',
 'banner_description' => 'Prendi in prestito più facilmente con soluzioni di prestito flessibili adattate alle tue esigenze finanziarie.',
 
-'section1_title' => 'Perché scegliere Credixa',
-'section1_p1' => 'In Credixa, crediamo fermamente che tutti meritino un’opportunità per realizzare i propri sogni finanziari. Fin dalla nostra fondazione, ci siamo impegnati a fornire soluzioni di prestito flessibili e accessibili per soddisfare le diverse esigenze dei nostri clienti. Che tu stia cercando di finanziare un progetto personale, acquistare un’auto o espandere la tua attività, abbiamo il prestito giusto per te.',
+'section1_title' => 'Perché scegliere Aurenza Capital',
+'section1_p1' => 'In Aurenza Capital, crediamo fermamente che tutti meritino un’opportunità per realizzare i propri sogni finanziari. Fin dalla nostra fondazione, ci siamo impegnati a fornire soluzioni di prestito flessibili e accessibili per soddisfare le diverse esigenze dei nostri clienti. Che tu stia cercando di finanziare un progetto personale, acquistare un’auto o espandere la tua attività, abbiamo il prestito giusto per te.',
 'section1_p2' => 'I nostri servizi sono progettati per offrire un’esperienza senza problemi, con un processo di richiesta rapido e semplice. Comprendiamo che ogni cliente è unico, motivo per cui offriamo prestiti personalizzati che si adattano alle tue esigenze specifiche. Inoltre, i nostri consulenti dedicati sono sempre disponibili per guidarti in ogni fase del percorso, assicurandoti supporto completo dall’inizio alla fine.',
 'proposed' => 'Offriamo:',
 'check1' => 'Prestiti personalizzati in base alle tue esigenze specifiche.',
 'check2' => 'Consulenti dedicati per aiutarti in ogni fase del percorso.',
 'check3' => 'Termini di rimborso flessibili adatti alla tua situazione finanziaria.',
 'check4' => 'Prestiti senza la necessità di una busta paga.',
-'section1_p3' => 'In Credixa, la nostra missione è aiutarti a raggiungere i tuoi obiettivi finanziari con soluzioni di prestito su misura. Unisciti a noi oggi e scopri come possiamo aiutarti a realizzare i tuoi progetti.',
+'section1_p3' => 'In Aurenza Capital, la nostra missione è aiutarti a raggiungere i tuoi obiettivi finanziari con soluzioni di prestito su misura. Unisciti a noi oggi e scopri come possiamo aiutarti a realizzare i tuoi progetti.',
 'btn' => 'Trova il tuo prestito ideale',
 
 'faq_title' => 'Domande frequenti',

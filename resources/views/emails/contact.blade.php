@@ -2,7 +2,7 @@
 # Nouveau message
 
 <p style="font-size: 14px !important;">
-   Vous avez un nouveau message depuis Credixa
+   Vous avez un nouveau message depuis Aurenza Capital
    <br>
    <br>
    Informations de l'expéditeur : <br>

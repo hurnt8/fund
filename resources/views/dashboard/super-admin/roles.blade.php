@@ -168,7 +168,7 @@ $roleConf = [
   'admin' => [
     'icon'   => 'fa-shield-alt',
     'color'  => 'var(--c-gold-d)',
-    'bg'     => '#FEF9EC',
+    'bg'     => '#F5EDDD',
     'badge'  => 'bs-amber',
     'name'   => 'Administrateur',
     'desc'   => 'Gestion complète des prêts, des utilisateurs et des modèles de contrats.',
@@ -235,7 +235,7 @@ $roleConf = [
           </th>
           <th>
             <div class="perm-col-head">
-              <div class="perm-col-icon" style="background:#FEF9EC;color:var(--c-gold-d)"><i class="fas fa-shield-alt"></i></div>
+              <div class="perm-col-icon" style="background:#F5EDDD;color:var(--c-gold-d)"><i class="fas fa-shield-alt"></i></div>
               <span>Admin</span>
             </div>
           </th>
@@ -337,7 +337,7 @@ $roleConf = [
         @forelse($users as $u)
         @php
           $rn = $u->getRoleNames()->first() ?? '';
-          $avatarColors = ['#2563EB','#059669','#D97706','#7C3AED','#DC2626','#0D9488','#C8A951','#0B1A2E'];
+          $avatarColors = ['#2563EB','#059669','#D97706','#7C3AED','#DC2626','#0D9488','#C6A15B','#0E3B2E'];
           $avatarBg = $avatarColors[crc32($u->email) % count($avatarColors)];
           $roleBadge = ['super-admin'=>'bs-dark','admin'=>'bs-amber','client'=>'bs-blue'][$rn] ?? 'bs-gray';
         @endphp

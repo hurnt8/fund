@@ -1,7 +1,7 @@
 <?php
 /*
  * Script de diagnostic — À SUPPRIMER après vérification
- * Accès : https://credixa.eu/diag.php
+ * Accès : https://aurenzacapital.com/diag.php
  */
 header('Content-Type: text/plain; charset=utf-8');
 
@@ -16,7 +16,7 @@ $checks = [
     'sw.js',
 ];
 
-echo "=== DIAGNOSTIC CREDIXA ===\n";
+echo "=== DIAGNOSTIC AURENZA CAPITAL ===\n";
 echo "DOCUMENT_ROOT  : " . $_SERVER['DOCUMENT_ROOT'] . "\n";
 echo "SCRIPT_FILENAME: " . $_SERVER['SCRIPT_FILENAME'] . "\n";
 echo "__DIR__        : " . __DIR__ . "\n\n";

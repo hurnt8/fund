@@ -5,8 +5,10 @@
 
         <!-- Logo -->
         <a href="{{ route('home', ['locale' => $locale]) }}" class="flex items-center gap-3 flex-shrink-0">
-            <img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa" class="h-12 lg:h-14 logo new-img transition-opacity duration-300">
-            <img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa" class="h-10 logo new-img transition-opacity duration-300 hidden">
+            <img src="{{ asset('assets/images/logo-aurenza-light.svg') }}" alt="Aurenza Capital"
+                 class="h-12 lg:h-14 logo-img--white transition-opacity duration-300">
+            <img src="{{ asset('assets/images/logo-aurenza-dark.svg') }}" alt="Aurenza Capital"
+                 class="h-12 lg:h-14 logo-img--color transition-opacity duration-300">
         </a>
 
         <!-- Desktop nav -->
@@ -121,7 +123,5 @@
     </div>
 </header>
 
-<!-- Header spacer (non-home pages) -->
-@if(!request()->routeIs('home'))
+<!-- Espaceur sous l'en-tête fixe -->
 <div class="h-20"></div>
-@endif

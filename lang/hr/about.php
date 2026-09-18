@@ -1,19 +1,19 @@
 <?php
 
 return [
-    'banner_title' => 'Otkrijte Credixa',
+    'banner_title' => 'Otkrijte Aurenza Capital',
     'banner_subtitle' => 'O nama',
     'banner_description' => 'Posudite lakše uz fleksibilna rješenja zajma prilagođena vašim financijskim potrebama.',
 
-    'section1_title' => 'Zašto odabrati Credixa',
-    'section1_p1' => 'Mi u Credixau čvrsto vjerujemo da svatko zaslužuje priliku ostvariti svoje financijske snove. Od svog osnutka, predani smo pružanju fleksibilnih i pristupačnih rješenja za kreditiranje kako bismo zadovoljili različite potrebe naših klijenata. Bilo da želite financirati osobni projekt, kupiti automobil ili proširiti svoje poslovanje, mi imamo kredit koji vam je potreban.',
+    'section1_title' => 'Zašto odabrati Aurenza Capital',
+    'section1_p1' => 'Mi u Aurenza Capitalu čvrsto vjerujemo da svatko zaslužuje priliku ostvariti svoje financijske snove. Od svog osnutka, predani smo pružanju fleksibilnih i pristupačnih rješenja za kreditiranje kako bismo zadovoljili različite potrebe naših klijenata. Bilo da želite financirati osobni projekt, kupiti automobil ili proširiti svoje poslovanje, mi imamo kredit koji vam je potreban.',
     'section1_p2' => 'Naše usluge osmišljene su za pružanje iskustva bez muke, uz brz i jednostavan proces prijave. Shvaćamo da je svaki klijent jedinstven, stoga nudimo personalizirane kredite koji se prilagođavaju vašim specifičnim potrebama. Osim toga, naši posvećeni savjetnici uvijek su tu da vas vode na svakom koraku, osiguravajući da imate punu podršku od početka do kraja.',
     'proposed' => 'Mi predlažemo:',
     'check1' => 'Personalizirani zajmovi prema vašim specifičnim potrebama.',
     'check2' => 'Posvećeni savjetnici koji će vam pomoći na svakom koraku.',
     'check3' => 'Fleksibilni uvjeti otplate koji odgovaraju vašoj financijskoj situaciji',
     'check4' => 'Zajmovi bez da imate plaću.',
-    'section1_p3' => 'Naša misija u Credixau je pomoći vam da postignete svoje financijske ciljeve s kreditnim rješenjima po mjeri. Pridružite nam se danas i saznajte kako vam možemo pomoći da svoje projekte ostvarite.',
+    'section1_p3' => 'Naša misija u Aurenza Capitalu je pomoći vam da postignete svoje financijske ciljeve s kreditnim rješenjima po mjeri. Pridružite nam se danas i saznajte kako vam možemo pomoći da svoje projekte ostvarite.',
     'btn' => 'Pronađite svoj idealan zajam',
 
     'faq_title' => 'Često postavljana pitanja',

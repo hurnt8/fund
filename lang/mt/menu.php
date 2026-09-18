@@ -30,5 +30,5 @@ return [
     'newsletter_title' => "Ibqa' infurmat dwar l-offerti tagħna",
     'subscribe'        => 'Abbona',
     'read_more'        => 'Tgħallem aktar',
-    'footer_desc'      => "Credixa huwa l-imsieħeb fdat tiegħek għal soluzzjonijiet ta' finanzjament rapidi, flessibbli u personalizzati madwar l-Ewropa.",
+    'footer_desc'      => "Aurenza Capital huwa l-imsieħeb fdat tiegħek għal soluzzjonijiet ta' finanzjament rapidi, flessibbli u personalizzati madwar l-Ewropa.",
 ];

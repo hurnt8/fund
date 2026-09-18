@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa – A legjobb online hitelezők Németországban, Spanyolországban, Magyarországon stb.',
+    'general_title' => 'Aurenza Capital – A legjobb online hitelezők Németországban, Spanyolországban, Magyarországon stb.',
     'banner_title' => 'Szerezze meg a tökéletes kölcsönt minden online igényéhez.',
-    'banner_text' => 'Emberek milliói használják a Credixa-ot projektjeik megvalósítására.',
+    'banner_text' => 'Emberek milliói használják a Aurenza Capital-ot projektjeik megvalósítására.',
     'get_loan_now' => 'Kölcsön kérése most',
     'popular_loans' => 'Népszerű hiteltípusok:',
     'personal_loan' => 'Személyi kölcsön',
@@ -62,11 +62,11 @@ return [
 
     'custom_loan_services' => 'Használja ki személyre szabott hitelszolgáltatásainkat',
     'reliability_quality' => 'Átláthatóság és megbízhatóság',
-    'reliability_quality_description' => 'A Credixanál egyértelmű és megbízható hitelezési megoldásokat kínálunk, amelyeket pozitív vásárlói vélemények és teljes átláthatóság támogatnak.',
+    'reliability_quality_description' => 'A Aurenza Capitalnál egyértelmű és megbízható hitelezési megoldásokat kínálunk, amelyeket pozitív vásárlói vélemények és teljes átláthatóság támogatnak.',
     'financial_transparency' => 'Nincsenek rejtett költségek',
     'financial_transparency_description' => 'Tekintse át feltételeinket, beszélje meg a díjakat, és csak a hitel jóváhagyása után fizessen.',
     'optimal_security' => 'Biztonság és adatvédelem',
-    'optimal_security_description' => 'Személyes adatai biztonságban vannak nálunk. A Credixa fejlett biztonsági protokollokat használ az Ön adatainak védelme érdekében. Támogatásunk a hét minden napján, a nap 24 órájában rendelkezésre áll bármilyen segítségre.',
+    'optimal_security_description' => 'Személyes adatai biztonságban vannak nálunk. A Aurenza Capital fejlett biztonsági protokollokat használ az Ön adatainak védelme érdekében. Támogatásunk a hét minden napján, a nap 24 órájában rendelkezésre áll bármilyen segítségre.',
     'apply_loan' => 'Kölcsön kérése',
 
 
@@ -119,7 +119,7 @@ return [
     ],
 
     'about_title' => 'Csatlakozzon a világ legjobb munkavállalói piacteréhez',
-    'about_description' => 'A Credixa az Ön megbízható platformja kivételes ügyfélélménnyel rendelkező hitelek megszerzéséhez. Elkötelezettek vagyunk amellett, hogy egyszerű, biztonságos és gyors pénzügyi megoldásokat kínáljunk Önnek.',
+    'about_description' => 'A Aurenza Capital az Ön megbízható platformja kivételes ügyfélélménnyel rendelkező hitelek megszerzéséhez. Elkötelezettek vagyunk amellett, hogy egyszerű, biztonságos és gyors pénzügyi megoldásokat kínáljunk Önnek.',
     'rating' => '4,9/5',
     'rating_description' => 'Az ügyfelek értékelik a szakembereket',
     'projects_completed' => '+12 millió',
@@ -161,7 +161,7 @@ return [
         'placeholder' => 'Az Ön e-mail címe',
         'button' => 'Küldés',
     ],
-    'rights_reserved' => '© Credixa. 2024. Minden jog fenntartva.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Minden jog fenntartva.',
 
     'en' => 'angol',
     'fr' => 'francia',
@@ -208,10 +208,10 @@ return [
 
     'about' => [
         'exptitle' => 'év tapasztalat',
-        'sectagline' => 'Üdvözlünk a Credixa-nél',
+        'sectagline' => 'Üdvözlünk a Aurenza Capital-nél',
         'sectitle' => 'Személyi hitelek, hogy valóra váltsd az álmaidat',
         'text1' => '1990 óta vagyunk jelen az üzletben, és a legjobb szolgáltatásokat kínáljuk.',
-        'text2' => 'A Credixa a megbízható platformod hitelekhez, kivételes ügyfélszolgálattal. Elkötelezettek vagyunk abban, hogy egyszerű, biztonságos és gyors pénzügyi megoldásokat kínáljunk.',
+        'text2' => 'A Aurenza Capital a megbízható platformod hitelekhez, kivételes ügyfélszolgálattal. Elkötelezettek vagyunk abban, hogy egyszerű, biztonságos és gyors pénzügyi megoldásokat kínáljunk.',
         'check1' => 'kisvállalkozói hitel',
         'check2' => 'külföldi tanulmányi hitel',
         'check3' => 'gyors hitelfolyamat',

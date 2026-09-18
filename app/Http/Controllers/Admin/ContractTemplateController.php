@@ -292,7 +292,7 @@ class ContractTemplateController extends Controller
             '{frais_admin}'     => 'Frais administratifs',
             '{compte_bancaire}' => 'Coordonnées bancaires',
             '{date}'            => 'Date de validation',
-            '{societe}'         => 'Nom de la société (CREDIXA INVESTI)',
+            '{societe}'         => 'Nom de la société (AURENZA CAPITAL INVESTI)',
         ];
     }
 }

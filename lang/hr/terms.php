@@ -5,7 +5,7 @@ return [
     'sections' => [
         [
             'title' => '1. Uvod',
-            'content' => 'Dobro došli u Credixa. Korištenjem naše stranice i usluga suglasni ste da Äete se pridrÅ¾avati sljedeÄih uvjeta i odredbi te biti vezani njima. Molimo paÅ¾ljivo proÄitajte ove uvjete prije korištenja naše stranice ili podizanja kredita kod nas.'
+            'content' => 'Dobro došli u Aurenza Capital. Korištenjem naše stranice i usluga suglasni ste da Äete se pridrÅ¾avati sljedeÄih uvjeta i odredbi te biti vezani njima. Molimo paÅ¾ljivo proÄitajte ove uvjete prije korištenja naše stranice ili podizanja kredita kod nas.'
         ],
         [
             'title' => '2. Korištenje stranice',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. Usluge zajmova',
-            'content' => 'Credixa nudi razliÄite vrste zajmova kako bi zadovoljio vaše financijske potrebe. Svi krediti podlijeÅ¾u odobravanju na temelju naše procjene vaše kreditne sposobnosti i moguÄnosti otplate. Posebni uvjeti svakog zajma, ukljuÄujuÄi kamatne stope, rokove dospijeÄa i uvjete otplate, bit Äe detaljno navedeni u vašem ugovoru o zajmu.'
+            'content' => 'Aurenza Capital nudi razliÄite vrste zajmova kako bi zadovoljio vaše financijske potrebe. Svi krediti podlijeÅ¾u odobravanju na temelju naše procjene vaše kreditne sposobnosti i moguÄnosti otplate. Posebni uvjeti svakog zajma, ukljuÄujuÄi kamatne stope, rokove dospijeÄa i uvjete otplate, bit Äe detaljno navedeni u vašem ugovoru o zajmu.'
         ],
         [
             'title' => '4. Troškovi ugovora i osiguranja',
-            'content' => 'Prilikom podizanja kredita kod Credixaa mogu se primijeniti naknade za ugovor i osiguranje. Ova naknada pokriva administrativne troškove povezane s postavljanjem i upravljanjem vašim kreditom. Konkretni detalji ovih naknada bit Äe jasno navedeni u vašem ugovoru o zajmu. DuÅ¾ni ste platiti ove naknade u skladu s navedenim uvjetima.'
+            'content' => 'Prilikom podizanja kredita kod Aurenza Capitala mogu se primijeniti naknade za ugovor i osiguranje. Ova naknada pokriva administrativne troškove povezane s postavljanjem i upravljanjem vašim kreditom. Konkretni detalji ovih naknada bit Äe jasno navedeni u vašem ugovoru o zajmu. DuÅ¾ni ste platiti ove naknade u skladu s navedenim uvjetima.'
         ],
         [
             'title' => '5. Povjerljivost',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. OgraniÄenje odgovornosti',
-            'content' => 'Credixa neÄe biti odgovoran za bilo kakav neizravan, poseban ili posljediÄni gubitak ili štetu koja proizlazi iz korištenja ili nemoguÄnosti korištenja naše stranice ili usluga, ukljuÄujuÄi gubitak dobiti, gubitak podataka ili prekid poslovanja, Äak i ako obaviješteni smo o moguÄnosti takve štete.'
+            'content' => 'Aurenza Capital neÄe biti odgovoran za bilo kakav neizravan, poseban ili posljediÄni gubitak ili štetu koja proizlazi iz korištenja ili nemoguÄnosti korištenja naše stranice ili usluga, ukljuÄujuÄi gubitak dobiti, gubitak podataka ili prekid poslovanja, Äak i ako obaviješteni smo o moguÄnosti takve štete.'
         ],
         [
             'title' => '8. Promjene uvjeta',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Kontakt',
-            'content' => 'Ako imate bilo kakvih pitanja ili nedoumica u vezi s ovim odredbama i uvjetima, kontaktirajte nas na:<br><br>Credixa<br>Adresa: Rua de Santo António 33, 7200-175, Portugal<br>E-pošta: contact@credixa.eu<br>Telefon: +31 6 57341120 '
+            'content' => 'Ako imate bilo kakvih pitanja ili nedoumica u vezi s ovim odredbama i uvjetima, kontaktirajte nas na:<br><br>Aurenza Capital<br>Adresa: Rua de Santo António 33, 7200-175, Portugal<br>E-pošta: contact@aurenzacapital.com<br>Telefon: +31 6 57341120 '
         ],
 
     ],

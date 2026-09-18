@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title', 'Factures — Credixa')
+@section('title', 'Factures — Aurenza Capital')
 @section('page_title', 'Factures')
 
 @section('content')
@@ -139,7 +139,7 @@
             @endif
           </td>
           <td data-label="Montant TTC">
-            <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:.9375rem;color:var(--c-navy)">
+            <span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:.9375rem;color:var(--c-navy)">
               {{ number_format($inv->total, 2, ',', ' ') }}
             </span>
             <span style="font-size:.75rem;color:var(--c-muted)"> {{ $inv->currency }}</span>

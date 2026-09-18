@@ -1,16 +1,16 @@
 @extends('layouts.dashboard')
-@section('title','Mes dossiers de financement — Credixa')
+@section('title','Mes dossiers de financement — Aurenza Capital')
 @section('page_title','Mes dossiers')
 
 @push('styles')
 <style>
-  body { background: #0D1F35 !important; }
-  .main-wrap { background: #0D1F35; }
+  body { background: #0A2A20 !important; }
+  .main-wrap { background: #0A2A20; }
   .content-area { background: transparent; }
-  .topbar { background: #112237 !important; border-bottom-color: rgba(200,169,81,.14) !important; }
-  .topbar-title { color: #E8EDF5 !important; }
-  .topbar-badge { background: #162D47 !important; border-color: rgba(255,255,255,.1) !important; color: #B8C8D8 !important; }
-  .topbar-avatar { background: linear-gradient(135deg,#1D3A5C,#0B2E4E) !important; color: #C8A951 !important; }
+  .topbar { background: #0E3226 !important; border-bottom-color: rgba(198,161,91,.14) !important; }
+  .topbar-title { color: #E9EFEA !important; }
+  .topbar-badge { background: #143C2E !important; border-color: rgba(255,255,255,.1) !important; color: #BFCFC5 !important; }
+  .topbar-avatar { background: linear-gradient(135deg,#1C4C3A,#0B4E2E) !important; color: #C6A15B !important; }
 </style>
 @endpush
 
@@ -36,7 +36,7 @@
 
 {{-- ── Stats bar ────────────────────────────────────────────── --}}
 <div class="cl-stats mb-4">
-  <div class="cl-stat" style="--stat-color:var(--cl-gold);--stat-color-bg:rgba(200,169,81,.12)">
+  <div class="cl-stat" style="--stat-color:var(--cl-gold);--stat-color-bg:rgba(198,161,91,.12)">
     <div class="cl-stat__icon"><i class="fas fa-layer-group"></i></div>
     <div class="cl-stat__val">{{ $stats['total'] }}</div>
     <div class="cl-stat__lbl">Total</div>
@@ -64,7 +64,7 @@
   <div class="cl-empty__icon"><i class="fas fa-file-invoice-dollar"></i></div>
   <div class="cl-empty__title">Aucun dossier de financement</div>
   <div class="cl-empty__body">
-    Vous n'avez pas encore de demande de prêt. Contactez votre conseiller Credixa pour initier un dossier.
+    Vous n'avez pas encore de demande de prêt. Contactez votre conseiller Aurenza Capital pour initier un dossier.
   </div>
   <a href="{{ route('home',['locale'=>app()->getLocale()]) }}" class="cl-btn cl-btn--gold">
     <i class="fas fa-globe me-1"></i> Aller sur le site

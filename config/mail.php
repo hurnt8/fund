@@ -114,9 +114,11 @@ return [
     |
     */
 
+    'contact_address' => env('MAIL_CONTACT_ADDRESS', 'contact@aurenzacapital.com'),
+
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@aurenzacapital.com'),
+        'name' => env('MAIL_FROM_NAME', 'Aurenza Capital'),
     ],
 
     /*

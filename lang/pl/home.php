@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'general_title' => 'Credixa Invest – Najlepsze kredyty online w Europie.',
+    'general_title' => 'Aurenza Capital – Najlepsze kredyty online w Europie.',
     'hero_subtitle' => 'Bez skomplikowanych procedur, bez ukrytych opłat. Od 5 lat finansujemy projekty osobiste, nieruchomości, samochodowe i biznesowe z pełną przejrzystością i szybkością.',
 
     'slide_1' => [
@@ -34,10 +34,10 @@ return [
 
     'about' => [
         'exptitle' => 'lat doświadczenia',
-        'sectagline' => 'Witamy w Credixa Invest',
+        'sectagline' => 'Witamy w Aurenza Capital',
         'sectitle' => 'Kredyty osobiste spełniające Twoje marzenia',
         'text1' => 'Działamy w tej branży od 1990 roku i oferujemy najlepsze usługi.',
-        'text2' => 'Credixa Invest to Twoja zaufana platforma kredytowa z wyjątkową obsługą klienta. Jesteśmy zobowiązani do zapewniania prostych, bezpiecznych i szybkich rozwiązań finansowych.',
+        'text2' => 'Aurenza Capital to Twoja zaufana platforma kredytowa z wyjątkową obsługą klienta. Jesteśmy zobowiązani do zapewniania prostych, bezpiecznych i szybkich rozwiązań finansowych.',
         'check1' => 'kredyt dla małych firm',
         'check2' => 'kredyt na studia za granicą',
         'check3' => 'szybki proces kredytowy',
@@ -116,7 +116,7 @@ return [
     'testimonials_title'       => 'Nasze opinie',
     'testimonials_description' => 'Dowiedz się, co nasi klienci mówią o nas.',
     'testimonial_1' => [
-        'quote'    => '„Starałem się o kredyt hipoteczny po kilku odmowach w polskich bankach. Credixa Invest przeanalizowała moją sytuację rzetelnie i przyznała finansowanie w ciągu tygodnia. Oprocentowanie przerosło moje oczekiwania. Polecam z całego serca."',
+        'quote'    => '„Starałem się o kredyt hipoteczny po kilku odmowach w polskich bankach. Aurenza Capital przeanalizowała moją sytuację rzetelnie i przyznała finansowanie w ciągu tygodnia. Oprocentowanie przerosło moje oczekiwania. Polecam z całego serca."',
         'name'     => 'Piotr Kowalski',
         'location' => 'Warszawa, Polska',
     ],
@@ -126,7 +126,7 @@ return [
         'location' => 'Kraków, Polska',
     ],
     'testimonial_3' => [
-        'quote'    => '„Prowadziłem działalność gospodarczą i potrzebowałem kapitału na nowe urządzenia. Credixa oceniła moje realne przychody i przyznała kredyt firmowy w 48 godzin. Profesjonalizm na najwyższym poziomie."',
+        'quote'    => '„Prowadziłem działalność gospodarczą i potrzebowałem kapitału na nowe urządzenia. Aurenza Capital oceniła moje realne przychody i przyznała kredyt firmowy w 48 godzin. Profesjonalizm na najwyższym poziomie."',
         'name'     => 'Marek Nowak',
         'location' => 'Gdańsk, Polska',
     ],
@@ -136,7 +136,7 @@ return [
         'location' => 'Wrocław, Polska',
     ],
     'testimonial_5' => [
-        'quote'    => '„Szukałem kredytu samochodowego i porównałem kilka ofert. Credixa zaoferowała najniższe RRSO i najprostszą procedurę. Auto odebrałem po tygodniu od złożenia wniosku. Bardzo polecam."',
+        'quote'    => '„Szukałem kredytu samochodowego i porównałem kilka ofert. Aurenza Capital zaoferowała najniższe RRSO i najprostszą procedurę. Auto odebrałem po tygodniu od złożenia wniosku. Bardzo polecam."',
         'name'     => 'Tomasz Lewandowski',
         'location' => 'Poznań, Polska',
     ],
@@ -179,5 +179,5 @@ return [
         'placeholder' => 'Twój adres email',
         'button'      => 'Wyślij',
     ],
-    'rights_reserved' => '© Credixa Invest. 2024. Wszelkie prawa zastrzeżone.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Wszelkie prawa zastrzeżone.',
 ];

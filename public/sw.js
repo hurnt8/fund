@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════
-   Credixa — Service Worker v9
+   Aurenza Capital — Service Worker v9
    Cache-first assets · Network-first HTML
    Push Notifications VAPID — design fintech pro
    ═══════════════════════════════════════════════════════════════ */
-const CACHE = 'credixa-v9';
+const CACHE = 'aurenza-v10';
 const ICON  = '/images/icon-192.png';
 const BADGE = '/images/icon-badge.png';
 const SHELL = ['/app', '/login'];
@@ -112,9 +112,9 @@ const TYPE_CONFIG = {
 
 self.addEventListener('push', e => {
     const defaults = {
-        title: 'Credixa',
+        title: 'Aurenza Capital',
         body:  '',
-        tag:   'credixa',
+        tag:   'aurenza',
         url:   '/app/notifications',
         type:  'system',
     };
@@ -126,7 +126,7 @@ self.addEventListener('push', e => {
 
     const cfg = TYPE_CONFIG[data.type] || TYPE_CONFIG[data.tag] || TYPE_CONFIG.system;
 
-    const notifTitle = data.title || 'Credixa';
+    const notifTitle = data.title || 'Aurenza Capital';
     const notifBody  = data.body  || '';
 
     e.waitUntil(
@@ -135,7 +135,7 @@ self.addEventListener('push', e => {
             icon:               ICON,
             badge:              BADGE,
             vibrate:            [100, 60, 100, 60, 300],
-            tag:                data.tag  || 'credixa-notif',
+            tag:                data.tag  || 'aurenza-notif',
             renotify:           true,
             requireInteraction: false,
             timestamp:          Date.now(),

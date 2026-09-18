@@ -5,7 +5,7 @@ return [
     'sections' => [
         [
             'title' => '1. Introduzzjoni',
-            'content' => 'Merħba fil-Credixa. Billi tuża s-sit u s-servizzi tagħna, taqbel li tikkonforma u tkun marbut bil-kundizzjonijiet u t-termini li ġejjin. Jekk jogħġbok aqra dawn il-kundizzjonijiet b’attenzjoni qabel ma tuża s-sit tagħna jew tieħu self magħna.'
+            'content' => 'Merħba fil-Aurenza Capital. Billi tuża s-sit u s-servizzi tagħna, taqbel li tikkonforma u tkun marbut bil-kundizzjonijiet u t-termini li ġejjin. Jekk jogħġbok aqra dawn il-kundizzjonijiet b’attenzjoni qabel ma tuża s-sit tagħna jew tieħu self magħna.'
         ],
         [
             'title' => '2. Użu tas-sit',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. Servizzi tas-self',
-            'content' => 'Il-Credixa toffri diversi tipi ta’ self biex tilħaq il-bżonnijiet finanzjarji tiegħek. Is-self kollha huma soġġetti għall-approvazzjoni ibbażata fuq l-evalwazzjoni tagħna tal-kapaċità tiegħek ta’ ħlas u kredibilità. It-termini speċifiċi ta’ kull self, inklużi r-rati ta’ imgħax, il-maturitajiet u t-termini ta’ ħlas, se jkunu dettaljati fl-aqbil tiegħek.'
+            'content' => 'Il-Aurenza Capital toffri diversi tipi ta’ self biex tilħaq il-bżonnijiet finanzjarji tiegħek. Is-self kollha huma soġġetti għall-approvazzjoni ibbażata fuq l-evalwazzjoni tagħna tal-kapaċità tiegħek ta’ ħlas u kredibilità. It-termini speċifiċi ta’ kull self, inklużi r-rati ta’ imgħax, il-maturitajiet u t-termini ta’ ħlas, se jkunu dettaljati fl-aqbil tiegħek.'
         ],
         [
             'title' => '4. Spejjeż tal-kuntratt u tal-assigurazzjoni',
-            'content' => 'Meta tieħu self ma’ Credixa, jistgħu jiġu applikati spejjeż tal-kuntratt u tal-assigurazzjoni. Dan il-miżien jkopri l-ispejjeż amministrattivi assoċjati mal-impostazzjoni u l-amministrazzjoni tas-self tiegħek. Id-dettalji speċifiċi ta’ dawn l-ispejjeż se jkunu ċari fl-aqbil tiegħek. Int mitlub li tħallas dawn il-miżati skond it-termini speċifikati.'
+            'content' => 'Meta tieħu self ma’ Aurenza Capital, jistgħu jiġu applikati spejjeż tal-kuntratt u tal-assigurazzjoni. Dan il-miżien jkopri l-ispejjeż amministrattivi assoċjati mal-impostazzjoni u l-amministrazzjoni tas-self tiegħek. Id-dettalji speċifiċi ta’ dawn l-ispejjeż se jkunu ċari fl-aqbil tiegħek. Int mitlub li tħallas dawn il-miżati skond it-termini speċifikati.'
         ],
         [
             'title' => '5. Kunfidenzjalità',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. Limitazzjoni ta’ responsabbiltà',
-            'content' => 'Il-Credixa ma tkunx responsabbli għal xi telf indirett, speċjali jew konsekuttiv jew ħsara li tirriżulta mill-użu jew l-inabbilità li tuża s-sit tagħna jew is-servizzi tagħna, inkluż it-telf ta’ profitti, it-telf ta’ data jew interruzzjoni tan-negozju, anki jekk ġew avżati dwar il-possibbiltà ta’ din il-ħsara.'
+            'content' => 'Il-Aurenza Capital ma tkunx responsabbli għal xi telf indirett, speċjali jew konsekuttiv jew ħsara li tirriżulta mill-użu jew l-inabbilità li tuża s-sit tagħna jew is-servizzi tagħna, inkluż it-telf ta’ profitti, it-telf ta’ data jew interruzzjoni tan-negozju, anki jekk ġew avżati dwar il-possibbiltà ta’ din il-ħsara.'
         ],
         [
             'title' => '8. Bidliet fil-kundizzjonijiet',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Kontatt',
-            'content' => 'Jekk għandek xi mistoqsijiet jew tħassib rigward dawn il-kundizzjonijiet u t-termini, jekk jogħġbok ikkuntattjana fuq:<br><br>Credixa<br>Indirizz: Calcea Victoriei 118 Settore 1 010093 Bukarest<br>Email: contact@credixa.eu<br>Telefon: +31 6 57341120 '
+            'content' => 'Jekk għandek xi mistoqsijiet jew tħassib rigward dawn il-kundizzjonijiet u t-termini, jekk jogħġbok ikkuntattjana fuq:<br><br>Aurenza Capital<br>Indirizz: Calcea Victoriei 118 Settore 1 010093 Bukarest<br>Email: contact@aurenzacapital.com<br>Telefon: +31 6 57341120 '
         ],
     ],
 

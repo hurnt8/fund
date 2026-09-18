@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.payment_methods') . ' — Credixa')
+@section('title', __('app.payment_methods') . ' — Aurenza Capital')
 @section('page_title', __('app.payment_methods'))
 @section('back_btn', true)
 @section('back_url', route('client.app.profile'))
@@ -11,7 +11,7 @@
 /* Carte bancaire visuelle */
 .pm-card {
   border-radius:22px;
-  background:linear-gradient(145deg,#1B527A 0%,#0D2E54 45%,#071828 100%);
+  background:linear-gradient(145deg,#1B7A52 0%,#0D542E 45%,#072818 100%);
   padding:1.5rem;position:relative;overflow:hidden;
   box-shadow:0 20px 56px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.07);
   margin-bottom:1.5rem;
@@ -25,7 +25,7 @@
 .pm-card::after {
   content:'';position:absolute;bottom:-70px;left:-40px;
   width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,169,81,.08) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(198,161,91,.08) 0%,transparent 65%);
   pointer-events:none;
 }
 .pm-card__top {
@@ -33,13 +33,13 @@
   margin-bottom:1.25rem;
 }
 .pm-card__brand {
-  font-family:'Space Grotesk',sans-serif;font-size:.62rem;
+  font-family:'Outfit',sans-serif;font-size:.62rem;
   font-weight:800;letter-spacing:.14em;text-transform:uppercase;
   color:rgba(255,255,255,.45);
 }
 .pm-card__chip {
   width:32px;height:24px;border-radius:4px;
-  background:linear-gradient(135deg,#D4B96A,#C8A951,#A88830);
+  background:linear-gradient(135deg,#DCBE87,#C6A15B,#9A7736);
   box-shadow:0 2px 6px rgba(0,0,0,.35);position:relative;overflow:hidden;
 }
 .pm-card__chip::before {
@@ -55,7 +55,7 @@
   letter-spacing:.1em;color:rgba(255,255,255,.38);margin-bottom:.25rem;
 }
 .pm-card__iban {
-  font-family:'Space Grotesk',monospace;font-size:.95rem;font-weight:700;
+  font-family:'Outfit',monospace;font-size:.95rem;font-weight:700;
   color:#fff;letter-spacing:.1em;word-break:break-all;line-height:1.5;
   margin-bottom:1.125rem;
 }
@@ -64,7 +64,7 @@
   position:relative;z-index:1;
 }
 .pm-card__holder {
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:.75rem;font-weight:700;color:rgba(255,255,255,.7);
   text-transform:uppercase;letter-spacing:.06em;
 }
@@ -112,7 +112,7 @@
 .pm-detail-key { font-size:.8rem;color:var(--ca-text-3);font-weight:500 }
 .pm-detail-val {
   font-size:.82rem;font-weight:700;color:var(--ca-text);
-  font-family:'Space Grotesk',monospace;letter-spacing:.03em;
+  font-family:'Outfit',monospace;letter-spacing:.03em;
   text-align:right;max-width:60%;word-break:break-all;
 }
 
@@ -159,7 +159,7 @@
   <div class="pm-card__top">
     <div class="pm-card__brand">
       <i class="fas fa-landmark" style="margin-right:.3rem;font-size:.58rem"></i>
-      CREDIXA &nbsp;·&nbsp; {{ __('app.account_num') }}
+      AURENZA CAPITAL &nbsp;·&nbsp; {{ __('app.account_num') }}
     </div>
     <div class="pm-card__chip" aria-hidden="true"></div>
   </div>
@@ -223,12 +223,12 @@
   @endif
   <div class="pm-detail-row">
     <span class="pm-detail-key">{{ __('app.receive_bank') ?? 'Banque' }}</span>
-    <span class="pm-detail-val">Credixa Bank</span>
+    <span class="pm-detail-val">Aurenza Capital Bank</span>
   </div>
   <div class="pm-detail-row">
     <span class="pm-detail-key">{{ __('app.balance') }}</span>
     <span class="pm-detail-val" style="color:var(--ca-positive)">
-      {{ $user->currency ?? config('credixa.default_currency') }} {{ number_format((float)$user->balance, 2, ',', ' ') }}
+      {{ $user->currency ?? config('aurenza.default_currency') }} {{ number_format((float)$user->balance, 2, ',', ' ') }}
     </span>
   </div>
 </div>
@@ -246,7 +246,7 @@
   <div class="pm-empty__ico"><i class="fas fa-credit-card"></i></div>
   <div class="pm-empty__title">{{ __('app.not_configured') }}</div>
   <div class="pm-empty__sub">
-    Votre conseiller Credixa configurera vos coordonnees bancaires<br>lors de la finalisation de votre dossier.
+    Votre conseiller Aurenza Capital configurera vos coordonnees bancaires<br>lors de la finalisation de votre dossier.
   </div>
 </div>
 
@@ -289,7 +289,7 @@ function shareCoords() {
   const iban = '{{ $user->bank_account ?? "" }}';
   const name = '{{ addslashes($user->name) }}';
   const bic  = '{{ $user->bic ?? "" }}';
-  const text = `Coordonnees bancaires Credixa\nTitulaire : ${name}\nIBAN : ${iban}${bic ? '\nBIC : ' + bic : ''}`;
+  const text = `Coordonnees bancaires Aurenza Capital\nTitulaire : ${name}\nIBAN : ${iban}${bic ? '\nBIC : ' + bic : ''}`;
   if (navigator.share) {
     navigator.share({ title: 'Mes coordonnees bancaires', text });
   } else {

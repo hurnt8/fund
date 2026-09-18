@@ -1,19 +1,19 @@
 <?php
 
 return [
-    'banner_title' => 'Fedezze fel a Credixaot',
+    'banner_title' => 'Fedezze fel a Aurenza Capitalot',
     'banner_subtitle' => 'Rólunk',
     'banner_description' => 'A pénzügyi igényeihez igazodó rugalmas hitelmegoldások segítségével könnyebben felvehet kölcsönt.',
 
-    'section1_title' => 'Miért válassza a Credixa-t?',
-    'section1_p1' => 'A Credixanál szilárdan hiszünk abban, hogy mindenki megérdemel egy esélyt pénzügyi álmai megvalósítására. Megalakulásunk óta elkötelezettek vagyunk a rugalmas és elérhető hitelezési megoldások mellett, ügyfeleink sokrétű igényeinek kielégítésére. Akár személyes projektet szeretne finanszírozni, akár autót szeretne vásárolni, akár bővíteni szeretné vállalkozását, nálunk megtalálja a szükséges kölcsönt.',
+    'section1_title' => 'Miért válassza a Aurenza Capital-t?',
+    'section1_p1' => 'A Aurenza Capitalnál szilárdan hiszünk abban, hogy mindenki megérdemel egy esélyt pénzügyi álmai megvalósítására. Megalakulásunk óta elkötelezettek vagyunk a rugalmas és elérhető hitelezési megoldások mellett, ügyfeleink sokrétű igényeinek kielégítésére. Akár személyes projektet szeretne finanszírozni, akár autót szeretne vásárolni, akár bővíteni szeretné vállalkozását, nálunk megtalálja a szükséges kölcsönt.',
     'section1_p2' => 'Szolgáltatásainkat úgy alakítottuk ki, hogy problémamentes élményt nyújtsanak, gyors és egyszerű jelentkezési folyamattal. Tisztában vagyunk vele, hogy minden ügyfél egyedi, ezért kínálunk személyre szabott hiteleket, amelyek alkalmazkodnak az Ön egyedi igényeihez. Emellett elkötelezett tanácsadóink mindig készen állnak, hogy végigvezetik Önt az út minden lépésében, biztosítva, hogy az elejétől a végéig teljes körű támogatást kapjon.',
     'proposed' => 'Javaslatunk:',
     'check1' => 'Személyre szabott kölcsönök az Ön egyedi igényei szerint.',
     'check2' => 'Elkötelezett tanácsadók segítenek minden lépésben.',
     'check3' => 'Rugalmas visszafizetési feltételek az Ön pénzügyi helyzetének megfelelően',
     'check4' => 'Kölcsönek fizetés nélkül.',
-    'section1_p3' => 'A Credixanál küldetésünk, hogy személyre szabott hitelmegoldásokkal segítsük pénzügyi céljai elérésében. Csatlakozzon hozzánk még ma, és megtudja, hogyan segíthetünk projektjei megvalósításában.',
+    'section1_p3' => 'A Aurenza Capitalnál küldetésünk, hogy személyre szabott hitelmegoldásokkal segítsük pénzügyi céljai elérésében. Csatlakozzon hozzánk még ma, és megtudja, hogyan segíthetünk projektjei megvalósításában.',
     'btn' => 'Találja meg ideális kölcsönét',
 
     'faq_title' => 'Gyakran Ismételt Kérdések',

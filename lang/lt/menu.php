@@ -28,5 +28,5 @@ return [
     'newsletter_title' => 'Gaukite informaciją apie mūsų pasiūlymus',
     'subscribe'        => 'Prenumeruoti',
     'read_more'        => 'Sužinoti daugiau',
-    'footer_desc'      => 'Credixa yra patikimas jūsų partneris greito, lankstaus ir personalizuoto finansavimo sprendimams visoje Europoje.',
+    'footer_desc'      => 'Aurenza Capital yra patikimas jūsų partneris greito, lankstaus ir personalizuoto finansavimo sprendimams visoje Europoje.',
 ];

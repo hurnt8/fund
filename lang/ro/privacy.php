@@ -3,7 +3,7 @@
 return [
     'title' => 'Politica de confidențialitate',
     'introduction_title' => '1. Introducere',
-    'introduction_text' => 'La Credixa, ne angajăm să protejăm și să respectăm confidențialitatea dumneavoastră. Această politică de confidențialitate explică modul în care colectăm, utilizăm, divulgăm și protejăm informațiile dumneavoastră personale atunci când utilizați site-ul nostru și serviciile noastre de creditare online. Prin utilizarea site-ului nostru, acceptați practicile descrise în această politică.',
+    'introduction_text' => 'La Aurenza Capital, ne angajăm să protejăm și să respectăm confidențialitatea dumneavoastră. Această politică de confidențialitate explică modul în care colectăm, utilizăm, divulgăm și protejăm informațiile dumneavoastră personale atunci când utilizați site-ul nostru și serviciile noastre de creditare online. Prin utilizarea site-ului nostru, acceptați practicile descrise în această politică.',
     'information_collection_title' => '2. Informațiile pe care le colectăm',
     'information_collection_text' => 'Putem colecta și prelucra următoarele informații despre dumneavoastră:',
     'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
     'contact_title' => '8. Contact',
     'contact_text' => 'Dacă aveți întrebări, nelămuriri sau solicitări cu privire la această politică de confidențialitate sau la modul în care prelucrăm informațiile dumneavoastră personale, vă rugăm să ne contactați la:',
     'contact_details' => [
-        'Credixa',
+        'Aurenza Capital',
         'Adresă: Rua de Santo António 33, 7200-175, Portugalia',
-        'E-mail: contact@credixa.eu',
+        'E-mail: contact@aurenzacapital.com',
         'Telefon: +31 6 57341120 ',
     ],
 ];

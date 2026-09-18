@@ -1,13 +1,13 @@
 @php $locale = app()->getLocale(); @endphp
 
 <footer class="site-footer">
-    <div class="container">
+    <div class="container-sm">
         <div class="row g-4 gutter-y-50">
 
             {{-- ── Colonne marque (toujours visible) ── --}}
             <div class="col-lg-4 col-md-6">
                 <a href="{{ route('home', ['locale' => $locale]) }}" class="d-inline-block mb-4">
-                    <img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa" class="footer-logo">
+                    <img src="{{ asset('assets/images/logo-aurenza-light.svg') }}" alt="Aurenza Capital" class="footer-logo">
                 </a>
                 <p class="footer-desc">@lang('menu.footer_desc')</p>
                 <div class="footer-social">
@@ -73,7 +73,7 @@
                     </div>
                     <div class="footer-contact-item">
                         <div class="icon"><i class="fas fa-envelope"></i></div>
-                        <a href="mailto:contact@credixa.eu">contact@credixa.eu</a>
+                        <a href="mailto:contact@aurenzacapital.com">contact@aurenzacapital.com</a>
                     </div>
 
                     <div class="mt-4">
@@ -91,7 +91,7 @@
 
         {{-- ── Barre du bas ── --}}
         <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} <a href="{{ route('home', ['locale' => $locale]) }}">Credixa</a>. @lang('menu.rights_reserved')</p>
+            <p>&copy; {{ date('Y') }} <a href="{{ route('home', ['locale' => $locale]) }}">Aurenza Capital</a>. @lang('menu.rights_reserved')</p>
             <p>
                 <a href="{{ route('terms',   ['locale' => $locale]) }}">@lang('menu.terms')</a>
                 <span style="color:rgba(255,255,255,.2);margin:0 .5rem">·</span>

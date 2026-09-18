@@ -22,5 +22,5 @@ return [
     'phone_title' => 'Quick Contact',
     'phone_desc' => '+31 6 57341120 ',
     'mail_title' => 'Support email',
-    'mail_desc' => 'contact@credixa.eu',
+    'mail_desc' => 'contact@aurenzacapital.com',
 ];

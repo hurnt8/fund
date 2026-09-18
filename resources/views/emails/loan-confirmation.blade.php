@@ -2,7 +2,7 @@
 $texts = [
     'fr' => [
         'title'      => 'Demande de prêt reçue',
-        'sub'        => 'Credixa Invest',
+        'sub'        => 'Aurenza Capital',
         'greeting'   => 'Bonjour '.$data['name'].',',
         'body'       => 'Nous avons bien reçu votre demande de prêt d\'un montant de <strong>'.number_format($data['amount'], 0, ',', ' ').' '.($data['currency'] ?? 'EUR').'</strong> sur <strong>'.$data['darly'].' mois</strong>. Elle est actuellement en cours de traitement par notre équipe.',
         'cond_title' => 'Conditions d\'éligibilité',
@@ -12,11 +12,11 @@ $texts = [
         'footer'     => 'Nous vous contacterons dans les plus brefs délais. Merci de nous avoir fait confiance.',
         'noreply'    => 'Cet email a été envoyé depuis une adresse no-reply. Veuillez ne pas répondre directement.',
         'closing'    => 'Cordialement,',
-        'team'       => 'L\'équipe Credixa Invest',
+        'team'       => 'L\'équipe Aurenza Capital',
     ],
     'en' => [
         'title'      => 'Loan application received',
-        'sub'        => 'Credixa Invest',
+        'sub'        => 'Aurenza Capital',
         'greeting'   => 'Hello '.$data['name'].',',
         'body'       => 'We have received your loan request for <strong>'.number_format($data['amount'], 0, ',', ' ').' '.($data['currency'] ?? 'EUR').'</strong> over <strong>'.$data['darly'].' months</strong>. It is currently being processed by our team.',
         'cond_title' => 'Eligibility conditions',
@@ -26,11 +26,11 @@ $texts = [
         'footer'     => 'We will contact you as soon as possible. Thank you for trusting us.',
         'noreply'    => 'This email was sent from a no-reply address. Please do not reply directly.',
         'closing'    => 'Best regards,',
-        'team'       => 'The Credixa Invest team',
+        'team'       => 'The Aurenza Capital team',
     ],
     'es' => [
         'title'      => 'Solicitud de préstamo recibida',
-        'sub'        => 'Credixa Invest',
+        'sub'        => 'Aurenza Capital',
         'greeting'   => 'Hola '.$data['name'].',',
         'body'       => 'Hemos recibido su solicitud de préstamo por <strong>'.number_format($data['amount'], 0, ',', ' ').' '.($data['currency'] ?? 'EUR').'</strong> a <strong>'.$data['darly'].' meses</strong>. Actualmente está siendo procesada por nuestro equipo.',
         'cond_title' => 'Condiciones de elegibilidad',
@@ -40,11 +40,11 @@ $texts = [
         'footer'     => 'Nos pondremos en contacto con usted lo antes posible. Gracias por su confianza.',
         'noreply'    => 'Este email fue enviado desde una dirección de no respuesta. No responda directamente.',
         'closing'    => 'Atentamente,',
-        'team'       => 'El equipo Credixa Invest',
+        'team'       => 'El equipo Aurenza Capital',
     ],
     'pl' => [
         'title'      => 'Wniosek o pożyczkę otrzymany',
-        'sub'        => 'Credixa Invest',
+        'sub'        => 'Aurenza Capital',
         'greeting'   => 'Witaj '.$data['name'].',',
         'body'       => 'Otrzymaliśmy Twój wniosek o pożyczkę na kwotę <strong>'.number_format($data['amount'], 0, ',', ' ').' '.($data['currency'] ?? 'EUR').'</strong> na <strong>'.$data['darly'].' miesięcy</strong>. Jest on aktualnie przetwarzany przez nasz zespół.',
         'cond_title' => 'Warunki kwalifikowalności',
@@ -54,7 +54,7 @@ $texts = [
         'footer'     => 'Skontaktujemy się z Tobą jak najszybciej. Dziękujemy za zaufanie.',
         'noreply'    => 'Ten email został wysłany z adresu no-reply. Prosimy nie odpowiadać bezpośrednio.',
         'closing'    => 'Z poważaniem,',
-        'team'       => 'Zespół Credixa Invest',
+        'team'       => 'Zespół Aurenza Capital',
     ],
 ];
 $t = $texts[$lang] ?? $texts['fr'];
@@ -63,7 +63,7 @@ $t = $texts[$lang] ?? $texts['fr'];
 <x-email-layout
     :title="$t['title']"
     :subtitle="$t['sub']"
-    accent="teal"
+    accent="brand"
     :footerNote="$t['noreply']"
 >
 

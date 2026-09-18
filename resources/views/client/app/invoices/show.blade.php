@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', $invoice->reference . ' — Credixa')
+@section('title', $invoice->reference . ' — Aurenza Capital')
 @section('page_title', __('app.invoice_detail'))
 @section('back_btn', true)
 @section('back_url', route('client.app.invoices'))
@@ -37,7 +37,7 @@
 /* ── Total card ── */
 .invd-total {
   margin: .875rem 1.25rem 0;
-  background: linear-gradient(145deg,#1B527A 0%,#0D2E54 50%,#071828 100%);
+  background: linear-gradient(145deg,#1B7A52 0%,#0D542E 50%,#072818 100%);
   border-radius: 20px;
   padding: 1.25rem 1.375rem;
   text-align: center;
@@ -56,7 +56,7 @@
   color: rgba(255,255,255,.38); margin-bottom: .5rem;
 }
 .invd-total__amount {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 2.25rem; font-weight: 900;
   color: #fff; letter-spacing: -.03em; line-height: 1;
 }
@@ -118,7 +118,7 @@
   display: flex; gap: .75rem; flex-wrap: wrap;
 }
 .invd-item__price {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: .9rem; font-weight: 800; color: var(--ca-text);
   float: right; margin-top: -.1rem;
 }
@@ -137,16 +137,16 @@
 }
 .invd-totals__row--total .invd-totals__val {
   color: var(--ca-teal-l);
-  font-family: 'Space Grotesk', sans-serif; font-size: 1rem;
+  font-family: 'Outfit', sans-serif; font-size: 1rem;
 }
 
 /* ── Note ── */
 .invd-note {
-  background: rgba(200,169,81,.07);
-  border: 1px solid rgba(200,169,81,.2);
+  background: rgba(198,161,91,.07);
+  border: 1px solid rgba(198,161,91,.2);
   border-radius: 12px;
   padding: .875rem 1rem;
-  font-size: .8rem; color: rgba(200,169,81,.85);
+  font-size: .8rem; color: rgba(198,161,91,.85);
   line-height: 1.55;
 }
 .invd-note i { margin-right: .45rem; opacity: .7 }
@@ -158,7 +158,7 @@
 
 @section('content')
 @php
-  $currency = $invoice->currency ?? ($user->currency ?? config('credixa.default_currency', 'EUR'));
+  $currency = $invoice->currency ?? ($user->currency ?? config('aurenza.default_currency', 'EUR'));
   $st       = $invoice->status;
 
   $statusTitles = [
@@ -210,7 +210,7 @@
   <div class="invd-card">
     <div class="invd-row">
       <span class="invd-row__lbl"><i class="fas fa-hashtag"></i>{{ __('app.invoice_ref') }}</span>
-      <span class="invd-row__val" style="font-family:'Space Grotesk',sans-serif;font-size:.78rem">{{ $invoice->reference }}</span>
+      <span class="invd-row__val" style="font-family:'Outfit',sans-serif;font-size:.78rem">{{ $invoice->reference }}</span>
     </div>
     <div class="invd-row">
       <span class="invd-row__lbl"><i class="fas fa-calendar-plus"></i>{{ __('app.invoice_date') }}</span>

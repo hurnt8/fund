@@ -58,7 +58,7 @@
 <!-- Scroll-to-top button -->
 <button id="scroll-top" aria-label="Back to top"
     style="opacity:0;pointer-events:none;transition:opacity .3s ease"
-    class="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-gold text-navy flex items-center justify-center shadow-gold hover:bg-navy hover:text-white transition-colors duration-300">
+    class="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-gold text-ink flex items-center justify-center shadow-gold hover:bg-navy hover:text-white transition-colors duration-300">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
     </svg>

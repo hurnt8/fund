@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.invoices_title') . ' — Credixa')
+@section('title', __('app.invoices_title') . ' — Aurenza Capital')
 @section('page_title', __('app.invoices_title'))
 @section('back_btn', true)
 @section('back_url', route('client.app.home'))
@@ -27,7 +27,7 @@
   text-align: center;
 }
 .inv-chip__val {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 1.125rem; font-weight: 900;
   color: var(--ca-text); line-height: 1;
 }
@@ -111,7 +111,7 @@
 
 .inv-card__right { text-align: right; flex-shrink: 0 }
 .inv-card__amount {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: .975rem; font-weight: 800;
   color: var(--ca-text); line-height: 1;
 }
@@ -151,7 +151,7 @@
 @section('content')
 
 @php
-  $currency  = $user->currency ?? config('credixa.default_currency', 'EUR');
+  $currency  = $user->currency ?? config('aurenza.default_currency', 'EUR');
   $cntSent   = $invoices->where('status', 'sent')->count();
   $cntPaid   = $invoices->where('status', 'paid')->count();
   $totalPaid = $invoices->where('status', 'paid')->sum('total');

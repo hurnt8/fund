@@ -3,7 +3,7 @@
 return [
     'title' => 'Política de privacidade',
     'introduction_title' => '1. Introdução',
-    'introduction_text' => 'Na Credixa, estamos comprometidos em proteger e respeitar sua privacidade. Esta política de privacidade explica como coletamos, usamos, divulgamos e protegemos suas informações pessoais quando você utiliza nosso site e serviços de empréstimo online. Ao usar nosso site, você aceita as práticas descritas nesta política.',
+    'introduction_text' => 'Na Aurenza Capital, estamos comprometidos em proteger e respeitar sua privacidade. Esta política de privacidade explica como coletamos, usamos, divulgamos e protegemos suas informações pessoais quando você utiliza nosso site e serviços de empréstimo online. Ao usar nosso site, você aceita as práticas descritas nesta política.',
     'information_collection_title' => '2. Informações que coletamos',
     'information_collection_text' => 'Podemos coletar e processar as seguintes informações sobre você:',
     'information_collection_list' => [
@@ -44,9 +44,9 @@ return [
     'contact_title' => '8. Contato',
     'contact_text' => 'Se você tiver alguma dúvida, preocupação ou solicitação relacionada a esta política de privacidade ou como tratamos suas informações pessoais, entre em contato conosco em:',
     'contact_details' => [
-        'Credixa',
+        'Aurenza Capital',
         'Endereço: Calcea Victoriei 118 Sector 1 010093 Bucareste',
-        'E-mail: contact@credixa.eu',
+        'E-mail: contact@aurenzacapital.com',
         'Telefone: +31 6 57341120 ',
     ],
 ];

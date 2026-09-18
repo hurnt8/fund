@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa - L-Aħjar Self Online fil-Ġermanja, Spanja, Ungerija eċċ.',
+    'general_title' => 'Aurenza Capital - L-Aħjar Self Online fil-Ġermanja, Spanja, Ungerija eċċ.',
     'banner_title' => 'Ikseb is-self perfett għal bżonnijietek online.',
-    'banner_text' => 'Miljuni ta’ nies jużaw Credixa biex iwettqu l-proġetti tagħhom.',
+    'banner_text' => 'Miljuni ta’ nies jużaw Aurenza Capital biex iwettqu l-proġetti tagħhom.',
     'get_loan_now' => 'Ikseb self issa',
     'popular_loans' => 'Tipi popolari ta’ self:',
     'personal_loan' => 'Self personali',
@@ -54,11 +54,11 @@ return [
 
     'custom_loan_services' => 'Ibbenefika mis-servizzi ta’ self adattati għalik',
     'reliability_quality' => 'Trasparenza u Affidabbiltà',
-    'reliability_quality_description' => 'F’Credixa noffru soluzzjonijiet ta’ self ċari u affidabbli, appoġġjati minn reviżjonijiet pożittivi tal-klijenti u trasparenza sħiħa.',
+    'reliability_quality_description' => 'F’Aurenza Capital noffru soluzzjonijiet ta’ self ċari u affidabbli, appoġġjati minn reviżjonijiet pożittivi tal-klijenti u trasparenza sħiħa.',
     'financial_transparency' => 'L-ebda spiża moħbija',
     'financial_transparency_description' => 'Reviżjoni tat-termini tagħna, diskussjoni dwar ir-rati, u ħlas biss ladarba s-self tiegħek ikun approvat.',
     'optimal_security' => 'Sigurtà u Privatezza',
-    'optimal_security_description' => 'Id-dejta personali tiegħek hija sigura magħna. Credixa juża protokolli avvanzati tas-sigurtà biex jipproteġi l-privatezza tiegħek. L-appoġġ tagħna huwa disponibbli 24/7 għal kull għajnuna.',
+    'optimal_security_description' => 'Id-dejta personali tiegħek hija sigura magħna. Aurenza Capital juża protokolli avvanzati tas-sigurtà biex jipproteġi l-privatezza tiegħek. L-appoġġ tagħna huwa disponibbli 24/7 għal kull għajnuna.',
     'apply_loan' => 'Applika għal self',
 
     'total_loans_granted' => 'Total tas-Self Mogħti',
@@ -103,7 +103,7 @@ return [
     ],
 
     'about_title' => 'Ingħaqad fl-aqwa pjattaforma għall-ħaddiema globali',
-    'about_description' => 'Credixa hija l-pjattaforma fdati tiegħek biex tikseb self b’esperjenza tal-klijent eċċezzjonali. Aħna impenjati li nipprovdulek soluzzjonijiet finanzjarji sempliċi, siguri u mgħaġġla.',
+    'about_description' => 'Aurenza Capital hija l-pjattaforma fdati tiegħek biex tikseb self b’esperjenza tal-klijent eċċezzjonali. Aħna impenjati li nipprovdulek soluzzjonijiet finanzjarji sempliċi, siguri u mgħaġġla.',
     'rating' => '4.9/5',
     'rating_description' => 'Il-klijenti jagħtu l-professjonisti',
     'projects_completed' => '+12M',
@@ -145,7 +145,7 @@ return [
         'placeholder' => 'L-indirizz tal-email tiegħek',
         'button' => 'Ibgħat',
     ],
-    'rights_reserved' => '© Credixa. 2024. Id-drittijiet kollha riservati.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Id-drittijiet kollha riservati.',
 
     'en' => 'Ingliż',
     'fr' => 'Franċiż',

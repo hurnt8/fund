@@ -21,15 +21,15 @@
     background: #fff;
     user-select: none;
 }
-.doc-type-card:hover { border-color: #1a4080; background: #f0f5ff; }
+.doc-type-card:hover { border-color: #1A8040; background: #f0f5ff; }
 .doc-type-card.selected {
-    border-color: #1a4080;
+    border-color: #1A8040;
     background: #e8f0ff;
     box-shadow: 0 0 0 3px rgba(26,64,128,.1);
 }
 .doc-type-icon { font-size: 1.6rem; display: block; margin-bottom: .4rem; color: #4a6fa5; }
-.doc-type-card.selected .doc-type-icon { color: #1a4080; }
-.doc-type-label { font-size: .75rem; font-weight: 700; color: #1a4080; line-height: 1.2; }
+.doc-type-card.selected .doc-type-icon { color: #1A8040; }
+.doc-type-label { font-size: .75rem; font-weight: 700; color: #1A8040; line-height: 1.2; }
 
 .upload-zone {
     position: relative;
@@ -42,7 +42,7 @@
     transition: border-color .15s, background .15s;
     cursor: pointer;
 }
-.upload-zone:hover { border-color: #1a4080; background: #eef3ff; }
+.upload-zone:hover { border-color: #1A8040; background: #eef3ff; }
 .upload-zone.has-file { border-color: #28a745; background: #f0fff4; }
 .upload-zone input[type="file"] {
     position: absolute;
@@ -56,13 +56,13 @@
     gap: .4rem;
     font-size: .75rem;
     font-weight: 700;
-    color: #1a4080;
+    color: #1A8040;
     letter-spacing: .04em;
     text-transform: uppercase;
     margin-bottom: .6rem;
 }
 .step-badge .num {
-    background: #1a4080;
+    background: #1A8040;
     color: #fff;
     border-radius: 50%;
     width: 1.4rem;
@@ -79,7 +79,7 @@
 @php $locale = app()->getLocale(); @endphp
 
 <div class="page-hero">
-    <div class="container">
+    <div class="container-sm">
         <div class="page-hero__content">
             <h1 class="page-hero__title">{{ __('loan.complete_title') }}</h1>
             <ul class="page-hero__breadcrumb">
@@ -94,7 +94,7 @@
 </div>
 
 <section class="py-24 bg-white">
-    <div class="container">
+    <div class="container-sm">
         <div class="row justify-content-center">
             <div class="col-lg-7 wow fadeInUp" data-wow-duration="900ms">
 
@@ -231,7 +231,7 @@
                             {{-- Note : verso non requis --}}
                             <p x-show="!needsVerso" x-transition
                                style="font-size:.82rem;color:#666;background:#f0f5ff;border-radius:7px;padding:.6rem .9rem;margin-bottom:1rem;">
-                                <i class="fas fa-info-circle" style="color:#1a4080;margin-right:.35rem;"></i>
+                                <i class="fas fa-info-circle" style="color:#1A8040;margin-right:.35rem;"></i>
                                 @lang('message.docs_single_photo')
                             </p>
 

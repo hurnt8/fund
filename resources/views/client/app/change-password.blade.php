@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.change_password') . ' — Credixa')
+@section('title', __('app.change_password') . ' — Aurenza Capital')
 @section('page_title', __('app.change_password'))
 @section('back_btn', true)
 @section('back_url', route('client.app.profile'))

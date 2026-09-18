@@ -9,9 +9,9 @@
 
 .preview-sidebar { display:flex; flex-direction:column; gap:1rem }
 
-.tpl-banner { background:linear-gradient(135deg,#0E1F3D,#14374F); border-radius:14px; padding:1.375rem 1.25rem; color:#fff }
+.tpl-banner { background:linear-gradient(135deg,#0E3D1F,#144F37); border-radius:14px; padding:1.375rem 1.25rem; color:#fff }
 .tpl-banner-name { font-size:.9375rem; font-weight:800; margin-bottom:.375rem; line-height:1.3 }
-.tpl-banner-type { display:inline-flex; align-items:center; gap:.35rem; background:rgba(200,169,81,.15); border:1px solid rgba(200,169,81,.3); border-radius:999px; padding:.2rem .65rem; font-size:.68rem; font-weight:700; color:#C8A951; margin-bottom:1rem }
+.tpl-banner-type { display:inline-flex; align-items:center; gap:.35rem; background:rgba(198,161,91,.15); border:1px solid rgba(198,161,91,.3); border-radius:999px; padding:.2rem .65rem; font-size:.68rem; font-weight:700; color:#C6A15B; margin-bottom:1rem }
 .tpl-banner-type.html-type { background:rgba(34,163,150,.15); border-color:rgba(34,163,150,.3); color:#2ECBB7 }
 
 .meta-row { display:flex; align-items:center; justify-content:space-between; padding:.45rem 0; border-bottom:1px solid rgba(255,255,255,.07) }

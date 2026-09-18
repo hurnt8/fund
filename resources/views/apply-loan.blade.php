@@ -41,7 +41,7 @@
 
 /* ── Résumé devis ── */
 .quote-result {
-    background:linear-gradient(135deg,var(--navy) 0%,#183560 100%);
+    background:linear-gradient(135deg,var(--navy) 0%,#186035 100%);
     border-radius:14px; padding:1.1rem 1.3rem; color:#fff;
 }
 .quote-result__row { display:flex; flex-wrap:wrap; gap:.8rem; justify-content:space-between; margin-bottom:.75rem; }
@@ -160,7 +160,7 @@ document.addEventListener('alpine:init', () => {
 @php $locale = app()->getLocale(); @endphp
 
 <div class="page-hero">
-    <div class="container">
+    <div class="container-sm">
         <div class="page-hero__content">
             <h1 class="page-hero__title">@lang('menu.loan')</h1>
             <ul class="page-hero__breadcrumb">
@@ -173,7 +173,7 @@ document.addEventListener('alpine:init', () => {
 </div>
 
 <section class="py-24 bg-white">
-    <div class="container">
+    <div class="container-sm">
         <div class="row g-4 align-items-start">
 
             {{-- ══════════ FORMULAIRE PRINCIPAL ══════════ --}}
@@ -185,12 +185,12 @@ document.addEventListener('alpine:init', () => {
                     <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-4">
                         <div>
                             <div class="section-label mb-1">@lang('loan.quote_step_label')</div>
-                            <h3 style="font-family:'Playfair Display',serif;color:var(--navy);font-size:1.25rem;font-weight:700;margin:0 0 .15rem;">
+                            <h3 style="font-family:'Outfit',sans-serif;color:var(--navy);font-size:1.25rem;font-weight:700;margin:0 0 .15rem;">
                                 @lang('loan.quote_step_title')
                             </h3>
                             <p style="font-size:.78rem;color:#6b7280;margin:0;">@lang('loan.quote_step_desc')</p>
                         </div>
-                        <div style="display:inline-flex;align-items:center;gap:.4rem;background:var(--navy);color:var(--gold);padding:.35rem .9rem;border-radius:999px;font-weight:800;font-size:.82rem;white-space:nowrap;flex-shrink:0;">
+                        <div style="display:inline-flex;align-items:center;gap:.4rem;background:var(--navy);color:var(--gold-light);padding:.35rem .9rem;border-radius:999px;font-weight:800;font-size:.82rem;white-space:nowrap;flex-shrink:0;">
                             <i class="fas fa-lock" style="font-size:.68rem;"></i>
                             @lang('loan.label_rate') : 5 %
                         </div>
@@ -465,7 +465,7 @@ document.addEventListener('alpine:init', () => {
 
 {{-- Bande partenaires (signal de confiance) --}}
 <div style="background:#f7f8fa;border-top:1px solid #eaecf0;padding:1.5rem 0 1.75rem;">
-    <div class="container">
+    <div class="container-sm">
         <p style="text-align:center;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#b0b8c5;margin:0 0 1rem;">
             @lang('home.partners_label')
         </p>

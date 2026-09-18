@@ -8,12 +8,12 @@
     "src": "resources/css/app.css"
   },
   "resources/css/client-app.css": {
-    "file": "assets/client-app-76849fea.css",
+    "file": "assets/client-app-180ddac7.css",
     "isEntry": true,
     "src": "resources/css/client-app.css"
   },
   "resources/css/client.css": {
-    "file": "assets/client-ee6a7956.css",
+    "file": "assets/client-cc0db5aa.css",
     "isEntry": true,
     "src": "resources/css/client.css"
   },
@@ -23,7 +23,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/client-app.js": {
-    "file": "assets/client-app-8d238b6f.js",
+    "file": "assets/client-app-041ec48d.js",
     "imports": [
       "_chart-ad2aba2b.js"
     ],
@@ -31,7 +31,7 @@
     "src": "resources/js/client-app.js"
   },
   "resources/js/client.js": {
-    "file": "assets/client-964d3807.js",
+    "file": "assets/client-9109cae9.js",
     "imports": [
       "_chart-ad2aba2b.js"
     ],

@@ -1,6 +1,6 @@
 <?php
 return [
-    'title'           => 'Mi espacio Credixa',
+    'title'           => 'Mi espacio Aurenza Capital',
     'greeting'        => 'Hola',
     'language'        => 'Idioma',
     'welcome_back'    => 'Bienvenido de nuevo',
@@ -279,8 +279,8 @@ return [
     'not_provided'               => 'No indicado',
     'currency_label'             => 'Moneda',
     'email_label'                => 'Email',
-    'receive_notice'             => 'Comparta estos datos bancarios para recibir fondos directamente en su cuenta Credixa.',
-    'share_title'                => 'Mis datos Credixa',
+    'receive_notice'             => 'Comparta estos datos bancarios para recibir fondos directamente en su cuenta Aurenza Capital.',
+    'share_title'                => 'Mis datos Aurenza Capital',
     'back_to_transfers'          => 'Volver a las transferencias',
     'send_confirm_title'         => 'Transferencia enviada',
     'send_confirm_body'          => 'Su solicitud ha sido registrada y esta pendiente de validacion por nuestro equipo.',

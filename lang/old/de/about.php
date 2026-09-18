@@ -1,19 +1,19 @@
 <?php
 
 return [
-    'banner_title' => 'Atrask Credixa',
+    'banner_title' => 'Atrask Aurenza Capital',
     'banner_subtitle' => 'Apie mus',
     'banner_description' => 'Skolinkites lengviau naudodamiesi lanksčiais paskolų sprendimais, pritaikytais jūsų finansiniams poreikiams.',
 
-    'section1_title' => 'Kodėl verta rinktis Credixa',
-    'section1_p1' => 'Mes Credixa tvirtai tikime, kad kiekvienas nusipelno galimybės įgyvendinti savo finansines svajones. Nuo pat savo veiklos pradžios esame įsipareigoję teikti lanksčius ir prieinamus skolinimo sprendimus, kad patenkintume įvairius mūsų klientų poreikius. Nesvarbu, ar norite finansuoti asmeninį projektą, įsigyti automobilį ar išplėsti savo verslą, mes turime jums reikalingą paskolą.',
+    'section1_title' => 'Kodėl verta rinktis Aurenza Capital',
+    'section1_p1' => 'Mes Aurenza Capital tvirtai tikime, kad kiekvienas nusipelno galimybės įgyvendinti savo finansines svajones. Nuo pat savo veiklos pradžios esame įsipareigoję teikti lanksčius ir prieinamus skolinimo sprendimus, kad patenkintume įvairius mūsų klientų poreikius. Nesvarbu, ar norite finansuoti asmeninį projektą, įsigyti automobilį ar išplėsti savo verslą, mes turime jums reikalingą paskolą.',
     'section1_p2' => 'Mūsų paslaugos sukurtos taip, kad būtų užtikrintas be vargo, greitas ir paprastas paraiškų teikimo procesas. Suprantame, kad kiekvienas klientas yra unikalus, todėl siūlome individualizuotas paskolas, kurios prisitaiko prie konkrečių jūsų poreikių. Be to, mūsų atsidavę patarėjai visada padės jums kiekviename žingsnyje, užtikrindami, kad nuo pradžios iki pabaigos jus visapusiškai palaikytų.',
     'proposed' => 'Mes siūlome:',
     'check1' => 'Suasmenintos paskolos pagal jūsų konkrečius poreikius.',
     'check2' => 'Paskirti patarėjai padės jums kiekviename žingsnyje.',
     'check3' => 'Lanksčios grąžinimo sąlygos, atitinkančios jūsų finansinę padėtį',
     'check4' => 'Paskolos be atlyginimo.',
-    'section1_p3' => 'Mūsų „Credixa“ misija yra padėti jums pasiekti jūsų finansinius tikslus, taikant individualiai pritaikytus paskolų sprendimus. Prisijunkite prie mūsų šiandien ir sužinokite, kaip galime padėti jums paversti jūsų projektus realybe.',
+    'section1_p3' => 'Mūsų „Aurenza Capital“ misija yra padėti jums pasiekti jūsų finansinius tikslus, taikant individualiai pritaikytus paskolų sprendimus. Prisijunkite prie mūsų šiandien ir sužinokite, kaip galime padėti jums paversti jūsų projektus realybe.',
     'btn' => 'Raskite savo idealią paskolą',
 
     'faq_title' => 'Dažniausiai užduodami klausimai',

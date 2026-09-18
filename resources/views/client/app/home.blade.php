@@ -54,7 +54,7 @@
 .h-header__actions{ display:flex;gap:.5rem }
 .h-avatar{
   width:46px;height:46px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--ca-teal),#0A2040);
+  background:linear-gradient(135deg,var(--ca-teal),#0A4020);
   border:2.5px solid rgba(27,138,122,.45);
   box-shadow:0 0 0 4px rgba(27,138,122,.1);
   display:flex;align-items:center;justify-content:center;
@@ -81,7 +81,7 @@
 .h-card{
   margin:.625rem 1.25rem 0;
   border-radius:24px;
-  background:linear-gradient(145deg,#1B527A 0%,#0D2E54 40%,#071828 100%);
+  background:linear-gradient(145deg,#1B7A52 0%,#0D542E 40%,#072818 100%);
   padding:1.375rem 1.5rem 1.25rem;
   position:relative;overflow:hidden;
   box-shadow:0 20px 56px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.07);
@@ -95,7 +95,7 @@
 .h-card::after{
   content:'';position:absolute;bottom:-80px;left:-50px;
   width:220px;height:220px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,169,81,.09) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(198,161,91,.09) 0%,transparent 65%);
   pointer-events:none;
 }
 /* Card top row */
@@ -104,14 +104,14 @@
   margin-bottom:1.125rem;
 }
 .h-card__brand{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:.65rem;font-weight:800;
   letter-spacing:.14em;text-transform:uppercase;
   color:rgba(255,255,255,.5);
 }
 .h-card__chip{
   width:34px;height:26px;border-radius:5px;
-  background:linear-gradient(135deg,#D4B96A,#C8A951,#A88830);
+  background:linear-gradient(135deg,#DCBE87,#C6A15B,#9A7736);
   box-shadow:0 2px 8px rgba(0,0,0,.35);
   position:relative;overflow:hidden;
 }
@@ -139,7 +139,7 @@
 }
 .h-eye:hover{color:rgba(255,255,255,.75)}
 .h-balance{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:2.125rem;font-weight:800;
   color:#fff;letter-spacing:-.03em;line-height:1;
   margin-bottom:1.125rem;
@@ -159,7 +159,7 @@
   position:relative;z-index:1;
 }
 .h-card__name{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:.78rem;font-weight:700;
   color:rgba(255,255,255,.75);
   text-transform:uppercase;letter-spacing:.06em;
@@ -170,8 +170,8 @@
   color:rgba(255,255,255,.38);letter-spacing:.15em;
 }
 .h-card__badge{
-  background:rgba(200,169,81,.18);
-  border:1px solid rgba(200,169,81,.38);
+  background:rgba(198,161,91,.18);
+  border:1px solid rgba(198,161,91,.38);
   border-radius:999px;
   padding:.28rem .75rem;
   font-size:.65rem;font-weight:700;
@@ -236,7 +236,7 @@
 .h-stat--teal::before{ background:linear-gradient(90deg,var(--ca-teal-l),#0D8A7A) }
 .h-stat--amb::before { background:linear-gradient(90deg,var(--ca-amber),#C87800) }
 .h-stat__num{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.75rem;font-weight:800;
   line-height:1;margin-bottom:.3rem;
 }
@@ -291,7 +291,7 @@
 }
 .h-txn__right{ text-align:right;flex-shrink:0 }
 .h-txn__amount{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:.95rem;font-weight:700;
 }
 .h-txn__amount--pos{ color:var(--ca-positive) }
@@ -309,7 +309,7 @@
 .h-badge--loan   { background:rgba(27,138,122,.18); color:var(--ca-teal-l) }
 .h-badge--pending{ background:rgba(245,158,11,.15); color:var(--ca-amber) }
 .h-badge--signed { background:rgba(74,158,255,.15); color:var(--ca-blue) }
-.h-badge--final  { background:rgba(200,169,81,.15); color:var(--ca-gold-l) }
+.h-badge--final  { background:rgba(198,161,91,.15); color:var(--ca-gold-l) }
 
 /* ── Empty state ── */
 .h-empty{
@@ -365,7 +365,7 @@
   <div class="h-card__top">
     <div class="h-card__brand">
       <i class="fas fa-landmark" style="font-size:.6rem;margin-right:.3rem"></i>
-      CREDIXA &nbsp;·&nbsp; {{ __('app.account_num') }}
+      AURENZA CAPITAL &nbsp;·&nbsp; {{ __('app.account_num') }}
     </div>
     <div class="h-card__chip" aria-hidden="true"></div>
   </div>
@@ -380,7 +380,7 @@
 
   {{-- Amount --}}
   <div class="h-balance" x-show="shown" x-transition>
-    <sup>{{ $user->currency ?? config('credixa.default_currency') }}</sup>{{ number_format((float)$user->balance, 2, ',', ' ') }}
+    <sup>{{ $user->currency ?? config('aurenza.default_currency') }}</sup>{{ number_format((float)$user->balance, 2, ',', ' ') }}
   </div>
   <div class="h-balance--hidden" x-show="!shown" aria-hidden="true">
     &bull;&bull;&bull;&bull;&bull;&bull;
@@ -394,7 +394,7 @@
     </div>
     <div class="h-card__badge">
       <i class="fas fa-shield-halved" style="font-size:.6rem"></i>
-      {{ $user->currency ?? config('credixa.default_currency') }}
+      {{ $user->currency ?? config('aurenza.default_currency') }}
     </div>
   </div>
 </div>
@@ -426,7 +426,7 @@
     <span class="h-action__lbl">{{ __('app.action_analytics') }}</span>
   </a>
   <a href="{{ route('client.app.movements') }}" class="h-action">
-    <div class="h-action__ico" style="background:rgba(200,169,81,.15);border:1px solid rgba(200,169,81,.3);color:var(--ca-gold-l)">
+    <div class="h-action__ico" style="background:rgba(198,161,91,.15);border:1px solid rgba(198,161,91,.3);color:var(--ca-gold-l)">
       <i class="fas fa-list-ul"></i>
     </div>
     <span class="h-action__lbl">{{ __('app.movements_title') }}</span>

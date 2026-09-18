@@ -1,6 +1,6 @@
 <?php
 return [
-    'title'           => 'Spațiul meu Credixa',
+    'title'           => 'Spațiul meu Aurenza Capital',
     'greeting'        => 'Bună ziua',
     'language'        => 'Limbă',
     'welcome_back'    => 'Bine ați revenit',
@@ -308,8 +308,8 @@ return [
     'not_provided'               => 'Nefurnizat',
     'currency_label'             => 'Valută',
     'email_label'                => 'Email',
-    'receive_notice'             => 'Partajați aceste date bancare pentru a primi fonduri direct în contul dumneavoastră Credixa.',
-    'share_title'                => 'Datele mele Credixa',
+    'receive_notice'             => 'Partajați aceste date bancare pentru a primi fonduri direct în contul dumneavoastră Aurenza Capital.',
+    'share_title'                => 'Datele mele Aurenza Capital',
     'back_to_transfers'          => 'Înapoi la transferuri',
     'send_confirm_title'         => 'Transfer trimis',
     'send_confirm_body'          => 'Cererea dumneavoastră a fost înregistrată și este în așteptarea validării de către echipa noastră.',

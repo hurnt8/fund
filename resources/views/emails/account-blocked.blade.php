@@ -1,7 +1,7 @@
 @php $locale = $user->locale ?? 'fr'; @endphp
 <x-email-layout
     :title="__('auth.account_blocked_email_title', [], $locale)"
-    subtitle="Credixa Invest"
+    subtitle="Aurenza Capital"
     accent="red"
     :footerNote="__('auth.account_blocked_email_footer', [], $locale)"
 >

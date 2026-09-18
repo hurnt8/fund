@@ -30,5 +30,5 @@ return [
     'newsletter_title' => 'Rămâneți la curent cu ofertele noastre',
     'subscribe'        => "Abonați-vă",
     'read_more'        => 'Aflați mai multe',
-    'footer_desc'      => "Credixa este partenerul dumneavoastră de încredere pentru soluții de finanțare rapide, flexibile și personalizate în toată Europa.",
+    'footer_desc'      => "Aurenza Capital este partenerul dumneavoastră de încredere pentru soluții de finanțare rapide, flexibile și personalizate în toată Europa.",
 ];

@@ -1,48 +1,58 @@
-<form action="#" id="loan-calculator-01" data-form-direction="ltr" data-interest-rate="15"
-    class="loan-calculator-form">
+@php $locale = app()->getLocale(); @endphp
 
-    <h3 class="loan-calculator-form__title">{{ __('home.simulate.sectitle') }}</h3>
+<div class="simulate-card" x-data="{
+    amount: 10000,
+    duration: 36,
+    rate: 2.5,
+    get monthly() {
+        const p = parseFloat(this.amount), n = parseInt(this.duration);
+        const r = this.rate / 100 / 12;
+        if (!p || !n || p <= 0 || n <= 0 || isNaN(p) || isNaN(n)) return null;
+        return (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    },
+    get total() { return this.monthly ? this.monthly * parseInt(this.duration) : null; },
+    fmt(v) {
+        if (v === null || v === undefined || isNaN(v)) return '—';
+        try {
+            return new Intl.NumberFormat('{{ $locale }}', { maximumFractionDigits: 0 }).format(v) + ' €';
+        } catch (e) { return Math.round(v) + ' €'; }
+    },
+}">
+    <h3 class="simulate-card__title">{{ __('home.simulate.sectitle') }}</h3>
 
-    <div class="loan-calculator-form__content">
-
-        <div class="input-box__top">
-            <span>1 000 €</span>
-            <span>50 000 €</span>
+    <div class="form-group">
+        <label>@lang('simulate.label_amount')</label>
+        <div class="input-group-simple">
+            <input type="number" class="form-control" x-model.number="amount" min="1000" max="500000" step="100">
+            <span class="input-group-simple__sym">€</span>
         </div>
-        <div class="input-box" style="margin-bottom:8px;">
-            <div class="range-slider-count" id="loan-calculator-01-count"></div>
-            <input type="hidden" class="min-count" id="loan-calculator-01-min-count">
-            <input type="hidden" class="max-count" id="loan-calculator-01-max-count">
-        </div>
-
-        <div class="input-box__top input-box__top-border">
-            <span>1 {{ __('simulate.table_month') }}</span>
-            <span>12 {{ __('simulate.table_month') }}s</span>
-        </div>
-        <div class="input-box" style="margin-bottom:20px;">
-            <div class="range-slider-month" id="loan-calculator-01-month"></div>
-            <input type="hidden" class="min-month" id="loan-calculator-01-min-month">
-            <input type="hidden" class="max-month" id="loan-calculator-01-max-month">
-        </div>
-
-        <p>
-            <span>{{ __('simulate.table_month') }}</span>
-            <b><i class="loan-monthly-pay"></i> €</b>
-        </p>
-        <p>
-            <span>{{ __('simulate.terms') }}</span>
-            <b><i class="loan-month"></i> {{ __('simulate.table_month') }}s</b>
-        </p>
-        <p>
-            <span>{{ __('simulate.total') }}</span>
-            <b><i class="loan-total"></i> €</b>
-        </p>
-
-        <a href="{{ route('loan', ['locale' => app()->getLocale()]) }}"
-           class="btn-primary loan-calculator-form__btn">
-            <i class="fas fa-file-signature"></i>
-            @lang('menu.loan')
-        </a>
-
     </div>
-</form>
+
+    <div class="form-group mb-0">
+        <label>@lang('simulate.label_duree')</label>
+        <div class="input-group-simple">
+            <input type="number" class="form-control" x-model.number="duration" min="1" max="360" step="1">
+            <span class="input-group-simple__sym">@lang('simulate.table_month')</span>
+        </div>
+    </div>
+
+    <div class="simulate-card__results">
+        <div class="simulate-card__result simulate-card__result--highlight">
+            <span>@lang('simulate.table_month')</span>
+            <b x-text="fmt(monthly)">—</b>
+        </div>
+        <div class="simulate-card__result">
+            <span>@lang('simulate.terms')</span>
+            <b x-text="duration + ' ' + @js(__('simulate.table_month'))"></b>
+        </div>
+        <div class="simulate-card__result">
+            <span>@lang('simulate.total')</span>
+            <b x-text="fmt(total)">—</b>
+        </div>
+    </div>
+
+    <a href="{{ route('loan', ['locale' => $locale]) }}" class="btn-primary simulate-card__btn">
+        <i class="fas fa-file-signature"></i>
+        @lang('menu.loan')
+    </a>
+</div>

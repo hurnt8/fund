@@ -1,16 +1,16 @@
 @extends('layouts.dashboard')
-@section('title','Dossier '.$loan->reference.' — Credixa')
+@section('title','Dossier '.$loan->reference.' — Aurenza Capital')
 @section('page_title','Dossier '.$loan->reference)
 
 @push('styles')
 <style>
-  body { background: #0D1F35 !important; }
-  .main-wrap { background: #0D1F35; }
+  body { background: #0A2A20 !important; }
+  .main-wrap { background: #0A2A20; }
   .content-area { background: transparent; }
-  .topbar { background: #112237 !important; border-bottom-color: rgba(200,169,81,.14) !important; }
-  .topbar-title { color: #E8EDF5 !important; }
-  .topbar-badge { background: #162D47 !important; border-color: rgba(255,255,255,.1) !important; color: #B8C8D8 !important; }
-  .topbar-avatar { background: linear-gradient(135deg,#1D3A5C,#0B2E4E) !important; color: #C8A951 !important; }
+  .topbar { background: #0E3226 !important; border-bottom-color: rgba(198,161,91,.14) !important; }
+  .topbar-title { color: #E9EFEA !important; }
+  .topbar-badge { background: #143C2E !important; border-color: rgba(255,255,255,.1) !important; color: #BFCFC5 !important; }
+  .topbar-avatar { background: linear-gradient(135deg,#1C4C3A,#0B4E2E) !important; color: #C6A15B !important; }
 
   /* ── Tableau d'amortissement — responsive mobile ── */
   .cl-amort-wrap { overflow-x: auto; overflow-y: auto; max-height: 380px; -webkit-overflow-scrolling: touch; }
@@ -23,7 +23,7 @@
     .cl-table tbody tr {
       display: block;
       background: rgba(22,45,71,.7);
-      border: 1px solid rgba(200,169,81,.14);
+      border: 1px solid rgba(198,161,91,.14);
       border-radius: 9px;
       padding: .75rem;
       margin-bottom: .625rem;
@@ -42,7 +42,7 @@
       content: attr(data-label);
       font-size: .65rem;
       font-weight: 700;
-      color: var(--cl-muted, #6B88A4);
+      color: var(--cl-muted, #7D9488);
       text-transform: uppercase;
       letter-spacing: .05em;
       flex-shrink: 0;
@@ -99,7 +99,7 @@
 <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-4">
   <div>
     <div class="d-flex align-items-center gap-3 mb-1 flex-wrap">
-      <span style="font-family:'Space Grotesk',monospace;font-size:1rem;font-weight:700;color:var(--cl-gold)">
+      <span style="font-family:'Outfit',monospace;font-size:1rem;font-weight:700;color:var(--cl-gold)">
         {{ $loan->reference }}
       </span>
       <span class="cl-badge {{ $badgeClass }}">{{ $loan->statusLabel() }}</span>
@@ -142,7 +142,7 @@
   <div class="cl-alert__icon"><i class="fas fa-ban"></i></div>
   <div>
     <div class="cl-alert__title">Demande non acceptée</div>
-    Contactez votre conseiller Credixa pour plus d'informations.
+    Contactez votre conseiller Aurenza Capital pour plus d'informations.
   </div>
 </div>
 @endif
@@ -203,7 +203,7 @@
               <div style="font-size:.65rem;color:var(--cl-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">
                 Montant accordé
               </div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cl-text);line-height:1">
+              <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cl-text);line-height:1">
                 {{ number_format($loan->amount, 2, ',', ' ') }}
                 <span style="font-size:.8rem;color:var(--cl-gold);font-weight:600">{{ $loan->currency }}</span>
               </div>
@@ -214,7 +214,7 @@
               <div style="font-size:.65rem;color:var(--cl-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">
                 Mensualité
               </div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cl-gold-2);line-height:1">
+              <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cl-gold-2);line-height:1">
                 {{ number_format($loan->monthly_payment, 2, ',', ' ') }}
                 <span style="font-size:.8rem;font-weight:600">{{ $loan->currency }}</span>
               </div>
@@ -279,7 +279,7 @@
               {{ number_format($principal, 2, ',', ' ') }} {{ $loan->currency }}
             </div>
           </div>
-          <div style="background:rgba(200,169,81,.08);border-radius:9px;padding:.75rem;border:1px solid rgba(200,169,81,.2)">
+          <div style="background:rgba(198,161,91,.08);border-radius:9px;padding:.75rem;border:1px solid rgba(198,161,91,.2)">
             <div style="font-size:.65rem;color:var(--cl-muted);margin-bottom:.2rem">Intérêts</div>
             <div style="font-weight:700;color:var(--cl-gold-2);font-size:.85rem">
               {{ number_format($interest, 2, ',', ' ') }} {{ $loan->currency }}

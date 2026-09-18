@@ -15,7 +15,7 @@ $texts = [
         'lbl_pay'  => 'Mensualité estimée',
         'lbl_rate' => 'Taux annuel',
         'closing'  => 'Cordialement,',
-        'team'     => 'L\'équipe CREDIXA INVESTI',
+        'team'     => 'L\'équipe AURENZA CAPITAL INVESTI',
     ],
     'en' => [
         'title'    => 'Application N°'.$loan->reference.' approved',
@@ -32,7 +32,7 @@ $texts = [
         'lbl_pay'  => 'Estimated monthly payment',
         'lbl_rate' => 'Annual rate',
         'closing'  => 'Yours sincerely,',
-        'team'     => 'The CREDIXA INVESTI team',
+        'team'     => 'The AURENZA CAPITAL INVESTI team',
     ],
     'es' => [
         'title'    => 'Solicitud N°'.$loan->reference.' aprobada',
@@ -49,7 +49,7 @@ $texts = [
         'lbl_pay'  => 'Cuota mensual estimada',
         'lbl_rate' => 'Tasa anual',
         'closing'  => 'Atentamente,',
-        'team'     => 'El equipo CREDIXA INVESTI',
+        'team'     => 'El equipo AURENZA CAPITAL INVESTI',
     ],
     'pl' => [
         'title'    => 'Wniosek nr '.$loan->reference.' zatwierdzony',
@@ -66,7 +66,7 @@ $texts = [
         'lbl_pay'  => 'Szacowana miesięczna rata',
         'lbl_rate' => 'Stopa roczna',
         'closing'  => 'Z poważaniem,',
-        'team'     => 'Zespół CREDIXA INVESTI',
+        'team'     => 'Zespół AURENZA CAPITAL INVESTI',
     ],
 ];
 $t = $texts[$locale] ?? $texts['fr'];

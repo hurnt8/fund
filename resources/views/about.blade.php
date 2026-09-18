@@ -4,26 +4,9 @@
 @section('content')
 @php $locale = app()->getLocale(); @endphp
 
-@push('styles')
-<style>
-.about-engage-card {
-    display:flex; gap:1rem; padding:1rem 1.25rem;
-    background:var(--cream); border-radius:12px;
-    border-left:3px solid var(--gold); margin-bottom:.75rem;
-}
-.about-engage-icon {
-    width:42px; height:42px; flex-shrink:0; border-radius:10px;
-    background:var(--gold-pale); display:flex; align-items:center;
-    justify-content:center; color:var(--gold-dark); font-size:1rem;
-}
-.about-engage-title { font-size:.875rem; font-weight:800; color:var(--navy); margin-bottom:.2rem; }
-.about-engage-desc  { font-size:.78rem; color:#6b7280; margin:0; line-height:1.55; }
-</style>
-@endpush
-
 {{-- Page hero --}}
 <div class="page-hero">
-    <div class="container">
+    <div class="container-sm">
         <div class="page-hero__content">
             <h1 class="page-hero__title">@lang('menu.about')</h1>
             <ul class="page-hero__breadcrumb">
@@ -37,18 +20,15 @@
 
 {{-- About intro --}}
 <section class="py-24 bg-white">
-    <div class="container">
+    <div class="container-sm">
         <div class="row g-4 gutter-y-60 align-items-center">
             <div class="col-lg-6 wow fadeInLeft" data-wow-duration="900ms">
-                <div class="about-image-wrap">
-                    <img src="{{ asset('assets/images/about/about-1-1.jpg') }}"
-                         alt="Credixa" class="about-image-main">
-                    <img src="{{ asset('assets/images/about/about-1-2.jpg') }}"
-                         alt="" class="about-image-secondary"
-                         style="width:38%;right:1rem;bottom:1rem;">
-                    <div class="about-badge">
-                        <span class="about-badge__number">5</span>
-                        <span class="about-badge__label">{{ __('home.about.exptitle') }}</span>
+                <div class="about-visual">
+                    <img src="{{ asset('assets/images/aurenza/about-portrait.jpg') }}"
+                         alt="Aurenza Capital" class="about-visual__img">
+                    <div class="about-visual__ribbon">
+                        <span class="about-visual__ribbon-num">5</span>
+                        <span class="about-visual__ribbon-label">{{ __('home.about.exptitle') }}</span>
                     </div>
                 </div>
             </div>
@@ -62,26 +42,20 @@
                 </p>
 
                 {{-- 3 engagements clés --}}
-                <div class="about-engage-card">
-                    <div class="about-engage-icon"><i class="fas fa-shield-alt"></i></div>
-                    <div>
-                        <div class="about-engage-title">{{ __('home.about.engage1_title') }}</div>
-                        <p class="about-engage-desc">{{ __('home.about.engage1_desc') }}</p>
+                <div style="margin-bottom:1.5rem;">
+                    @foreach ([
+                        ['fas fa-shield-alt', 'engage1'],
+                        ['fas fa-bolt',       'engage2'],
+                        ['fas fa-globe',      'engage3'],
+                    ] as $eng)
+                    <div class="about-point">
+                        <div class="about-point__icon"><i class="{{ $eng[0] }}"></i></div>
+                        <div>
+                            <div class="about-point__title">{{ __('home.about.' . $eng[1] . '_title') }}</div>
+                            <p class="about-point__desc">{{ __('home.about.' . $eng[1] . '_desc') }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="about-engage-card">
-                    <div class="about-engage-icon"><i class="fas fa-bolt"></i></div>
-                    <div>
-                        <div class="about-engage-title">{{ __('home.about.engage2_title') }}</div>
-                        <p class="about-engage-desc">{{ __('home.about.engage2_desc') }}</p>
-                    </div>
-                </div>
-                <div class="about-engage-card" style="margin-bottom:1.5rem;">
-                    <div class="about-engage-icon"><i class="fas fa-globe"></i></div>
-                    <div>
-                        <div class="about-engage-title">{{ __('home.about.engage3_title') }}</div>
-                        <p class="about-engage-desc">{{ __('home.about.engage3_desc') }}</p>
-                    </div>
+                    @endforeach
                 </div>
 
                 {{-- Types de prêts proposés --}}
@@ -125,7 +99,7 @@
 
 {{-- Stats --}}
 <section style="background:var(--navy);">
-    <div class="container">
+    <div class="container-sm">
         <div class="row">
             @php
             $stats = [
@@ -153,7 +127,7 @@
 
 {{-- Why choose us --}}
 <section class="py-24" style="background:var(--cream);">
-    <div class="container">
+    <div class="container-sm">
         <div class="text-center mb-14">
             <div class="section-label justify-content-center">{{ __('home.loan_reasons.sectagline') }}</div>
             <h2 class="section-title">{{ __('home.loan_reasons.sectitle') }}</h2>
@@ -165,7 +139,7 @@
                     <div style="width:52px;height:52px;background:var(--gold-pale);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:var(--gold-dark);font-size:1.25rem;margin-bottom:1.25rem;">
                         <i class="fas fa-{{ $r===1 ? 'shield-alt' : ($r===2 ? 'bolt' : 'headset') }}"></i>
                     </div>
-                    <h3 style="font-family:'Playfair Display',serif;font-size:1.125rem;font-weight:700;color:var(--navy);margin-bottom:.625rem;">
+                    <h3 style="font-family:'Outfit',sans-serif;font-size:1.125rem;font-weight:700;color:var(--navy);margin-bottom:.625rem;">
                         {{ __('home.loan_reasons.reasons.title' . $r) }}
                     </h3>
                     <p style="font-size:.875rem;color:var(--gray-500);line-height:1.75;margin:0;">

@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.profile_title') . ' — Credixa')
+@section('title', __('app.profile_title') . ' — Aurenza Capital')
 @section('page_title', __('app.profile_title'))
 @section('back_btn', true)
 @section('back_url', route('client.app.home'))
@@ -21,11 +21,11 @@
 
 {{-- Balance rapide --}}
 <a href="{{ route('client.app.movements') }}" style="text-decoration:none;display:block;margin:0 1.25rem .875rem">
-<div style="background:linear-gradient(135deg,#1B4976,#0D2E52);border-radius:var(--ca-radius-md);padding:1rem 1.25rem;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between">
+<div style="background:linear-gradient(135deg,#1B7649,#0D522E);border-radius:var(--ca-radius-md);padding:1rem 1.25rem;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between">
   <div>
     <div style="font-size:.65rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.25rem">{{ __('app.balance') }}</div>
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:800;color:#fff">
-      {{ $user->currency ?? config('credixa.default_currency') }} {{ number_format((float)$user->balance, 2, ',', ' ') }}
+    <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff">
+      {{ $user->currency ?? config('aurenza.default_currency') }} {{ number_format((float)$user->balance, 2, ',', ' ') }}
     </div>
   </div>
   <div style="font-size:.75rem;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:.35rem">
@@ -49,7 +49,7 @@
       <div class="ca-settings-item__right"><i class="fas fa-chevron-right"></i></div>
     </div>
     <a href="{{ route('client.app.payment-methods') }}" class="ca-settings-item" style="text-decoration:none">
-      <div class="ca-settings-item__icon" style="background:rgba(200,169,81,.18);color:var(--ca-gold-l)">
+      <div class="ca-settings-item__icon" style="background:rgba(198,161,91,.18);color:var(--ca-gold-l)">
         <i class="fas fa-credit-card"></i>
       </div>
       <div class="ca-settings-item__text">
@@ -76,7 +76,7 @@
       <div class="ca-settings-item__right"><i class="fas fa-chevron-right"></i></div>
     </a>
     <a href="{{ route('client.app.profile.password') }}" class="ca-settings-item" style="text-decoration:none">
-      <div class="ca-settings-item__icon" style="background:rgba(200,169,81,.18);color:var(--ca-gold-l)">
+      <div class="ca-settings-item__icon" style="background:rgba(198,161,91,.18);color:var(--ca-gold-l)">
         <i class="fas fa-lock"></i>
       </div>
       <div class="ca-settings-item__text">
@@ -207,7 +207,7 @@
     </div>
     <div style="flex:1;min-width:0">
       <div style="font-size:.875rem;font-weight:700;color:var(--ca-text)">{{ $advisor->name }}</div>
-      <div style="font-size:.7rem;color:var(--ca-text-3);margin-top:.1rem">Votre conseiller Credixa</div>
+      <div style="font-size:.7rem;color:var(--ca-text-3);margin-top:.1rem">Votre conseiller Aurenza Capital</div>
     </div>
     @if($advisor->phone)
     <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $advisor->phone) }}"
@@ -248,7 +248,7 @@
 
 {{-- Version --}}
 <div style="text-align:center;padding:1.5rem;font-size:.7rem;color:var(--ca-text-3)">
-  Credixa Mobile &nbsp;&bull;&nbsp; v2.0.0
+  Aurenza Capital Mobile &nbsp;&bull;&nbsp; v2.0.0
 </div>
 
 @endsection

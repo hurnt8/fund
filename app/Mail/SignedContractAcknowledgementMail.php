@@ -25,10 +25,10 @@ class SignedContractAcknowledgementMail extends Mailable
     public function envelope(): Envelope
     {
         $subjects = [
-            'fr' => 'Réception de votre contrat signé N°' . $this->loan->reference . ' — CREDIXA INVESTI',
+            'fr' => 'Réception de votre contrat signé N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
             'pl' => 'Potwierdzenie otrzymania podpisanej umowy nr ' . $this->loan->reference,
-            'en' => 'Receipt of your signed contract N°' . $this->loan->reference . ' — CREDIXA INVESTI',
-            'es' => 'Recepción de su contrato firmado N°' . $this->loan->reference . ' — CREDIXA INVESTI',
+            'en' => 'Receipt of your signed contract N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'es' => 'Recepción de su contrato firmado N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
         ];
 
         return new Envelope(subject: $subjects[$this->mailLocale] ?? $subjects['fr']);

@@ -4,10 +4,10 @@ $gender = $user->gender ?? 'N';
 
 $texts = [
     'fr' => [
-        'title'       => 'Activation de compte — Credixa Invest',
+        'title'       => 'Activation de compte — Aurenza Capital',
         'greeting'    => ['M' => 'Cher Monsieur', 'F' => 'Chère Madame', 'N' => 'Bonjour'],
         'subtitle'    => 'Définissez votre mot de passe pour activer votre accès',
-        'info_title'  => 'Votre compte Credixa Invest',
+        'info_title'  => 'Votre compte Aurenza Capital',
         'info_body'   => 'a été créé par votre conseiller. Choisissez un mot de passe sécurisé pour accéder à votre espace personnel.',
         'email_label' => 'Adresse email',
         'pw_label'    => 'Nouveau mot de passe',
@@ -21,10 +21,10 @@ $texts = [
         'strengths'   => ['', 'Très faible', 'Faible', 'Moyen', 'Fort', 'Très fort'],
     ],
     'en' => [
-        'title'       => 'Account Activation — Credixa Invest',
+        'title'       => 'Account Activation — Aurenza Capital',
         'greeting'    => ['M' => 'Dear Mr.', 'F' => 'Dear Ms.', 'N' => 'Hello'],
         'subtitle'    => 'Set your password to activate your account',
-        'info_title'  => 'Your Credixa Invest account',
+        'info_title'  => 'Your Aurenza Capital account',
         'info_body'   => 'was created by your advisor. Choose a secure password to access your personal space.',
         'email_label' => 'Email address',
         'pw_label'    => 'New password',
@@ -38,10 +38,10 @@ $texts = [
         'strengths'   => ['', 'Very weak', 'Weak', 'Fair', 'Strong', 'Very strong'],
     ],
     'es' => [
-        'title'       => 'Activación de cuenta — Credixa Invest',
+        'title'       => 'Activación de cuenta — Aurenza Capital',
         'greeting'    => ['M' => 'Estimado Sr.', 'F' => 'Estimada Sra.', 'N' => 'Hola'],
         'subtitle'    => 'Establezca su contraseña para activar su cuenta',
-        'info_title'  => 'Su cuenta de Credixa Invest',
+        'info_title'  => 'Su cuenta de Aurenza Capital',
         'info_body'   => 'fue creada por su asesor. Elija una contraseña segura para acceder a su espacio personal.',
         'email_label' => 'Correo electrónico',
         'pw_label'    => 'Nueva contraseña',
@@ -55,10 +55,10 @@ $texts = [
         'strengths'   => ['', 'Muy débil', 'Débil', 'Regular', 'Fuerte', 'Muy fuerte'],
     ],
     'pl' => [
-        'title'       => 'Aktywacja konta — Credixa Invest',
+        'title'       => 'Aktywacja konta — Aurenza Capital',
         'greeting'    => ['M' => 'Szanowny Panie', 'F' => 'Szanowna Pani', 'N' => 'Witaj'],
         'subtitle'    => 'Ustaw hasło, aby aktywować dostęp do konta',
-        'info_title'  => 'Twoje konto Credixa Invest',
+        'info_title'  => 'Twoje konto Aurenza Capital',
         'info_body'   => 'zostało utworzone przez Twojego doradcę. Wybierz bezpieczne hasło, aby uzyskać dostęp do swojego osobistego obszaru.',
         'email_label' => 'Adres e-mail',
         'pw_label'    => 'Nowe hasło',
@@ -85,21 +85,21 @@ $salutationName = ($gender === 'N') ? explode(' ', $user->name)[0] : $user->name
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#080C18">
+<meta name="theme-color" content="#061A14">
 <link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
 <title>{{ $t['title'] }}</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 :root{
-  --bg:   #080C18;
-  --inp:  #141C2E;
-  --cyan: #0DCFDC;
-  --cyan2:#09B5C8;
+  --bg:   #061A14;
+  --inp:  #103428;
+  --brass: #DCBE87;
+  --brass2:#C6A15B;
   --text: #FFFFFF;
   --sub:  rgba(255,255,255,.52);
   --muted:rgba(255,255,255,.28);
@@ -108,7 +108,7 @@ $salutationName = ($gender === 'N') ? explode(' ', $user->name)[0] : $user->name
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{
   min-height:100vh;background:var(--bg);color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;font-size:15px;
+  font-family:'Outfit',system-ui,sans-serif;font-size:15px;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
 }
 body{
@@ -125,12 +125,12 @@ a{text-decoration:none;color:inherit}
 .orb{position:absolute;border-radius:50%;filter:blur(90px)}
 .orb-1{
   width:520px;height:520px;top:-15%;right:-10%;
-  background:radial-gradient(circle,rgba(13,207,220,.11) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(220,190,135,.11) 0%,transparent 65%);
   animation:orbf 10s ease-in-out infinite alternate;
 }
 .orb-2{
   width:380px;height:380px;bottom:-15%;left:-8%;
-  background:radial-gradient(circle,rgba(13,207,220,.06) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(220,190,135,.06) 0%,transparent 65%);
   animation:orbf 14s ease-in-out infinite alternate-reverse;
 }
 @keyframes orbf{from{transform:scale(1)}to{transform:scale(1.1) translate(2%,3%)}}
@@ -145,28 +145,28 @@ a{text-decoration:none;color:inherit}
 /* Logo box */
 .logo-box{
   width:74px;height:74px;border-radius:22px;
-  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  background:linear-gradient(135deg,var(--brass),var(--brass2));
   display:flex;align-items:center;justify-content:center;
   margin:0 auto 1.375rem;
-  box-shadow:0 0 36px rgba(13,207,220,.3);
+  box-shadow:0 0 36px rgba(220,190,135,.3);
 }
 .logo-box img{height:40px;object-fit:contain;filter:brightness(0) invert(1)}
-.logo-box span{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:800;color:#080C18;line-height:1}
+.logo-box span{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;color:#061A14;line-height:1}
 
 /* Avatar */
 .avatar{
   width:60px;height:60px;border-radius:50%;
-  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  background:linear-gradient(135deg,var(--brass),var(--brass2));
   display:flex;align-items:center;justify-content:center;
-  font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:800;
-  color:#080C18;margin:0 auto 1rem;
-  box-shadow:0 0 24px rgba(13,207,220,.3);
+  font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;
+  color:#061A14;margin:0 auto 1rem;
+  box-shadow:0 0 24px rgba(220,190,135,.3);
 }
 
 /* Heading */
 .card-head{text-align:center;margin-bottom:1.75rem}
 .card-title{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:.35rem;
 }
 .card-sub{font-size:.8rem;color:var(--sub);line-height:1.6}
@@ -174,13 +174,13 @@ a{text-decoration:none;color:inherit}
 /* Info box */
 .info-box{
   display:flex;gap:.75rem;align-items:flex-start;
-  background:rgba(13,207,220,.07);
-  border:1px solid rgba(13,207,220,.18);
+  background:rgba(220,190,135,.07);
+  border:1px solid rgba(220,190,135,.18);
   border-radius:12px;padding:.875rem 1rem;margin-bottom:1.5rem;
 }
-.info-box i{color:var(--cyan);font-size:.88rem;flex-shrink:0;margin-top:.15rem}
+.info-box i{color:var(--brass);font-size:.88rem;flex-shrink:0;margin-top:.15rem}
 .info-box p{font-size:.77rem;color:rgba(255,255,255,.65);line-height:1.6}
-.info-box strong{color:var(--cyan);font-weight:600}
+.info-box strong{color:var(--brass);font-weight:600}
 
 /* Error */
 .ferr{
@@ -202,12 +202,12 @@ a{text-decoration:none;color:inherit}
 .finput{
   width:100%;padding:.85rem 2.6rem .85rem 2.6rem;
   background:var(--inp);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;
-  font-size:.875rem;font-family:'Inter',sans-serif;color:var(--text);
+  font-size:.875rem;font-family:'Outfit',sans-serif;color:var(--text);
   outline:none;transition:border-color .2s,box-shadow .2s,background .2s;
 }
 .finput::placeholder{color:rgba(255,255,255,.2)}
-.finput:focus{border-color:var(--cyan);background:#161E30;box-shadow:0 0 0 3.5px rgba(13,207,220,.15)}
-.finput:focus ~ .ficon,.frel:focus-within .ficon{color:var(--cyan)}
+.finput:focus{border-color:var(--brass);background:#123A2C;box-shadow:0 0 0 3.5px rgba(220,190,135,.15)}
+.finput:focus ~ .ficon,.frel:focus-within .ficon{color:var(--brass)}
 .finput.err{border-color:#ef4444}
 .finput[readonly]{
   color:rgba(255,255,255,.4);cursor:not-allowed;
@@ -228,20 +228,20 @@ a{text-decoration:none;color:inherit}
 /* Cyan pill button */
 .fbtn{
   width:100%;padding:.92rem 1.5rem;border:none;border-radius:999px;
-  font-size:.97rem;font-weight:700;font-family:'Inter',sans-serif;
+  font-size:.97rem;font-weight:700;font-family:'Outfit',sans-serif;
   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.625rem;
-  background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan2) 100%);
-  color:#080C18;letter-spacing:.01em;
-  box-shadow:0 6px 28px rgba(13,207,220,.35),0 2px 8px rgba(0,0,0,.3);
+  background:linear-gradient(90deg,var(--brass) 0%,var(--brass2) 100%);
+  color:#061A14;letter-spacing:.01em;
+  box-shadow:0 6px 28px rgba(220,190,135,.35),0 2px 8px rgba(0,0,0,.3);
   transition:filter .2s,box-shadow .2s,transform .1s;margin-top:1.25rem;
 }
-.fbtn:hover{filter:brightness(1.08);box-shadow:0 8px 36px rgba(13,207,220,.5)}
+.fbtn:hover{filter:brightness(1.08);box-shadow:0 8px 36px rgba(220,190,135,.5)}
 .fbtn:active{transform:scale(.975)}
 .fbtn:disabled{opacity:.6;cursor:not-allowed;filter:none}
 
 /* Footer link */
 .foot{text-align:center;font-size:.76rem;color:var(--muted);margin-top:1.25rem}
-.foot a{color:var(--cyan);font-weight:600;transition:opacity .18s}
+.foot a{color:var(--brass);font-weight:600;transition:opacity .18s}
 .foot a:hover{opacity:.75}
 
 /* Copyright */
@@ -265,10 +265,10 @@ a{text-decoration:none;color:inherit}
 
   {{-- Logo --}}
   <div class="logo-box">
-    <img src="{{ asset('assets/images/logo new.png') }}"
+    <img src="{{ asset('assets/images/logo-aurenza-mark.svg') }}"
          onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
-         alt="Credixa">
-    <span style="display:none">C</span>
+         alt="Aurenza Capital">
+    <span style="display:none">A</span>
   </div>
 
   {{-- Avatar + Heading --}}
@@ -356,12 +356,12 @@ a{text-decoration:none;color:inherit}
 
 </div>
 
-<div class="copy">&copy; {{ date('Y') }} Credixa Invest</div>
+<div class="copy">&copy; {{ date('Y') }} Aurenza Capital</div>
 
 <script>
 const strengths = @json($t['strengths']);
 const strPh     = @json($t['str_ph']);
-const colors    = ['','#ef4444','#f97316','#eab308','#22c55e','#0DCFDC'];
+const colors    = ['','#ef4444','#f97316','#eab308','#22c55e','#DCBE87'];
 const widths    = ['0%','25%','50%','75%','90%','100%'];
 
 function tglPwd(id, btn) {

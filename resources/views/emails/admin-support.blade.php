@@ -1,7 +1,7 @@
 @component('mail::message')
 # Nouveau message support
 
-**{{ $client->name }}** vous a envoyé un message via le support Credixa.
+**{{ $client->name }}** vous a envoyé un message via le support Aurenza Capital.
 
 @component('mail::panel')
 {{ $message->body }}
@@ -14,5 +14,5 @@ Répondre au client
 Reçu le {{ $message->created_at->format('d/m/Y à H:i') }}
 
 Cordialement,<br>
-**Credixa**
+**Aurenza Capital**
 @endcomponent

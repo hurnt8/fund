@@ -35,8 +35,8 @@ window.buildAmortChart = function (canvasId, principal, interest, currency) {
             datasets: [
                 {
                     data: [principal, interest],
-                    backgroundColor: ['#1D3A5C', '#C8A951'],
-                    borderColor: ['#162D47', '#A8893A'],
+                    backgroundColor: ['#1C4C3A', '#C6A15B'],
+                    borderColor: ['#143C2E', '#9A7736'],
                     borderWidth: 2,
                     hoverOffset: 6,
                 },
@@ -50,8 +50,8 @@ window.buildAmortChart = function (canvasId, principal, interest, currency) {
                 legend: {
                     position: 'bottom',
                     labels: {
-                        color: '#B8C8D8',
-                        font: { family: 'Inter', size: 11, weight: '600' },
+                        color: '#BFCFC5',
+                        font: { family: 'Outfit', size: 11, weight: '600' },
                         padding: 16,
                         usePointStyle: true,
                         pointStyleWidth: 8,
@@ -61,11 +61,11 @@ window.buildAmortChart = function (canvasId, principal, interest, currency) {
                     callbacks: {
                         label: (ctx) => ' ' + fmt(ctx.parsed),
                     },
-                    backgroundColor: '#112237',
-                    borderColor: '#C8A951',
+                    backgroundColor: '#0E3226',
+                    borderColor: '#C6A15B',
                     borderWidth: 1,
-                    titleColor: '#E8EDF5',
-                    bodyColor: '#B8C8D8',
+                    titleColor: '#E9EFEA',
+                    bodyColor: '#BFCFC5',
                     padding: 10,
                 },
             },

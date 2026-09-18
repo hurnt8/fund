@@ -1,16 +1,16 @@
 @extends('layouts.dashboard')
-@section('title', 'Mon espace — Credixa')
+@section('title', 'Mon espace — Aurenza Capital')
 @section('page_title', 'Mon espace')
 
 @push('styles')
 <style>
-  body { background: #0D1F35 !important; }
-  .main-wrap { background: #0D1F35; }
+  body { background: #0A2A20 !important; }
+  .main-wrap { background: #0A2A20; }
   .content-area { background: transparent; }
-  .topbar { background: #112237 !important; border-bottom-color: rgba(200,169,81,.14) !important; }
-  .topbar-title { color: #E8EDF5 !important; }
-  .topbar-badge { background: #162D47 !important; border-color: rgba(255,255,255,.1) !important; color: #B8C8D8 !important; }
-  .topbar-avatar { background: linear-gradient(135deg,#1D3A5C,#0B2E4E) !important; color: #C8A951 !important; }
+  .topbar { background: #0E3226 !important; border-bottom-color: rgba(198,161,91,.14) !important; }
+  .topbar-title { color: #E9EFEA !important; }
+  .topbar-badge { background: #143C2E !important; border-color: rgba(255,255,255,.1) !important; color: #BFCFC5 !important; }
+  .topbar-avatar { background: linear-gradient(135deg,#1C4C3A,#0B4E2E) !important; color: #C6A15B !important; }
   .flash-ok  { background: rgba(16,185,129,.1); color: #6EE7B7; border-color: rgba(16,185,129,.25); }
   .flash-err { background: rgba(239,68,68,.1); color: #FCA5A5; border-color: rgba(239,68,68,.2); }
 </style>
@@ -30,7 +30,7 @@
       <div class="cl-hero__label">Bonjour, {{ Auth::user()->name }}</div>
       <div class="cl-hero__amount">
         {{ number_format((float) Auth::user()->balance, 2, ',', ' ') }}
-        <span class="cl-hero__currency">{{ Auth::user()->currency ?? config('credixa.default_currency') }}</span>
+        <span class="cl-hero__currency">{{ Auth::user()->currency ?? config('aurenza.default_currency') }}</span>
       </div>
       <div class="cl-hero__sub">
         <i class="fas fa-wallet me-1" style="color:var(--cl-gold)"></i>
@@ -40,7 +40,7 @@
 
     <div class="d-flex flex-column gap-2 text-end">
       <div style="font-size:.68rem;color:var(--cl-muted);text-transform:uppercase;letter-spacing:.07em">Dossiers actifs</div>
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;color:var(--cl-gold);line-height:1">
+      <div style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;color:var(--cl-gold);line-height:1">
         {{ $stats['active'] + $stats['finalized'] }}
       </div>
       <div>
@@ -54,7 +54,7 @@
 
 {{-- ── Stats ────────────────────────────────────────────────── --}}
 <div class="cl-stats">
-  <div class="cl-stat" style="--stat-color:var(--cl-gold);--stat-color-bg:rgba(200,169,81,.12)">
+  <div class="cl-stat" style="--stat-color:var(--cl-gold);--stat-color-bg:rgba(198,161,91,.12)">
     <div class="cl-stat__icon"><i class="fas fa-layer-group"></i></div>
     <div class="cl-stat__val">{{ $stats['total'] }}</div>
     <div class="cl-stat__lbl">Total dossiers</div>
@@ -178,7 +178,7 @@
   <div class="cl-empty__title">Aucun dossier en cours</div>
   <div class="cl-empty__body">
     Vous n'avez pas encore de demande de financement.
-    Contactez votre conseiller Credixa pour en initier une.
+    Contactez votre conseiller Aurenza Capital pour en initier une.
   </div>
   <a href="{{ route('home',['locale'=>app()->getLocale()]) }}" class="cl-btn cl-btn--gold">
     <i class="fas fa-globe me-1"></i> Retour au site

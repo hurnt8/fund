@@ -26,24 +26,24 @@ $greetings = [
 
 $intros = [
     'fr' => [
-        'M' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par CREDIXA INVESTI.',
-        'F' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par CREDIXA INVESTI.',
-        'N' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par CREDIXA INVESTI.',
+        'M' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL INVESTI.',
+        'F' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL INVESTI.',
+        'N' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL INVESTI.',
     ],
     'en' => [
-        'M' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by CREDIXA INVESTI.',
-        'F' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by CREDIXA INVESTI.',
-        'N' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by CREDIXA INVESTI.',
+        'M' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL INVESTI.',
+        'F' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL INVESTI.',
+        'N' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL INVESTI.',
     ],
     'es' => [
-        'M' => 'Nos complace informarle que su solicitud de financiación ha sido <strong>validada</strong> por CREDIXA INVESTI.',
-        'F' => 'Nos complace informarla que su solicitud de financiación ha sido <strong>validada</strong> por CREDIXA INVESTI.',
-        'N' => 'Nos complace informarle/la que su solicitud de financiación ha sido <strong>validada</strong> por CREDIXA INVESTI.',
+        'M' => 'Nos complace informarle que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL INVESTI.',
+        'F' => 'Nos complace informarla que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL INVESTI.',
+        'N' => 'Nos complace informarle/la que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL INVESTI.',
     ],
     'pl' => [
-        'M' => 'Z przyjemnością informujemy, że Pana wniosek o finansowanie został <strong>zatwierdzony</strong> przez CREDIXA INVESTI.',
-        'F' => 'Z przyjemnością informujemy, że Pani wniosek o finansowanie został <strong>zatwierdzony</strong> przez CREDIXA INVESTI.',
-        'N' => 'Z przyjemnością informujemy, że Państwa wniosek o finansowanie został <strong>zatwierdzony</strong> przez CREDIXA INVESTI.',
+        'M' => 'Z przyjemnością informujemy, że Pana wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL INVESTI.',
+        'F' => 'Z przyjemnością informujemy, że Pani wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL INVESTI.',
+        'N' => 'Z przyjemnością informujemy, że Państwa wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL INVESTI.',
     ],
 ];
 
@@ -66,11 +66,11 @@ $texts = [
         'attach_contract' => 'Votre contrat de financement (PDF)',
         'attach_table'    => 'Le tableau d\'amortissement (PDF)',
         'action_body'   => 'Veuillez <strong>signer le contrat</strong> et le retourner par email à :',
-        'action_email'  => 'serviceloan@credixa.eu',
+        'action_email'  => 'contact@aurenzacapital.com',
         'action_subject'=> 'en précisant en objet : <strong>Contrat signé — N°'.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Les coordonnées du compte de règlement et les modalités de versement vous seront communiquées par notre équipe suite à la réception de votre contrat signé.',
         'closing'       => 'Cordialement,',
-        'team'          => 'L\'équipe CREDIXA INVESTI',
+        'team'          => 'L\'équipe AURENZA CAPITAL INVESTI',
     ],
     'en' => [
         'title'         => 'Application N°'.$loan->reference.' approved',
@@ -90,11 +90,11 @@ $texts = [
         'attach_contract' => 'Your financing contract (PDF)',
         'attach_table'    => 'The amortization schedule (PDF)',
         'action_body'   => 'Please <strong>sign the contract</strong> and return it by email to:',
-        'action_email'  => 'serviceloan@credixa.eu',
+        'action_email'  => 'contact@aurenzacapital.com',
         'action_subject'=> 'using the following subject: <strong>Signed contract — N°'.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Payment account details and disbursement terms will be communicated by our team upon receipt of your signed contract.',
         'closing'       => 'Yours sincerely,',
-        'team'          => 'The CREDIXA INVESTI team',
+        'team'          => 'The AURENZA CAPITAL INVESTI team',
     ],
     'es' => [
         'title'         => 'Solicitud N°'.$loan->reference.' validada',
@@ -114,11 +114,11 @@ $texts = [
         'attach_contract' => 'Su contrato de financiación (PDF)',
         'attach_table'    => 'El cuadro de amortización (PDF)',
         'action_body'   => 'Por favor, <strong>firme el contrato</strong> y devuélvalo por correo electrónico a:',
-        'action_email'  => 'serviceloan@credixa.eu',
+        'action_email'  => 'contact@aurenzacapital.com',
         'action_subject'=> 'indicando en el asunto: <strong>Contrato firmado — N°'.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Los datos de la cuenta de pago y las modalidades de desembolso le serán comunicados por nuestro equipo tras la recepción de su contrato firmado.',
         'closing'       => 'Atentamente,',
-        'team'          => 'El equipo CREDIXA INVESTI',
+        'team'          => 'El equipo AURENZA CAPITAL INVESTI',
     ],
     'pl' => [
         'title'         => 'Wniosek nr '.$loan->reference.' zatwierdzony',
@@ -138,11 +138,11 @@ $texts = [
         'attach_contract' => 'Umowe finansowania (PDF)',
         'attach_table'    => 'Harmonogram splat (PDF)',
         'action_body'   => 'Prosimy o <strong>podpisanie umowy</strong> i odesl anie jej na adres e-mail:',
-        'action_email'  => 'serviceloan@credixa.eu',
+        'action_email'  => 'contact@aurenzacapital.com',
         'action_subject'=> 'podajac w temacie: <strong>Podpisana umowa — nr '.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Dane rachunku bankowego oraz warunki wyplaty zostana przekazane przez nasz zespol po otrzymaniu podpisanej umowy.',
         'closing'       => 'Z powazaniem,',
-        'team'          => 'Zespol CREDIXA INVESTI',
+        'team'          => 'Zespol AURENZA CAPITAL INVESTI',
     ],
 ];
 $t = $texts[$locale] ?? $texts['fr'];

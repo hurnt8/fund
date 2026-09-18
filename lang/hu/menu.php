@@ -29,5 +29,5 @@ return [
     'newsletter_title' => 'Legyen tájékozott ajánlatainkról',
     'subscribe'        => 'Feliratkozás',
     'read_more'        => 'Tudjon meg többet',
-    'footer_desc'      => 'Az Credixa megbízható partnere a gyors, rugalmas és személyre szabott finanszírozási megoldásoknak szerte Európában.',
+    'footer_desc'      => 'Az Aurenza Capital megbízható partnere a gyors, rugalmas és személyre szabott finanszírozási megoldásoknak szerte Európában.',
 ];

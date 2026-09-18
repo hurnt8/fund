@@ -29,5 +29,5 @@ return [
     'newsletter_title' => 'Rimani informato sulle nostre offerte',
     'subscribe'        => 'Iscriviti',
     'read_more'        => 'Scopri di più',
-    'footer_desc'      => 'Credixa è il vostro partner di fiducia per soluzioni di finanziamento rapide, flessibili e personalizzate in tutta Europa.',
+    'footer_desc'      => 'Aurenza Capital è il vostro partner di fiducia per soluzioni di finanziamento rapide, flessibili e personalizzate in tutta Europa.',
 ];

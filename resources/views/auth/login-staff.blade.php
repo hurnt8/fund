@@ -6,29 +6,29 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Credixa Admin">
-<meta name="theme-color" content="#0B1A2E">
+<meta name="apple-mobile-web-app-title" content="Aurenza Capital Admin">
+<meta name="theme-color" content="#0E3B2E">
 <link rel="manifest" href="/admin-manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
-<title>{{ __('auth.staff_login_title') }} | Credixa</title>
+<title>{{ __('auth.staff_login_title') }} | Aurenza Capital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/all.min.css') }}">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <style>
 :root{
-  --navy:#0B1A2E;--nm:#162540;--nl:#1E3A5F;
-  --gold:#C8A951;--gd:#A88830;--gp:#F5E9C8;
+  --navy:#0E3B2E;--nm:#14503D;--nl:#1C6B51;
+  --gold:#C6A15B;--gd:#9A7736;--gp:#F5EDDD;
 }
 html,body{height:100%;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:flex;flex-direction:column}
+body{font-family:'Outfit',sans-serif;background:#fff;min-height:100vh;display:flex;flex-direction:column}
 
 /* ════ LEFT PANEL — staff variant ════ */
 .auth-left{
-  background:linear-gradient(160deg,#060f1e 0%,#0B1A2E 45%,#0e2240 100%);
+  background:linear-gradient(160deg,#061E0F 0%,#0E3B2E 45%,#0E4022 100%);
   min-height:100vh; padding:2.5rem 3rem;
   display:flex;flex-direction:column;justify-content:space-between;
   position:relative;overflow:hidden;
@@ -43,7 +43,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
 .auth-left::after{
   content:'';position:absolute;top:-100px;right:-100px;
   width:380px;height:380px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,169,81,.08) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(198,161,91,.08) 0%,transparent 70%);
   pointer-events:none;
 }
 .auth-left__logo img{height:40px;position:relative;z-index:1}
@@ -51,12 +51,12 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
 
 .staff-badge{
   display:inline-flex;align-items:center;gap:.625rem;
-  background:rgba(200,169,81,.08);border:1px solid rgba(200,169,81,.2);
+  background:rgba(198,161,91,.08);border:1px solid rgba(198,161,91,.2);
   border-radius:12px;padding:.625rem 1rem;margin-bottom:1.75rem;
 }
 .staff-badge__ico{
   width:32px;height:32px;border-radius:8px;
-  background:rgba(200,169,81,.12);display:flex;align-items:center;justify-content:center;
+  background:rgba(198,161,91,.12);display:flex;align-items:center;justify-content:center;
 }
 .staff-badge__ico i{color:var(--gold);font-size:.75rem}
 .staff-badge__text{line-height:1.3}
@@ -64,7 +64,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
 .staff-badge__sub{font-size:.68rem;color:rgba(255,255,255,.35)}
 
 .auth-left__title{
-  font-family:'Playfair Display',serif;font-size:2.25rem;font-weight:800;
+  font-family:'Outfit',sans-serif;font-size:2.25rem;font-weight:800;
   color:#fff;line-height:1.2;margin-bottom:.875rem;
 }
 .auth-left__title span{color:var(--gold)}
@@ -136,7 +136,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
 }
 .form-eyebrow::before{content:'';width:22px;height:2px;background:var(--gold);border-radius:2px}
 .form-title{
-  font-family:'Playfair Display',serif;font-size:1.875rem;font-weight:800;
+  font-family:'Outfit',sans-serif;font-size:1.875rem;font-weight:800;
   color:var(--navy);line-height:1.15;margin-bottom:.375rem;
 }
 .form-sub{font-size:.8125rem;color:#6b7280;margin-bottom:1.625rem}
@@ -166,10 +166,10 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
 .f-input{
   width:100%;padding:.7rem .9rem .7rem 2.5rem;
   border:1.5px solid #e5e7eb;border-radius:9px;
-  font-size:.875rem;font-family:'Inter',sans-serif;color:#111827;
+  font-size:.875rem;font-family:'Outfit',sans-serif;color:#111827;
   outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;
 }
-.f-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,26,46,.08)}
+.f-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(14,59,46,.08)}
 .f-input.is-err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.08)}
 .f-eye{
   position:absolute;right:.875rem;top:50%;transform:translateY(-50%);
@@ -185,12 +185,12 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
 
 .btn-auth{
   width:100%;padding:.8rem;border:none;border-radius:10px;
-  font-size:.9rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;
+  font-size:.9rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:.5rem;
   background:var(--navy);color:#fff;
   transition:background .2s,transform .12s;letter-spacing:.01em;
 }
-.btn-auth:hover{background:#060f1e}
+.btn-auth:hover{background:#061E0F}
 .btn-auth:active{transform:scale(.98)}
 
 .auth-footer{
@@ -224,7 +224,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
     <div class="auth-left w-100">
 
       <div class="auth-left__logo">
-        <a href="{{ url('/') }}"><img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa"></a>
+        <a href="{{ url('/') }}"><img src="{{ asset('assets/images/logo-aurenza-light.svg') }}" alt="Aurenza Capital"></a>
       </div>
 
       <div class="auth-left__body">
@@ -232,7 +232,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
           <div class="staff-badge__ico"><i class="fas fa-shield-alt"></i></div>
           <div class="staff-badge__text">
             <div class="staff-badge__label">{{ __('auth.staff_restricted') }}</div>
-            <div class="staff-badge__sub">credixa.eu &mdash; secure access</div>
+            <div class="staff-badge__sub">aurenzacapital.com &mdash; secure access</div>
           </div>
         </div>
 
@@ -246,7 +246,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
       </div>
 
       <div class="auth-left__copy">
-        &copy; {{ date('Y') }} Credixa Invest &nbsp;&middot;&nbsp;
+        &copy; {{ date('Y') }} Aurenza Capital &nbsp;&middot;&nbsp;
         <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;&middot;&nbsp;
         <a href="{{ url('/fr/privacy') }}">Confidentialité</a>
       </div>
@@ -263,7 +263,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
         </a>
 
         <a href="{{ url('/') }}" class="auth-topbar__logo d-lg-none">
-          <img src="{{ asset('assets/images/logo new.png') }}" alt="Credixa">
+          <img src="{{ asset('assets/images/logo-aurenza-dark.svg') }}" alt="Aurenza Capital">
         </a>
 
         @php
@@ -366,7 +366,7 @@ body{font-family:'Inter',sans-serif;background:#fff;min-height:100vh;display:fle
       </div>
 
       <div class="auth-footer">
-        &copy; {{ date('Y') }} Credixa Invest &nbsp;&middot;&nbsp;
+        &copy; {{ date('Y') }} Aurenza Capital &nbsp;&middot;&nbsp;
         <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;&middot;&nbsp;
         <a href="{{ url('/fr/privacy') }}">Confidentialité</a>
       </div>
@@ -389,17 +389,17 @@ function tglPwd(id, ico) {
 {{-- Bannière Android / Chrome --}}
 <div id="pwa-banner" style="display:none;position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);
   width:calc(100% - 2rem);max-width:400px;
-  background:var(--navy);border:1px solid rgba(200,169,81,.35);
+  background:var(--navy);border:1px solid rgba(198,161,91,.35);
   border-radius:14px;padding:.875rem 1.125rem;
   box-shadow:0 8px 32px rgba(0,0,0,.3);z-index:9999;
   align-items:center;gap:.75rem">
   <img src="/images/icon-192.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0" alt="">
   <div style="flex:1;min-width:0">
-    <div style="font-size:.825rem;font-weight:700;color:#fff">Credixa Admin</div>
+    <div style="font-size:.825rem;font-weight:700;color:#fff">Aurenza Capital Admin</div>
     <div style="font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.1rem">Installer sur votre écran d'accueil</div>
   </div>
   <button id="pwa-install-trigger"
-    style="background:var(--gold);color:#0B1A2E;border:none;border-radius:8px;
+    style="background:var(--gold);color:#1A1A17;border:none;border-radius:8px;
       padding:.45rem .875rem;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0">
     <i class="fas fa-download"></i> Installer
   </button>
@@ -412,14 +412,14 @@ function tglPwd(id, ico) {
 {{-- Bannière iOS Safari --}}
 <div id="pwa-ios" style="display:none;position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);
   width:calc(100% - 2rem);max-width:400px;
-  background:var(--navy);border:1px solid rgba(200,169,81,.35);
+  background:var(--navy);border:1px solid rgba(198,161,91,.35);
   border-radius:14px;padding:1rem 1.125rem;
   box-shadow:0 8px 32px rgba(0,0,0,.3);z-index:9999;flex-direction:column;gap:.75rem">
   <div style="display:flex;align-items:center;justify-content:space-between">
     <div style="display:flex;align-items:center;gap:.625rem">
       <img src="/images/icon-192.png" style="width:36px;height:36px;border-radius:8px" alt="">
       <div>
-        <div style="font-size:.8rem;font-weight:700;color:#fff">Credixa Admin</div>
+        <div style="font-size:.8rem;font-weight:700;color:#fff">Aurenza Capital Admin</div>
         <div style="font-size:.68rem;color:rgba(255,255,255,.45)">Installer l'application</div>
       </div>
     </div>
@@ -430,15 +430,15 @@ function tglPwd(id, ico) {
   </div>
   <div style="font-size:.73rem;color:rgba(255,255,255,.65);line-height:1.9">
     <span style="display:inline-flex;align-items:center;gap:.35rem">
-      <b style="background:rgba(200,169,81,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">1</b>
+      <b style="background:rgba(198,161,91,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">1</b>
       Appuyez sur <strong style="color:#fff">Partager</strong> <i class="fas fa-share-square" style="color:var(--gold)"></i>
     </span><br>
     <span style="display:inline-flex;align-items:center;gap:.35rem">
-      <b style="background:rgba(200,169,81,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">2</b>
+      <b style="background:rgba(198,161,91,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">2</b>
       Puis <strong style="color:#fff">Sur l'écran d'accueil</strong> <i class="fas fa-plus-square" style="color:var(--gold)"></i>
     </span><br>
     <span style="display:inline-flex;align-items:center;gap:.35rem">
-      <b style="background:rgba(200,169,81,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">3</b>
+      <b style="background:rgba(198,161,91,.2);color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.68rem">3</b>
       Appuyez sur <strong style="color:#fff">Ajouter</strong>
     </span>
   </div>

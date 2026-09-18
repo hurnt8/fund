@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Contrat {{ $loan->reference }} · Credixa Invest</title>
+<title>Contrat {{ $loan->reference }} · Aurenza Capital</title>
 <link rel="icon" href="{{ asset('assets/images/favicons/favicon.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/all.min.css') }}">
 <style>
 :root {
-  --navy:    #0B1A2E;
-  --navy2:   #112240;
-  --gold:    #C8A951;
-  --goldd:   #A88830;
+  --navy:    #0E3B2E;
+  --navy2:   #114022;
+  --gold:    #C6A15B;
+  --goldd:   #9A7736;
   --red:     #DC2626;
   --redd:    #B91C1C;
   --green:   #059669;
@@ -28,7 +28,7 @@
   --r:       7px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: 'Inter', sans-serif; overflow: hidden; background: #525659; }
+html, body { height: 100%; font-family: 'Outfit', sans-serif; overflow: hidden; background: #525659; }
 
 /* ════════════════ LAYOUT ════════════════ */
 .pv { display: flex; height: 100vh; }
@@ -133,7 +133,7 @@ html, body { height: 100%; font-family: 'Inter', sans-serif; overflow: hidden; b
   border-radius: var(--r);
   font-size: .77rem; font-weight: 600;
   cursor: pointer; text-decoration: none;
-  border: 1px solid; font-family: 'Inter', sans-serif;
+  border: 1px solid; font-family: 'Outfit', sans-serif;
   transition: background .14s, border-color .14s, color .14s;
   white-space: nowrap; line-height: 1;
   background: none;
@@ -148,7 +148,7 @@ html, body { height: 100%; font-family: 'Inter', sans-serif; overflow: hidden; b
 .s-btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); color: #fff; }
 
 .s-btn-gold {
-  background: var(--gold); color: var(--navy);
+  background: var(--gold); color: var(--ink, #1A1A17);
   border-color: var(--goldd); font-weight: 700;
 }
 .s-btn-gold:hover { background: var(--goldd); color: #fff; }
@@ -247,7 +247,7 @@ kbd {
   border: none; border-radius: var(--r);
   font-size: .78rem; font-weight: 600;
   text-decoration: none; cursor: pointer;
-  font-family: 'Inter', sans-serif; margin-top: .25rem;
+  font-family: 'Outfit', sans-serif; margin-top: .25rem;
 }
 .pv-empty-cta:hover { background: var(--navy2); }
 
@@ -298,7 +298,7 @@ kbd {
     <a href="{{ route('admin.loans.show', $loan) }}" class="s-brand">
       <div class="s-logo">CI</div>
       <div class="s-brand-wrap">
-        <span class="s-brand-name">Credixa Invest</span>
+        <span class="s-brand-name">Aurenza Capital</span>
         <span class="s-brand-hint">Portail de gestion</span>
       </div>
     </a>

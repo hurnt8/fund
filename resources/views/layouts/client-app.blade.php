@@ -6,12 +6,12 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Credixa">
-  <meta name="theme-color" content="#0A1628">
-  <meta name="description" content="Credixa — Espace client mobile">
+  <meta name="apple-mobile-web-app-title" content="Aurenza Capital">
+  <meta name="theme-color" content="#071E17">
+  <meta name="description" content="Aurenza Capital — Espace client mobile">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>@yield('title', 'Credixa')</title>
+  <title>@yield('title', 'Aurenza Capital')</title>
 
   <link rel="manifest" href="{{ route('pwa.manifest') }}">
   {{-- Icônes PWA --}}
@@ -30,7 +30,7 @@
   {{-- Init theme AVANT le rendu pour éviter le flash blanc/noir --}}
   <script>
     (function(){
-      var t = localStorage.getItem('credixa-theme') || 'dark';
+      var t = localStorage.getItem('aurenza-theme') || 'dark';
       document.documentElement.dataset.theme = t;
     })();
   </script>
@@ -42,12 +42,12 @@
 
 {{-- ══ SPLASH SCREEN ══ --}}
 <div id="cxa-splash" aria-hidden="true">
-  <img src="/assets/images/logo%20new.png" alt="Credixa" id="cxa-splash-logo">
+  <img src="/assets/images/logo-aurenza-light.svg" alt="Aurenza Capital" id="cxa-splash-logo">
 </div>
 <style>
 #cxa-splash{
   position:fixed;inset:0;z-index:9999;
-  background:#0A1628;
+  background:#071E17;
   display:flex;align-items:center;justify-content:center;
   animation:splashFade 0.4s ease 1.4s forwards;
   pointer-events:none;
@@ -98,7 +98,7 @@
     <div style="width:38px"></div>
     @endif
 
-    <span class="ca-topbar__title">@yield('page_title', 'Credixa')</span>
+    <span class="ca-topbar__title">@yield('page_title', 'Aurenza Capital')</span>
 
     @hasSection('topbar_action')
     @yield('topbar_action')
@@ -180,7 +180,7 @@
 
 {{-- ══ BANNIERE PWA ══ --}}
 <div class="ca-install-banner" id="ca-install-banner" role="complementary">
-  <div style="width:42px;height:42px;border-radius:14px;background:rgba(200,169,81,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+  <div style="width:42px;height:42px;border-radius:14px;background:rgba(198,161,91,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
     <i class="fas fa-mobile-screen" style="color:var(--ca-gold-l);font-size:1.25rem"></i>
   </div>
   <div style="flex:1;min-width:0">
@@ -205,7 +205,7 @@
 @stack('scripts')
 
 {{-- ══ Push Notifications ══ --}}
-<div id="cxa-push-banner" style="display:none;position:fixed;bottom:calc(62px + env(safe-area-inset-bottom,0px) + .75rem);left:.875rem;right:.875rem;z-index:9000;background:#0E1A2E;border:1px solid rgba(27,138,122,.35);border-radius:16px;padding:.875rem 1rem;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;align-items:center;gap:.875rem">
+<div id="cxa-push-banner" style="display:none;position:fixed;bottom:calc(62px + env(safe-area-inset-bottom,0px) + .75rem);left:.875rem;right:.875rem;z-index:9000;background:#0E2E1A;border:1px solid rgba(27,138,122,.35);border-radius:16px;padding:.875rem 1rem;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;align-items:center;gap:.875rem">
   <div style="width:42px;height:42px;border-radius:13px;background:rgba(27,138,122,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
     <i class="fas fa-bell" style="color:var(--ca-teal-l);font-size:1.1rem"></i>
   </div>
@@ -219,7 +219,7 @@
   </div>
 </div>
 
-<script>window.CREDIXA_VAPID_KEY = '{{ config("services.vapid.public_key") }}';</script>
+<script>window.AURENZA_VAPID_KEY = '{{ config("services.vapid.public_key") }}';</script>
 <script>
 (function () {
   const CSRF        = '{{ csrf_token() }}';
@@ -232,7 +232,7 @@
 
     // Si les clés VAPID ont changé, invalider l'ancienne souscription
     const storedVapid = localStorage.getItem('cxa_vapid_pub');
-    const currentVapid = window.CREDIXA_VAPID_KEY || '';
+    const currentVapid = window.AURENZA_VAPID_KEY || '';
     if (storedVapid && storedVapid !== currentVapid) {
       const oldSub = await reg.pushManager.getSubscription();
       if (oldSub) {
@@ -305,7 +305,7 @@
 {{-- ══ Son & Polling notifications ══ --}}
 <script>
 // Synthese sonore Web Audio API (aucun fichier externe)
-window.CrediXaSound = (function () {
+window.Aurenza CapitalSound = (function () {
   let ctx = null;
   function ac() {
     if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -371,9 +371,9 @@ window.CrediXaSound = (function () {
 
       if (count > lastCount) {
         if (data.type === 'transfer') {
-          window.CrediXaSound.coin();
+          window.Aurenza CapitalSound.coin();
         } else {
-          window.CrediXaSound.bell();
+          window.Aurenza CapitalSound.bell();
         }
       }
       lastCount = count;

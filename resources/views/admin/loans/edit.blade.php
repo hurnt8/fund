@@ -33,7 +33,7 @@
       </div>
       <div class="card-pro-body">
         <div style="display:flex;align-items:center;gap:.875rem;margin-bottom:1rem">
-          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--c-navy),var(--c-navy-3));display:flex;align-items:center;justify-content:center;color:var(--c-gold);font-weight:800;font-size:1rem;flex-shrink:0">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--c-navy),var(--c-navy-3));display:flex;align-items:center;justify-content:center;color:var(--c-gold-l);font-weight:800;font-size:1rem;flex-shrink:0">
             {{ strtoupper(substr($loan->name,0,1)) }}
           </div>
           <div>

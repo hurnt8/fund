@@ -19,18 +19,18 @@ return [
 
     'client_login_title'  => 'Client Portal',
     'client_login_sub'    => 'Sign in to access your loan applications',
-    'client_brand_title'  => 'Your Credixa<br>client space',
+    'client_brand_title'  => 'Your Aurenza Capital<br>client space',
     'client_brand_sub'    => 'Track your applications, manage your profile and access all your documents securely.',
 
     'staff_login_title'   => 'Administration Portal',
     'staff_login_sub'     => 'Restricted to authorised personnel only',
-    'staff_brand_title'   => 'Credixa<br>Administration',
+    'staff_brand_title'   => 'Aurenza Capital<br>Administration',
     'staff_brand_sub'     => 'Secure access to management tools, case tracking and user administration.',
 
     'email'               => 'Email address',
     'email_staff'         => 'Professional email',
     'email_ph'            => 'you@example.com',
-    'email_ph_staff'      => 'agent@credixa.eu',
+    'email_ph_staff'      => 'agent@aurenzacapital.com',
     'password_label'      => 'Password',
     'remember'            => 'Remember me',
     'remember_staff'      => 'Stay signed in',
@@ -40,7 +40,7 @@ return [
     'staff_portal_link'   => 'Agent / admin portal',
     'client_portal_link'  => 'Client space',
     'staff_restricted'    => 'Restricted access — Authorised staff only',
-    'staff_notice'        => 'This portal is reserved for Credixa staff. All logins are logged.',
+    'staff_notice'        => 'This portal is reserved for Aurenza Capital staff. All logins are logged.',
     'or_staff'            => 'Are you an agent or admin?',
     'or_client'           => 'Are you a client?',
 
@@ -90,23 +90,23 @@ return [
     'account_unblocked'                   => 'Your account has been successfully unblocked. You can now log in.',
     'unblock_invalid'                     => 'This unblock link is invalid or has expired. Please contact support.',
 
-    'account_blocked_email_subject'       => 'Your Credixa account has been blocked',
+    'account_blocked_email_subject'       => 'Your Aurenza Capital account has been blocked',
     'account_blocked_email_title'         => 'Account temporarily blocked',
     'account_blocked_email_intro'         => 'Your account has been temporarily blocked following several incorrect login attempts.',
     'account_blocked_email_reason_title'  => 'Why was my account blocked?',
     'account_blocked_email_reason_body'   => '4 incorrect OTP codes were entered consecutively during a login attempt. As a security measure, access has been suspended.',
     'account_blocked_email_btn'           => 'Unblock my account',
     'account_blocked_email_fallback'      => 'If the button does not work, copy this link into your browser:',
-    'account_blocked_email_notice'        => 'If you did not make these attempts, do not click this link and contact Credixa support immediately.',
+    'account_blocked_email_notice'        => 'If you did not make these attempts, do not click this link and contact Aurenza Capital support immediately.',
     'account_blocked_email_footer'        => 'Link valid for 48 hours.',
 
-    'otp_email_subject'      => 'Your login code — Credixa',
+    'otp_email_subject'      => 'Your login code — Aurenza Capital',
     'otp_email_title'        => 'Verification code',
     'otp_email_intro'        => 'Here is your one-time login code. Never share it with anyone.',
     'otp_email_code_label'   => 'Your code',
     'otp_email_expiry'       => 'This code expires in 10 minutes.',
     'otp_email_notice_title' => 'Important security notice',
-    'otp_email_notice_body'  => 'Credixa will never ask for this code by phone or message. If you did not request this code, please ignore this email.',
+    'otp_email_notice_body'  => 'Aurenza Capital will never ask for this code by phone or message. If you did not request this code, please ignore this email.',
     'otp_email_footer'       => 'If you did not request this code, ignore this email.',
 
 ];

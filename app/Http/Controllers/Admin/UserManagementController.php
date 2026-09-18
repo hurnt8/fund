@@ -126,7 +126,7 @@ class UserManagementController extends Controller
             'birth_date'       => $data['birth_date'] ?? null,
             'id_type'          => $data['id_type'] ?? null,
             'id_number'        => $data['id_number'] ?? null,
-            'currency'         => $data['currency'] ?? config('credixa.default_currency'),
+            'currency'         => $data['currency'] ?? config('aurenza.default_currency'),
             'locale'           => $data['locale'] ?? 'fr',
         ]);
 

@@ -2,7 +2,7 @@
 # Nouveau Abonne
 
 <p style="font-size: 14px !important;">
-   Vous avez un nouveau abonné depuis Credixa
+   Vous avez un nouveau abonné depuis Aurenza Capital
    <br>
       <strong>Email</strong> : {{$data['email']}}
 </p>

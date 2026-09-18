@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title', 'Support — ' . $client->name . ' — Credixa')
+@section('title', 'Support — ' . $client->name . ' — Aurenza Capital')
 @section('page_title', 'Support')
 
 @push('styles')
@@ -117,7 +117,7 @@
 }
 .adsp-conv:last-child { border-bottom: 0; }
 .adsp-conv:hover { background: rgba(0,0,0,.025); }
-.adsp-conv.is-unread { background: rgba(200,169,81,.04); }
+.adsp-conv.is-unread { background: rgba(198,161,91,.04); }
 .adsp-conv.is-active {
   background: rgba(27,58,141,.06);
   border-left: 3px solid var(--c-navy);
@@ -127,7 +127,7 @@
 .adsp-conv-avatar {
   width: 40px; height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--c-navy), #1a3a6c);
+  background: linear-gradient(135deg, var(--c-navy), #1A4A38);
   color: var(--c-gold);
   font-weight: 900; font-size: .875rem;
   display: flex; align-items: center; justify-content: center;
@@ -157,7 +157,7 @@
 .adsp-conv-badge {
   min-width: 18px; height: 18px; padding: 0 5px;
   border-radius: 999px;
-  background: var(--c-gold); color: var(--c-navy);
+  background: var(--c-gold); color: #1A1A17;
   font-size: .6rem; font-weight: 900;
   display: flex; align-items: center; justify-content: center;
 }
@@ -183,7 +183,7 @@
 }
 .adsp-hdr-av {
   width: 42px; height: 42px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--c-navy), #1a3a6c);
+  background: linear-gradient(135deg, var(--c-navy), #1A4A38);
   color: var(--c-gold); font-weight: 900; font-size: .9rem;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
@@ -237,7 +237,7 @@
 
 .adsp-bav {
   width: 28px; height: 28px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--c-navy), #1a3a6c);
+  background: linear-gradient(135deg, var(--c-navy), #1A4A38);
   color: var(--c-gold); font-weight: 900; font-size: .6rem;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
@@ -291,7 +291,7 @@
   display: none;
   align-items: center; gap: .5rem;
   padding: .4rem .875rem;
-  background: rgba(200,169,81,.08); border-top: 1px solid var(--c-gold);
+  background: rgba(198,161,91,.08); border-top: 1px solid var(--c-gold);
   font-size: .72rem; color: var(--c-navy);
   flex-shrink: 0;
 }
@@ -336,7 +336,7 @@
   font-size: .875rem; display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0; transition: opacity .15s, background .15s;
 }
-.adsp-send:hover { background: #162d7a; }
+.adsp-send:hover { background: #167A2D; }
 .adsp-send:disabled { opacity: .45; cursor: not-allowed; }
 
 /* Lightbox */
@@ -423,7 +423,7 @@
           <div class="adsp-conv-name">{{ $c->name }}</div>
           <div class="adsp-conv-preview">
             @if($last && $last->sender_type === 'admin' && !$last->is_bot)
-              <span style="color:var(--c-gold-d,#a88830);font-weight:600">Vous : </span>
+              <span style="color:var(--c-gold-d,#9A7736);font-weight:600">Vous : </span>
             @elseif($last && $last->is_bot)
               <span style="color:#7c3aed;font-weight:600">IA : </span>
             @endif

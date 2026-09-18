@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.receive_title') . ' — Credixa')
+@section('title', __('app.receive_title') . ' — Aurenza Capital')
 @section('page_title', __('app.receive_title'))
 @section('back_btn', true)
 @section('back_url', route('client.app.transfers'))
@@ -11,7 +11,7 @@
 /* ── Hero card ── */
 .rcv-hero{
   margin:.875rem 1.25rem 0;
-  background:linear-gradient(145deg,#1B527A,#0D2E54);
+  background:linear-gradient(145deg,#1B7A52,#0D542E);
   border-radius:20px;padding:1.625rem 1.5rem;
   position:relative;overflow:hidden;
   box-shadow:0 12px 32px rgba(0,0,0,.4);
@@ -20,7 +20,7 @@
 .rcv-hero::before{
   content:'';position:absolute;bottom:-50px;right:-50px;
   width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,169,81,.18) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(198,161,91,.18) 0%,transparent 70%);
   pointer-events:none;
 }
 .rcv-hero__avatar{
@@ -28,15 +28,15 @@
   background:linear-gradient(145deg,rgba(27,138,122,.6),rgba(27,138,122,.3));
   border:2px solid rgba(255,255,255,.15);
   display:flex;align-items:center;justify-content:center;
-  font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:800;
+  font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;
   color:#fff;margin:0 auto .75rem;
 }
-.rcv-hero__name{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:.2rem}
+.rcv-hero__name{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:.2rem}
 .rcv-hero__badge{
   display:inline-flex;align-items:center;gap:.35rem;
   font-size:.68rem;font-weight:600;
-  color:rgba(200,169,81,.9);
-  background:rgba(200,169,81,.12);border:1px solid rgba(200,169,81,.25);
+  color:rgba(198,161,91,.9);
+  background:rgba(198,161,91,.12);border:1px solid rgba(198,161,91,.25);
   border-radius:999px;padding:.2rem .65rem;margin-bottom:.25rem;
 }
 
@@ -48,7 +48,7 @@
 }
 .rcv-iban-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--ca-text-3);margin-bottom:.625rem}
 .rcv-iban-value{
-  font-family:'Space Grotesk',monospace;
+  font-family:'Outfit',monospace;
   font-size:1.0625rem;font-weight:700;color:var(--ca-text);
   letter-spacing:.04em;line-height:1.4;
   word-break:break-all;margin-bottom:1rem;
@@ -88,9 +88,9 @@
 
 @php
   $iban = $user->bank_account ?? __('app.not_provided');
-  $bic  = $user->bic ?? 'CREDIXAFR';
-  $currency = $user->currency ?? config('credixa.default_currency');
-  $shareText = "IBAN : {$iban}\nBIC : {$bic}\n" . __('app.receive_name') . " : {$user->name}\n" . __('app.receive_bank') . " : Credixa Financial";
+  $bic  = $user->bic ?? 'AURENZA CAPITALFR';
+  $currency = $user->currency ?? config('aurenza.default_currency');
+  $shareText = "IBAN : {$iban}\nBIC : {$bic}\n" . __('app.receive_name') . " : {$user->name}\n" . __('app.receive_bank') . " : Aurenza Capital Financial";
 @endphp
 
 {{-- Hero ── --}}
@@ -115,7 +115,7 @@
   @foreach([
     ['fa-building-columns', __('app.receive_bic'),  $bic],
     ['fa-user',             __('app.receive_name'), $user->name],
-    ['fa-landmark',         __('app.receive_bank'), 'Credixa Financial'],
+    ['fa-landmark',         __('app.receive_bank'), 'Aurenza Capital Financial'],
     ['fa-coins',            __('app.currency_label'), $currency],
     ['fa-envelope',         __('app.email_label'),  $user->email],
   ] as [$icon, $label, $val])

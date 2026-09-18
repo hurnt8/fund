@@ -55,7 +55,7 @@ Alpine.data('keypad', (initial = '') => ({
 const PUSH_VAPID_LS_KEY = 'cxa_vapid_pub';
 
 function pushVapidKey() {
-    return window.CREDIXA_VAPID_KEY || '';
+    return window.AURENZA_VAPID_KEY || '';
 }
 
 function vapidKeyChanged() {
@@ -179,7 +179,7 @@ Alpine.data('togglePref', () => ({
 Alpine.data('themeToggle', () => ({
     isDark: true,
     init() {
-        const saved = localStorage.getItem('credixa-theme') || 'dark';
+        const saved = localStorage.getItem('aurenza-theme') || 'dark';
         this.isDark = saved === 'dark';
         document.documentElement.dataset.theme = saved;
     },
@@ -187,7 +187,7 @@ Alpine.data('themeToggle', () => ({
         this.isDark = !this.isDark;
         const theme = this.isDark ? 'dark' : 'light';
         document.documentElement.dataset.theme = theme;
-        localStorage.setItem('credixa-theme', theme);
+        localStorage.setItem('aurenza-theme', theme);
     },
 }));
 
@@ -222,11 +222,11 @@ window.buildDoughnutChart = function (canvasId, data, colors, labels) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#112237',
+                    backgroundColor: '#0E3226',
                     borderColor: 'rgba(255,255,255,.1)',
                     borderWidth: 1,
-                    titleColor: '#E8EDF5',
-                    bodyColor: '#7A90AA',
+                    titleColor: '#E9EFEA',
+                    bodyColor: '#8FA396',
                     padding: 10,
                     callbacks: {
                         label: (ctx) => ' ' + ctx.parsed.toLocaleString(document.documentElement.lang || 'fr', {
@@ -264,11 +264,11 @@ window.buildLineChart = function (canvasId, labels, values, currency) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#112237',
+                    backgroundColor: '#0E3226',
                     borderColor: 'rgba(255,255,255,.1)',
                     borderWidth: 1,
-                    titleColor: '#E8EDF5',
-                    bodyColor: '#7A90AA',
+                    titleColor: '#E9EFEA',
+                    bodyColor: '#8FA396',
                     padding: 10,
                     callbacks: {
                         label: (ctx) => ' ' + ctx.parsed.y.toLocaleString() + ' ' + (currency || ''),
@@ -278,11 +278,11 @@ window.buildLineChart = function (canvasId, labels, values, currency) {
             scales: {
                 x: {
                     grid: { color: 'rgba(255,255,255,.04)' },
-                    ticks: { color: '#7A90AA', font: { size: 10 } },
+                    ticks: { color: '#8FA396', font: { size: 10 } },
                 },
                 y: {
                     grid: { color: 'rgba(255,255,255,.04)' },
-                    ticks: { color: '#7A90AA', font: { size: 10 } },
+                    ticks: { color: '#8FA396', font: { size: 10 } },
                     beginAtZero: true,
                 },
             },

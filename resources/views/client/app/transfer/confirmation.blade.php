@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.send_confirm_title') . ' — Credixa')
+@section('title', __('app.send_confirm_title') . ' — Aurenza Capital')
 @section('page_title', __('app.confirm_title'))
 
 @section('topbar_action')
@@ -33,7 +33,7 @@
   50%    {box-shadow:0 0 40px rgba(245,158,11,.32)}
 }
 .trf-confirm__title{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.25rem;font-weight:800;
   color:var(--ca-text);margin-bottom:.5rem;
 }
@@ -44,7 +44,7 @@
 /* ── Amount badge ── */
 .trf-confirm__amt-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ca-text-3);margin-bottom:.35rem}
 .trf-confirm__amt{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:2.25rem;font-weight:900;
   color:var(--ca-text);
   margin-bottom:1.5rem;

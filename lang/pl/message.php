@@ -12,13 +12,13 @@ return [
     'month_abbr'           => 'mies.',
     'optional'             => 'opcjonalne',
     'loan_admin_subject'   => 'Nowy wniosek kredytowy',
-    'loan_admin_intro'     => 'Klient wÅ‚aÅ›nie przesÅ‚aÅ‚ wniosek kredytowy za poÅ›rednictwem strony Credixa Invest.',
+    'loan_admin_intro'     => 'Klient wÅ‚aÅ›nie przesÅ‚aÅ‚ wniosek kredytowy za poÅ›rednictwem strony Aurenza Capital.',
 
     'loan_confirm_subject'   => 'TwÃ³j wniosek kredytowy jest przetwarzany',
     'loan_confirm_greeting'  => 'Witaj :name,',
     'loan_confirm_body'      => 'OtrzymaliÅ›my TwÃ³j wniosek kredytowy na kwotÄ™ :amount :currency na okres :duration miesiÄ™cy. Jest on obecnie przetwarzany przez nasz zespÃ³Å‚.',
     'loan_confirm_footer'    => 'Skontaktujemy siÄ™ z TobÄ… tak szybko, jak to moÅ¼liwe. DziÄ™kujemy za zaufanie.',
-    'loan_confirm_signature' => 'ZespÃ³Å‚ Credixa Invest',
+    'loan_confirm_signature' => 'ZespÃ³Å‚ Aurenza Capital',
     'loan_confirm_noreply'   => 'Ta wiadomoÅ›Ä‡ zostaÅ‚a wysÅ‚ana z adresu no-reply. Prosimy nie odpowiadaÄ‡ bezpoÅ›rednio na tÄ™ wiadomoÅ›Ä‡.',
 
     'loan_conditions_title'  => 'Warunki kwalifikowalnoÅ›ci',
@@ -47,7 +47,7 @@ return [
     'docs_confirm_greeting'  => 'Witaj :name,',
     'docs_confirm_body'      => 'OtrzymaliÅ›my Twoje dokumenty (adres i dokument toÅ¼samoÅ›ci). Nasz zespÃ³Å‚ przejrzy je i skontaktuje siÄ™ z TobÄ… w ciÄ…gu 24 godzin.',
     'docs_confirm_footer'    => 'DziÄ™kujemy za zaufanie i pozostajemy do Twojej dyspozycji w razie pytaÅ„.',
-    'docs_confirm_signature' => 'ZespÃ³Å‚ Credixa Invest',
+    'docs_confirm_signature' => 'ZespÃ³Å‚ Aurenza Capital',
 
     'docs_upload_hint'  => 'PrzeciÄ…gnij i upuÅ›Ä‡ lub kliknij, aby wybraÄ‡ plik',
     'docs_single_photo' => 'W przypadku tego rodzaju dokumentu wystarczy jedno zdjÄ™cie.',

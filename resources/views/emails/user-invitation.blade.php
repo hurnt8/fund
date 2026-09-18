@@ -6,10 +6,10 @@ $titles = [
     'pl' => 'Aktywuj swoje konto',
 ];
 $subs = [
-    'fr' => 'Credixa Invest — Espace client',
-    'en' => 'Credixa Invest — Client space',
-    'es' => 'Credixa Invest — Área de clientes',
-    'pl' => 'Credixa Invest — Obszar klienta',
+    'fr' => 'Aurenza Capital — Espace client',
+    'en' => 'Aurenza Capital — Client space',
+    'es' => 'Aurenza Capital — Área de clientes',
+    'pl' => 'Aurenza Capital — Obszar klienta',
 ];
 $notices = [
     'fr' => 'Si vous n\'êtes pas à l\'origine de cette création de compte, vous pouvez ignorer cet email.',
@@ -25,7 +25,7 @@ $notice = $notices[$locale] ?? $notices['fr'];
 <x-email-layout
     :title="$title"
     :subtitle="$sub"
-    accent="teal"
+    accent="brand"
     :footerNote="$notice"
 >
 

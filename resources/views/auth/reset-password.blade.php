@@ -6,21 +6,21 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#080C18">
+<meta name="theme-color" content="#061A14">
 <link rel="icon" type="image/svg+xml" href="/images/icon-192.svg">
-<title>Réinitialiser le mot de passe — Credixa</title>
+<title>Réinitialiser le mot de passe — Aurenza Capital</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 :root{
-  --bg:   #080C18;
-  --inp:  #141C2E;
-  --cyan: #0DCFDC;
-  --cyan2:#09B5C8;
+  --bg:   #061A14;
+  --inp:  #103428;
+  --brass: #DCBE87;
+  --brass2:#C6A15B;
   --text: #FFFFFF;
   --sub:  rgba(255,255,255,.52);
   --muted:rgba(255,255,255,.28);
@@ -29,7 +29,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{
   height:100%;background:var(--bg);color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;font-size:15px;
+  font-family:'Outfit',system-ui,sans-serif;font-size:15px;
   -webkit-font-smoothing:antialiased;
 }
 body{min-height:100vh;overflow-x:hidden}
@@ -37,8 +37,8 @@ a{text-decoration:none;color:inherit}
 
 .bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .orb{position:absolute;border-radius:50%;filter:blur(90px)}
-.orb-1{width:480px;height:480px;top:-10%;right:-8%;background:radial-gradient(circle,rgba(13,207,220,.1) 0%,transparent 65%);animation:orbf 10s ease-in-out infinite alternate}
-.orb-2{width:360px;height:360px;bottom:-15%;left:-8%;background:radial-gradient(circle,rgba(13,207,220,.06) 0%,transparent 65%);animation:orbf 14s ease-in-out infinite alternate-reverse}
+.orb-1{width:480px;height:480px;top:-10%;right:-8%;background:radial-gradient(circle,rgba(220,190,135,.1) 0%,transparent 65%);animation:orbf 10s ease-in-out infinite alternate}
+.orb-2{width:360px;height:360px;bottom:-15%;left:-8%;background:radial-gradient(circle,rgba(220,190,135,.06) 0%,transparent 65%);animation:orbf 14s ease-in-out infinite alternate-reverse}
 @keyframes orbf{from{transform:scale(1)}to{transform:scale(1.1) translate(2%,3%)}}
 
 .topbar{
@@ -65,13 +65,13 @@ a{text-decoration:none;color:inherit}
 
 .icon-badge{
   width:72px;height:72px;border-radius:50%;
-  background:rgba(13,207,220,.1);border:1.5px solid rgba(13,207,220,.25);
+  background:rgba(220,190,135,.1);border:1.5px solid rgba(220,190,135,.25);
   display:flex;align-items:center;justify-content:center;
-  margin:0 auto 1.5rem;box-shadow:0 0 28px rgba(13,207,220,.15);
+  margin:0 auto 1.5rem;box-shadow:0 0 28px rgba(220,190,135,.15);
 }
-.icon-badge i{font-size:1.75rem;color:var(--cyan)}
+.icon-badge i{font-size:1.75rem;color:var(--brass)}
 
-.card-title{font-family:'Space Grotesk',sans-serif;font-size:1.625rem;font-weight:800;color:var(--text);margin-bottom:.45rem}
+.card-title{font-family:'Outfit',sans-serif;font-size:1.625rem;font-weight:800;color:var(--text);margin-bottom:.45rem}
 .card-sub{font-size:.82rem;color:var(--sub);line-height:1.65;margin-bottom:1.875rem;max-width:320px;margin-left:auto;margin-right:auto}
 
 .ferr{
@@ -89,12 +89,12 @@ a{text-decoration:none;color:inherit}
 .finput{
   width:100%;padding:.85rem 1rem .85rem 2.6rem;
   background:var(--inp);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;
-  font-size:.88rem;font-family:'Inter',sans-serif;color:var(--text);
+  font-size:.88rem;font-family:'Outfit',sans-serif;color:var(--text);
   outline:none;transition:border-color .2s,box-shadow .2s,background .2s;
 }
 .finput::placeholder{color:rgba(255,255,255,.2)}
-.finput:focus{border-color:var(--cyan);background:#161E30;box-shadow:0 0 0 3.5px rgba(13,207,220,.15)}
-.finput:focus ~ .ficon,.frel:focus-within .ficon{color:var(--cyan)}
+.finput:focus{border-color:var(--brass);background:#123A2C;box-shadow:0 0 0 3.5px rgba(220,190,135,.15)}
+.finput:focus ~ .ficon,.frel:focus-within .ficon{color:var(--brass)}
 .finput.err{border-color:#ef4444}
 .feye{
   position:absolute;right:.9rem;top:50%;transform:translateY(-50%);
@@ -112,19 +112,19 @@ a{text-decoration:none;color:inherit}
 
 .fbtn{
   width:100%;padding:.92rem 1.5rem;border:none;border-radius:999px;
-  font-size:.97rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;
+  font-size:.97rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:.625rem;
-  background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan2) 100%);
-  color:#080C18;letter-spacing:.01em;
-  box-shadow:0 6px 28px rgba(13,207,220,.35),0 2px 8px rgba(0,0,0,.3);
+  background:linear-gradient(90deg,var(--brass) 0%,var(--brass2) 100%);
+  color:#061A14;letter-spacing:.01em;
+  box-shadow:0 6px 28px rgba(220,190,135,.35),0 2px 8px rgba(0,0,0,.3);
   transition:filter .2s,box-shadow .2s,transform .1s;margin-top:.5rem;
 }
-.fbtn:hover{filter:brightness(1.08);box-shadow:0 8px 36px rgba(13,207,220,.5)}
+.fbtn:hover{filter:brightness(1.08);box-shadow:0 8px 36px rgba(220,190,135,.5)}
 .fbtn:active{transform:scale(.975)}
 .fbtn:disabled{opacity:.6;cursor:not-allowed;filter:none}
 
 .back-link{margin-top:1.375rem;font-size:.78rem;color:var(--muted)}
-.back-link a{color:var(--cyan);font-weight:600;transition:opacity .18s}
+.back-link a{color:var(--brass);font-weight:600;transition:opacity .18s}
 .back-link a:hover{opacity:.75}
 
 .pg-foot{
@@ -168,7 +168,7 @@ a{text-decoration:none;color:inherit}
       </div>
 
       <h1 class="card-title">Nouveau mot de passe</h1>
-      <p class="card-sub">Choisissez un nouveau mot de passe sécurisé pour votre compte Credixa.</p>
+      <p class="card-sub">Choisissez un nouveau mot de passe sécurisé pour votre compte Aurenza Capital.</p>
 
       @if($errors->any())
       <div class="ferr">
@@ -241,7 +241,7 @@ a{text-decoration:none;color:inherit}
   </div>
 
   <div class="pg-foot">
-    &copy; {{ date('Y') }} Credixa Invest &nbsp;·&nbsp;
+    &copy; {{ date('Y') }} Aurenza Capital &nbsp;·&nbsp;
     <a href="{{ url('/fr/terms') }}">CGU</a> &nbsp;·&nbsp;
     <a href="{{ url('/fr/privacy') }}">Confidentialité</a>
   </div>
@@ -269,7 +269,7 @@ function updateStrength(val) {
   if (/[A-Z]/.test(val)) score++;
   if (/[0-9]/.test(val)) score++;
   if (/[^A-Za-z0-9]/.test(val)) score++;
-  var colors = ['#ef4444','#f97316','#eab308','#22c55e','#0DCFDC'];
+  var colors = ['#ef4444','#f97316','#eab308','#22c55e','#DCBE87'];
   var widths  = ['20%','40%','60%','80%','100%'];
   fill.style.width      = widths[Math.max(score-1,0)] || '0';
   fill.style.background = colors[Math.max(score-1,0)] || 'transparent';

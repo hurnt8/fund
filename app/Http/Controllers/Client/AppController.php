@@ -397,8 +397,8 @@ class AppController extends Controller
     public function manifest()
     {
         $data = [
-            'name'             => config('app.company_name', 'Credixa Invest') . ' — Espace Client',
-            'short_name'       => 'Credixa',
+            'name'             => config('app.company_name', 'Aurenza Capital') . ' — Espace Client',
+            'short_name'       => 'Aurenza',
             'description'      => 'Gérez vos prêts, virements et documents en toute sécurité.',
             'start_url'        => '/app',
             'scope'            => '/app',
@@ -449,9 +449,9 @@ class AppController extends Controller
     public function adminManifest()
     {
         $data = [
-            'name'             => config('app.company_name', 'Credixa Invest') . ' — Administration',
-            'short_name'       => 'Credixa Admin',
-            'description'      => 'Gérez les prêts, clients et opérations Credixa.',
+            'name'             => config('app.company_name', 'Aurenza Capital') . ' — Administration',
+            'short_name'       => 'Aurenza Capital Admin',
+            'description'      => 'Gérez les prêts, clients et opérations Aurenza Capital.',
             'start_url'        => '/admin',
             'scope'            => '/',
             'display'          => 'standalone',
@@ -494,7 +494,7 @@ class AppController extends Controller
     public function serviceWorker()
     {
         $js = <<<'JS'
-const CACHE = 'credixa-v8';
+const CACHE = 'aurenza-v10';
 const ICON  = '/images/icon-192.png';
 const BADGE = '/images/icon-badge.png';
 const SHELL = ['/app', '/login'];
@@ -562,16 +562,16 @@ self.addEventListener('fetch', e => {
 
 /* ── Push notifications ── */
 self.addEventListener('push', e => {
-    let data = { title: 'Credixa', body: '' };
+    let data = { title: 'Aurenza Capital', body: '' };
     try { data = e.data ? e.data.json() : data; } catch (_) {}
 
     e.waitUntil(
-        self.registration.showNotification(data.title || 'Credixa', {
+        self.registration.showNotification(data.title || 'Aurenza Capital', {
             body:    data.body  || '',
             icon:    ICON,
             badge:   BADGE,
             vibrate: [200, 100, 200],
-            tag:     data.tag || 'credixa-notif',
+            tag:     data.tag || 'aurenza-notif',
             renotify: true,
             data:    { url: data.url || '/app/notifications' },
         })

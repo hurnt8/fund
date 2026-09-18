@@ -1,5 +1,5 @@
 @extends('layouts.client-app')
-@section('title', __('app.nav_transfer') . ' — Credixa')
+@section('title', __('app.nav_transfer') . ' — Aurenza Capital')
 @section('page_title', __('app.nav_transfer'))
 
 @section('content')
@@ -9,7 +9,7 @@
 /* ── Balance hero ── */
 .trf-hero{
   margin:.875rem 1.25rem 0;
-  background:linear-gradient(145deg,#1B527A,#0D2E54);
+  background:linear-gradient(145deg,#1B7A52,#0D542E);
   border-radius:20px;
   padding:1.375rem 1.5rem;
   position:relative;overflow:hidden;
@@ -22,7 +22,7 @@
   pointer-events:none;
 }
 .trf-hero__lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:.3rem}
-.trf-hero__bal{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:900;color:#fff;line-height:1}
+.trf-hero__bal{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:900;color:#fff;line-height:1}
 .trf-hero__cur{font-size:.875rem;font-weight:600;color:rgba(255,255,255,.5);margin-left:.3rem}
 .trf-hero__sub{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.35rem}
 
@@ -34,13 +34,13 @@
 }
 .trf-action:active{transform:scale(.97)}
 .trf-action--send{background:rgba(27,138,122,.15);border:1px solid rgba(27,138,122,.28)}
-.trf-action--recv{background:rgba(200,169,81,.12);border:1px solid rgba(200,169,81,.22)}
+.trf-action--recv{background:rgba(198,161,91,.12);border:1px solid rgba(198,161,91,.22)}
 .trf-action__ico{
   width:54px;height:54px;border-radius:16px;
   display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff;
 }
 .trf-action--send .trf-action__ico{background:linear-gradient(145deg,#2BBAA8,#1B8A7A);box-shadow:0 4px 14px rgba(27,138,122,.4)}
-.trf-action--recv .trf-action__ico{background:linear-gradient(145deg,#D4AA55,#C8A951);box-shadow:0 4px 14px rgba(200,169,81,.35)}
+.trf-action--recv .trf-action__ico{background:linear-gradient(145deg,#DCBE87,#C6A15B);box-shadow:0 4px 14px rgba(198,161,91,.35)}
 .trf-action__name{font-size:.875rem;font-weight:700;color:var(--ca-text)}
 .trf-action__desc{font-size:.7rem;color:var(--ca-text-3);text-align:center;line-height:1.4}
 
@@ -70,7 +70,7 @@
 .trf-item__name{font-size:.875rem;font-weight:600;color:var(--ca-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .trf-item__ref{font-size:.7rem;color:var(--ca-text-3);font-family:monospace;margin-top:.1rem}
 .trf-item__right{text-align:right;flex-shrink:0}
-.trf-item__amt{font-family:'Space Grotesk',sans-serif;font-size:.9375rem;font-weight:800}
+.trf-item__amt{font-family:'Outfit',sans-serif;font-size:.9375rem;font-weight:800}
 .trf-item__amt--neg{color:var(--ca-negative)}
 .trf-item__amt--pos{color:var(--ca-positive)}
 .trf-item__amt--muted{color:var(--ca-text-3)}
@@ -90,7 +90,7 @@
 </style>
 @endpush
 
-@php $currency = $user->currency ?? config('credixa.default_currency'); @endphp
+@php $currency = $user->currency ?? config('aurenza.default_currency'); @endphp
 
 {{-- Balance hero ── --}}
 <div class="trf-hero">
@@ -108,7 +108,7 @@
   <i class="fas fa-circle-exclamation" style="color:#f87171;margin-top:.1rem;flex-shrink:0"></i>
   <div>
     <div style="font-size:.8rem;font-weight:700;color:#f87171;margin-bottom:.2rem">{{ __('app.send_blocked_title') }}</div>
-    <div style="font-size:.73rem;color:var(--ca-text-3);line-height:1.5">{{ __('app.send_blocked_body', ['amount' => number_format((float)$user->balance,2,',',' '), 'currency' => $user->currency ?? config('credixa.default_currency')]) }}</div>
+    <div style="font-size:.73rem;color:var(--ca-text-3);line-height:1.5">{{ __('app.send_blocked_body', ['amount' => number_format((float)$user->balance,2,',',' '), 'currency' => $user->currency ?? config('aurenza.default_currency')]) }}</div>
   </div>
 </div>
 @endif

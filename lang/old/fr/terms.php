@@ -5,7 +5,7 @@ return [
     'sections' => [
         [
             'title' => '1. Introduction',
-            'content' => 'Bienvenue sur Credixa. En utilisant notre site et nos services, vous acceptez de vous conformer et d\'être lié par les termes et conditions suivants. Veuillez lire attentivement ces termes avant d\'utiliser notre site ou de contracter un prêt avec nous.'
+            'content' => 'Bienvenue sur Aurenza Capital. En utilisant notre site et nos services, vous acceptez de vous conformer et d\'être lié par les termes et conditions suivants. Veuillez lire attentivement ces termes avant d\'utiliser notre site ou de contracter un prêt avec nous.'
         ],
         [
             'title' => '2. Utilisation du site',
@@ -13,11 +13,11 @@ return [
         ],
         [
             'title' => '3. Services de prêt',
-            'content' => 'Credixa propose divers types de prêts pour répondre à vos besoins financiers. Tous les prêts sont soumis à une approbation basée sur notre évaluation de votre solvabilité et de votre capacité de remboursement. Les termes spécifiques de chaque prêt, y compris les taux d\'intérêt, les échéances et les modalités de remboursement, seront détaillés dans votre contrat de prêt.'
+            'content' => 'Aurenza Capital propose divers types de prêts pour répondre à vos besoins financiers. Tous les prêts sont soumis à une approbation basée sur notre évaluation de votre solvabilité et de votre capacité de remboursement. Les termes spécifiques de chaque prêt, y compris les taux d\'intérêt, les échéances et les modalités de remboursement, seront détaillés dans votre contrat de prêt.'
         ],
         [
             'title' => '4. Frais de contrat et d\'assurance',
-            'content' => 'Lors de la souscription d\'un prêt chez Credixa, des frais de contrat et d\'assurance peuvent être appliqués. Ces frais couvrent les coûts administratifs associés à la mise en place et à la gestion de votre prêt. Les détails spécifiques de ces frais seront clairement indiqués dans votre contrat de prêt. Vous êtes tenu de payer ces frais conformément aux modalités précisées.'
+            'content' => 'Lors de la souscription d\'un prêt chez Aurenza Capital, des frais de contrat et d\'assurance peuvent être appliqués. Ces frais couvrent les coûts administratifs associés à la mise en place et à la gestion de votre prêt. Les détails spécifiques de ces frais seront clairement indiqués dans votre contrat de prêt. Vous êtes tenu de payer ces frais conformément aux modalités précisées.'
         ],
         [
             'title' => '5. Confidentialité',
@@ -29,7 +29,7 @@ return [
         ],
         [
             'title' => '7. Limitation de responsabilité',
-            'content' => 'Credixa ne pourra être tenu responsable des pertes ou dommages indirects, spéciaux ou consécutifs résultant de l\'utilisation ou de l\'incapacité à utiliser notre site ou nos services, y compris la perte de profits, la perte de données ou l\'interruption des activités, même si nous avons été informés de la possibilité de tels dommages.'
+            'content' => 'Aurenza Capital ne pourra être tenu responsable des pertes ou dommages indirects, spéciaux ou consécutifs résultant de l\'utilisation ou de l\'incapacité à utiliser notre site ou nos services, y compris la perte de profits, la perte de données ou l\'interruption des activités, même si nous avons été informés de la possibilité de tels dommages.'
         ],
         [
             'title' => '8. Modifications des termes',
@@ -37,7 +37,7 @@ return [
         ],
         [
             'title' => '9. Contact',
-            'content' => 'Si vous avez des questions ou des préoccupations concernant ces termes et conditions, veuillez nous contacter à :<br><br>Credixa<br>Adresse : Rua de Santo António 33, 7200-175, Portugal<br>E-mail : contact@credixa.eu<br>Téléphone : +31 6 57341120 '
+            'content' => 'Si vous avez des questions ou des préoccupations concernant ces termes et conditions, veuillez nous contacter à :<br><br>Aurenza Capital<br>Adresse : Rua de Santo António 33, 7200-175, Portugal<br>E-mail : contact@aurenzacapital.com<br>Téléphone : +31 6 57341120 '
         ],
     ],
 ];

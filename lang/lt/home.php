@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'general_title' => 'Credixa – geriausi internetiniai skolintojai Vokietijoje, Ispanijoje, Vengrijoje ir kt.',
+    'general_title' => 'Aurenza Capital – geriausi internetiniai skolintojai Vokietijoje, Ispanijoje, Vengrijoje ir kt.',
     'banner_title' => 'Gaukite tobulą paskolą visiems savo interneto poreikiams.',
-    'banner_text' => 'Milijonai žmonių naudoja Credixa savo projektams įgyvendinti.',
+    'banner_text' => 'Milijonai žmonių naudoja Aurenza Capital savo projektams įgyvendinti.',
     'get_loan_now' => 'Gaukite paskolą dabar',
     'popular_loans' => 'Populiarūs paskolų tipai:',
     'personal_loan' => 'Asmeninė paskola',
@@ -62,11 +62,11 @@ return [
 
     'custom_loan_services' => 'Pasinaudokite mūsų pritaikytomis paskolų paslaugomis',
     'reliability_quality' => 'Skaidrumas ir patikimumas',
-    'reliability_quality_description' => 'Credixa siūlome aiškius ir patikimus skolinimo sprendimus, paremtus teigiamais klientų atsiliepimais ir visišku skaidrumu.',
+    'reliability_quality_description' => 'Aurenza Capital siūlome aiškius ir patikimus skolinimo sprendimus, paremtus teigiamais klientų atsiliepimais ir visišku skaidrumu.',
     'financial_transparency' => 'Jokių paslėptų išlaidų',
     'financial_transparency_description' => 'Peržiūrėkite mūsų sąlygas, aptarkite įkainius ir mokėkite tik patvirtinus paskolą.',
     'optimal_security' => 'Sauga ir privatumas',
-    'optimal_security_description' => 'Jūsų asmeniniai duomenys yra saugūs pas mus. „Credixa“ naudoja pažangius saugos protokolus, kad apsaugotų jūsų privatumą. Mūsų pagalba teikiama 24 valandas per parą, 7 dienas per savaitę.',
+    'optimal_security_description' => 'Jūsų asmeniniai duomenys yra saugūs pas mus. „Aurenza Capital“ naudoja pažangius saugos protokolus, kad apsaugotų jūsų privatumą. Mūsų pagalba teikiama 24 valandas per parą, 7 dienas per savaitę.',
     'apply_loan' => 'Prašyti paskolos',
 
 
@@ -119,7 +119,7 @@ return [
     ],
 
     'about_title' => 'Prisijunkite prie geriausios pasaulyje darbuotojų rinkos',
-    'about_description' => 'Credixa yra jūsų patikima platforma paskoloms gauti su išskirtine klientų patirtimi. Esame įsipareigoję teikti jums paprastus, saugius ir greitus finansinius sprendimus.',
+    'about_description' => 'Aurenza Capital yra jūsų patikima platforma paskoloms gauti su išskirtine klientų patirtimi. Esame įsipareigoję teikti jums paprastus, saugius ir greitus finansinius sprendimus.',
     'rating' => '4,9/5',
     'rating_description' => 'Klientai vertina profesionalus',
     'projects_completed' => '+12 mln.',
@@ -161,7 +161,7 @@ return [
         'placeholder' => 'Jūsų el. pašto adresas',
         'button' => 'Siųsti',
     ],
-    'rights_reserved' => '© Credixa. 2024. Visos teisės saugomos.',
+    'rights_reserved' => '© Aurenza Capital. 2024. Visos teisės saugomos.',
 
     'en' => 'anglų k.',
     'fr' => 'prancūzų',
@@ -208,10 +208,10 @@ return [
 
     'about' => [
         'exptitle' => 'Anni di esperienza',
-        'sectagline' => 'Benvenuti in Credixa',
+        'sectagline' => 'Benvenuti in Aurenza Capital',
         'sectitle' => 'Prestiti personali per realizzare i tuoi sogni',
         'text1' => 'Siamo in questo settore dal 1990 e offriamo i migliori servizi.',
-        'text2' => "Credixa è la tua piattaforma di fiducia per prestiti con un'esperienza cliente eccezionale. Siamo impegnati a fornirti soluzioni finanziarie semplici, sicure e veloci.",
+        'text2' => "Aurenza Capital è la tua piattaforma di fiducia per prestiti con un'esperienza cliente eccezionale. Siamo impegnati a fornirti soluzioni finanziarie semplici, sicure e veloci.",
         'check1' => 'prestito per piccole imprese',
         'check2' => 'prestito per studio all\'estero',
         'check3' => 'processo di prestito rapido',
