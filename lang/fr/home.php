@@ -152,7 +152,7 @@ return [
     'slide_1' => [
         'title' => ' Depuis 5 ans · Agréé · Réponse garantie',
         'text1' => 'Financez tous vos projets,',
-        'text2' => 'jusqu\'à 95 000 € en 24h.',
+        'text2' => 'jusqu\'à 95 000 € en 24h.',
     ],
     'slide_2' => [
         'title' => 'Prêts Intelligents pour un Avenir Brillant',

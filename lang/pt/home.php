@@ -141,9 +141,9 @@ return [
     'sl' => 'esloveno',
     'hero_subtitle' => 'Sem procedimentos complexos, sem taxas ocultas. Há 15 anos financiamos projetos pessoais, imobiliários, automóveis e empresariais com transparência e rapidez.',
     'slide_1' => [
-        'title' => ' 15 anos de experiência · Autorizado · Resposta em 48h',
+        'title' => ' 5 anos de experiência · Autorizado · Resposta garantida',
         'text1' => 'Financie todos os seus projetos,',
-        'text2' => 'até 5 000 000 € em 48h.',
+        'text2' => 'até 95 000 € em 24h.',
     ],
     'slide_2' => [
         'title' => 'Empréstimos Inteligentes para Futuros Brilhantes',
@@ -178,8 +178,8 @@ return [
         'check4' => 'taxas muito baixas',
         'engage1_title' => 'Licenciado e Regulamentado',
         'engage1_desc' => 'Instituição de crédito certificada, a operar segundo as normas europeias. Os seus dados e processo estão protegidos em cada etapa.',
-        'engage2_title' => 'Resposta Garantida em 48h',
-        'engage2_desc' => 'Processo 100% online, sem necessidade de visitar uma agência. Decisão entregue no prazo de 48 horas.',
+        'engage2_title' => 'Resposta garantida em 24h',
+        'engage2_desc' => 'Processo 100% online, sem necessidade de visitar uma agência. Decisão entregue no prazo de 24 horas.',
         'engage3_title' => 'Multi-moeda e Multi-país',
         'engage3_desc' => 'Financiamento disponível na moeda do seu país, adaptado ao seu projeto.',
     ],

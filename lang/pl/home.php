@@ -7,7 +7,7 @@ return [
     'slide_1' => [
         'title' => ' 5 lat doświadczenia · Licencjonowany · Gwarantowana odpowiedź',
         'text1' => 'Sfinansuj wszystkie swoje projekty,',
-        'text2' => 'do 95 000 € w 24h.',
+        'text2' => 'do 95 000 € w 24h.',
     ],
     'slide_2' => [
         'title' => 'Inteligentne kredyty na świetlaną przyszłość',

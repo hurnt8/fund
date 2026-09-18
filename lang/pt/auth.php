@@ -35,7 +35,7 @@ return [
     'feature_secure' => 'Dados encriptados',
     'feature_currencies' => '6 moedas aceites',
     'feature_certified' => 'Certificado pela UE',
-    'feature_fast' => 'Resposta em 48h',
+    'feature_fast' => 'Resposta em 24h',
     'role_superadmin' => 'Super Administrador',
     'role_superadmin_sub' => 'Gestão global e funções',
     'role_admin' => 'Administrador',

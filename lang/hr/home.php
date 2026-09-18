@@ -178,7 +178,7 @@ return [
 
     // Slide
     'slide_1' => [
-        'title' => ' Od 1990. · Licencirano · Odgovor za 24h',
+        'title' => ' 5 godina iskustva · Licencirano · Zajamčen odgovor',
         'text1' => 'Financirajte sve svoje projekte,',
         'text2' => 'do 95.000 € za 24h.',
     ],

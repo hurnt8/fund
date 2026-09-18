@@ -52,7 +52,7 @@
                 <img src="{{ asset('assets/images/aurenza/hero-siege.jpg') }}"
                      alt="{{ __('home.about.sectitle') }}">
                 <div class="hero-split__stamp">
-                    <b>95 000 €</b>
+                    <b>95 000 €</b>
                     <span>{{ __('home.total_loan_amount_granted') }}</span>
                 </div>
             </div>
