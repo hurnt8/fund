@@ -220,6 +220,8 @@ return [
     'services' => [
         'sectagline' => 'što nudimo',
         'sectitle' => 'Pružamo najbolje usluge za vaš kredit',
+        'cta_title' => 'Spremni pokrenuti svoj financijski projekt ?',
+        'cta_text' => 'Naš tim vam stoji na raspolaganju za vaš zahtjev za financiranjem.',
     ],
 
     'simulate' => [

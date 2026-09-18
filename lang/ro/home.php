@@ -201,6 +201,8 @@ return [
     'services' => [
         'sectagline' => 'ce oferim',
         'sectitle' => 'Oferim cele mai bune servicii pentru creditul dumneavoastră',
+        'cta_title' => 'Sunteți gata să începeți proiectul dumneavoastră financiar ?',
+        'cta_text' => 'Echipa noastră vă însoțește în cererea dumneavoastră de finanțare.',
     ],
 
     // Simulate
