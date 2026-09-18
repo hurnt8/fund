@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ContractTemplate;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
 /**
@@ -28,9 +29,22 @@ class DocxTemplateManager
         $oldPath = $template->docx_template_path;
         $version = ($template->docx_version ?? 0) + 1;
 
-        $filename    = 'template_' . $template->id . '_v' . $version . '_' . time() . '.docx';
+        $filename = 'template_' . $template->id . '_v' . $version . '_' . time() . '.docx';
+
+        // Le disque 'local' est configuré avec 'throw' => false : en cas d'échec
+        // d'écriture (droits, quota), storeAs() renvoie false sans lever d'exception.
         $storagePath = $file->storeAs('docx-templates', $filename, 'local');
-        $absPath     = storage_path('app/' . $storagePath);
+        if ($storagePath === false) {
+            $root = Storage::disk('local')->path('docx-templates');
+            throw new \RuntimeException(
+                "Écriture impossible dans $root — vérifiez les droits du dossier storage/ "
+                . '(755 sur les dossiers, 644 sur les fichiers) et l\'espace disque disponible.'
+            );
+        }
+
+        // On demande son chemin au disque plutôt que de supposer storage/app :
+        // la racine du disque peut différer selon la configuration de l'hébergement.
+        $absPath = Storage::disk('local')->path($storagePath);
 
         // Détecter les variables avant de toucher à la BDD
         // (si le DOCX est invalide, on s'arrête sans modifier le template existant)
@@ -71,9 +85,12 @@ class DocxTemplateManager
      */
     public function detectVariables(string $docxAbsPath): array
     {
-        $zip = new ZipArchive();
-        if ($zip->open($docxAbsPath) !== true) {
-            throw new \RuntimeException("Impossible d'ouvrir le DOCX : $docxAbsPath");
+        $zip  = new ZipArchive();
+        $code = $zip->open($docxAbsPath);
+        if ($code !== true) {
+            throw new \RuntimeException(
+                "Impossible d'ouvrir le DOCX : $docxAbsPath — " . self::describeZipError($code, $docxAbsPath)
+            );
         }
 
         $targets = ['word/document.xml'];
@@ -106,6 +123,52 @@ class DocxTemplateManager
         return array_values(array_unique($vars));
     }
 
+    /**
+     * Traduit un code d'erreur ZipArchive en diagnostic exploitable,
+     * complété par l'état réel du fichier sur le disque.
+     */
+    public static function describeZipError(int $code, string $path): string
+    {
+        $reasons = [
+            ZipArchive::ER_NOENT  => 'le fichier est introuvable à cet emplacement',
+            ZipArchive::ER_NOZIP  => "le fichier n'est pas une archive ZIP valide (DOCX corrompu ou écriture incomplète)",
+            ZipArchive::ER_INCONS => 'archive incohérente (fichier tronqué — quota disque atteint ?)',
+            ZipArchive::ER_READ   => 'lecture impossible (droits insuffisants)',
+            ZipArchive::ER_OPEN   => "ouverture refusée par le système (droits ou open_basedir)",
+            ZipArchive::ER_MEMORY => 'mémoire insuffisante',
+            ZipArchive::ER_CRC    => 'erreur de somme de contrôle (fichier altéré)',
+        ];
+
+        $dir    = dirname($path);
+        $exists = file_exists($path);
+
+        // L'état réel du fichier prime : selon les builds PHP, ZipArchive renvoie
+        // ER_READ plutôt que ER_NOENT pour un fichier absent, ce qui induit en erreur.
+        if (!$exists) {
+            $reason = is_dir($dir)
+                ? "le fichier n'a pas été écrit à cet emplacement"
+                : "le dossier de destination n'existe pas";
+        } elseif (!is_readable($path)) {
+            $reason = 'fichier présent mais non lisible (droits insuffisants)';
+        } elseif (filesize($path) === 0) {
+            $reason = 'fichier vide (écriture interrompue — quota disque ?)';
+        } else {
+            $reason = $reasons[$code] ?? "code d'erreur ZipArchive $code";
+        }
+
+        $state = [];
+        $state[] = $exists ? 'fichier présent' : 'fichier absent';
+        if ($exists) {
+            $state[] = 'taille ' . filesize($path) . ' octets';
+            $state[] = is_readable($path) ? 'lisible' : 'NON lisible';
+        }
+        $state[] = is_dir($dir)
+            ? 'dossier parent ' . (is_writable($dir) ? 'accessible en écriture' : 'NON accessible en écriture')
+            : 'dossier parent absent';
+
+        return $reason . ' [' . implode(', ', $state) . ']';
+    }
+
     // ── Privé ─────────────────────────────────────────────────────────────────
 
     private function validateDocx(UploadedFile $file): void
@@ -130,12 +193,12 @@ class DocxTemplateManager
 
     private function archiveOld(string $oldPath, int $templateId, int $oldVersion): void
     {
-        $src = storage_path('app/' . $oldPath);
+        $src = Storage::disk('local')->path($oldPath);
         if (!file_exists($src)) {
             return;
         }
 
-        $archiveDir = storage_path('app/docx-templates/archives');
+        $archiveDir = Storage::disk('local')->path('docx-templates/archives');
         if (!is_dir($archiveDir)) {
             mkdir($archiveDir, 0755, true);
         }
