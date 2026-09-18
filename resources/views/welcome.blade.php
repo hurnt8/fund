@@ -49,7 +49,7 @@
             </div>
 
             <div class="hero-split__media wow fadeIn" data-wow-duration="1100ms">
-                <img src="{{ asset('assets/images/aurenza/hero-2.jpg') }}"
+                <img src="{{ asset('assets/images/aurenza/hero-siege.jpg') }}"
                      alt="{{ __('home.about.sectitle') }}">
                 <div class="hero-split__stamp">
                     <b>95 000 €</b>
@@ -120,9 +120,9 @@ $serviceNav = [
 
             <div class="col-lg-6 wow fadeInLeft" data-wow-duration="1000ms">
                 <div class="about-stack">
-                    <img src="{{ asset('assets/images/aurenza/about-portrait.jpg') }}"
+                    <img src="{{ asset('assets/images/aurenza/bureaux-couloir.jpg') }}"
                          alt="{{ __('home.about.sectitle') }}" class="about-stack__tall" loading="lazy">
-                    <img src="{{ asset('assets/images/aurenza/about-team.jpg') }}"
+                    <img src="{{ asset('assets/images/aurenza/bureaux-reunion.jpg') }}"
                          alt="" class="about-stack__wide" loading="lazy">
                 </div>
             </div>

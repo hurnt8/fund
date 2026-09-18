@@ -24,7 +24,7 @@
         <div class="row g-4 gutter-y-60 align-items-center">
             <div class="col-lg-6 wow fadeInLeft" data-wow-duration="900ms">
                 <div class="about-visual">
-                    <img src="{{ asset('assets/images/aurenza/about-portrait.jpg') }}"
+                    <img src="{{ asset('assets/images/aurenza/bureaux-couloir.jpg') }}"
                          alt="Aurenza Capital" class="about-visual__img">
                     <div class="about-visual__ribbon">
                         <span class="about-visual__ribbon-num">5</span>
