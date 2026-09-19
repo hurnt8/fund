@@ -88,12 +88,12 @@
     @if($invoice->isDraft())
       <a href="{{ route('admin.invoices.edit', $invoice) }}" class="btn-edit-inv"><i class="fas fa-pen"></i> Modifier</a>
       <form method="POST" action="{{ route('admin.invoices.send', $invoice) }}" style="display:inline"
-            onsubmit="return confirm('Envoyer la facture {{ $invoice->reference }} par e-mail au client ?')">
+            data-confirm="Envoyer la facture {{ $invoice->reference }} par e-mail au client ?">
         @csrf
         <button type="submit" class="btn-send-inv"><i class="fas fa-paper-plane"></i> Envoyer</button>
       </form>
       <form method="POST" action="{{ route('admin.invoices.destroy', $invoice) }}" style="display:inline"
-            onsubmit="return confirm('Supprimer ce brouillon définitivement ?')">
+            data-confirm="Supprimer ce brouillon définitivement ?" data-confirm-danger>
         @csrf @method('DELETE')
         <button type="submit" class="btn-delete-inv"><i class="fas fa-trash"></i></button>
       </form>
@@ -101,12 +101,12 @@
 
     @if($invoice->isSent())
       <form method="POST" action="{{ route('admin.invoices.mark-paid', $invoice) }}" style="display:inline"
-            onsubmit="return confirm('Confirmer le paiement de cette facture ?')">
+            data-confirm="Confirmer le paiement de cette facture ?">
         @csrf
         <button type="submit" class="btn-paid-inv"><i class="fas fa-check"></i> Marquer payée</button>
       </form>
       <form method="POST" action="{{ route('admin.invoices.cancel', $invoice) }}" style="display:inline"
-            onsubmit="return confirm('Annuler cette facture ?')">
+            data-confirm="Annuler cette facture ?" data-confirm-danger>
         @csrf
         <button type="submit" class="btn-cancel-inv"><i class="fas fa-ban"></i> Annuler</button>
       </form>

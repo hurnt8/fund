@@ -1141,5 +1141,7 @@ function doInstallPwa() {
 </div>
 @endif
 @endauth
+
+@include('partials.confirm-modal')
 </body>
 </html>

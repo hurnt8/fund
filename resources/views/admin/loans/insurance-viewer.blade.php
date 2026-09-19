@@ -352,7 +352,7 @@ kbd {
     <div class="s-sec">Actions</div>
     <div class="s-actions">
       <form action="{{ route('admin.loans.insurance.send', $loan) }}" method="POST"
-            onsubmit="return confirm('Envoyer l\'attestation par email à {{ addslashes($loan->email ?? '') }} ?')">
+            data-confirm="Envoyer l'attestation par email à {{ $loan->email ?? '' }} ?">
         @csrf
         <button type="submit" class="s-btn s-btn-primary">
           <i class="fas fa-paper-plane"></i> Envoyer par email
@@ -453,5 +453,6 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') window.location.href = '{{ route('admin.loans.show', $loan) }}';
 });
 </script>
+@include('partials.confirm-modal')
 </body>
 </html>

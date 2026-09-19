@@ -174,7 +174,7 @@
 
               @if(! $user->hasRole('super-admin') || $isSuperAdmin)
               <form action="{{ route('admin.users.destroy',$user->id) }}" method="POST"
-                    onsubmit="return confirm('Supprimer {{ addslashes($user->name) }} ?')">
+                    data-confirm="Supprimer {{ $user->name }} ?" data-confirm-danger>
                 @csrf @method('DELETE')
                 <button type="submit" class="btn-icon btn-icon-danger" title="Supprimer">
                   <i class="fas fa-trash"></i>

@@ -186,7 +186,10 @@
             <strong style="color:var(--c-navy)">{{ strtoupper($loan->contract_language ?? 'FR') }}</strong>.
           </div>
           <form action="{{ route('admin.loans.validate', $loan) }}" method="POST"
-                onsubmit="return confirmSend()">
+                id="sendForm"
+                data-confirm-title="Valider et envoyer le contrat"
+                data-confirm-ok="Valider &amp; envoyer"
+                data-confirm="Envoyer le contrat à {{ $loan->email }} en {{ strtoupper($loan->contract_language ?? 'FR') }} ? Le PDF du contrat et le tableau d'amortissement seront joints au message.">
             @csrf
             <button type="submit" class="btn-navy" style="width:100%;justify-content:center" id="sendBtn">
               <i class="fas fa-paper-plane"></i> Valider &amp; Envoyer
@@ -213,14 +216,14 @@
           </div>
         </div>
         <form action="{{ route('admin.loans.contract.pdf.resend', $loan) }}" method="POST"
-              onsubmit="return confirm('Renvoyer le contrat à {{ $loan->email }} ?')">
+              data-confirm="Renvoyer le contrat à {{ $loan->email }} ?">
           @csrf
           <button type="submit" class="btn-ghost btn-sm-pro" style="width:100%;justify-content:center;margin-top:.5rem">
             <i class="fas fa-redo" style="color:var(--c-green)"></i> Renvoyer l'email
           </button>
         </form>
         <form action="{{ route('admin.loans.signed', $loan) }}" method="POST"
-              onsubmit="return confirm('Confirmer la réception du contrat signé ?')"
+              data-confirm="Confirmer la réception du contrat signé ?"
               style="margin-top:.5rem">
           @csrf
           <button type="submit" class="btn-navy" style="width:100%;justify-content:center;background:var(--c-green);border-color:var(--c-green)">
@@ -378,7 +381,7 @@
         </div>
         @else
         <form action="{{ route('admin.loans.insurance.pdf.generate', $loan) }}" method="POST"
-              onsubmit="return confirm('Générer l\'attestation d\'assurance ?')">
+              data-confirm="Générer l'attestation d'assurance ?">
           @csrf
           <button type="submit"
                   style="width:100%;justify-content:center;display:flex;align-items:center;gap:.45rem;padding:.55rem .875rem;font-size:.78rem;font-weight:700;border-radius:8px;cursor:pointer;background:#16a34a;border:none;color:#fff">
@@ -570,21 +573,16 @@ function lcCopy(text, btn) {
   });
 }
 
-function confirmSend() {
-  const ok = confirm(
-    'Valider et envoyer le contrat à {{ $loan->email }} ?\n\n' +
-    'Langue : {{ strtoupper($loan->contract_language ?? "FR") }}\n' +
-    'Le PDF du contrat + tableau d\'amortissement seront joints au message.'
-  );
-  if (ok) {
-    const btn = document.getElementById('sendBtn');
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours…';
-    }
+// La confirmation passe par la modale (data-confirm sur le formulaire).
+// Il ne reste ici qu'à verrouiller le bouton une fois l'envoi lancé,
+// pour éviter un double clic pendant la génération des PDF.
+document.getElementById('sendForm')?.addEventListener('submit', function () {
+  const btn = document.getElementById('sendBtn');
+  if (btn) {
+    btn.disabled  = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours…';
   }
-  return ok;
-}
+});
 
 // Auto-submit feedback upload
 document.querySelectorAll('.lc-upload-zone input[type="file"]').forEach(function(inp) {

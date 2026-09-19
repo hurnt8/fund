@@ -79,6 +79,32 @@ class LoanController extends Controller
         return back()->with('success', __('message.success_loan'));
     }
 
+    /**
+     * Taille totale de requête réellement acceptée par PHP, en kilo-octets.
+     * On retient la plus contraignante entre post_max_size et upload_max_filesize.
+     */
+    private static function limitePhpKo(): int
+    {
+        $enOctets = static function (string $v): int {
+            $v      = trim($v);
+            $nombre = (int) $v;
+            return match (strtolower(substr($v, -1))) {
+                'g'     => $nombre * 1024 * 1024 * 1024,
+                'm'     => $nombre * 1024 * 1024,
+                'k'     => $nombre * 1024,
+                default => $nombre,
+            };
+        };
+
+        $post   = $enOctets((string) ini_get('post_max_size'));
+        $upload = $enOctets((string) ini_get('upload_max_filesize'));
+
+        $limites = array_filter([$post, $upload], fn ($o) => $o > 0);
+
+        // 0 ou absent = illimité : on retombe sur la valeur métier de 10 Mo.
+        return $limites ? (int) floor(min($limites) / 1024) : 10240;
+    }
+
     public function showDocuments(Request $request)
     {
         // Nouveau jeton à chaque affichage du formulaire
@@ -89,6 +115,8 @@ class LoanController extends Controller
             'prefillName'     => $request->query('name'),
             'prefillEmail'    => $request->query('email'),
             'submissionToken' => $token,
+            // Affichée sous les champs, pour que la limite soit connue avant l'envoi.
+            'maxFichierMo'    => round(min(5120, self::limitePhpKo() / 2) / 1024, 1),
         ]);
     }
 
@@ -109,12 +137,19 @@ class LoanController extends Controller
                 ->with('docs_already_sent', true);
         }
 
-        // Consommer le jeton AVANT tout envoi
-        session()->forget('doc_submission_token');
-
         // ── Validation ───────────────────────────────────────────────────────
+        // Elle passe AVANT la consommation du jeton : sinon un simple refus de
+        // validation (fichier trop lourd, mauvais format) brûlait le jeton et la
+        // correction suivante était rejetée comme un doublon.
         $needsVerso = in_array($request->input('doc_type'), ['id_card', 'license', 'residence'], true);
-        $fileRules  = ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'];
+
+        // La limite par fichier ne peut pas dépasser ce que PHP accepte réellement :
+        // au-delà, la requête est vidée avant d'arriver ici et l'utilisateur ne
+        // comprend pas pourquoi son envoi échoue.
+        $maxParFichier = (int) min(5120, floor(self::limitePhpKo() / ($needsVerso ? 2 : 1)) - 256);
+        $maxParFichier = max($maxParFichier, 512);
+
+        $fileRules = ['file', 'mimes:jpg,jpeg,png,pdf', 'max:' . $maxParFichier];
 
         $data = $request->validate([
             'name'           => ['required', 'string', 'max:255'],
@@ -124,6 +159,9 @@ class LoanController extends Controller
             'id_photo_recto' => array_merge(['required'], $fileRules),
             'id_photo_verso' => array_merge($needsVerso ? ['required'] : ['nullable'], $fileRules),
         ]);
+
+        // Le jeton n'est consommé qu'une fois le dossier valide, juste avant l'envoi.
+        session()->forget('doc_submission_token');
 
         // ── Stockage temporaire des fichiers ─────────────────────────────────
         $tempFiles   = [];

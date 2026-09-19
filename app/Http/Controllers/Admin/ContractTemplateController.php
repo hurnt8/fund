@@ -27,9 +27,9 @@ class ContractTemplateController extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole('super-admin')) {
-            $templates = ContractTemplate::with('creator', 'assignedAdmins')->latest()->get();
+            $templates = ContractTemplate::with('creator', 'assignedAdmins')->latest()->paginate(15);
         } else {
-            $templates = $user->assignedTemplates()->with('creator')->latest()->get();
+            $templates = $user->assignedTemplates()->with('creator')->latest()->paginate(15);
         }
 
         return view('admin.contract-templates.index', compact('templates'));

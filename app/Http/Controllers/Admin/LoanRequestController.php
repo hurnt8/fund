@@ -674,11 +674,27 @@ class LoanRequestController extends Controller
         $locale    = $loan->contract_language ?? 'fr';
         $recipient = $this->recipientEmail($loan);
 
+        // Le tableau d'amortissement accompagne le contrat, comme lors de la
+        // validation initiale : sans cette génération, le renvoi partait seul.
+        set_time_limit(180);
+        $amortPdfPath = null;
         try {
-            Mail::to($recipient)->send(new LoanValidatedMail($loan, $pdfAbs, $locale));
+            $amortPdfPath = $this->pdfService->generateAmortizationPdf($loan, $locale);
+        } catch (\Throwable $e) {
+            Log::warning('Amortization PDF generation failed for ' . $loan->reference . ': ' . $e->getMessage());
+        }
+
+        try {
+            Mail::to($recipient)->send(
+                new LoanValidatedMail($loan, $pdfAbs, $locale, $amortPdfPath ?? '')
+            );
         } catch (\Throwable $e) {
             Log::error('resendContractEmail failed for ' . $loan->reference . ': ' . $e->getMessage());
             return back()->with('error', 'Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
+        } finally {
+            if ($amortPdfPath && file_exists($amortPdfPath)) {
+                @unlink($amortPdfPath);
+            }
         }
 
         $this->logHistory($loan, 'contract_edited', [], ['action' => 'email_with_pdf_resent', 'recipient' => $recipient]);

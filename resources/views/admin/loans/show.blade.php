@@ -358,7 +358,7 @@ $tpl = $loan->contractTemplate;
               @endforeach
             </select>
             <button type="submit" class="btn-navy" style="background:#7c3aed;border-color:#7c3aed"
-                    onclick="return confirm('Confirmer la réaffectation ?')" title="Confirmer">
+                    data-confirm="Confirmer la réaffectation ?" title="Confirmer">
               <i class="fas fa-check"></i>
             </button>
           </div>
@@ -378,7 +378,7 @@ $tpl = $loan->contractTemplate;
         @if($loan->canBeValidated())
           @if($loan->contract_pdf_path)
           <form action="{{ route('admin.loans.validate', $loan) }}" method="POST"
-                onsubmit="return confirm('Valider et envoyer le contrat par email ?')">
+                data-confirm="Valider et envoyer le contrat par email ?">
             @csrf
             <button class="btn-navy ld-btn-full">
               <i class="fas fa-paper-plane"></i> Valider &amp; Envoyer le contrat
@@ -394,7 +394,7 @@ $tpl = $loan->contractTemplate;
 
         @if($loan->status === 'contract_sent')
         <form action="{{ route('admin.loans.signed', $loan) }}" method="POST"
-              onsubmit="return confirm('Confirmer la réception du contrat signé ?')">
+              data-confirm="Confirmer la réception du contrat signé ?">
           @csrf
           <button class="btn-navy ld-btn-full" style="background:var(--c-green);border-color:var(--c-green)">
             <i class="fas fa-file-signature"></i> Contrat signé reçu
@@ -404,7 +404,7 @@ $tpl = $loan->contractTemplate;
 
         @if($loan->status === 'contract_sent')
         <form action="{{ route('admin.loans.contract.pdf.resend',$loan) }}" method="POST"
-              onsubmit="return confirm('Renvoyer le contrat à {{ $loan->email }} ?')">
+              data-confirm="Renvoyer le contrat à {{ $loan->email }} ?">
           @csrf
           <button type="submit" class="btn-ghost btn-sm-pro ld-btn-full">
             <i class="fas fa-redo" style="color:#dc2626"></i> Renvoyer l'email
@@ -435,7 +435,7 @@ $tpl = $loan->contractTemplate;
         @else
         {{-- Template intégré ou HTML → générer PDF --}}
         <form action="{{ route('admin.loans.insurance.pdf.generate', $loan) }}" method="POST"
-              onsubmit="return confirm('Générer l\'attestation d\'assurance ?')">
+              data-confirm="Générer l'attestation d'assurance ?">
           @csrf
           <button type="submit" class="btn-navy ld-btn-full" style="background:#16a34a;border-color:#16a34a">
             <i class="fas fa-magic"></i> {{ $loan->insurance_pdf_path ? 'Régénérer l\'attestation' : 'Générer l\'attestation' }}
@@ -445,7 +445,7 @@ $tpl = $loan->contractTemplate;
 
         @if($loan->insurance_pdf_path)
         <form action="{{ route('admin.loans.insurance.send', $loan) }}" method="POST"
-              onsubmit="return confirm('Envoyer l\'attestation par email à {{ $loan->email }} ?')">
+              data-confirm="Envoyer l'attestation par email à {{ $loan->email }} ?">
           @csrf
           <button type="submit" class="btn-navy ld-btn-full" style="background:#059669;border-color:#059669;margin-top:.4rem">
             <i class="fas fa-paper-plane"></i> Envoyer par email
@@ -737,7 +737,7 @@ $tpl = $loan->contractTemplate;
             </div>
             @else
             <form action="{{ route('admin.loans.insurance.pdf.generate', $loan) }}" method="POST"
-                  onsubmit="return confirm('Générer l\'attestation d\'assurance pour ce dossier ?')">
+                  data-confirm="Générer l'attestation d'assurance pour ce dossier ?">
               @csrf
               <button type="submit" class="btn-navy btn-sm-pro ld-btn-full" style="background:#16a34a;border-color:#16a34a">
                 <i class="fas fa-magic"></i> {{ $loan->insurance_pdf_path ? 'Régénérer l\'attestation' : 'Générer l\'attestation PDF' }}
@@ -804,7 +804,7 @@ $tpl = $loan->contractTemplate;
             {{-- Envoyer par email --}}
             @if($loan->insurance_pdf_path)
             <form action="{{ route('admin.loans.insurance.send', $loan) }}" method="POST"
-                  onsubmit="return confirm('Envoyer l\'attestation d\'assurance à {{ $loan->email }} ?')">
+                  data-confirm="Envoyer l'attestation d'assurance à {{ $loan->email }} ?">
               @csrf
               <button type="submit" class="btn-navy btn-sm-pro ld-btn-full" style="background:#059669;border-color:#059669">
                 <i class="fas fa-paper-plane"></i> Envoyer à {{ $loan->email }}

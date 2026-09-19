@@ -126,6 +126,16 @@
                         </div>
                     @endif
 
+                    {{-- Message posé par le gestionnaire d'exceptions (envoi trop
+                         volumineux, session expirée…). Sans ce bloc, le formulaire
+                         se rechargeait sans la moindre explication. --}}
+                    @if (session('error'))
+                        <div class="alert alert-danger mb-4">
+                            <i class="fas fa-circle-exclamation" style="margin-right:.4rem;"></i>
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     @if ($errors->any())
                         <div class="alert alert-danger mb-4">
                             <ul class="mb-0" style="padding-left:1.1rem;">
@@ -240,7 +250,7 @@
                                 <div :class="needsVerso ? 'col-md-6' : 'col-12'">
                                     <label style="font-weight:600;display:block;margin-bottom:.45rem;">
                                         <span x-text="needsVerso ? '{{ __('message.docs_recto') }}' : '{{ __('message.docs_id_photo') }}'"></span>
-                                        <span style="font-weight:400;font-size:.76rem;color:#999;"> *  (JPG, PNG, PDF — max 5 Mo)</span>
+                                        <span style="font-weight:400;font-size:.76rem;color:#999;"> *  (JPG, PNG, PDF — max {{ $maxFichierMo }} Mo)</span>
                                     </label>
                                     <div class="upload-zone" :class="{ 'has-file': rectoName }">
                                         <input type="file" name="id_photo_recto"
@@ -267,7 +277,7 @@
                                 <div class="col-md-6" x-show="needsVerso" x-transition>
                                     <label style="font-weight:600;display:block;margin-bottom:.45rem;">
                                         {{ __('message.docs_verso') }}
-                                        <span style="font-weight:400;font-size:.76rem;color:#999;"> *  (JPG, PNG, PDF — max 5 Mo)</span>
+                                        <span style="font-weight:400;font-size:.76rem;color:#999;"> *  (JPG, PNG, PDF — max {{ $maxFichierMo }} Mo)</span>
                                     </label>
                                     <div class="upload-zone" :class="{ 'has-file': versoName }">
                                         <input type="file" name="id_photo_verso"

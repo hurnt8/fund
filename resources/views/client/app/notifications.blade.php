@@ -231,6 +231,8 @@
 @endforeach
 </div>
 
+<x-pagination :paginator="$notifications" />
+
 @endif
 
 <div style="height:.5rem"></div>

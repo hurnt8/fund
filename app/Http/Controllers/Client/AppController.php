@@ -21,6 +21,8 @@ class AppController extends Controller
     {
         $user  = Auth::user();
         // Brouillons non visibles dans le compte client
+        // Pas de pagination ici : la collection est ensuite répartie entre
+        // prêts actifs et en attente pour le tableau de bord.
         $loans = LoanRequest::where('client_id', $user->id)
             ->where('status', '!=', LoanRequest::STATUS_DRAFT)
             ->latest()->get();
@@ -91,7 +93,7 @@ class AppController extends Controller
         // Les brouillons ne sont pas visibles dans l'espace client
         $loans = LoanRequest::where('client_id', $user->id)
             ->where('status', '!=', LoanRequest::STATUS_DRAFT)
-            ->latest()->get();
+            ->latest()->paginate(10);
 
         return view('client.app.loans.index', compact('user', 'loans'));
     }
@@ -102,7 +104,7 @@ class AppController extends Controller
         $invoices = Invoice::where('client_id', $user->id)
             ->whereIn('status', [Invoice::STATUS_SENT, Invoice::STATUS_PAID, Invoice::STATUS_CANCELLED])
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('client.app.invoices.index', compact('user', 'invoices'));
     }
@@ -203,7 +205,7 @@ class AppController extends Controller
         $user          = Auth::user();
         $notifications = ClientNotification::where('user_id', $user->id)
             ->latest()
-            ->get();
+            ->paginate(20);
 
         ClientNotification::where('user_id', $user->id)
             ->whereNull('read_at')

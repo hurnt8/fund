@@ -143,7 +143,7 @@
       Débiter le compte
     </div>
     <form method="POST" action="{{ route('admin.accounts.debit', $account) }}"
-          onsubmit="return confirm('Confirmer le débit ?')">
+          data-confirm="Confirmer le débit ?">
       @csrf
       <div class="acs-field">
         <label>Montant ({{ $cur }}) — Solde actuel : <span style="color:{{ $bal < 0 ? '#f87171' : 'inherit' }}">{{ number_format($bal, 2, ',', ' ') }}</span></label>

@@ -262,6 +262,8 @@
   </a>
   @endforeach
 </div>
+
+<x-pagination :paginator="$invoices" />
 @endif
 
 @endsection

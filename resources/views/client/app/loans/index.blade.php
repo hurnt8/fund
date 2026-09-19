@@ -215,7 +215,9 @@
 @endforeach
 </div>
 
-@push('scripts')
+<x-pagination :paginator="$loans" />
+
+
 <script>
 function filterDos(group) {
   document.querySelectorAll('.dos-card').forEach(el => {

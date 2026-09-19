@@ -215,7 +215,7 @@
         placeholder="Ex : IBAN invalide, KYC incomplet, limite atteinte…" maxlength="500">
       <div style="display:flex;gap:.5rem">
         <button type="submit" class="btn-navy btn-sm-pro" style="background:var(--c-red)"
-          onclick="return confirm('Rejeter ce virement ? Les fonds seront recrédités au client.')">
+          data-confirm="Rejeter ce virement ? Les fonds seront recrédités au client." data-confirm-danger>
           <i class="fas fa-times"></i> Confirmer le rejet
         </button>
         <button type="button" class="btn-ghost btn-sm-pro"
@@ -242,7 +242,7 @@
       </div>
       <div style="display:flex;gap:.5rem">
         <button type="submit" class="btn-gold btn-sm-pro"
-          onclick="return confirm('Créer la facture de frais et l\'envoyer au client ?')">
+          data-confirm="Créer la facture de frais et l'envoyer au client ?">
           <i class="fas fa-paper-plane"></i> Créer &amp; envoyer
         </button>
         <button type="button" class="btn-ghost btn-sm-pro"

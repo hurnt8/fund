@@ -63,6 +63,20 @@
 @keyframes splashFade{
   to{opacity:0;visibility:hidden}
 }
+
+/* Le composant <x-pagination> est écrit pour le tableau de bord (jetons --c-*).
+   On les remappe ici sur la palette sombre de l'espace client. */
+.lp-wrap{
+  --c-muted:   var(--ca-text-3);
+  --c-navy:    var(--ca-gold);
+  --c-border:  var(--ca-border);
+  --c-card:    var(--ca-bg3);
+  --c-card-2:  var(--ca-bg4);
+  --c-gold:    var(--ca-gold-l);
+  --c-gold-d:  var(--ca-gold-l);
+  --c-on-navy: #1A1A17;   /* texte sombre sur le laiton actif */
+  margin-top: 1rem;
+}
 </style>
 <script>
 (function(){
