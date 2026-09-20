@@ -6,7 +6,10 @@
 
 @section('topbar_action')
 @if($notifications->isNotEmpty())
-<form method="POST" action="{{ route('client.app.notifications.read-all') }}" id="readAllForm">
+<form method="POST" action="{{ route('client.app.notifications.read-all') }}" id="readAllForm"
+      data-confirm-title="{{ __('app.mark_all_read') }}"
+      data-confirm-ok="{{ __('app.mark_all_read') }}"
+      data-confirm="{{ __('app.mark_all_read_confirm') }}">
   @csrf
   <button type="submit" style="background:none;border:none;font-size:.75rem;font-weight:700;color:var(--ca-teal-l);cursor:pointer;padding:.5rem .25rem;font-family:inherit;letter-spacing:.01em">
     Tout lire

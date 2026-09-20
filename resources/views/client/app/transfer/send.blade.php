@@ -52,7 +52,15 @@
   </div>
 
   {{-- Formulaire ── --}}
-  <form method="POST" action="{{ route('client.app.transfer.send.process') }}" id="sendForm">
+  <form method="POST" action="{{ route('client.app.transfer.send.process') }}" id="sendForm"
+        data-confirm-title="{{ __('app.send_btn') }}"
+        data-confirm-ok="{{ __('app.send_btn') }}"
+        data-confirm="{{ __('app.send_confirm', [
+            'amount'   => '{champ:amount}',
+            'currency' => $user->currency ?? config('aurenza.default_currency'),
+            'name'     => '{champ:beneficiary_name}',
+            'iban'     => '{champ:beneficiary_iban}',
+        ]) }}">
     @csrf
 
     <div class="ca-form" style="margin-top:.25rem">

@@ -69,6 +69,7 @@ return [
     'send_amount'           => 'Kwota',
     'send_note'             => 'Dodaj notatke (Czynsz, Zwrot...)',
     'send_btn'              => 'Wyslij',
+    'send_confirm' => 'Wysłać :amount :currency do :name (:iban)? Przelew zostanie przekazany do zatwierdzenia.',
     'send_name'             => 'Nazwa odbiorcy',
     'send_iban'             => 'IBAN odbiorcy',
     'transfer_insufficient'     => 'Niewystarczajace saldo do realizacji przelewu.',
@@ -121,6 +122,7 @@ return [
     'member_since'       => 'Czlonek od',
     'premium_member'     => 'Czlonek Premium',
     'logout'             => 'Wyloguj sie',
+    'logout_confirm' => 'Wylogować się ze strefy klienta?',
     'profile_saved'      => 'Profil zaktualizowany.',
 
     'nav_home'        => 'Strona',
@@ -198,6 +200,7 @@ return [
     'notifications_empty'  => 'Brak powiadomien',
     'notifications_empty_sub' => 'Jestes na biezaco.',
     'mark_all_read'        => 'Zaznacz wszystkie',
+    'mark_all_read_confirm' => 'Oznaczyć wszystkie powiadomienia jako przeczytane?',
     'notif_just_now'       => 'Przed chwila',
     'notif_minutes_ago'    => ':n min temu',
     'notif_hours_ago'      => ':n godz. temu',

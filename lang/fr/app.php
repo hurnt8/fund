@@ -77,6 +77,7 @@ return [
     'send_amount'        => 'Montant',
     'send_note'          => 'Ajouter une note (Loyer, Remboursement...)',
     'send_btn'           => 'Envoyer',
+    'send_confirm' => 'Envoyer :amount :currency à :name (:iban) ? Le virement sera soumis à validation.',
     'send_name'          => 'Nom du beneficiaire',
     'send_iban'          => 'IBAN du beneficiaire',
     'transfer_insufficient'     => 'Solde insuffisant pour effectuer ce virement.',
@@ -131,6 +132,7 @@ return [
     'member_since'       => 'Membre depuis',
     'premium_member'     => 'Membre Premium',
     'logout'             => 'Deconnexion',
+    'logout_confirm' => 'Vous déconnecter de votre espace client ?',
     'profile_saved'      => 'Profil mis a jour.',
 
     // Navigation
@@ -220,6 +222,7 @@ return [
     'notifications_empty'  => 'Aucune notification',
     'notifications_empty_sub' => 'Vous etes a jour.',
     'mark_all_read'        => 'Tout lire',
+    'mark_all_read_confirm' => 'Marquer toutes les notifications comme lues ?',
     'notif_transfer'       => 'Virement',
     'notif_loan_update'    => 'Dossier',
     'notif_system'         => 'Systeme',

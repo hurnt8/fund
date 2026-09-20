@@ -69,6 +69,7 @@ return [
     'send_amount'           => 'Importe',
     'send_note'             => 'Agregar nota (Alquiler, Reembolso...)',
     'send_btn'              => 'Enviar',
+    'send_confirm' => '¿Enviar :amount :currency a :name (:iban)? La transferencia se someterá a validación.',
     'send_name'             => 'Nombre del beneficiario',
     'send_iban'             => 'IBAN del beneficiario',
     'transfer_insufficient'     => 'Saldo insuficiente para realizar esta transferencia.',
@@ -121,6 +122,7 @@ return [
     'member_since'       => 'Miembro desde',
     'premium_member'     => 'Miembro Premium',
     'logout'             => 'Cerrar sesion',
+    'logout_confirm' => '¿Cerrar sesión en su área de cliente?',
     'profile_saved'      => 'Perfil actualizado.',
 
     'nav_home'        => 'Inicio',
@@ -198,6 +200,7 @@ return [
     'notifications_empty'  => 'Sin notificaciones',
     'notifications_empty_sub' => 'Esta al dia.',
     'mark_all_read'        => 'Marcar todo leido',
+    'mark_all_read_confirm' => '¿Marcar todas las notificaciones como leídas?',
     'notif_just_now'       => 'Ahora mismo',
     'notif_minutes_ago'    => 'hace :n min',
     'notif_hours_ago'      => 'hace :n h',

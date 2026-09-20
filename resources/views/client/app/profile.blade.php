@@ -232,7 +232,10 @@
 {{-- Deconnexion --}}
 <div class="ca-settings-group">
   <div class="ca-settings-list">
-    <form method="POST" action="{{ route('logout') }}">
+    <form method="POST" action="{{ route('logout') }}"
+          data-confirm-title="{{ __('app.logout') }}"
+          data-confirm-ok="{{ __('app.logout') }}"
+          data-confirm="{{ __('app.logout_confirm') }}">
       @csrf
       <button type="submit" class="ca-settings-item" style="width:100%;background:none;border:none;cursor:pointer">
         <div class="ca-settings-item__icon" style="background:rgba(255,90,90,.15);color:var(--ca-negative)">

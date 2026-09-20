@@ -77,6 +77,7 @@ return [
     'send_amount'        => 'Iznos',
     'send_note'          => 'Dodajte napomenu (Najamnina, Otplata...)',
     'send_btn'           => 'Pošalji',
+    'send_confirm' => 'Poslati :amount :currency korisniku :name (:iban)? Prijenos će biti poslan na odobrenje.',
     'send_name'          => 'Ime primatelja',
     'send_iban'          => 'IBAN primatelja',
     'transfer_insufficient'     => 'Nedovoljno sredstava za obavljanje ovog prijenosa.',
@@ -131,6 +132,7 @@ return [
     'member_since'       => 'Član od',
     'premium_member'     => 'Premium član',
     'logout'             => 'Odjava',
+    'logout_confirm' => 'Odjaviti se iz klijentskog prostora?',
     'profile_saved'      => 'Profil je ažuriran.',
 
     // Navigation
@@ -220,6 +222,7 @@ return [
     'notifications_empty'  => 'Nema obavijesti',
     'notifications_empty_sub' => 'Sve ste pročitali.',
     'mark_all_read'        => 'Označi sve kao pročitano',
+    'mark_all_read_confirm' => 'Označiti sve obavijesti kao pročitane?',
     'notif_transfer'       => 'Prijenos',
     'notif_loan_update'    => 'Dosje',
     'notif_system'         => 'Sustav',

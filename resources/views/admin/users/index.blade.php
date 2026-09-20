@@ -139,7 +139,10 @@
             <div style="display:flex;gap:.375rem;justify-content:flex-end">
               {{-- Renvoyer invitation si pas encore activé --}}
               @if($user->invitation_token)
-              <form action="{{ route('admin.users.resend-invite',$user->id) }}" method="POST">
+              <form action="{{ route('admin.users.resend-invite',$user->id) }}" method="POST"
+                    data-confirm-title="Renvoyer l'invitation"
+                    data-confirm-ok="Renvoyer"
+                    data-confirm="Renvoyer l'email d'invitation à {{ $user->email }} ?">
                 @csrf
                 <button type="submit" class="btn-icon btn-icon-success" title="Renvoyer l'invitation">
                   <i class="fas fa-paper-plane"></i>
@@ -174,7 +177,7 @@
 
               @if(! $user->hasRole('super-admin') || $isSuperAdmin)
               <form action="{{ route('admin.users.destroy',$user->id) }}" method="POST"
-                    data-confirm="Supprimer {{ $user->name }} ?" data-confirm-danger>
+                    data-confirm-title="Supprimer l'utilisateur" data-confirm-ok="Supprimer" data-confirm-danger data-confirm="Supprimer définitivement {{ $user->name }} ({{ $user->email }}) ? Cette action est irréversible.">
                 @csrf @method('DELETE')
                 <button type="submit" class="btn-icon btn-icon-danger" title="Supprimer">
                   <i class="fas fa-trash"></i>
@@ -335,7 +338,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
 
-              <form action="{{ route('admin.users.assign-admin', $user->id) }}" method="POST">
+              <form action="{{ route('admin.users.assign-admin', $user->id) }}" method="POST"
+                    data-confirm-title="Réaffecter le client"
+                    data-confirm-ok="Réaffecter"
+                    data-confirm="Réaffecter {{ $user->name }} à un autre administrateur ? L'admin actuel perdra l'accès à ce client et à ses dossiers.">
                 @csrf
                 <div class="modal-body" style="padding:1.5rem">
 

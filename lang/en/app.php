@@ -69,6 +69,7 @@ return [
     'send_amount'           => 'Amount',
     'send_note'             => 'Add a note (Rent, Reimbursement...)',
     'send_btn'              => 'Send',
+    'send_confirm' => 'Send :amount :currency to :name (:iban)? The transfer will be submitted for approval.',
     'send_name'             => 'Recipient name',
     'send_iban'             => 'Recipient IBAN',
     'transfer_insufficient'     => 'Insufficient balance to complete this transfer.',
@@ -121,6 +122,7 @@ return [
     'member_since'       => 'Member since',
     'premium_member'     => 'Premium Member',
     'logout'             => 'Logout',
+    'logout_confirm' => 'Sign out of your client area?',
     'profile_saved'      => 'Profile updated.',
 
     'nav_home'        => 'Home',
@@ -200,6 +202,7 @@ return [
     'notifications_empty'  => 'No notifications',
     'notifications_empty_sub' => 'You are all caught up.',
     'mark_all_read'        => 'Mark all read',
+    'mark_all_read_confirm' => 'Mark all notifications as read?',
     'notif_just_now'       => 'Just now',
     'notif_minutes_ago'    => ':n min ago',
     'notif_hours_ago'      => ':n h ago',

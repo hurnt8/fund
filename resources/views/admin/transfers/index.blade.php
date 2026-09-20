@@ -211,14 +211,17 @@
 
   {{-- Reject form ── --}}
   <div class="trf-form" id="reject-{{ $trf->id }}" style="display:none;padding:1rem 1.25rem;border-top:1px solid var(--c-border);background:rgba(220,38,38,.03)">
-    <form method="POST" action="{{ route('admin.transfers.reject', $trf) }}">
+    <form method="POST" action="{{ route('admin.transfers.reject', $trf) }}"
+          data-confirm-title="Rejeter le virement"
+          data-confirm-ok="Rejeter"
+          data-confirm-danger
+          data-confirm="Rejeter le virement de {{ number_format($trf->amount, 2, ',', ' ') }} {{ $trf->currency }} vers {{ $trf->beneficiary_name }} ? Les fonds seront recrédités au client.">
       @csrf
       <label class="form-label-pro">Motif du rejet (optionnel)</label>
       <input type="text" name="admin_note" class="form-control-pro" style="margin-bottom:.875rem"
         placeholder="Ex : IBAN invalide, KYC incomplet, limite atteinte…" maxlength="500">
       <div style="display:flex;gap:.5rem">
-        <button type="submit" class="btn-navy btn-sm-pro" style="background:var(--c-red)"
-          data-confirm="Rejeter ce virement ? Les fonds seront recrédités au client." data-confirm-danger>
+        <button type="submit" class="btn-navy btn-sm-pro" style="background:var(--c-red)">
           <i class="fas fa-times"></i> Confirmer le rejet
         </button>
         <button type="button" class="btn-ghost btn-sm-pro"

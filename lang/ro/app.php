@@ -77,6 +77,7 @@ return [
     'send_amount'        => 'Sumă',
     'send_note'          => 'Adăugați o notă (Chirie, Rambursare...)',
     'send_btn'           => 'Trimite',
+    'send_confirm' => 'Trimiteți :amount :currency către :name (:iban)? Transferul va fi supus validării.',
     'send_name'          => 'Numele beneficiarului',
     'send_iban'          => 'IBAN-ul beneficiarului',
     'transfer_insufficient'     => 'Sold insuficient pentru a efectua acest transfer.',
@@ -131,6 +132,7 @@ return [
     'member_since'       => 'Membru din',
     'premium_member'     => 'Membru Premium',
     'logout'             => 'Deconectare',
+    'logout_confirm' => 'Vă deconectați din zona de client?',
     'profile_saved'      => 'Profil actualizat.',
 
     // Navigation
@@ -220,6 +222,7 @@ return [
     'notifications_empty'  => 'Nicio notificare',
     'notifications_empty_sub' => 'Sunteți la zi.',
     'mark_all_read'        => 'Marchează tot ca citit',
+    'mark_all_read_confirm' => 'Marcați toate notificările ca citite?',
     'notif_transfer'       => 'Transfer',
     'notif_loan_update'    => 'Dosar',
     'notif_system'         => 'Sistem',

@@ -144,7 +144,10 @@
 
   <div class="cu-profile-actions">
     @if($user->invitation_token)
-    <form action="{{ route('admin.users.resend-invite', $user->id) }}" method="POST">
+    <form action="{{ route('admin.users.resend-invite', $user->id) }}" method="POST"
+          data-confirm-title="Renvoyer l'invitation"
+          data-confirm-ok="Renvoyer"
+          data-confirm="Renvoyer l'email d'invitation à {{ $user->email }} ?">
       @csrf
       <button type="submit" class="btn-navy" style="background:rgba(5,150,105,.1);color:#059669;border:1px solid rgba(5,150,105,.25)">
         <i class="fas fa-paper-plane"></i> Renvoyer l'invitation

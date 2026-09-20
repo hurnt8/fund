@@ -347,7 +347,10 @@ $tpl = $loan->contractTemplate;
             <div style="font-size:.68rem;color:var(--c-muted)">Responsable actuel</div>
           </div>
         </div>
-        <form action="{{ route('admin.loans.assign-admin', $loan) }}" method="POST">
+        <form action="{{ route('admin.loans.assign-admin', $loan) }}" method="POST"
+              data-confirm-title="Réaffecter le dossier"
+              data-confirm-ok="Réaffecter"
+              data-confirm="Réaffecter le dossier {{ $loan->reference }} à un autre administrateur ? L'admin actuel n'y aura plus accès.">
           @csrf @method('PATCH')
           <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--c-muted);margin-bottom:.35rem">Réaffecter à</div>
           <div class="ld-status-row">
@@ -358,7 +361,7 @@ $tpl = $loan->contractTemplate;
               @endforeach
             </select>
             <button type="submit" class="btn-navy" style="background:#7c3aed;border-color:#7c3aed"
-                    data-confirm="Confirmer la réaffectation ?" title="Confirmer">
+                    title="Confirmer">
               <i class="fas fa-check"></i>
             </button>
           </div>
@@ -475,7 +478,12 @@ $tpl = $loan->contractTemplate;
         <hr class="ld-divider">
 
         <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--c-muted);margin-bottom:.35rem">Changer le statut</div>
-        <form action="{{ route('admin.loans.status', $loan) }}" method="POST">
+        {{-- Le passage en « validé » déclenche l'envoi du contrat au client :
+             on confirme avant, ce changement n'est pas anodin. --}}
+        <form action="{{ route('admin.loans.status', $loan) }}" method="POST"
+              data-confirm-title="Changer le statut du dossier"
+              data-confirm-ok="Changer le statut"
+              data-confirm="Passer le dossier {{ $loan->reference }} au statut « {champ:status} » ? Le passage en « validé » envoie le contrat et le tableau d'amortissement au client.">
           @csrf @method('PATCH')
           <div class="ld-status-row">
             <select name="status" class="form-control-pro">
