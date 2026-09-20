@@ -378,7 +378,9 @@ $tpl = $loan->contractTemplate;
         @if($loan->canBeValidated())
           @if($loan->contract_pdf_path)
           <form action="{{ route('admin.loans.validate', $loan) }}" method="POST"
-                data-confirm="Valider et envoyer le contrat par email ?">
+                data-confirm-title="Valider et envoyer le contrat"
+                data-confirm-ok="Valider &amp; envoyer"
+                data-confirm="Envoyer le contrat à {{ $loan->email }} en {{ strtoupper($loan->contract_language ?? 'FR') }} ? Le PDF du contrat et le tableau d'amortissement seront joints au message.">
             @csrf
             <button class="btn-navy ld-btn-full">
               <i class="fas fa-paper-plane"></i> Valider &amp; Envoyer le contrat
@@ -417,6 +419,16 @@ $tpl = $loan->contractTemplate;
            style="display:flex;align-items:center;justify-content:center;gap:.4rem;text-decoration:none;{{ !$loan->contract_pdf_path ? 'opacity:.4;pointer-events:none' : '' }}">
           <i class="fas fa-expand-alt" style="color:#dc2626"></i>
           {{ $loan->contract_pdf_path ? 'Visualiser le contrat' : 'Aucun contrat PDF' }}
+        </a>
+
+        {{-- Tableau d'amortissement joint au contrat --}}
+        @php $aSchedule = !empty($loan->amortization_schedule); @endphp
+        <a href="{{ $aSchedule ? route('admin.loans.amortization.pdf', $loan) : '#' }}"
+           class="btn-ghost btn-sm-pro ld-btn-full"
+           style="display:flex;align-items:center;justify-content:center;gap:.4rem;text-decoration:none;{{ !$aSchedule ? 'opacity:.4;pointer-events:none' : '' }}"
+           title="{{ $aSchedule ? 'Le PDF joint au contrat' : 'Aucun échéancier calculé' }}">
+          <i class="fas fa-table" style="color:var(--c-gold-d)"></i>
+          {{ $aSchedule ? 'Tableau d\'amortissement' : 'Aucun échéancier' }}
         </a>
 
         <hr class="ld-divider">

@@ -343,7 +343,7 @@ body {
             '{frais_admin}'     => '250,00',
             '{compte_bancaire}' => 'FR76 1234 5678 9012 3456 7890 123',
             '{date}'            => now()->format('d/m/Y'),
-            '{societe}'         => 'AURENZA CAPITAL INVESTI',
+            '{societe}'         => 'AURENZA CAPITAL',
             '{ne_e}'            => 'né',
             '{nee}'             => 'né',
             '{denomme_e}'       => 'dénommé',

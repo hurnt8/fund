@@ -124,7 +124,7 @@
   {{-- Top: brand + ref --}}
   <div class="inv-top">
     <div class="inv-brand">
-      <div class="inv-brand-name">AURENZA CAPITAL INVESTI</div>
+      <div class="inv-brand-name">AURENZA CAPITAL</div>
       <div class="inv-brand-sub">
         Organisme de financement<br>
         contact@aurenzacapital.com
@@ -152,7 +152,7 @@
   <div class="inv-parties">
     <div>
       <div class="inv-party-lbl">Émetteur</div>
-      <div class="inv-party-name">AURENZA CAPITAL INVESTI</div>
+      <div class="inv-party-name">AURENZA CAPITAL</div>
       <div class="inv-party-info">Agent : {{ $invoice->admin->name }}</div>
     </div>
     <div>

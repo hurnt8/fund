@@ -281,6 +281,7 @@ Route::middleware(['auth', 'role:admin|super-admin'])->prefix('admin')->name('ad
     Route::post('/loans/{loan}/insurance/pdf/upload',      [AdminLoanRequestController::class, 'uploadInsurancePdf'])->name('loans.insurance.pdf.upload');
     Route::post('/loans/{loan}/insurance/pdf/generate',    [AdminLoanRequestController::class, 'generateInsurancePdf'])->name('loans.insurance.pdf.generate');
     Route::get('/loans/{loan}/insurance/docx',             [AdminLoanRequestController::class, 'downloadInsuranceDocx'])->name('loans.insurance.docx');
+    Route::get('/loans/{loan}/amortization/pdf',        [AdminLoanRequestController::class, 'downloadAmortizationPdf'])->name('loans.amortization.pdf');
     Route::post('/loans/{loan}/insurance/send',            [AdminLoanRequestController::class, 'sendInsuranceMail'])->name('loans.insurance.send');
     Route::post('/loans/{loan}/validate',             [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
     Route::post('/loans/{loan}/signed',               [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');
@@ -387,6 +388,7 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('super-admin')->name('su
     Route::post('/loans/{loan}/insurance/pdf/upload',      [AdminLoanRequestController::class, 'uploadInsurancePdf'])->name('loans.insurance.pdf.upload');
     Route::post('/loans/{loan}/insurance/pdf/generate',    [AdminLoanRequestController::class, 'generateInsurancePdf'])->name('loans.insurance.pdf.generate');
     Route::get('/loans/{loan}/insurance/docx',             [AdminLoanRequestController::class, 'downloadInsuranceDocx'])->name('loans.insurance.docx');
+    Route::get('/loans/{loan}/amortization/pdf',        [AdminLoanRequestController::class, 'downloadAmortizationPdf'])->name('loans.amortization.pdf');
     Route::post('/loans/{loan}/insurance/send',            [AdminLoanRequestController::class, 'sendInsuranceMail'])->name('loans.insurance.send');
     Route::post('/loans/{loan}/validate',             [AdminLoanRequestController::class, 'validateLoan'])->name('loans.validate');
     Route::post('/loans/{loan}/signed',               [AdminLoanRequestController::class, 'markSigned'])->name('loans.signed');

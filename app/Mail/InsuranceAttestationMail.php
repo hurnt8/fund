@@ -27,10 +27,10 @@ class InsuranceAttestationMail extends Mailable
     public function envelope(): Envelope
     {
         $subjects = [
-            'fr' => 'Votre attestation d\'assurance emprunteur — N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
-            'en' => 'Your borrower insurance certificate — N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
-            'pl' => 'Zaświadczenie ubezpieczenia kredytobiorcy — nr ' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
-            'es' => 'Su certificado de seguro de prestatario — N°' . $this->loan->reference . ' — AURENZA CAPITAL INVESTI',
+            'fr' => 'Votre attestation d\'assurance emprunteur — N°' . $this->loan->reference . ' — AURENZA CAPITAL',
+            'en' => 'Your borrower insurance certificate — N°' . $this->loan->reference . ' — AURENZA CAPITAL',
+            'pl' => 'Zaświadczenie ubezpieczenia kredytobiorcy — nr ' . $this->loan->reference . ' — AURENZA CAPITAL',
+            'es' => 'Su certificado de seguro de prestatario — N°' . $this->loan->reference . ' — AURENZA CAPITAL',
         ];
 
         return new Envelope(

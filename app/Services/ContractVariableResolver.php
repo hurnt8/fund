@@ -83,7 +83,7 @@ class ContractVariableResolver
             '{frais_admin}'     => number_format((float)$loan->admin_fees, 2, ',', ' '),
             '{compte_bancaire}' => $loan->bank_account ?? '',
             '{date}'            => $loan->validated_at?->format('d/m/Y') ?? now()->format('d/m/Y'),
-            '{societe}'         => config('app.company_name', 'AURENZA CAPITAL INVESTI'),
+            '{societe}'         => config('app.company_name', 'AURENZA CAPITAL'),
         ];
 
         // Variables de genre
@@ -166,7 +166,7 @@ class ContractVariableResolver
             '{frais_admin}'     => '250,00',
             '{compte_bancaire}' => 'FR76 1234 5678 9012 3456 7890 123',
             '{date}'            => now()->format('d/m/Y'),
-            '{societe}'         => config('app.company_name', 'AURENZA CAPITAL INVESTI'),
+            '{societe}'         => config('app.company_name', 'AURENZA CAPITAL'),
         ], $gender);
     }
 

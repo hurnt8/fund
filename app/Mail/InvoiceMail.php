@@ -21,10 +21,10 @@ class InvoiceMail extends Mailable
         $locale = $this->invoice->client->locale ?? 'fr';
 
         $subjects = [
-            'fr' => 'Facture ' . $ref . ' — AURENZA CAPITAL INVESTI',
-            'en' => 'Invoice ' . $ref . ' — AURENZA CAPITAL INVESTI',
-            'es' => 'Factura ' . $ref . ' — AURENZA CAPITAL INVESTI',
-            'pl' => 'Faktura ' . $ref . ' — AURENZA CAPITAL INVESTI',
+            'fr' => 'Facture ' . $ref . ' — AURENZA CAPITAL',
+            'en' => 'Invoice ' . $ref . ' — AURENZA CAPITAL',
+            'es' => 'Factura ' . $ref . ' — AURENZA CAPITAL',
+            'pl' => 'Faktura ' . $ref . ' — AURENZA CAPITAL',
         ];
 
         return new Envelope(subject: $subjects[$locale] ?? $subjects['fr']);

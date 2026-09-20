@@ -4,7 +4,7 @@
 $texts = [
     'fr' => [
         'greeting'     => 'Madame / Monsieur ' . $loan->name . ',',
-        'intro'        => 'Nous avons bien enregistré votre dossier de financement auprès de **AURENZA CAPITAL INVESTI**. Vous trouverez ci-joint votre contrat de prêt ainsi que le tableau d\'amortissement détaillant vos remboursements.',
+        'intro'        => 'Nous avons bien enregistré votre dossier de financement auprès de **AURENZA CAPITAL**. Vous trouverez ci-joint votre contrat de prêt ainsi que le tableau d\'amortissement détaillant vos remboursements.',
         'summary'      => 'RÉSUMÉ DE VOTRE FINANCEMENT',
         'ref'          => 'Référence dossier',
         'amount'       => 'Montant accordé',
@@ -22,11 +22,11 @@ $texts = [
         'next_2'       => '2. Signez-le et renvoyez-le à notre équipe par email.',
         'next_3'       => '3. Une fois reçu, les coordonnées bancaires vous seront communiquées pour le versement des fonds.',
         'closing'      => 'Nous restons à votre disposition pour toute question.',
-        'team'         => 'L\'équipe AURENZA CAPITAL INVESTI',
+        'team'         => 'L\'équipe AURENZA CAPITAL',
     ],
     'pl' => [
         'greeting'     => 'Szanowny/a ' . $loan->name . ',',
-        'intro'        => 'Zarejestrowaliśmy Państwa wniosek o finansowanie w **AURENZA CAPITAL INVESTI**. W załączeniu przesyłamy umowę pożyczki oraz harmonogram spłat.',
+        'intro'        => 'Zarejestrowaliśmy Państwa wniosek o finansowanie w **AURENZA CAPITAL**. W załączeniu przesyłamy umowę pożyczki oraz harmonogram spłat.',
         'summary'      => 'PODSUMOWANIE FINANSOWANIA',
         'ref'          => 'Numer referencyjny',
         'amount'       => 'Przyznana kwota',
@@ -44,11 +44,11 @@ $texts = [
         'next_2'       => '2. Proszę ją podpisać i odesłać do naszego zespołu.',
         'next_3'       => '3. Po otrzymaniu podpisanej umowy przekażemy dane bankowe do wypłaty środków.',
         'closing'      => 'Pozostajemy do Państwa dyspozycji w razie jakichkolwiek pytań.',
-        'team'         => 'Zespół AURENZA CAPITAL INVESTI',
+        'team'         => 'Zespół AURENZA CAPITAL',
     ],
     'en' => [
         'greeting'     => 'Dear ' . $loan->name . ',',
-        'intro'        => 'Your financing file has been registered with **AURENZA CAPITAL INVESTI**. Please find attached your loan agreement and the amortization schedule detailing your monthly repayments.',
+        'intro'        => 'Your financing file has been registered with **AURENZA CAPITAL**. Please find attached your loan agreement and the amortization schedule detailing your monthly repayments.',
         'summary'      => 'YOUR FINANCING SUMMARY',
         'ref'          => 'File reference',
         'amount'       => 'Amount granted',
@@ -66,11 +66,11 @@ $texts = [
         'next_2'       => '2. Sign it and return it to our team by email.',
         'next_3'       => '3. Once received, our team will send you the bank details for fund transfer.',
         'closing'      => 'We remain at your disposal for any questions.',
-        'team'         => 'The AURENZA CAPITAL INVESTI team',
+        'team'         => 'The AURENZA CAPITAL team',
     ],
     'es' => [
         'greeting'     => 'Estimado/a ' . $loan->name . ',',
-        'intro'        => 'Hemos registrado su expediente de financiación en **AURENZA CAPITAL INVESTI**. Adjuntamos su contrato de préstamo y el cuadro de amortización con el detalle de sus pagos mensuales.',
+        'intro'        => 'Hemos registrado su expediente de financiación en **AURENZA CAPITAL**. Adjuntamos su contrato de préstamo y el cuadro de amortización con el detalle de sus pagos mensuales.',
         'summary'      => 'RESUMEN DE SU FINANCIAMIENTO',
         'ref'          => 'Referencia del expediente',
         'amount'       => 'Importe concedido',
@@ -88,7 +88,7 @@ $texts = [
         'next_2'       => '2. Fírmelo y envíelo a nuestro equipo por correo electrónico.',
         'next_3'       => '3. Una vez recibido, le comunicaremos los datos bancarios para la transferencia de fondos.',
         'closing'      => 'Quedamos a su disposición para cualquier consulta.',
-        'team'         => 'El equipo AURENZA CAPITAL INVESTI',
+        'team'         => 'El equipo AURENZA CAPITAL',
     ],
 ];
 $t   = $texts[$locale] ?? $texts['fr'];

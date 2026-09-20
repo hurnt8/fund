@@ -127,7 +127,7 @@ table.schedule tfoot td:first-child { text-align: center; }
         @if(!empty($logoBase64))
         <img src="{{ $logoBase64 }}" style="height:42px;max-width:190px;object-fit:contain;display:block">
     @else
-        <div class="header-brand">AURENZA CAPITAL <span>INVESTI</span></div>
+        <div class="header-brand">AURENZA <span>CAPITAL</span></div>
     @endif
         <div style="font-size:7.5pt;color:#888;margin-top:3px">{{ $texts['header_sub'] }}</div>
     </div>
@@ -195,7 +195,7 @@ table.schedule tfoot td:first-child { text-align: center; }
     </tfoot>
 </table>
 
-<div class="footer">{{ $texts['footer'] }} — AURENZA CAPITAL INVESTI © {{ now()->format('Y') }}</div>
+<div class="footer">{{ $texts['footer'] }} — AURENZA CAPITAL © {{ now()->format('Y') }}</div>
 
 </body>
 </html>

@@ -134,11 +134,24 @@ class LoanPdfService
             ]);
 
         $filename = 'amortization_' . $loan->reference . '_' . $locale . '.pdf';
-        $path     = 'contracts/' . $filename;
+        $path     = 'private/amortization-pdfs/' . $loan->id . '/' . $filename;
 
-        Storage::disk('local')->makeDirectory('contracts');
-        Storage::disk('local')->put($path, $pdf->output());
+        Storage::disk('local')->makeDirectory(dirname($path));
 
-        return storage_path('app/' . $path);
+        if (Storage::disk('local')->put($path, $pdf->output()) === false) {
+            throw new \RuntimeException(
+                'Écriture du tableau d\'amortissement impossible dans '
+                . Storage::disk('local')->path(dirname($path))
+                . ' — vérifiez les droits du dossier storage/.'
+            );
+        }
+
+        // Le document est conservé (et non plus supprimé après l'envoi) : la pièce
+        // jointe devient fiable et le tableau reste téléchargeable depuis le dossier.
+        $loan->forceFill(['amortization_pdf_path' => $path])->save();
+
+        // On demande le chemin au disque : sa racine peut différer de storage/app
+        // selon la configuration de l'hébergement.
+        return Storage::disk('local')->path($path);
     }
 }

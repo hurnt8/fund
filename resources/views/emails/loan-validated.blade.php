@@ -26,24 +26,24 @@ $greetings = [
 
 $intros = [
     'fr' => [
-        'M' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL INVESTI.',
-        'F' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL INVESTI.',
-        'N' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL INVESTI.',
+        'M' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL.',
+        'F' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL.',
+        'N' => 'Nous avons le plaisir de vous informer que votre demande de financement a été <strong>validée</strong> par AURENZA CAPITAL.',
     ],
     'en' => [
-        'M' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL INVESTI.',
-        'F' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL INVESTI.',
-        'N' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL INVESTI.',
+        'M' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL.',
+        'F' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL.',
+        'N' => 'We are pleased to inform you that your financing application has been <strong>approved</strong> by AURENZA CAPITAL.',
     ],
     'es' => [
-        'M' => 'Nos complace informarle que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL INVESTI.',
-        'F' => 'Nos complace informarla que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL INVESTI.',
-        'N' => 'Nos complace informarle/la que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL INVESTI.',
+        'M' => 'Nos complace informarle que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL.',
+        'F' => 'Nos complace informarla que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL.',
+        'N' => 'Nos complace informarle/la que su solicitud de financiación ha sido <strong>validada</strong> por AURENZA CAPITAL.',
     ],
     'pl' => [
-        'M' => 'Z przyjemnością informujemy, że Pana wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL INVESTI.',
-        'F' => 'Z przyjemnością informujemy, że Pani wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL INVESTI.',
-        'N' => 'Z przyjemnością informujemy, że Państwa wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL INVESTI.',
+        'M' => 'Z przyjemnością informujemy, że Pana wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL.',
+        'F' => 'Z przyjemnością informujemy, że Pani wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL.',
+        'N' => 'Z przyjemnością informujemy, że Państwa wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL.',
     ],
 ];
 
@@ -70,7 +70,7 @@ $texts = [
         'action_subject'=> 'en précisant en objet : <strong>Contrat signé — N°'.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Les coordonnées du compte de règlement et les modalités de versement vous seront communiquées par notre équipe suite à la réception de votre contrat signé.',
         'closing'       => 'Cordialement,',
-        'team'          => 'L\'équipe AURENZA CAPITAL INVESTI',
+        'team'          => 'L\'équipe AURENZA CAPITAL',
     ],
     'en' => [
         'title'         => 'Application N°'.$loan->reference.' approved',
@@ -94,7 +94,7 @@ $texts = [
         'action_subject'=> 'using the following subject: <strong>Signed contract — N°'.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Payment account details and disbursement terms will be communicated by our team upon receipt of your signed contract.',
         'closing'       => 'Yours sincerely,',
-        'team'          => 'The AURENZA CAPITAL INVESTI team',
+        'team'          => 'The AURENZA CAPITAL team',
     ],
     'es' => [
         'title'         => 'Solicitud N°'.$loan->reference.' validada',
@@ -118,7 +118,7 @@ $texts = [
         'action_subject'=> 'indicando en el asunto: <strong>Contrato firmado — N°'.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Los datos de la cuenta de pago y las modalidades de desembolso le serán comunicados por nuestro equipo tras la recepción de su contrato firmado.',
         'closing'       => 'Atentamente,',
-        'team'          => 'El equipo AURENZA CAPITAL INVESTI',
+        'team'          => 'El equipo AURENZA CAPITAL',
     ],
     'pl' => [
         'title'         => 'Wniosek nr '.$loan->reference.' zatwierdzony',
@@ -142,7 +142,7 @@ $texts = [
         'action_subject'=> 'podajac w temacie: <strong>Podpisana umowa — nr '.$loan->reference.' — '.$loan->name.'</strong>',
         'note'          => 'Dane rachunku bankowego oraz warunki wyplaty zostana przekazane przez nasz zespol po otrzymaniu podpisanej umowy.',
         'closing'       => 'Z powazaniem,',
-        'team'          => 'Zespol AURENZA CAPITAL INVESTI',
+        'team'          => 'Zespol AURENZA CAPITAL',
     ],
 ];
 $t = $texts[$locale] ?? $texts['fr'];

@@ -231,6 +231,15 @@
           </button>
         </form>
 
+        {{-- Le tableau d'amortissement joint au message, récupérable ici --}}
+        @if(!empty($loan->amortization_schedule))
+        <a href="{{ route('admin.loans.amortization.pdf', $loan) }}"
+           class="btn-ghost btn-sm-pro"
+           style="width:100%;justify-content:center;margin-top:.5rem;display:flex;align-items:center;gap:.4rem;text-decoration:none">
+          <i class="fas fa-table" style="color:var(--c-gold-d)"></i> Tableau d'amortissement
+        </a>
+        @endif
+
         @elseif($loan->status === 'contract_signed')
         <div class="lc-action-signed">
           <i class="fas fa-file-signature" style="color:#7c3aed;font-size:.9rem;flex-shrink:0"></i>

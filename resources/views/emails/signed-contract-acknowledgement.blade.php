@@ -7,7 +7,7 @@ $texts = [
         'intro'   => 'Nous accusons bonne réception de votre contrat de prêt signé (Référence : <strong>'.$loan->reference.'</strong>).',
         'next'    => 'Notre équipe de gestion va procéder au traitement final de votre dossier. Les coordonnées du compte et les modalités de versement vous seront communiquées sous <strong>24 à 48 heures</strong>.',
         'closing' => 'Cordialement,',
-        'team'    => "L'équipe AURENZA CAPITAL INVESTI",
+        'team'    => "L'équipe AURENZA CAPITAL",
     ],
     'en' => [
         'title'   => 'Contract N°'.$loan->reference.' received',
@@ -16,7 +16,7 @@ $texts = [
         'intro'   => 'We confirm receipt of your signed loan contract (Reference: <strong>'.$loan->reference.'</strong>).',
         'next'    => 'Our management team will proceed with the final processing of your file. Payment account details will be communicated within <strong>24 to 48 hours</strong>.',
         'closing' => 'Yours sincerely,',
-        'team'    => 'The AURENZA CAPITAL INVESTI team',
+        'team'    => 'The AURENZA CAPITAL team',
     ],
     'es' => [
         'title'   => 'Contrato N°'.$loan->reference.' recibido',
@@ -25,7 +25,7 @@ $texts = [
         'intro'   => 'Confirmamos la recepción de su contrato de préstamo firmado (Referencia: <strong>'.$loan->reference.'</strong>).',
         'next'    => 'Nuestro equipo de gestión procederá al tratamiento final de su expediente. Los datos de la cuenta de pago le serán comunicados en <strong>24 a 48 horas</strong>.',
         'closing' => 'Atentamente,',
-        'team'    => 'El equipo AURENZA CAPITAL INVESTI',
+        'team'    => 'El equipo AURENZA CAPITAL',
     ],
     'pl' => [
         'title'   => 'Umowa nr '.$loan->reference.' odebrana',
@@ -34,7 +34,7 @@ $texts = [
         'intro'   => 'Potwierdzamy otrzymanie Państwa podpisanej umowy pożyczkowej (Nr referencyjny: <strong>'.$loan->reference.'</strong>).',
         'next'    => 'Nasz zespół przystąpi do ostatecznego rozpatrzenia Państwa wniosku. Dane rachunku bankowego zostaną przekazane w ciągu <strong>24 do 48 godzin</strong>.',
         'closing' => 'Z poważaniem,',
-        'team'    => 'Zespół AURENZA CAPITAL INVESTI',
+        'team'    => 'Zespół AURENZA CAPITAL',
     ],
 ];
 $t = $texts[$locale] ?? $texts['fr'];

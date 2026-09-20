@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class LoanRequestController extends Controller
@@ -472,7 +473,7 @@ class LoanRequestController extends Controller
         }
 
         $vars                = app(\App\Services\ContractService::class)->getVariables($loan);
-        $vars['{directeur}'] = $loan->directeur ?: 'AURENZA CAPITAL INVESTI';
+        $vars['{directeur}'] = $loan->directeur ?: 'AURENZA CAPITAL';
 
         // Si le template a du contenu HTML personnalisé, l'utiliser
         $template = $loan->insuranceTemplate;
@@ -507,6 +508,41 @@ class LoanRequestController extends Controller
         $this->logHistory($loan, 'insurance_pdf_generated', [], ['pdf' => $relPath]);
 
         return back()->with('success', 'Attestation d\'assurance générée avec succès.');
+    }
+
+    /**
+     * Télécharge le tableau d'amortissement joint au contrat.
+     * Le génère à la volée s'il n'existe pas encore (dossiers validés avant
+     * la conservation du document, ou fichier effacé du serveur).
+     */
+    public function downloadAmortizationPdf(LoanRequest $loan)
+    {
+        $this->authorizeAccess($loan);
+
+        $locale = $loan->contract_language ?? 'fr';
+        $abs    = $loan->amortization_pdf_path
+            ? Storage::disk('local')->path($loan->amortization_pdf_path)
+            : null;
+
+        if (!$abs || !file_exists($abs)) {
+            if (empty($loan->amortization_schedule)) {
+                return back()->with(
+                    'error',
+                    'Aucun échéancier n\'a encore été calculé pour ce dossier : '
+                    . 'le tableau d\'amortissement ne peut pas être généré.'
+                );
+            }
+
+            try {
+                set_time_limit(180);
+                $abs = $this->pdfService->generateAmortizationPdf($loan, $locale);
+            } catch (\Throwable $e) {
+                Log::error('downloadAmortizationPdf failed for ' . $loan->reference . ': ' . $e->getMessage());
+                return back()->with('error', 'Génération du tableau d\'amortissement impossible : ' . $e->getMessage());
+            }
+        }
+
+        return response()->download($abs, 'Tableau_Amortissement_' . $loan->reference . '.pdf');
     }
 
     public function downloadInsuranceDocx(LoanRequest $loan, DocumentArchive $archive)
@@ -624,11 +660,10 @@ class LoanRequestController extends Controller
             );
         } catch (\Throwable $e) {
             Log::error('LoanValidatedMail failed for ' . $loan->reference . ': ' . $e->getMessage());
-        } finally {
-            if ($amortPdfPath && file_exists($amortPdfPath)) {
-                @unlink($amortPdfPath);
-            }
         }
+        // Le tableau d'amortissement n'est plus supprimé ici : la pièce jointe
+        // est lue en différé par le transport, et le document reste
+        // téléchargeable depuis le dossier.
 
         // ── Passer au statut contract_sent ────────────────────────────────
         $loan->update([
@@ -691,10 +726,6 @@ class LoanRequestController extends Controller
         } catch (\Throwable $e) {
             Log::error('resendContractEmail failed for ' . $loan->reference . ': ' . $e->getMessage());
             return back()->with('error', 'Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
-        } finally {
-            if ($amortPdfPath && file_exists($amortPdfPath)) {
-                @unlink($amortPdfPath);
-            }
         }
 
         $this->logHistory($loan, 'contract_edited', [], ['action' => 'email_with_pdf_resent', 'recipient' => $recipient]);
@@ -799,10 +830,6 @@ class LoanRequestController extends Controller
                 );
             } catch (\Throwable $e) {
                 Log::error('LoanValidatedMail failed for ' . $loan->reference . ': ' . $e->getMessage());
-            } finally {
-                if ($amortPdfPath && file_exists($amortPdfPath)) {
-                    @unlink($amortPdfPath);
-                }
             }
 
             $loan->update([
