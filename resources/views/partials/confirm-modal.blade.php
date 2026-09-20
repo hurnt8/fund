@@ -75,6 +75,15 @@
 }
 #cfm-cancel{ background:#EEF1F5; color:#3C4451; }
 #cfm-cancel:hover{ background:#E2E7EE; }
+
+/* Espace client : thème sombre — la carte blanche jurerait. */
+[data-theme="dark"] #cfm-box{ background:#0E3226; border-color:rgba(251,249,244,.12); }
+[data-theme="dark"] #cfm-title{ color:#FBF9F4; }
+[data-theme="dark"] #cfm-text{ color:rgba(251,249,244,.62); }
+[data-theme="dark"] #cfm-cancel{ background:rgba(251,249,244,.08); color:rgba(251,249,244,.75); }
+[data-theme="dark"] #cfm-cancel:hover{ background:rgba(251,249,244,.14); }
+[data-theme="dark"] #cfm-ok{ background:#C6A15B; color:#101A14; }
+[data-theme="dark"] #cfm-backdrop.is-danger #cfm-ok{ background:#E05A4A; color:#101A14; }
 #cfm-ok{ background:#0E3B2E; color:#FBF9F4; }
 #cfm-ok:hover{ filter:brightness(1.18); }
 #cfm-backdrop.is-danger #cfm-ok{ background:#C0392B; }
@@ -98,11 +107,23 @@
         cible    = null,      // élément à réactiver après confirmation
         renvoi   = null;      // élément qui avait le focus avant ouverture
 
+    // Remplace les jetons {champ:nom} par la valeur saisie dans le formulaire,
+    // pour annoncer un montant ou un destinataire tapé à l'instant.
+    function interpole(message, el) {
+        return message.replace(/\{champ:([a-zA-Z0-9_\[\]-]+)\}/g, function (_, nom) {
+            var form  = el.tagName === 'FORM' ? el : el.closest('form');
+            var champ = form && form.querySelector('[name="' + nom + '"]');
+            if (!champ) return '…';
+            var v = (champ.value || '').trim();
+            return v === '' ? '…' : v;
+        });
+    }
+
     function ouvrir(el, message) {
         cible  = el;
         renvoi = document.activeElement;
 
-        boxText.textContent  = message;
+        boxText.textContent  = interpole(message, el);
         boxTitle.textContent = el.getAttribute('data-confirm-title') || 'Confirmation';
         btnOk.textContent    = el.getAttribute('data-confirm-ok') || 'Confirmer';
         backdrop.classList.toggle('is-danger', el.hasAttribute('data-confirm-danger'));

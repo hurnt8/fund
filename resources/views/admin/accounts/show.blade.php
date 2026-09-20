@@ -118,7 +118,10 @@
       <i class="fas fa-plus"></i>
       Créditer le compte
     </div>
-    <form method="POST" action="{{ route('admin.accounts.credit', $account) }}">
+    <form method="POST" action="{{ route('admin.accounts.credit', $account) }}"
+          data-confirm-title="Créditer le compte"
+          data-confirm-ok="Créditer"
+          data-confirm="Créditer {champ:amount} {{ $cur }} sur le compte de {{ $account->name }} ?">
       @csrf
       <div class="acs-field">
         <label>Montant ({{ $cur }})</label>
@@ -143,7 +146,7 @@
       Débiter le compte
     </div>
     <form method="POST" action="{{ route('admin.accounts.debit', $account) }}"
-          data-confirm="Confirmer le débit ?">
+          data-confirm-title="Débiter le compte" data-confirm-ok="Débiter" data-confirm-danger data-confirm="Débiter {champ:amount} {{ $cur }} du compte de {{ $account->name }} ? Solde actuel : {{ number_format($bal, 2, ',', ' ') }} {{ $cur }}.">
       @csrf
       <div class="acs-field">
         <label>Montant ({{ $cur }}) — Solde actuel : <span style="color:{{ $bal < 0 ? '#f87171' : 'inherit' }}">{{ number_format($bal, 2, ',', ' ') }}</span></label>

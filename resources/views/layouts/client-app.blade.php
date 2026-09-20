@@ -401,5 +401,7 @@ window.Aurenza CapitalSound = (function () {
   });
 })();
 </script>
+
+@include('partials.confirm-modal')
 </body>
 </html>
