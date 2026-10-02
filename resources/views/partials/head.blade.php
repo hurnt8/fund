@@ -6,7 +6,7 @@
     <title>@yield('title', __('menu.home')) | Aurenza Capital</title>
     <meta name="description" content="{{ __('menu.footer_desc') }}">
     <link rel="canonical" href="{{ url()->current() }}">
-    @foreach (['fr', 'en', 'pl', 'es', 'ro', 'hr', 'pt'] as $l)
+    @foreach (['fr', 'en', 'pl', 'es', 'ro', 'hr', 'pt', 'ka'] as $l)
     <link rel="alternate" hreflang="{{ $l }}" href="{{ url($l) }}">
     @endforeach
     <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/favicon-aurenza.svg') }}">

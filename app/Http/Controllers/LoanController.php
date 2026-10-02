@@ -61,7 +61,7 @@ class LoanController extends Controller
         $data['currency'] = $data['currency'] ?? config('aurenza.default_currency');
 
         $locale = $request->input('locale', 'fr');
-        if (!in_array($locale, ['fr', 'en', 'pl', 'es', 'ro', 'hr', 'pt'])) {
+        if (!in_array($locale, ['fr', 'en', 'pl', 'es', 'ro', 'hr', 'pt', 'ka'])) {
             $locale = 'fr';
         }
         App::setLocale($locale);
@@ -123,7 +123,7 @@ class LoanController extends Controller
     public function sendDocuments(Request $request)
     {
         $locale = $request->input('locale', 'fr');
-        if (!in_array($locale, ['fr', 'en', 'pl', 'es', 'ro', 'hr', 'pt'], true)) {
+        if (!in_array($locale, ['fr', 'en', 'pl', 'es', 'ro', 'hr', 'pt', 'ka'], true)) {
             $locale = 'fr';
         }
         App::setLocale($locale);

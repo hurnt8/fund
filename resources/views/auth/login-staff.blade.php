@@ -276,6 +276,7 @@ body{font-family:'Outfit',sans-serif;background:#fff;min-height:100vh;display:fl
             'ro' => ['Română',   'svg'],
             'hr' => ['Hrvatski', 'png'],
             'pt' => ['Português', 'png'],
+            'ka' => ['ქართული', 'svg'],
           ];
         @endphp
         <div class="ls" x-data="{ open: false }">

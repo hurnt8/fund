@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60" width="30" height="20"><rect width="90" height="60" fill="#fff"/><path d="M40 0h10v60H40zM0 25h90v10H0z" fill="#f00"/><g fill="#f00" id="c"><path d="M10 7h4v4h4v4h-4v4h-4v-4H6v-4h4z"/></g><use href="#c" x="60"/><use href="#c" y="30"/><use href="#c" x="60" y="30"/></svg>

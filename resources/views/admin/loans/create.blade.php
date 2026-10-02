@@ -126,6 +126,7 @@
                 <option value="ro" {{ old('client_locale')==='ro'?'selected':'' }}>🇷🇴 Română</option>
                 <option value="hr" {{ old('client_locale')==='hr'?'selected':'' }}>🇭🇷 Hrvatski</option>
                 <option value="pt" {{ old('client_locale')==='pt'?'selected':'' }}>🇵🇹 Português</option>
+                <option value="ka" {{ old('client_locale')==='ka'?'selected':'' }}>🇬🇪 ქართული</option>
               </select>
             </div>
           </div>
