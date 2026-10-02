@@ -15,7 +15,7 @@ return [
     | Devises supportées (liste unique pour tout le projet)
     |--------------------------------------------------------------------------
     */
-    'currencies' => ['EUR', 'USD', 'GBP', 'PLN', 'CHF', 'CAD', 'BRL', 'MXN', 'XAF', 'XOF'],
+    'currencies' => ['EUR', 'USD', 'GBP', 'PLN', 'CHF', 'CAD', 'BRL', 'MXN', 'XAF', 'XOF', 'GEL'],
 
     /*
     |--------------------------------------------------------------------------
@@ -33,6 +33,7 @@ return [
         'MXN' => 'MX$',
         'XAF' => 'FCFA',
         'XOF' => 'CFA',
+        'GEL' => '₾',
     ],
 
 ];

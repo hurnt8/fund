@@ -93,6 +93,7 @@ document.addEventListener('alpine:init', () => {
             { code:'MXN', symbol:'$',  flag:'🇲🇽', name:'Mexican Peso'    },
             { code:'BRL', symbol:'R$', flag:'🇧🇷', name:'Brazilian Real'   },
             { code:'CRC', symbol:'₡',  flag:'🇨🇷', name:'Colón (Costa Rica)'},
+            { code:'GEL', symbol:'₾',  flag:'🇬🇪', name:'Lari (GEL)'        },
         ],
 
         amountsByCurrency: {
@@ -102,6 +103,7 @@ document.addEventListener('alpine:init', () => {
             MXN:[20000,50000,100000,250000,500000,1000000,1500000,2000000],
             BRL:[5000,10000,25000,50000,100000,250000,400000,500000],
             CRC:[600000,1500000,3000000,6000000,15000000,30000000,45000000,55000000],
+            GEL:[3000,9000,15000,30000,60000,150000,225000,285000],
         },
 
         get amounts()  { return this.amountsByCurrency[this.selCurrency] || this.amountsByCurrency['EUR']; },
