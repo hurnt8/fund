@@ -28,6 +28,7 @@ class SignedContractAcknowledgementMail extends Mailable
             'fr' => 'Réception de votre contrat signé N°' . $this->loan->reference . ' — AURENZA CAPITAL',
             'pl' => 'Potwierdzenie otrzymania podpisanej umowy nr ' . $this->loan->reference,
             'en' => 'Receipt of your signed contract N°' . $this->loan->reference . ' — AURENZA CAPITAL',
+            'ka' => 'თქვენი ხელმოწერილი ხელშეკრულების №' . $this->loan->reference . ' მიღება — AURENZA CAPITAL',
             'es' => 'Recepción de su contrato firmado N°' . $this->loan->reference . ' — AURENZA CAPITAL',
         ];
 

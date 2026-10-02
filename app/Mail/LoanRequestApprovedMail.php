@@ -23,6 +23,7 @@ class LoanRequestApprovedMail extends Mailable
         $subjects = [
             'fr' => 'Votre demande N°' . $this->loan->reference . ' a été approuvée — AURENZA CAPITAL',
             'en' => 'Your application N°' . $this->loan->reference . ' has been approved — AURENZA CAPITAL',
+            'ka' => 'თქვენი განაცხადი №' . $this->loan->reference . ' დამტკიცდა — AURENZA CAPITAL',
             'es' => 'Su solicitud N°' . $this->loan->reference . ' ha sido aprobada — AURENZA CAPITAL',
             'pl' => 'Wniosek nr ' . $this->loan->reference . ' został zatwierdzony — AURENZA CAPITAL',
         ];

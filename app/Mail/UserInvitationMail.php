@@ -27,6 +27,9 @@ class UserInvitationMail extends Mailable
         'pl' => ['M' => 'Aktywacja Twojego konta — Aurenza Capital',
                  'F' => 'Aktywacja Twojego konta — Aurenza Capital',
                  'N' => 'Aktywuj swoje konto — Aurenza Capital'],
+        'ka' => ['M' => 'თქვენი ანგარიშის გააქტიურება — Aurenza Capital',
+                 'F' => 'თქვენი ანგარიშის გააქტიურება — Aurenza Capital',
+                 'N' => 'გააქტიურეთ თქვენი ანგარიში — Aurenza Capital'],
     ];
 
     // ── Labels du bouton selon la locale ────────────────────────────────────
@@ -35,6 +38,7 @@ class UserInvitationMail extends Mailable
         'en' => 'Activate my account',
         'es' => 'Activar mi cuenta',
         'pl' => 'Aktywuj moje konto',
+        'ka' => 'ჩემი ანგარიშის გააქტიურება',
     ];
 
     // ── Corps principal selon la locale ─────────────────────────────────────
@@ -55,6 +59,10 @@ class UserInvitationMail extends Mailable
             'intro'  => 'Doradca **{NOM_ENTREPRISE}** właśnie utworzył Twój osobisty obszar klienta.',
             'action' => 'Aby uzyskać dostęp do swojego obszaru i śledzić swoje wnioski, **aktywuj konto** klikając poniższy przycisk.',
         ],
+        'ka' => [
+            'intro'  => '**{NOM_ENTREPRISE}**-ის მრჩეველმა ახლახან შექმნა თქვენი პირადი კლიენტის სივრცე.',
+            'action' => 'თქვენს სივრცეზე წვდომისა და დაფინანსების საქმეების თვალყურის დევნებისთვის **გააქტიურეთ თქვენი ანგარიში** ქვემოთ მოცემულ ღილაკზე დაჭერით.',
+        ],
     ];
 
     // ── Valeurs des balises selon [locale][genre] ────────────────────────────
@@ -64,24 +72,28 @@ class UserInvitationMail extends Mailable
             'en' => ['M' => 'Dear',       'F' => 'Dear',      'N' => 'Hello'],
             'es' => ['M' => 'Estimado',   'F' => 'Estimada',  'N' => 'Hola'],
             'pl' => ['M' => 'Szanowny',   'F' => 'Szanowna',  'N' => 'Witaj'],
+            'ka' => ['M' => 'ძვირფასო',   'F' => 'ძვირფასო',  'N' => 'გამარჯობა'],
         ],
         '{SALUTATION}' => [
             'fr' => ['M' => 'Monsieur',   'F' => 'Madame',    'N' => ''],
             'en' => ['M' => 'Mr.',        'F' => 'Ms.',       'N' => ''],
             'es' => ['M' => 'Sr.',        'F' => 'Sra.',      'N' => ''],
             'pl' => ['M' => 'Panie',      'F' => 'Pani',      'N' => ''],
+            'ka' => ['M' => 'ბატონო',     'F' => 'ქალბატონო', 'N' => ''],
         ],
         '{FORMULE_POLITESSE}' => [
             'fr' => ['M' => 'Cordialement',    'F' => 'Cordialement',    'N' => 'Cordialement'],
             'en' => ['M' => 'Best regards',    'F' => 'Best regards',    'N' => 'Kind regards'],
             'es' => ['M' => 'Atentamente',     'F' => 'Atentamente',     'N' => 'Saludos'],
             'pl' => ['M' => 'Z poważaniem',    'F' => 'Z poważaniem',    'N' => 'Z pozdrowieniami'],
+            'ka' => ['M' => 'პატივისცემით',    'F' => 'პატივისცემით',    'N' => 'საუკეთესო სურვილებით'],
         ],
         '{EQUIPE}' => [
             'fr' => ['M' => "L'équipe Aurenza Capital",    'F' => "L'équipe Aurenza Capital",    'N' => "L'équipe Aurenza Capital"],
             'en' => ['M' => 'The Aurenza Capital Team',    'F' => 'The Aurenza Capital Team',    'N' => 'The Aurenza Capital Team'],
             'es' => ['M' => 'El equipo de Aurenza Capital','F' => 'El equipo de Aurenza Capital','N' => 'El equipo de Aurenza Capital'],
             'pl' => ['M' => 'Zespół Aurenza Capital',      'F' => 'Zespół Aurenza Capital',      'N' => 'Zespół Aurenza Capital'],
+            'ka' => ['M' => 'Aurenza Capital-ის გუნდი',    'F' => 'Aurenza Capital-ის გუნდი',    'N' => 'Aurenza Capital-ის გუნდი'],
         ],
         '{NOTICE_PERSONNEL}' => [
             'fr' => ['M' => "Ce lien d'activation est **personnel et unique**. Il expire dès que vous avez défini votre mot de passe.",
@@ -96,6 +108,9 @@ class UserInvitationMail extends Mailable
             'pl' => ['M' => 'Ten link aktywacyjny jest **osobisty i unikalny**. Wygasa natychmiast po ustawieniu hasła.',
                      'F' => 'Ten link aktywacyjny jest **osobisty i unikalny**. Wygasa natychmiast po ustawieniu hasła.',
                      'N' => 'Ten link aktywacyjny jest **osobisty i unikalny**. Wygasa natychmiast po ustawieniu hasła.'],
+            'ka' => ['M' => 'ეს გააქტიურების ბმული **პირადი და უნიკალურია**. მისი ვადა იწურება პაროლის დაყენებისთანავე.',
+                     'F' => 'ეს გააქტიურების ბმული **პირადი და უნიკალურია**. მისი ვადა იწურება პაროლის დაყენებისთანავე.',
+                     'N' => 'ეს გააქტიურების ბმული **პირადი და უნიკალურია**. მისი ვადა იწურება პაროლის დაყენებისთანავე.'],
         ],
         '{NOTICE_IGNORE}' => [
             'fr' => ['M' => "Si vous n'êtes pas à l'origine de cette création de compte, vous pouvez ignorer cet email.",
@@ -110,6 +125,9 @@ class UserInvitationMail extends Mailable
             'pl' => ['M' => "Jeśli nie prosiłeś o utworzenie tego konta, możesz zignorować ten email.",
                      'F' => "Jeśli nie prosiłaś o utworzenie tego konta, możesz zignorować ten email.",
                      'N' => "Jeśli nie prosiłeś/aś o utworzenie tego konta, możesz zignorować ten email."],
+            'ka' => ['M' => "თუ ანგარიშის შექმნა თქვენ არ მოგითხოვიათ, უგულებელყავით ეს წერილი.",
+                     'F' => "თუ ანგარიშის შექმნა თქვენ არ მოგითხოვიათ, უგულებელყავით ეს წერილი.",
+                     'N' => "თუ ანგარიშის შექმნა თქვენ არ მოგითხოვიათ, უგულებელყავით ეს წერილი."],
         ],
     ];
 

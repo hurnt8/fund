@@ -29,6 +29,7 @@ class InsuranceAttestationMail extends Mailable
         $subjects = [
             'fr' => 'Votre attestation d\'assurance emprunteur — N°' . $this->loan->reference . ' — AURENZA CAPITAL',
             'en' => 'Your borrower insurance certificate — N°' . $this->loan->reference . ' — AURENZA CAPITAL',
+            'ka' => 'თქვენი მსესხებლის დაზღვევის ცნობა — №' . $this->loan->reference . ' — AURENZA CAPITAL',
             'pl' => 'Zaświadczenie ubezpieczenia kredytobiorcy — nr ' . $this->loan->reference . ' — AURENZA CAPITAL',
             'es' => 'Su certificado de seguro de prestatario — N°' . $this->loan->reference . ' — AURENZA CAPITAL',
         ];

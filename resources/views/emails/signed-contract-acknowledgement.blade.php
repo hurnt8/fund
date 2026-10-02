@@ -36,6 +36,15 @@ $texts = [
         'closing' => 'Z poważaniem,',
         'team'    => 'Zespół AURENZA CAPITAL',
     ],
+    'ka' => [
+        'title'   => 'ხელშეკრულება №'.$loan->reference.' მიღებულია',
+        'sub'     => 'მიღების დადასტურება',
+        'greeting'=> 'ძვირფასო '.$loan->name.',',
+        'intro'   => 'ვადასტურებთ თქვენი ხელმოწერილი სასესხო ხელშეკრულების მიღებას (ნომერი: <strong>'.$loan->reference.'</strong>).',
+        'next'    => 'ჩვენი მართვის გუნდი გააგრძელებს თქვენი საქმის საბოლოო დამუშავებას. გადახდის ანგარიშის რეკვიზიტები გეცნობებათ <strong>24-დან 48 საათამდე</strong> ვადაში.',
+        'closing' => 'პატივისცემით,',
+        'team'    => 'AURENZA CAPITAL-ის გუნდი',
+    ],
 ];
 $t = $texts[$locale] ?? $texts['fr'];
 @endphp

@@ -4,6 +4,7 @@ $docTypes = [
     'en' => ['passport'=>'Passport','id_card'=>'Identity card','residence_permit'=>'Residence permit','driving_license'=>'Driving license'],
     'es' => ['passport'=>'Pasaporte','id_card'=>'Documento de identidad','residence_permit'=>'Permiso de residencia','driving_license'=>'Permiso de conducir'],
     'pl' => ['passport'=>'Paszport','id_card'=>'Dowód osobisty','residence_permit'=>'Zezwolenie na pobyt','driving_license'=>'Prawo jazdy'],
+    'ka' => ['passport'=>'პასპორტი','id_card'=>'პირადობის მოწმობა','residence_permit'=>'ბინადრობის ნებართვა','driving_license'=>'მართვის მოწმობა'],
 ];
 $texts = [
     'fr' => [
@@ -57,6 +58,19 @@ $texts = [
         'noreply'   => 'Ten email został wysłany z adresu no-reply. Prosimy nie odpowiadać bezpośrednio.',
         'closing'   => 'Z poważaniem,',
         'team'      => 'Zespół Aurenza Capital',
+    ],
+    'ka' => [
+        'title'     => 'დოკუმენტები მიღებულია',
+        'sub'       => 'Aurenza Capital',
+        'greeting'  => 'გამარჯობა, '.$data['name'].',',
+        'body'      => 'მივიღეთ თქვენი დოკუმენტები (მისამართი და პირადობის დოკუმენტი). ჩვენი გუნდი მათ განიხილავს და <strong>24 საათის</strong> განმავლობაში დაგიბრუნდებათ.',
+        'lbl_name'  => 'სახელი',
+        'lbl_doc'   => 'დოკუმენტის ტიპი',
+        'lbl_addr'  => 'მისამართი',
+        'footer'    => 'გმადლობთ ნდობისთვის. ნებისმიერი კითხვისთვის ხელმისაწვდომი ვართ.',
+        'noreply'   => 'ეს წერილი გაგზავნილია no-reply მისამართიდან. გთხოვთ, პირდაპირ ნუ უპასუხებთ.',
+        'closing'   => 'პატივისცემით,',
+        'team'      => 'Aurenza Capital-ის გუნდი',
     ],
 ];
 $t       = $texts[$lang] ?? $texts['fr'];

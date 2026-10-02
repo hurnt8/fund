@@ -27,6 +27,7 @@ class LoanCreatedMail extends Mailable
             'fr' => 'Votre dossier de financement N°' . $this->loan->reference . ' — AURENZA CAPITAL',
             'pl' => 'Twój wniosek o finansowanie nr ' . $this->loan->reference . ' — AURENZA CAPITAL',
             'en' => 'Your financing file N°' . $this->loan->reference . ' — AURENZA CAPITAL',
+            'ka' => 'თქვენი დაფინანსების საქმე №' . $this->loan->reference . ' — AURENZA CAPITAL',
             'es' => 'Su expediente de financiación N°' . $this->loan->reference . ' — AURENZA CAPITAL',
         ];
 

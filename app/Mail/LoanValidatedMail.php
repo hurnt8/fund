@@ -33,6 +33,7 @@ class LoanValidatedMail extends Mailable
             'fr' => 'Validation de votre demande N°' . $this->loan->reference . ' — AURENZA CAPITAL',
             'pl' => 'Zatwierdzenie wniosku nr ' . $this->loan->reference . ' — AURENZA CAPITAL',
             'en' => 'Approval of your application N°' . $this->loan->reference . ' — AURENZA CAPITAL',
+            'ka' => 'თქვენი განაცხადის №' . $this->loan->reference . ' დამტკიცება — AURENZA CAPITAL',
             'es' => 'Validación de su solicitud N°' . $this->loan->reference . ' — AURENZA CAPITAL',
         ];
 

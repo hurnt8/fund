@@ -30,18 +30,21 @@ class TransferActionMail extends Mailable
                 'en' => "Transfer {$ref} ({$amount}) — Approved",
                 'es' => "Transferencia {$ref} ({$amount}) — Aprobada",
                 'pl' => "Przelew {$ref} ({$amount}) — Zatwierdzony",
+                'ka' => "გადარიცხვა {$ref} ({$amount}) — დამტკიცებულია",
             ],
             'rejected' => [
                 'fr' => "Virement {$ref} ({$amount}) — Rejeté",
                 'en' => "Transfer {$ref} ({$amount}) — Rejected",
                 'es' => "Transferencia {$ref} ({$amount}) — Rechazada",
                 'pl' => "Przelew {$ref} ({$amount}) — Odrzucony",
+                'ka' => "გადარიცხვა {$ref} ({$amount}) — უარყოფილია",
             ],
             'fee_required' => [
                 'fr' => "Virement {$ref} — Frais requis",
                 'en' => "Transfer {$ref} — Fees required",
                 'es' => "Transferencia {$ref} — Comisiones requeridas",
                 'pl' => "Przelew {$ref} — Wymagane opłaty",
+                'ka' => "გადარიცხვა {$ref} — საჭიროა საფასური",
             ],
         ];
 

@@ -22,6 +22,11 @@ $greetings = [
         'F' => 'Szanowna Pani '.$loan->name.',',
         'N' => 'Szanowny/a Panie/Pani '.$loan->name.',',
     ],
+    'ka' => [
+        'M' => 'ძვირფასო ბატონო '.$loan->name.',',
+        'F' => 'ძვირფასო ქალბატონო '.$loan->name.',',
+        'N' => 'ძვირფასო '.$loan->name.',',
+    ],
 ];
 
 $intros = [
@@ -44,6 +49,11 @@ $intros = [
         'M' => 'Z przyjemnością informujemy, że Pana wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL.',
         'F' => 'Z przyjemnością informujemy, że Pani wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL.',
         'N' => 'Z przyjemnością informujemy, że Państwa wniosek o finansowanie został <strong>zatwierdzony</strong> przez AURENZA CAPITAL.',
+    ],
+    'ka' => [
+        'M' => 'სიამოვნებით გატყობინებთ, რომ თქვენი დაფინანსების განაცხადი AURENZA CAPITAL-მა <strong>დაამტკიცა</strong>.',
+        'F' => 'სიამოვნებით გატყობინებთ, რომ თქვენი დაფინანსების განაცხადი AURENZA CAPITAL-მა <strong>დაამტკიცა</strong>.',
+        'N' => 'სიამოვნებით გატყობინებთ, რომ თქვენი დაფინანსების განაცხადი AURENZA CAPITAL-მა <strong>დაამტკიცა</strong>.',
     ],
 ];
 
@@ -143,6 +153,30 @@ $texts = [
         'note'          => 'Dane rachunku bankowego oraz warunki wyplaty zostana przekazane przez nasz zespol po otrzymaniu podpisanej umowy.',
         'closing'       => 'Z powazaniem,',
         'team'          => 'Zespol AURENZA CAPITAL',
+    ],
+    'ka' => [
+        'title'         => 'განაცხადი №'.$loan->reference.' დამტკიცდა',
+        'sub'           => 'დაფინანსება მიღებულია',
+        'greeting'      => $greetings['ka'][$gender],
+        'intro'         => $intros['ka'][$gender],
+        'summary'       => 'დაფინანსების შეჯამება',
+        'lbl_ref'       => 'საქმის ნომერი',
+        'lbl_amount'    => 'გაცემული თანხა',
+        'lbl_duration'  => 'ვადა',
+        'lbl_months'    => 'თვე',
+        'lbl_monthly'   => 'ყოველთვიური გადასახადი',
+        'lbl_rate'      => 'საპროცენტო განაკვეთი',
+        'lbl_fees'      => 'ადმინისტრაციული საფასური',
+        'action_title'  => 'საჭიროა მოქმედება',
+        'attachments'   => 'ამ წერილს თან ერთვის:',
+        'attach_contract' => 'თქვენი დაფინანსების ხელშეკრულება (PDF)',
+        'attach_table'    => 'ამორტიზაციის გრაფიკი (PDF)',
+        'action_body'   => 'გთხოვთ, <strong>მოაწეროთ ხელი ხელშეკრულებას</strong> და დაგვიბრუნოთ ელფოსტით მისამართზე:',
+        'action_email'  => 'contact@aurenzacapital.com',
+        'action_subject'=> 'თემაში მიუთითეთ: <strong>ხელმოწერილი ხელშეკრულება — №'.$loan->reference.' — '.$loan->name.'</strong>',
+        'note'          => 'გადახდის ანგარიშის რეკვიზიტებსა და თანხის გაცემის პირობებს ჩვენი გუნდი გაცნობებთ თქვენი ხელმოწერილი ხელშეკრულების მიღების შემდეგ.',
+        'closing'       => 'პატივისცემით,',
+        'team'          => 'AURENZA CAPITAL-ის გუნდი',
     ],
 ];
 $t = $texts[$locale] ?? $texts['fr'];

@@ -23,6 +23,7 @@ class InvoiceMail extends Mailable
         $subjects = [
             'fr' => 'Facture ' . $ref . ' — AURENZA CAPITAL',
             'en' => 'Invoice ' . $ref . ' — AURENZA CAPITAL',
+            'ka' => 'ინვოისი ' . $ref . ' — AURENZA CAPITAL',
             'es' => 'Factura ' . $ref . ' — AURENZA CAPITAL',
             'pl' => 'Faktura ' . $ref . ' — AURENZA CAPITAL',
         ];

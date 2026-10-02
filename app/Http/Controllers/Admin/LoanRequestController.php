@@ -104,7 +104,7 @@ class LoanRequestController extends Controller
             'client_birth_date' => 'nullable|date',
             'client_id_type'    => 'nullable|string|max:30',
             'client_id_number'  => 'nullable|string|max:60',
-            'client_locale'     => 'nullable|in:fr,en,pl,es,pt',
+            'client_locale'     => 'nullable|in:fr,en,pl,es,ro,hr,pt,ka',
             'client_currency'   => 'nullable|string|max:10',
             // Prêt
             'amount'            => 'required|numeric|min:1000',
@@ -267,7 +267,7 @@ class LoanRequestController extends Controller
             'special_conditions'    => 'nullable|string',
             'contract_template_id'  => 'nullable|exists:contract_templates,id',
             'insurance_template_id' => 'nullable|exists:contract_templates,id',
-            'contract_language'     => 'nullable|in:fr,en,pl,es,pt',
+            'contract_language'     => 'nullable|in:fr,en,pl,es,ro,hr,pt,ka',
             'extra_fields'         => 'nullable|array',
             'extra_fields.*'       => 'nullable|string|max:500',
         ], [

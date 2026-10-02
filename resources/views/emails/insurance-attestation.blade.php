@@ -5,6 +5,7 @@ $greetings = [
     'fr' => ['M' => 'Monsieur '.$loan->name.',',  'F' => 'Madame '.$loan->name.',',   'N' => 'Madame, Monsieur '.$loan->name.','],
     'en' => ['M' => 'Dear Mr. '.$loan->name.',',  'F' => 'Dear Ms. '.$loan->name.',', 'N' => 'Dear '.$loan->name.','],
     'es' => ['M' => 'Estimado Sr. '.$loan->name.',', 'F' => 'Estimada Sra. '.$loan->name.',', 'N' => 'Estimado/a '.$loan->name.','],
+    'ka' => ['M' => 'ძვირფასო ბატონო '.$loan->name.',', 'F' => 'ძვირფასო ქალბატონო '.$loan->name.',', 'N' => 'ძვირფასო '.$loan->name.','],
     'pl' => ['M' => 'Szanowny Panie '.$loan->name.',', 'F' => 'Szanowna Pani '.$loan->name.',', 'N' => 'Szanowny/a Panie/Pani '.$loan->name.','],
 ];
 
@@ -76,6 +77,23 @@ $texts = [
         'contact'      => 'W razie pytań dotyczących ubezpieczenia prosimy o kontakt z doradcą.',
         'closing'      => 'Z poważaniem,',
         'team'         => 'Zespół AURENZA CAPITAL',
+    ],
+    'ka' => [
+        'title'    => 'მსესხებლის დაზღვევის ცნობა — №'.$loan->reference,
+        'sub'      => 'დაზღვევა CG-A340G',
+        'greeting' => $greetings['ka'][$gender],
+        'intro'    => 'თან გიგზავნით თქვენს <strong>მსესხებლის დაზღვევის ცნობას</strong> (ნომერი <strong>'.$loan->reference.'</strong>), რომელიც AURENZA CAPITAL-მა გასცა თქვენი დაფინანსების განაცხადის ფარგლებში.',
+        'summary'  => 'თქვენი დაზღვევის შეჯამება',
+        'lbl_ref'  => 'საქმის ნომერი',
+        'lbl_montant'  => 'დაზღვეული თანხა',
+        'lbl_duree'    => 'ვადა',
+        'lbl_months'   => 'თვე',
+        'lbl_frais'    => 'დაზღვევის საფასური',
+        'lbl_fin'      => 'დაზღვევის დასრულების თარიღი',
+        'attach_note'  => 'თქვენი CG-A340G დაზღვევის ცნობა თან ერთვის ამ წერილს PDF ფორმატით.',
+        'contact'      => 'დაზღვევასთან დაკავშირებული ნებისმიერი კითხვისთვის დაუკავშირდით თქვენს მრჩეველს.',
+        'closing'      => 'პატივისცემით,',
+        'team'         => 'AURENZA CAPITAL-ის გუნდი',
     ],
 ];
 

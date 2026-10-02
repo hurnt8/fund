@@ -187,7 +187,7 @@ class AppController extends Controller
     {
         $user      = Auth::user();
         $validated = $request->validate([
-            'locale' => 'nullable|in:fr,en,pl,es,pt',
+            'locale' => 'nullable|in:fr,en,pl,es,ro,hr,pt,ka',
             'phone'  => 'nullable|string|max:30',
         ]);
 

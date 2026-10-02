@@ -45,7 +45,7 @@ class ContractTemplateController extends Controller
         $data = $request->validate([
             'name'       => 'required|string|max:255',
             'is_default' => 'boolean',
-            'locale'     => 'nullable|in:fr,en,pl,es,pt',
+            'locale'     => 'nullable|in:fr,en,pl,es,ro,hr,pt,ka',
         ]);
 
         if (!empty($data['is_default'])) {
@@ -87,7 +87,7 @@ class ContractTemplateController extends Controller
         $data = $request->validate([
             'name'       => 'required|string|max:255',
             'is_default' => 'boolean',
-            'locale'     => 'nullable|in:fr,en,pl,es,pt',
+            'locale'     => 'nullable|in:fr,en,pl,es,ro,hr,pt,ka',
         ]);
 
         if (!empty($data['is_default'])) {
