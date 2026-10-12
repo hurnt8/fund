@@ -1,4 +1,4 @@
-@extends('layouts.client-app')
+@extends('layouts.client-shell')
 @section('title', __('app.invoices_title') . ' — Aurenza Capital')
 @section('page_title', __('app.invoices_title'))
 @section('back_btn', true)

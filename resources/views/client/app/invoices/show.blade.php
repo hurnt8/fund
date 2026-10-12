@@ -1,4 +1,4 @@
-@extends('layouts.client-app')
+@extends('layouts.client-shell')
 @section('title', $invoice->reference . ' — Aurenza Capital')
 @section('page_title', __('app.invoice_detail'))
 @section('back_btn', true)

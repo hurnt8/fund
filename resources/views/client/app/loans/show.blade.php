@@ -1,4 +1,4 @@
-@extends('layouts.client-app')
+@extends('layouts.client-shell')
 @section('title', $loan->reference . ' — Aurenza Capital')
 @section('page_title', $loan->reference)
 @section('back_btn', true)

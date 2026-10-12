@@ -1,4 +1,4 @@
-@extends('layouts.client-app')
+@extends('layouts.client-shell')
 @section('title', 'Support — Aurenza Capital')
 @section('no_bottom_nav', '1')
 

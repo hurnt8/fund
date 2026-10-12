@@ -1,4 +1,4 @@
-@extends('layouts.client-app')
+@extends('layouts.client-shell')
 @section('title', __('app.movements_title', [], $user->locale ?? 'fr') . ' — Aurenza Capital')
 @section('page_title', __('app.movements_title'))
 @section('back_btn', true)

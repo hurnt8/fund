@@ -1,4 +1,4 @@
-@extends('layouts.client-app')
+@extends('layouts.client-shell')
 @section('title', __('app.title'))
 
 {{-- ── Custom topbar ─────────────────────────────────────────────── --}}

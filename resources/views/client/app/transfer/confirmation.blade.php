@@ -1,4 +1,4 @@
-@extends('layouts.client-app')
+@extends('layouts.client-shell')
 @section('title', __('app.send_confirm_title') . ' — Aurenza Capital')
 @section('page_title', __('app.confirm_title'))
 
