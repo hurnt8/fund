@@ -319,7 +319,7 @@
 {{-- ══ Son & Polling notifications ══ --}}
 <script>
 // Synthese sonore Web Audio API (aucun fichier externe)
-window.Aurenza CapitalSound = (function () {
+window.AurenzaCapitalSound = (function () {
   let ctx = null;
   function ac() {
     if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -385,9 +385,9 @@ window.Aurenza CapitalSound = (function () {
 
       if (count > lastCount) {
         if (data.type === 'transfer') {
-          window.Aurenza CapitalSound.coin();
+          window.AurenzaCapitalSound.coin();
         } else {
-          window.Aurenza CapitalSound.bell();
+          window.AurenzaCapitalSound.bell();
         }
       }
       lastCount = count;
