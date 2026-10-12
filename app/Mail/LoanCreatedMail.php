@@ -18,7 +18,7 @@ class LoanCreatedMail extends Mailable
         public LoanRequest $loan,
         public string      $contractPdfPath,
         public string      $amortizationPdfPath,
-        public string      $locale = 'fr',
+        public string      $mailLocale = 'fr',
     ) {}
 
     public function envelope(): Envelope
@@ -31,14 +31,14 @@ class LoanCreatedMail extends Mailable
             'es' => 'Su expediente de financiación N°' . $this->loan->reference . ' — AURENZA CAPITAL',
         ];
 
-        return new Envelope(subject: $subjects[$this->locale] ?? $subjects['fr']);
+        return new Envelope(subject: $subjects[$this->mailLocale] ?? $subjects['fr']);
     }
 
     public function content(): Content
     {
         return new Content(
             markdown: 'emails.loan-created',
-            with: ['loan' => $this->loan, 'locale' => $this->locale],
+            with: ['loan' => $this->loan, 'locale' => $this->mailLocale],
         );
     }
 

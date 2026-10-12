@@ -64,7 +64,7 @@
   to{opacity:0;visibility:hidden}
 }
 
-/* Le composant <x-pagination> est écrit pour le tableau de bord (jetons --c-*).
+/* Le composant Blade « pagination » est écrit pour le tableau de bord (jetons --c-*).
    On les remappe ici sur la palette sombre de l'espace client. */
 .lp-wrap{
   --c-muted:   var(--ca-text-3);
