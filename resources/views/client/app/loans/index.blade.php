@@ -217,7 +217,7 @@
 
 <x-pagination :paginator="$loans" />
 
-
+@push('scripts')
 <script>
 function filterDos(group) {
   document.querySelectorAll('.dos-card').forEach(el => {
