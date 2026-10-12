@@ -55,6 +55,15 @@ class Handler extends ExceptionHandler
                 return null;
             }
 
+            // Une page affichée en GET qui plante ne doit JAMAIS rediriger "back" :
+            // le referer peut pointer vers une page qui redirige elle-même vers
+            // celle-ci (ex. /otp-verify -> /login -> /app), ce qui produit une
+            // boucle ERR_TOO_MANY_REDIRECTS et masque l'erreur réelle. On laisse
+            // Laravel afficher sa page d'erreur et écrire l'exception dans les logs.
+            if (! in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
+                return null;
+            }
+
             if ($e instanceof \Illuminate\Validation\ValidationException
                 || $e instanceof \Illuminate\Auth\AuthenticationException
                 || $e instanceof \Illuminate\Auth\Access\AuthorizationException) {
